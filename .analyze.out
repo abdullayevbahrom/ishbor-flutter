@@ -1,0 +1,451 @@
+Analyzing .ai_flutter...                                        
+
+   info • Library names are not necessary • lib/consts.dart:1:9 • unnecessary_library_name
+   info • Unnecessary braces in a string interpolation • lib/core/constants/api_const.dart:26:23 • unnecessary_brace_in_string_interps
+   info • Unnecessary 'const' keyword • lib/core/constants/easy_locale.dart:7:5 • unnecessary_const
+   info • Unnecessary 'const' keyword • lib/core/constants/easy_locale.dart:8:5 • unnecessary_const
+warning • The value of the local variable 'shortStack' isn't used • lib/core/exceptions/exception_listener.dart:102:11 • unused_local_variable
+warning • The declaration '_formatError' isn't referenced • lib/core/exceptions/exception_listener.dart:260:10 • unused_element
+   info • Unnecessary 'this.' qualifier • lib/core/extentions/string.dart:3:39 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/core/extentions/string.dart:7:13 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/core/extentions/string.dart:9:12 • unnecessary_this
+   info • Unnecessary braces in a string interpolation • lib/core/helpers/formatters.dart:18:41 • unnecessary_brace_in_string_interps
+   info • Unnecessary use of string interpolation • lib/core/helpers/formatters.dart:104:14 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/core/helpers/formatters.dart:108:14 • unnecessary_string_interpolations
+   info • String literals shouldn't be concatenated by the '+' operator • lib/core/helpers/formatters.dart:193:64 • prefer_adjacent_string_concatenation
+warning • The left operand can't be null, so the right operand is never executed • lib/core/network/api_http.dart:29:39 • dead_null_aware_expression
+   info • The constant name 'vacancy_view' isn't a lowerCamelCase identifier • lib/core/router/route_names.dart:29:23 • constant_identifier_names
+   info • The constant name 'service_view' isn't a lowerCamelCase identifier • lib/core/router/route_names.dart:30:23 • constant_identifier_names
+   info • The constant name 'task_view' isn't a lowerCamelCase identifier • lib/core/router/route_names.dart:31:23 • constant_identifier_names
+   info • The constant name 'task_performers' isn't a lowerCamelCase identifier • lib/core/router/route_names.dart:36:23 • constant_identifier_names
+   info • The constant name 'edit_profile' isn't a lowerCamelCase identifier • lib/core/router/route_names.dart:37:23 • constant_identifier_names
+warning • Unused import: 'package:device_info_plus/device_info_plus.dart' • lib/core/services/fcm_service.dart:179:8 • unused_import
+   info • Don't use 'BuildContext's across async gaps • lib/core/services/fcm_service.dart:412:28 • use_build_context_synchronously
+   info • Missing type annotation • lib/core/services/fcm_service.dart:421:27 • strict_top_level_inference
+   info • Instances of 'Color' should be created using an 8-digit hexadecimal integer (such as '0xFFFFFFFF') • lib/core/theme/app_colors.dart:6:38 • use_full_hex_values_for_flutter_colors
+   info • Unnecessary 'this.' qualifier • lib/feature/ads_form/data/models/request/vacancy_params.dart:98:49 • unnecessary_this
+warning • The value of the field '_sub' isn't used • lib/feature/ads_form/presentation/cubits/vacancy_form_cubit/vacancy_form_cubit.dart:32:48 • unused_field
+   info • Function literals shouldn't be passed to 'forEach' • lib/feature/ads_form/presentation/pages/vacancy_form_page/vacancy_form_page.dart:164:73 • avoid_function_literals_in_foreach_calls
+   info • The member 'didChangeAppLifecycleState' overrides an inherited member but isn't annotated with '@override' • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/vacancy_form_listener.dart:108:8 • annotate_overrides
+   info • Function literals shouldn't be passed to 'forEach' • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/vacancy_form_listener.dart:161:73 • avoid_function_literals_in_foreach_calls
+   info • Function literals shouldn't be passed to 'forEach' • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/vacancy_form_listener.dart:234:73 • avoid_function_literals_in_foreach_calls
+   info • Unnecessary cascade expression • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/vacancy_form_photos.dart:62:7 • avoid_single_cascade_in_expression_statements
+   info • Missing type annotation • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/w_vacancy_employment_type.dart:157:3 • strict_top_level_inference
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/ads_form/presentation/pages/vacancy_form_page/widgets/w_vacancy_phone_number.dart:183:9 • sort_child_properties_last
+   info • Missing type annotation • lib/feature/ads_view/presentation/cubits/task_view_cubit/task_view_cubit.dart:35:3 • strict_top_level_inference
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/ads_view/presentation/pages/service_view_page/service_view_page.dart:30:3 • prefer_const_constructors_in_immutables
+   info • The import of 'package:skeletonizer/skeletonizer.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/feature/ads_view/presentation/pages/task_view_page/task_view_page.dart:6:8 • unnecessary_import
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/ads_view/presentation/pages/task_view_page/task_view_page.dart:37:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary use of string interpolation • lib/feature/ads_view/presentation/pages/task_view_page/task_view_page.dart:184:21 • unnecessary_string_interpolations
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/ads_view/presentation/pages/task_view_page/widgets/w_apply_request_modal.dart:16:3 • prefer_const_constructors_in_immutables
+   info • Missing type annotation • lib/feature/ads_view/presentation/pages/task_view_page/widgets/w_apply_request_modal.dart:29:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/ads_view/presentation/pages/task_view_page/widgets/w_apply_request_modal.dart:45:20 • unnecessary_this
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/ads_view/presentation/pages/task_view_page/widgets/w_own_request.dart:70:70 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/ads_view/presentation/pages/task_view_page/widgets/w_similar_tasks.dart:76:43 • dead_null_aware_expression
+   info • The import of 'package:skeletonizer/skeletonizer.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/feature/ads_view/presentation/pages/vacancy_view_page/vacancy_view_page.dart:6:8 • unnecessary_import
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/ads_view/presentation/pages/vacancy_view_page/vacancy_view_page.dart:32:3 • prefer_const_constructors_in_immutables
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/feature/ads_view/presentation/widgets/w_ads_chipbox.dart:76:13 • prefer_if_null_operators
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/ads_view/presentation/widgets/w_ads_location_view.dart:19:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary 'this.' qualifier • lib/feature/ads_view/presentation/widgets/w_ads_messaging_author.dart:34:36 • unnecessary_this
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/ads_view/presentation/widgets/w_ads_messaging_author.dart:58:42 • deprecated_member_use
+   info • Missing type annotation • lib/feature/ads_view/presentation/widgets/w_ads_report.dart:32:3 • strict_top_level_inference
+   info • The private field _maxLength could be 'final' • lib/feature/ads_view/presentation/widgets/w_ads_report.dart:49:7 • prefer_final_fields
+   info • Missing type annotation • lib/feature/ads_view/presentation/widgets/w_author_phone_numbers.dart:30:3 • strict_top_level_inference
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/ads_view/presentation/widgets/w_author_phone_numbers.dart:36:11 • sort_child_properties_last
+   info • Missing type annotation • lib/feature/ads_view/presentation/widgets/w_send_message_user.dart:33:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/auth/presentation/pages/login_page/login_page.dart:26:3 • strict_top_level_inference
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/login_page/login_page.dart:70:48 • deprecated_member_use
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/auth/presentation/pages/otp_page/otp_page.dart:24:3 • prefer_const_constructors_in_immutables
+   info • Missing type annotation • lib/feature/auth/presentation/pages/otp_page/otp_page.dart:29:3 • strict_top_level_inference
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/otp_page/otp_page.dart:254:49 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/otp_page/otp_page.dart:258:50 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/register_page/register_page.dart:229:63 • deprecated_member_use
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/auth/presentation/pages/restore_password_page/restore_password_page.dart:19:7 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/feature/auth/presentation/pages/restore_password_page/restore_password_page.dart:21:3 • library_private_types_in_public_api
+   info • Missing type annotation • lib/feature/auth/presentation/pages/user_type_page/user_type_page.dart:16:3 • strict_top_level_inference
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/user_type_page/user_type_page.dart:56:44 • deprecated_member_use
+   info • Missing type annotation • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:21:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:25:16 • unnecessary_this
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:35:3 • prefer_const_constructors_in_immutables
+   info • The local variable '_timer' starts with an underscore • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:76:51 • no_leading_underscores_for_local_identifiers
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:184:51 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/auth/presentation/pages/verify_page/verify_page.dart:194:60 • deprecated_member_use
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/data/models/category.dart:9:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/data/models/category.dart:46:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/data/models/category.dart:111:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/data/models/category.dart:151:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/data/models/category.dart:176:3 • prefer_const_constructors_in_immutables
+   info • Dangling library doc comment • lib/feature/common/data/models/pagination_model.dart:1:1 • dangling_library_doc_comments
+   info • Angle brackets will be interpreted as HTML • lib/feature/common/data/models/pagination_model.dart:5:35 • unintended_html_in_doc_comment
+   info • Angle brackets will be interpreted as HTML • lib/feature/common/data/models/pagination_model.dart:10:37 • unintended_html_in_doc_comment
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:freezed_annotation/freezed_annotation.dart' • lib/feature/common/presentation/cubits/ask_question_cubit/ask_question_cubit.dart:3:8 • unnecessary_import
+   info • The addition of a list item could be inlined • lib/feature/common/presentation/cubits/feedback_cubit/feedback_cubit.dart:68:37 • prefer_inlined_adds
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/common/presentation/pages/map_filter_page/map_filter_page.dart:79:74 • dead_null_aware_expression
+   info • Unnecessary braces in a string interpolation • lib/feature/common/presentation/pages/map_filter_page/map_filter_page.dart:129:77 • unnecessary_brace_in_string_interps
+   info • Missing type annotation • lib/feature/common/presentation/pages/map_filter_page/widget/w_categories_map_filter.dart:22:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/common/presentation/pages/map_filter_page/widget/w_categories_map_filter.dart:26:24 • unnecessary_this
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/common/presentation/pages/map_filter_page/widget/w_categories_map_filter.dart:111:62 • unrelated_type_equality_checks
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/common/presentation/pages/map_filter_page/widget/w_cities_map_filter.dart:13:7 • use_key_in_widget_constructors
+   info • Missing type annotation • lib/feature/common/presentation/pages/map_filter_page/widget/w_cities_map_filter.dart:14:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/common/presentation/pages/map_filter_page/widget/w_cities_map_filter.dart:18:24 • unnecessary_this
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:52:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:53:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:54:11 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:56:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:57:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:59:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/common/presentation/pages/notification_details/notifications_detail.dart:61:7 • curly_braces_in_flow_control_structures
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/common/presentation/widget/app_button.dart:64:33 • deprecated_member_use
+   info • 'textScaleFactor' is deprecated and shouldn't be used. Use textScaler instead. Use of textScaleFactor was deprecated in preparation for the upcoming nonlinear text scaling support. This feature was deprecated after v3.12.0-2.0.pre • lib/feature/common/presentation/widget/app_button.dart:97:25 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/common/presentation/widget/app_cached_network_image.dart:32:46 • deprecated_member_use
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/common/presentation/widget/app_cached_network_image.dart:48:65 • dead_null_aware_expression
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/presentation/widget/app_chip_button.dart:8:3 • prefer_const_constructors_in_immutables
+   info • Missing type annotation • lib/feature/common/presentation/widget/app_search_form.dart:211:3 • strict_top_level_inference
+   info • Don't use 'BuildContext's across async gaps • lib/feature/common/presentation/widget/app_search_form.dart:246:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/common/presentation/widget/app_search_form.dart:247:21 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/common/presentation/widget/app_search_form.dart:253:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/common/presentation/widget/app_search_form.dart:254:21 • use_build_context_synchronously
+warning • This class (or a class that this class inherits from) is marked as '@immutable', but one or more of its instance fields aren't final: AppTextFormField.validator, AppTextFormField.obscureText • lib/feature/common/presentation/widget/app_text_form_field.dart:13:7 • must_be_immutable
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/common/presentation/widget/app_text_form_field.dart:97:42 • dead_null_aware_expression
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/common/presentation/widget/footer.dart:12:7 • use_key_in_widget_constructors
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/common/presentation/widget/vacancy_item.dart:214:27 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/common/presentation/widget/vacancy_item.dart:234:35 • sort_child_properties_last
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/common/presentation/widget/vacancy_item.dart:240:35 • sort_child_properties_last
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/common/presentation/widget/w_decorated_box.dart:29:38 • deprecated_member_use
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/common/presentation/widget/w_locaion_view.dart:14:3 • prefer_const_constructors_in_immutables
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_photo_view.dart:14:3 • strict_top_level_inference
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/common/presentation/widget/w_photo_view.dart:45:44 • deprecated_member_use
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/common/presentation/widget/w_refresh_indicator.dart:18:7 • sort_child_properties_last
+   info • Parameter 'key' could be a super parameter • lib/feature/common/presentation/widget/w_smart_text.dart:14:9 • use_super_parameters
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:21:1 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:31:1 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:41:1 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:51:1 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:62:1 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/common/presentation/widget/w_toasttifications.dart:143:1 • strict_top_level_inference
+   info • Don't use 'BuildContext's across async gaps • lib/feature/main/presentation/pages/main_page/main_page.dart:83:7 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/main/presentation/pages/main_page/main_page.dart:86:7 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/main/presentation/pages/main_page/main_page.dart:96:11 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/main/presentation/pages/main_page/main_page.dart:97:9 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/main/presentation/pages/main_page/main_page.dart:99:7 • use_build_context_synchronously
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/main/presentation/pages/main_page/widget/animated_menu_container.dart:86:9 • use_key_in_widget_constructors
+   info • 'translate' is deprecated and shouldn't be used. Use translateByVector3, translateByVector4, or translateByDouble instead • lib/feature/main/presentation/pages/main_page/widget/animated_menu_container.dart:97:13 • deprecated_member_use
+   info • 'scale' is deprecated and shouldn't be used. Use scaleByVector3, scaleByVector4, or scaleByDouble instead • lib/feature/main/presentation/pages/main_page/widget/animated_menu_container.dart:98:13 • deprecated_member_use
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/main/presentation/pages/main_page/widget/fade_indexed_stack.dart:8:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/feature/main/presentation/pages/main_page/widget/fade_indexed_stack.dart:15:3 • library_private_types_in_public_api
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/main/presentation/pages/main_page/widget/notification_icon_button.dart:30:35 • deprecated_member_use
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/main/presentation/pages/main_page/widget/notifications_dialog_widget.dart:192:44 • dead_null_aware_expression
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/main/presentation/pages/main_page/widget/scale_indexed_stack.dart:10:9 • use_key_in_widget_constructors
+   info • Invalid use of a private type in a public API • lib/feature/main/presentation/pages/main_page/widget/scale_indexed_stack.dart:17:3 • library_private_types_in_public_api
+   info • The imported package 'latlong2' isn't a dependency of the importing package • lib/feature/map/data/datasource/location_info_datasource.dart:4:8 • depend_on_referenced_packages
+   info • The imported package 'latlong2' isn't a dependency of the importing package • lib/feature/map/data/repository/location_info_repository_impl.dart:2:8 • depend_on_referenced_packages
+   info • Import of a library in the 'lib/src' directory of another package • lib/feature/map/data/repository/yandex_repository_impl.dart:5:8 • implementation_imports
+   info • The imported package 'latlong2' isn't a dependency of the importing package • lib/feature/map/domain/repository/location_info.dart:2:8 • depend_on_referenced_packages
+   info • The imported package 'flutter_map' isn't a dependency of the importing package • lib/feature/map/presentation/cubits/location_cubit/location_info_cubit.dart:3:8 • depend_on_referenced_packages
+   info • The imported package 'flutter_map_marker_popup' isn't a dependency of the importing package • lib/feature/map/presentation/cubits/location_cubit/location_info_cubit.dart:4:8 • depend_on_referenced_packages
+   info • The imported package 'latlong2' isn't a dependency of the importing package • lib/feature/map/presentation/cubits/location_cubit/location_info_cubit.dart:6:8 • depend_on_referenced_packages
+   info • Missing type annotation • lib/feature/map/presentation/cubits/map_view_cubit/map_view_cubit.dart:258:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/map/presentation/cubits/map_view_cubit/map_view_cubit.dart:343:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/map/presentation/cubits/map_view_cubit/map_view_cubit.dart:426:3 • strict_top_level_inference
+warning • This class (or a class that this class inherits from) is marked as '@immutable', but one or more of its instance fields aren't final: MapPage._collection • lib/feature/map/presentation/pages/map_view_page/map_page.dart:23:7 • must_be_immutable
+warning • The value of the field '_collection' isn't used • lib/feature/map/presentation/pages/map_view_page/map_page.dart:27:39 • unused_field
+   info • Missing type annotation • lib/feature/map/presentation/pages/map_view_page/map_page.dart:29:3 • strict_top_level_inference
+warning • Unused import: 'package:animate_do/animate_do.dart' • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:1:8 • unused_import
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:3:8 • unnecessary_import
+warning • Unused import: 'package:flutter/foundation.dart' • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:4:8 • unused_import
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:24:3 • prefer_const_constructors_in_immutables
+   info • Don't use 'BuildContext's across async gaps • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:100:21 • use_build_context_synchronously
+   info • Missing type annotation • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:117:3 • strict_top_level_inference
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/map/presentation/pages/map_view_page/widget/w_map_app_bar.dart:181:68 • unrelated_type_equality_checks
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/map/presentation/pages/map_view_page/widget/w_transparent_circle_point.dart:9:59 • deprecated_member_use
+   info • Invalid use of a private type in a public API • lib/feature/map/presentation/pages/w_location_view/w_locatio_view.dart:13:3 • library_private_types_in_public_api
+   info • The private field _placemarks could be 'final' • lib/feature/map/presentation/pages/w_location_view/w_locatio_view.dart:18:28 • prefer_final_fields
+warning • The value of the field '_placemarks' isn't used • lib/feature/map/presentation/pages/w_location_view/w_locatio_view.dart:18:28 • unused_field
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:134:62 • deprecated_member_use
+   info • Don't use 'BuildContext's across async gaps • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:160:41 • use_build_context_synchronously
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:219:68 • deprecated_member_use
+   info • Missing type annotation • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:254:3 • strict_top_level_inference
+   info • Unnecessary use of string interpolation • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:334:43 • unnecessary_string_interpolations
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/map/presentation/pages/yandex_map_page/yandex_map_page.dart:389:40 • deprecated_member_use
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:20:3 • prefer_const_constructors_in_immutables
+warning • The value of the field '_userPlaceMarkMapObject' isn't used • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:31:23 • unused_field
+warning • The value of the local variable 'userPoint' isn't used • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:51:13 • unused_local_variable
+   info • Missing type annotation • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:105:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:143:3 • strict_top_level_inference
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:171:42 • deprecated_member_use
+   info • The 'child' argument should be last in widget constructor invocations • lib/feature/map/presentation/pages/yandex_map_view/yandex_map_view_page.dart:345:15 • sort_child_properties_last
+   info • Unnecessary use of multiple underscores • lib/feature/messages/presentation/cubits/chat_cubit/chat_cubit.dart:180:20 • unnecessary_underscores
+   info • Missing type annotation • lib/feature/messages/presentation/cubits/chat_cubit/chat_cubit.dart:191:3 • strict_top_level_inference
+   info • The import of 'package:skeletonizer/skeletonizer.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/feature/messages/presentation/pages/chat/widget/chat_header.dart:6:8 • unnecessary_import
+   info • Unnecessary use of '??' with 'null' • lib/feature/messages/presentation/pages/chat/widget/message_bubble.dart:110:9 • unnecessary_null_in_if_null_operators
+   info • The local variable '_currentScroll' starts with an underscore • lib/feature/messages/presentation/pages/messages_page/messages_page.dart:49:11 • no_leading_underscores_for_local_identifiers
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/messages/presentation/pages/messages_page/widgets/messages_loading.dart:36:7 • use_key_in_widget_constructors
+warning • The receiver can't be 'null' because of short-circuiting, so the null-aware operator '?.' can't be used • lib/feature/onboarding/presentation/pages/splash_page/splash_page.dart:57:46 • invalid_null_aware_operator
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/others_profile/presentation/pages/others_profile_page/others_profile_page.dart:29:3 • prefer_const_constructors_in_immutables
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/others_profile/presentation/pages/others_profile_page/others_profile_page.dart:122:59 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/others_profile/presentation/pages/others_profile_page/others_profile_page.dart:132:62 • dead_null_aware_expression
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_feedback_item.dart:41:21 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_feedback_item.dart:60:13 • unnecessary_string_interpolations
+   info • Missing type annotation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_review_modal_button.dart:30:3 • strict_top_level_inference
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_tab_bar.dart:22:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_tab_bar.dart:83:29 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_user_info.dart:36:14 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_user_info.dart:66:33 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_user_info.dart:134:31 • unnecessary_string_interpolations
+   info • Unnecessary use of string interpolation • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_user_info.dart:151:31 • unnecessary_string_interpolations
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/others_profile/presentation/pages/others_profile_page/widget/w_user_info.dart:209:68 • deprecated_member_use
+   info • Unnecessary braces in a string interpolation • lib/feature/performers_view/data/datasource/task_request_datasource.dart:71:25 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/feature/performers_view/data/datasource/task_request_datasource.dart:98:25 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/feature/performers_view/data/datasource/task_request_datasource.dart:125:25 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/feature/performers_view/data/datasource/task_request_datasource.dart:151:47 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/feature/performers_view/data/datasource/task_request_datasource.dart:175:47 • unnecessary_brace_in_string_interps
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/performers_view/presentation/pages/task_performers/task_performers_page.dart:66:52 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/performers_view/presentation/pages/task_performers/widget/task_apply_item.dart:74:74 • dead_null_aware_expression
+   info • Assignment to a variable of type 'void' • lib/feature/profile/data/datasource/my_services_datasource.dart:31:22 • void_checks
+   info • Assignment to a variable of type 'void' • lib/feature/profile/data/datasource/my_tasks_datasource.dart:31:22 • void_checks
+   info • Unnecessary braces in a string interpolation • lib/feature/profile/data/datasource/payment_datasource.dart:59:31 • unnecessary_brace_in_string_interps
+   info • Assignment to a variable of type 'void' • lib/feature/profile/data/repository/my_vacancies_repository_impl.dart:28:22 • void_checks
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:freezed_annotation/freezed_annotation.dart' • lib/feature/profile/presentation/cubits/favorites_cubit/favorites_cubit.dart:2:8 • unnecessary_import
+   info • Missing type annotation • lib/feature/profile/presentation/cubits/my_tasks_cubit/my_tasks_cubit.dart:257:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/profile/presentation/cubits/my_tasks_cubit/my_tasks_cubit.dart:265:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/profile/presentation/cubits/my_vacancies_cubit/my_vacancies_cubit.dart:252:3 • strict_top_level_inference
+   info • The private field _portfolios could be 'final' • lib/feature/profile/presentation/pages/edit_profile/edit_profile.dart:51:14 • prefer_final_fields
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale?') • lib/feature/profile/presentation/pages/edit_profile/edit_profile.dart:97:73 • unrelated_type_equality_checks
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/profile/presentation/pages/edit_profile/edit_profile.dart:219:71 • unrelated_type_equality_checks
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/edit_profile/edit_profile.dart:347:61 • prefer_interpolation_to_compose_strings
+warning • This class (or a class that this class inherits from) is marked as '@immutable', but one or more of its instance fields aren't final: WCategoryPicker.categories • lib/feature/profile/presentation/pages/edit_profile/widgets/w_category_picker.dart:14:7 • must_be_immutable
+   info • Missing type annotation • lib/feature/profile/presentation/pages/edit_profile/widgets/w_category_picker.dart:19:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/profile/presentation/pages/edit_profile/widgets/w_category_picker.dart:33:15 • unnecessary_this
+   info • Missing type annotation • lib/feature/profile/presentation/pages/edit_profile/widgets/w_city_picker.dart:18:3 • strict_top_level_inference
+   info • Missing type annotation • lib/feature/profile/presentation/pages/edit_profile/widgets/w_gender_picker.dart:16:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/profile/presentation/pages/edit_profile/widgets/w_gender_picker.dart:25:15 • unnecessary_this
+   info • Missing type annotation • lib/feature/profile/presentation/pages/edit_profile/widgets/w_user_avatar.dart:111:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/profile/presentation/pages/edit_profile/widgets/w_user_avatar.dart:121:13 • unnecessary_this
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/profile/presentation/pages/edit_profile/widgets/w_user_info.dart:134:54 • dead_null_aware_expression
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:29:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:35:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:39:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:46:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:55:22 • prefer_interpolation_to_compose_strings
+   info • Use 'isNotEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:61:47 • prefer_is_empty
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_detail.dart:66:70 • unrelated_type_equality_checks
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_owner_statistics.dart:20:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary use of string interpolation • lib/feature/profile/presentation/pages/info/profile_info/widget/profile_owner_statistics.dart:56:25 • unnecessary_string_interpolations
+   info • Unnecessary cascade expression • lib/feature/profile/presentation/pages/payment_page/payment_page.dart:29:9 • avoid_single_cascade_in_expression_statements
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:88:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:91:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:93:37 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:120:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:123:35 • use_build_context_synchronously
+   info • Don't use 'BuildContext's across async gaps • lib/feature/profile/presentation/pages/profile_page.dart:125:37 • use_build_context_synchronously
+   info • Unnecessary use of string interpolation • lib/feature/profile/presentation/pages/profile_page.dart:207:57 • unnecessary_string_interpolations
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/profile/presentation/pages/services/profile_services.dart:15:3 • prefer_const_constructors_in_immutables
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_service_applies.dart:41:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_service_applies.dart:43:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/services/widget/my_service_applies.dart:43:46 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_service_applies.dart:44:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_services.dart:80:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_services.dart:82:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/services/widget/my_services.dart:82:39 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_services.dart:83:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/services/widget/my_services.dart:104:21 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_task_applies.dart:45:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_task_applies.dart:48:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/tasks/widget/my_task_applies.dart:48:42 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_task_applies.dart:49:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_tasks.dart:81:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_tasks.dart:84:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/tasks/widget/my_tasks.dart:84:36 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/tasks/widget/my_tasks.dart:85:9 • curly_braces_in_flow_control_structures
+   info • Unnecessary cascade expression • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:60:13 • avoid_single_cascade_in_expression_statements
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:73:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:75:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:76:11 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:77:9 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:90:13 • curly_braces_in_flow_control_structures
+   info • Missing type annotation • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancies.dart:137:3 • strict_top_level_inference
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancy_applies.dart:43:7 • curly_braces_in_flow_control_structures
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancy_applies.dart:45:7 • curly_braces_in_flow_control_structures
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancy_applies.dart:46:11 • prefer_is_empty
+   info • Statements in an if should be enclosed in a block • lib/feature/profile/presentation/pages/vacancies/widget/my_vacancy_applies.dart:47:9 • curly_braces_in_flow_control_structures
+   info • Missing type annotation • lib/feature/profile/presentation/widgets/w_delete_cupertino_dialog.dart:10:3 • strict_top_level_inference
+   info • Use interpolation to compose strings and values • lib/feature/services/data/datasource/service_datasource.dart:239:39 • prefer_interpolation_to_compose_strings
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/feature/services/data/models/service.dart:81:11 • prefer_if_null_operators
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/feature/services/data/models/service.dart:83:15 • prefer_if_null_operators
+   info • Parameters ''id', 'status', 'title', 'createdAt', 'description', 'shortDescription', 'customer', 'phoneNumber', 'performer', 'viewCount', 'city', 'moderatorNote', 'categories', 'images', 'price', 'negotiable', 'titleUz', 'titleRu', 'descriptionUz', 'descriptionRu', 'shortDescriptionUz', and 'shortDescriptionRu'' could be super parameters • lib/feature/services/data/models/service.dart:147:3 • use_super_parameters
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:69:55 • dead_null_aware_expression
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:83:52 • dead_null_aware_expression
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:103:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:106:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:110:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:114:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:171:22 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:174:15 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:178:15 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/services/presentation/cubits/create_service/create_service_cubit.dart:182:15 • prefer_interpolation_to_compose_strings
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/services/presentation/pages/create_service_page/widget/w_image_picker.dart:44:44 • deprecated_member_use
+   info • Use 'isEmpty' instead of 'length' to test whether the collection is empty • lib/feature/services/presentation/pages/create_service_page/widget/w_image_picker.dart:84:26 • prefer_is_empty
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/feature/services/presentation/pages/create_service_page/widget/w_image_picker.dart:93:52 • deprecated_member_use
+   info • Use 'isNotEmpty' instead of 'length' to test whether the collection is empty • lib/feature/services/presentation/pages/create_service_page/widget/w_image_picker.dart:97:29 • prefer_is_empty
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/services/presentation/pages/services_page/services_page.dart:28:3 • prefer_const_constructors_in_immutables
+   info • Use interpolation to compose strings and values • lib/feature/tasks/data/datasource/task_datasource.dart:240:39 • prefer_interpolation_to_compose_strings
+   info • Use the null-aware operator '?.' rather than an explicit 'null' comparison • lib/feature/tasks/data/models/task_model.dart:256:14 • prefer_null_aware_operators
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:113:13 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:116:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:121:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:126:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:188:13 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:191:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:196:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:201:19 • prefer_interpolation_to_compose_strings
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:251:28 • dead_null_aware_expression
+   info • Unnecessary use of string interpolation • lib/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart:261:15 • unnecessary_string_interpolations
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/tasks/presentation/pages/create_task_page/create_task_page.dart:37:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/tasks/presentation/pages/tasks_page/tasks_page.dart:28:3 • prefer_const_constructors_in_immutables
+warning • The value of the field '_vacancyFormRepository' isn't used • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:31:31 • unused_field
+   info • Missing type annotation • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:67:3 • strict_top_level_inference
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:139:13 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:142:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:147:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:152:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:214:13 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:217:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:222:19 • prefer_interpolation_to_compose_strings
+   info • Use interpolation to compose strings and values • lib/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart:227:19 • prefer_interpolation_to_compose_strings
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/vacancies/presentation/pages/create_vacancy_page/create_vacancy_page.dart:43:3 • prefer_const_constructors_in_immutables
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/vacancies/presentation/pages/create_vacancy_page/create_vacancy_page.dart:117:58 • unrelated_type_equality_checks
+   info • Unnecessary braces in a string interpolation • lib/feature/vacancies/presentation/pages/create_vacancy_page/widget/generate_vacancy.dart:161:34 • unnecessary_brace_in_string_interps
+   info • Unnecessary braces in a string interpolation • lib/feature/vacancies/presentation/pages/create_vacancy_page/widget/generate_vacancy.dart:161:51 • unnecessary_brace_in_string_interps
+warning • The left operand can't be null, so the right operand is never executed • lib/feature/vacancies/presentation/pages/create_vacancy_page/widget/vacancy_employee_type.dart:87:47 • dead_null_aware_expression
+warning • This class (or a class that this class inherits from) is marked as '@immutable', but one or more of its instance fields aren't final: VacancyOperationModes.operationModes • lib/feature/vacancies/presentation/pages/create_vacancy_page/widget/vacancy_operation_modes.dart:12:7 • must_be_immutable
+   info • The import of 'package:flutter/cupertino.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' • lib/feature/vacancies/presentation/pages/filter_form/filter_form.dart:2:8 • unnecessary_import
+   info • Invalid use of a private type in a public API • lib/feature/vacancies/presentation/pages/filter_form/filter_form.dart:44:3 • library_private_types_in_public_api
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/feature/vacancies/presentation/pages/filter_form/widget/w_categories_list.dart:19:3 • prefer_const_constructors_in_immutables
+   info • Missing type annotation • lib/feature/vacancies/presentation/pages/filter_form/widget/w_categories_list.dart:21:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/vacancies/presentation/pages/filter_form/widget/w_categories_list.dart:28:24 • unnecessary_this
+   info • The type of the right operand ('String') isn't a subtype or a supertype of the left operand ('Locale') • lib/feature/vacancies/presentation/pages/filter_form/widget/w_categories_list.dart:98:66 • unrelated_type_equality_checks
+   info • Missing type annotation • lib/feature/vacancies/presentation/pages/filter_form/widget/w_cities_list.dart:21:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/vacancies/presentation/pages/filter_form/widget/w_cities_list.dart:28:24 • unnecessary_this
+   info • Missing type annotation • lib/feature/vacancies/presentation/pages/filter_form/widget/w_employment_type_list.dart:22:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/vacancies/presentation/pages/filter_form/widget/w_employment_type_list.dart:29:24 • unnecessary_this
+   info • Missing type annotation • lib/feature/vacancies/presentation/pages/filter_form/widget/w_salary_dialog.dart:28:3 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/feature/vacancies/presentation/pages/filter_form/widget/w_salary_dialog.dart:35:24 • unnecessary_this
+   info • Constructors for public widgets should have a named 'key' parameter • lib/feature/vacancies/presentation/pages/vacancies_page/vacancies_page.dart:26:7 • use_key_in_widget_constructors
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/ad_pricable.dart:6:3 • prefer_const_constructors_in_immutables
+   info • Parameters ''id', 'status', 'title', 'createdAt', 'description', 'shortDescription', 'customer', 'phoneNumber', 'performer', 'viewCount', 'city', 'moderatorNote', 'categories', 'images', 'negotiable', 'titleUz', 'titleRu', 'descriptionUz', 'descriptionRu', 'shortDescriptionUz', and 'shortDescriptionRu'' could be super parameters • lib/models/ad_pricable.dart:6:3 • use_super_parameters
+   info • Missing type annotation • lib/models/ad_pricable.dart:7:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:8:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:9:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:10:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:11:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:12:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:13:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:14:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:15:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:16:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:17:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:18:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:19:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:20:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:21:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/ad_pricable.dart:22:5 • strict_top_level_inference
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/ad_request.dart:12:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/auth.dart:12:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/category_translation.dart:8:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary 'this.' qualifier • lib/models/category_translation.dart:18:7 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/category_translation.dart:18:25 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/category_translation.dart:18:51 • unnecessary_this
+   info • Unnecessary 'new' keyword • lib/models/comments.dart:19:39 • unnecessary_new
+   info • Unnecessary constructor invocation • lib/models/comments.dart:19:39 • prefer_collection_literals
+   info • Unnecessary 'this.' qualifier • lib/models/comments.dart:20:22 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/comments.dart:21:18 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/comments.dart:22:20 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/comments.dart:23:21 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/comments.dart:24:20 • unnecessary_this
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/feedback.dart:22:3 • prefer_const_constructors_in_immutables
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/models/feedback.dart:58:13 • prefer_if_null_operators
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/models/feedback.dart:59:16 • prefer_if_null_operators
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/models/feedback.dart:60:16 • prefer_if_null_operators
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/file.dart:13:3 • prefer_const_constructors_in_immutables
+   info • The member 'props' overrides an inherited member but isn't annotated with '@override' • lib/models/file.dart:16:20 • annotate_overrides
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/image.dart:10:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/message.dart:23:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/message_record.dart:18:3 • prefer_const_constructors_in_immutables
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/notification.dart:15:3 • prefer_const_constructors_in_immutables
+   info • Unnecessary use of '??' with 'null' • lib/models/payment_transaction.dart:26:40 • unnecessary_null_in_if_null_operators
+   info • Unnecessary use of '??' with 'null' • lib/models/payment_transaction.dart:27:46 • unnecessary_null_in_if_null_operators
+   info • Unnecessary 'new' keyword • lib/models/posts.dart:17:39 • unnecessary_new
+   info • Unnecessary constructor invocation • lib/models/posts.dart:17:39 • prefer_collection_literals
+   info • Unnecessary 'this.' qualifier • lib/models/posts.dart:18:22 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/posts.dart:19:18 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/posts.dart:20:21 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/posts.dart:21:20 • unnecessary_this
+   info • Parameters ''id', 'status', 'title', 'createdAt', 'description', 'shortDescription', 'customer', 'phoneNumber', 'performer', 'viewCount', 'city', 'moderatorNote', 'categories', 'images', 'price', and 'negotiable'' could be super parameters • lib/models/service.dart:15:3 • use_super_parameters
+   info • Missing type annotation • lib/models/service.dart:16:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:17:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:18:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:19:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:20:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:21:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:22:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:23:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:24:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:25:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:26:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:27:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:28:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:29:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:30:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/service.dart:31:5 • strict_top_level_inference
+   info • Parameters ''id', 'status', 'title', 'description', 'categories', 'customer', 'phoneNumber', 'performer', 'price', 'viewCount', 'city', 'images', 'shortDescription', 'negotiable', 'moderatorNote', and 'createdAt'' could be super parameters • lib/models/task.dart:22:3 • use_super_parameters
+   info • Missing type annotation • lib/models/task.dart:23:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/task.dart:24:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/task.dart:25:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/task.dart:26:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/task.dart:27:5 • strict_top_level_inference
+   info • Parameters ''id', 'performer', 'status', 'message', and 'createdAt'' could be super parameters • lib/models/task_request.dart:11:3 • use_super_parameters
+   info • Missing type annotation • lib/models/task_request.dart:12:14 • strict_top_level_inference
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/models/task_request.dart:45:16 • prefer_if_null_operators
+   info • Unnecessary 'new' keyword • lib/models/todos.dart:17:39 • unnecessary_new
+   info • Unnecessary constructor invocation • lib/models/todos.dart:17:39 • prefer_collection_literals
+   info • Unnecessary 'this.' qualifier • lib/models/todos.dart:18:22 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/todos.dart:19:18 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/todos.dart:20:21 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/todos.dart:21:25 • unnecessary_this
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/user.dart:43:3 • prefer_const_constructors_in_immutables
+   info • Field overrides a field inherited from 'Ad' • lib/models/vacancy.dart:13:15 • overridden_fields
+   info • The member 'negotiable' overrides an inherited member but isn't annotated with '@override' • lib/models/vacancy.dart:13:15 • annotate_overrides
+   info • Constructors in '@immutable' classes should be declared as 'const' • lib/models/vacancy.dart:31:3 • prefer_const_constructors_in_immutables
+   info • Parameters ''id', 'status', 'title', 'createdAt', 'description', 'shortDescription', 'customer', 'phoneNumber', 'performer', 'viewCount', 'city', 'moderatorNote', 'categories', 'titleUz', 'titleRu', 'descriptionUz', 'descriptionRu', 'shortDescriptionUz', 'shortDescriptionRu', and 'images'' could be super parameters • lib/models/vacancy.dart:31:3 • use_super_parameters
+   info • Missing type annotation • lib/models/vacancy.dart:32:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:33:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:34:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:35:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:36:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:37:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:38:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:39:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:40:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:41:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:42:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:43:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:44:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:45:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:46:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:47:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:48:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:49:5 • strict_top_level_inference
+   info • Missing type annotation • lib/models/vacancy.dart:50:5 • strict_top_level_inference
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:154:23 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:156:27 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:157:27 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:158:39 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:159:39 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:160:49 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:161:49 • unnecessary_this
+   info • Unnecessary 'this.' qualifier • lib/models/vacancy.dart:162:33 • unnecessary_this
+   info • Parameters ''id', 'performer', 'status', 'message', and 'createdAt'' could be super parameters • lib/models/vacancy_request.dart:11:3 • use_super_parameters
+   info • Missing type annotation • lib/models/vacancy_request.dart:12:14 • strict_top_level_inference
+   info • Use the '??' operator rather than '?:' when testing for 'null' • lib/models/vacancy_request.dart:29:16 • prefer_if_null_operators
+
+447 issues found. (ran in 34.9s)

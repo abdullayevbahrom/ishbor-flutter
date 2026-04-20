@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "307755855710",
+    "project_id": "ishbor-87f35",
+    "storage_bucket": "ishbor-87f35.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307755855710:android:9de1777aae48b74fa329cf",
+        "android_client_info": {
+          "package_name": "com.hr.top.app.uz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGladqHitNvIEE1vFJuAsOPAirZ4aUKJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:307755855710:android:362b63177cdc75dea329cf",
+        "android_client_info": {
+          "package_name": "uz.ishbor.app.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGladqHitNvIEE1vFJuAsOPAirZ4aUKJc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

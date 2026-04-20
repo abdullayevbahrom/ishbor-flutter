@@ -1,0 +1,43 @@
+abstract class Routes {
+  static const String splash = '/splash';
+  static const String main = "/main";
+  static const String vacancyView = "/vacancyView";
+  static const String profileInfo = '/profileInfo';
+  static const String editInfo = '/editInfo';
+  static const String profileVacancies = '/profileVacancies';
+  static const String profileServices = '/profileServices';
+  static const String profileTasks = '/profileTasks';
+  static const String profileMessages = '/profileMessages';
+  static const String chat = '/chat';
+  static const String filterForm = '/filterForm';
+  static const String map = '/map';
+  static const String serviceView = '/serviceView';
+  static const String taskView = '/taskView';
+  static const String createVacancy = '/createVacancy';
+  static const String createTask = '/createTask';
+  static const String createService = '/createService';
+  static const String othersProfile = '/othersProfile';
+  static const String restorePassword = '/restorePassword';
+  static const String notificationDetails = '/notificationDetails';
+  static const String mapFilter = '/mapFilter';
+  static const String register = '/register';
+  static const String yandexMap = '/yandex-map';
+  static const String otpPage = '/otp-page';
+  static const String yandexMapView = '/yandex-map-view';
+  static const String expandedView = '/expanded-view';
+  static const String myFavorites = '/my-favorites';
+  static const String vacancy_view = "/vacancy-view";
+  static const String service_view = "/service-view";
+  static const String task_view = "/task-view";
+  static const String vacancyForm = "/vacancy-form";
+  static const String serviceForm = "/service-form";
+  static const String taskForm = "/task-form";
+  static const String payment = "/payment";
+  static const String task_performers = "/task-performers";
+  static const String edit_profile = "/edit-profile";
+  static const String messages = "/messages";
+  static const String categoriesPage = '/categories-page';
+  static const String newVersion='/new-version';
+  static const String wGenerateVacancy='/generate_vacancy';
+
+}

@@ -1,0 +1,53 @@
+import 'ad.dart';
+
+abstract class AdPricable extends Ad {
+  final double? price;
+
+  AdPricable({
+    id,
+    status,
+    title,
+    createdAt,
+    description,
+    shortDescription,
+    customer,
+    phoneNumber,
+    performer,
+    viewCount,
+    city,
+    moderatorNote,
+    categories,
+    images,
+    negotiable,
+    isNeedLiftUp,
+    this.price,
+    titleUz,
+    titleRu,
+    descriptionUz,
+    descriptionRu,
+    shortDescriptionUz,
+    shortDescriptionRu,
+  }) : super(
+         id: id,
+         status: status,
+         title: title,
+         createdAt: createdAt,
+         categories: categories,
+         customer: customer,
+         phoneNumber: phoneNumber,
+         viewCount: viewCount,
+         city: city,
+         description: description,
+         images: images,
+         moderatorNote: moderatorNote,
+         negotiable: negotiable,
+         performer: performer,
+         shortDescription: shortDescription,
+         titleUz: titleUz,
+         titleRu: titleRu,
+         descriptionUz: descriptionUz,
+         descriptionRu: descriptionRu,
+         shortDescriptionUz: shortDescriptionUz,
+         shortDescriptionRu: shortDescriptionRu,
+       );
+}
