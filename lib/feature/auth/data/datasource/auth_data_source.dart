@@ -45,7 +45,19 @@ class AuthDataSourceImpl extends AuthDatasource {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['response']));
+          final data = response.data as Map<String, dynamic>;
+          final fallback = data.values.isNotEmpty
+              ? data.values.first.toString()
+              : 'Unknown error';
+          return Left(
+            Failure(
+              message:
+                  data['message'] ??
+                  data['error'] ??
+                  data['phoneNumber'] ??
+                  fallback,
+            ),
+          );
         } else {
           return Left(Failure(message: response.data));
         }

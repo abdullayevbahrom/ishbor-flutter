@@ -35,7 +35,6 @@ class TaskViewCubit extends Cubit<TaskViewState> {
   fetchData(int taskId) {
     reset();
     fetchTaskById(taskId);
-    fetchSimilarTasks();
     //fetchListRequestsTask();
   }
 
@@ -53,6 +52,7 @@ class TaskViewCubit extends Cubit<TaskViewState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded, task: r));
+        fetchSimilarTasks();
         if (r.hasUserRequest ?? false) {
           fetchOwnTaskRequest();
         }

@@ -42,6 +42,7 @@ class DioClient {
       };
     }
 
+    dio.interceptors.add(DioInterceptors(_storageService, dio));
     dio.interceptors.add(
       PrettyDioLogger(
         requestHeader: true,
@@ -54,7 +55,6 @@ class DioClient {
         enabled: kDebugMode,
       ),
     ); // Logging
-    dio.interceptors.add(DioInterceptors(_storageService));
 
     return dio;
   }

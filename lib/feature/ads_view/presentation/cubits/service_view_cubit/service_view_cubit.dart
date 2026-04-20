@@ -23,7 +23,6 @@ class ServiceViewCubit extends Cubit<ServiceViewState> {
   void fetchData(int serviceId) {
     reset();
     fetchServiceById(serviceId);
-    fetchSimilarServices();
   }
 
   void reset() {
@@ -42,6 +41,7 @@ class ServiceViewCubit extends Cubit<ServiceViewState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded, service: r));
+        fetchSimilarServices();
       },
     );
   }

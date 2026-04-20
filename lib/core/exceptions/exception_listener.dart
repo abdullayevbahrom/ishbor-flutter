@@ -27,8 +27,9 @@ class ExceptionListener {
     Map<String, dynamic>? requestHeaders,
     DioException? dioException, // 👈 Qo'shildi
   }) {
-   // if (isDebug) return;
+    // if (isDebug) return;
     if (botToken == null || botToken!.isEmpty) return;
+    if (!_shouldReport(dioException)) return;
 
     _send(
       stackTrace: stackTrace,
@@ -40,6 +41,13 @@ class ExceptionListener {
       requestHeaders: requestHeaders,
       dioException: dioException, // 👈 Qo'shildi
     );
+  }
+
+  bool _shouldReport(DioException? dioException) {
+    if (dioException == null) return true;
+    final statusCode = dioException.response?.statusCode;
+    if (statusCode == 404) return false;
+    return true;
   }
 
   Future<void> _send({

@@ -25,7 +25,7 @@ abstract class MessagesRepository {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, Message>> uploadFile({
+  Future<Either<Failure, void>> uploadFile({
     required int messageId,
     required String path,
   });

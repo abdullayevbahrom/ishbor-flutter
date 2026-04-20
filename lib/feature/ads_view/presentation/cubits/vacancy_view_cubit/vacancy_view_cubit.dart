@@ -24,7 +24,6 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
   void fetchData(int vacancyId) {
     reset();
     fetchVacancyById(vacancyId);
-    fetchSimilarVacancies();
   }
 
   void reset() {
@@ -42,6 +41,7 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded, vacancy: r));
+        fetchSimilarVacancies();
       },
     );
   }

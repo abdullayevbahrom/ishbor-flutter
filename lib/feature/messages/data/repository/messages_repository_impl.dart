@@ -90,7 +90,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
   }
 
   @override
-  Future<Either<Failure, Message>> uploadFile({
+  Future<Either<Failure, void>> uploadFile({
     required int messageId,
     required String path,
   }) async {

@@ -28,7 +28,7 @@ abstract class MessagesDataSource {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, Message>> uploadFile({
+  Future<Either<Failure, void>> uploadFile({
     required int messageId,
     required String path,
   });
@@ -157,7 +157,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   }
 
   @override
-  Future<Either<Failure, Message>> uploadFile({
+  Future<Either<Failure, void>> uploadFile({
     required int messageId,
     required String path,
   }) async {
@@ -177,8 +177,8 @@ class MessagesDataSourceImpl extends MessagesDataSource {
         data: data,
       );
 
-      if (response.statusCode == 204) {
-        return Right(Message.fromMap(response.data));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
