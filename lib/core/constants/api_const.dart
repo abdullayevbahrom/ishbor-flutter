@@ -135,8 +135,6 @@ sealed class ApiConstants {
 
   /// === AUTH endpoints ===
   static const String loginCheck = 'security/login_check';
-  static const String authLogin = 'security/connect/';
-  static const String authRegistration = 'v2/security/auth-registration';
   static const String register = 'security/registration';
   static const String verifyPhone = 'security/verify-phone';
   static const String forgotPassword = 'security/forgot-password';
