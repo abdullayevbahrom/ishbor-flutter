@@ -336,7 +336,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   Future<Either<Failure, void>> liftUpTaskById({required int taskId}) async {
     try {
       final response = await _dio.post(ApiConstants.liftUpTaskById(taskId));
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -385,7 +385,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   Future<Either<Failure, void>> deleteTaskById({required int taskId}) async {
     try {
       final response = await _dio.delete(ApiConstants.deleteTaskById(taskId));
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -407,7 +407,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   Future<Either<Failure, void>> toggleTaskById({required int taskId}) async {
     try {
       final response = await _dio.post(ApiConstants.toggleTaskFavorite(taskId));
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

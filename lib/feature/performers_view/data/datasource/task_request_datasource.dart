@@ -71,7 +71,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
         '/task-requests/${taskRequestId}/cancel-by-customer',
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -98,7 +98,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
         '/task-requests/${taskRequestId}/accept',
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -125,7 +125,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
         '/task-requests/${taskRequestId}/finish-by-customer',
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

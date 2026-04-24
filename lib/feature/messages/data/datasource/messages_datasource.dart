@@ -227,7 +227,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   Future<Either<Failure, void>> makeMessageRead(int messageId) async {
     try {
       final response = await _dio.post(ApiConstants.makeMessageRead(messageId));
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

@@ -457,7 +457,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
         ApiConstants.deleteVacancyById(vacancyId),
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -484,7 +484,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
         ApiConstants.liftUpVacancyById(vacancyId),
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -509,7 +509,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
         ApiConstants.toggleVacancyFavorite(vacancyId),
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

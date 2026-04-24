@@ -177,7 +177,7 @@ class UserDataSourceImpl extends UserDataSource {
         options: Options(headers: {'Accept-Language': locale}),
       );
 
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

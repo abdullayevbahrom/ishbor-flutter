@@ -367,7 +367,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       final response = await _dio.delete(
         ApiConstants.deleteServiceById(serviceId),
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -393,7 +393,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       final response = await _dio.post(
         ApiConstants.liftUpServiceById(serviceId),
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
@@ -419,7 +419,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       final response = await _dio.post(
         ApiConstants.toggleServiceFavorite(serviceId),
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {

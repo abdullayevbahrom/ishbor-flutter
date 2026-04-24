@@ -41,7 +41,7 @@ class AuthDataSourceImpl extends AuthDatasource {
         ApiConstants.sendCodeAgain,
         data: {'phoneNumber': phoneNumber},
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
