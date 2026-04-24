@@ -1,6 +1,6 @@
 class PaymentParams {
   final String provider;
-  final String amount;
+  final double amount;
 
   const PaymentParams({required this.provider, required this.amount});
 

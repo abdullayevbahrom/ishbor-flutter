@@ -183,9 +183,11 @@ class _WPaymentBodyState extends State<WPaymentBody> {
                                   context.read<PaymentCubit>().makePayment(
                                     PaymentParams(
                                       provider: makePaymentType(currentIndex),
-                                      amount: _amountController.text
-                                          .trim()
-                                          .replaceAll(" ", ''),
+                                      amount: double.parse(
+                                        _amountController.text
+                                            .trim()
+                                            .replaceAll(" ", ''),
+                                      ),
                                     ),
                                   );
                                 }
