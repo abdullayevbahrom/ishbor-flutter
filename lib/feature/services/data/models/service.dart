@@ -241,7 +241,7 @@ class ServiceModel extends AdPricable {
         data['address'] != null ? AddressModel.fromJson(data['address']) : null,
     images:
         List.from(
-          data['images'],
+          data['images'] ?? const [],
         ).map((img) => AppImage.fromMap(Map.from(img))).toList(),
     negotiable: data['negotiable'],
     price: data['price'],

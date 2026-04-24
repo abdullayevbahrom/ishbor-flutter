@@ -268,7 +268,7 @@ class TaskModel {
       secureDeal: json['secure_deal'],
       compensation: json['compensation'],
       images: List<AppImage>.from(
-        json['images'].map((x) => AppImage.fromMap(x)),
+        (json['images'] ?? const []).map((x) => AppImage.fromMap(x)),
       ),
       isNeedLiftUp: json['is_need_lift_up'],
       countClick: json['click_count'],
