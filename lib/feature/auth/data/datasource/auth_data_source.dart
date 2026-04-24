@@ -168,6 +168,7 @@ class AuthDataSourceImpl extends AuthDatasource {
     try {
       final response = await _dio.post(
         ApiConstants.loginCheck,
+        options: Options(contentType: Headers.formUrlEncodedContentType),
         data: {"_username": checkModel.name, "_password": checkModel.password},
       );
 
