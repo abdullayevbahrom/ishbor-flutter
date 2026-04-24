@@ -27,6 +27,10 @@ class DioClient {
       ),
     );
 
+    if (ApiConstants.apiHostHeader.isNotEmpty) {
+      dio.options.headers[HttpHeaders.hostHeader] = ApiConstants.apiHostHeader;
+    }
+
     if (Platform.isAndroid) {
       (dio.httpClientAdapter as IOHttpClientAdapter).createHttpClient = () {
         final client = HttpClient();

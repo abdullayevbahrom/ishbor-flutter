@@ -1,11 +1,29 @@
 sealed class ApiConstants {
   ApiConstants._();
 
+  static const bool _isProd = bool.fromEnvironment('dart.vm.product');
+
   /// === BASE URL endpoints ===
-  static const String baseUrl = 'https://api.ishbor.uz/';
+  static const String baseUrl = String.fromEnvironment(
+    'API_BASE_URL',
+    defaultValue:
+        _isProd
+            ? 'https://api.ishbor.uz/'
+            : 'http://host.docker.internal:8080/',
+  );
 
   ///  Websocket url
-  static const String wsUrl = 'wss://ws.ishbor.uz/';
+  static const String wsUrl = String.fromEnvironment(
+    'WS_BASE_URL',
+    defaultValue:
+        _isProd ? 'wss://ws.ishbor.uz' : 'ws://host.docker.internal:8081',
+  );
+
+  /// Optional host header for local Docker API routing.
+  static const String apiHostHeader = String.fromEnvironment(
+    'API_HOST_HEADER',
+    defaultValue: _isProd ? '' : 'test.api.ishbor.uz',
+  );
 
   /// === OPEN STREET endpoints ===
   static const String reverseLocation =
@@ -14,7 +32,7 @@ sealed class ApiConstants {
       "https://nominatim.openstreetmap.org/search";
 
   /// === ChatGPT endpoints ===
-  static const String chatGpt = "https://api.ishbor.uz/chatgpt";
+  static const String chatGpt = "chatgpt";
 
   /// === Common endpoints ===
   static const String similar = 'similar';
@@ -22,8 +40,7 @@ sealed class ApiConstants {
   /// === Notifications endpoints ===
   static const String notifications = 'notifications';
 
-  static String makeReadNotification(int id) =>
-      "$notifications/${id}/make-read";
+  static String makeReadNotification(int id) => "$notifications/$id/make-read";
 
   ///  === VACANCIES endpoints ===
   static const String vacancies = 'vacancies';
