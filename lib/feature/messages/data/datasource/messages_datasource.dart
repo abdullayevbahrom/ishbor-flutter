@@ -19,8 +19,9 @@ abstract class MessagesDataSource {
   });
 
   Future<Either<Failure, Message>> createMessage({
-    required int taskId,
-    required int receiverId,
+    required String receiverId,
+    required String adType,
+    required String adId,
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
@@ -47,13 +48,23 @@ class MessagesDataSourceImpl extends MessagesDataSource {
 
   @override
   Future<Either<Failure, Message>> createMessage({
-    required int taskId,
-    required int receiverId,
+    required String receiverId,
+    required String adType,
+    required String adId,
   }) async {
     try {
+      if (kDebugMode) {
+        debugPrint(
+          '[FIX][MESSAGE][create] receiverId=$receiverId adType=$adType adId=$adId',
+        );
+      }
       final response = await _dio.post(
-        ApiConstants.postMessage(),
-        data: {'task': taskId, 'receiver': receiverId},
+        ApiConstants.postMessage,
+        data: {
+          'receiver_id': receiverId,
+          'ad_type': adType,
+          'ad_id': adId,
+        },
       );
 
       if (response.statusCode == 200) {
@@ -67,6 +78,11 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
+      if (kDebugMode) {
+        debugPrint(
+          '[FIX][MESSAGE][create][error] receiverId=$receiverId adType=$adType adId=$adId message=${failure.message}',
+        );
+      }
       return Left(Failure(message: failure.message));
     } on Exception catch (e) {
       debugPrint(e.toString());
@@ -200,6 +216,11 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required SendMessageRequest sendMessage,
   }) async {
     try {
+      if (kDebugMode) {
+        debugPrint(
+          '[FIX][MESSAGE][record-create] receiverId=${sendMessage.receiverId} adType=${sendMessage.adType} adId=${sendMessage.adId}',
+        );
+      }
       final response = await _dio.post(
         ApiConstants.askQuestion,
         data: sendMessage.toJson(),
@@ -216,6 +237,11 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
+      if (kDebugMode) {
+        debugPrint(
+          '[FIX][MESSAGE][record-create][error] receiverId=${sendMessage.receiverId} adType=${sendMessage.adType} adId=${sendMessage.adId} message=${failure.message}',
+        );
+      }
       return Left(Failure(message: failure.message));
     } on Exception catch (e) {
       debugPrint(e.toString());

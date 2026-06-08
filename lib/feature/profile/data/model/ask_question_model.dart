@@ -1,35 +1,35 @@
 class SendMessageRequest {
-  final String receiver;
-  final int? service;
-  final int? vacancy;
-  final int? task;
+  final String receiverId;
+  final String adType;
+  final String adId;
   final String body;
+  final String? messageId;
 
   SendMessageRequest({
-    required this.receiver,
-    this.service,
+    required this.receiverId,
+    required this.adType,
+    required this.adId,
     required this.body,
-    this.vacancy,
-    this.task,
+    this.messageId,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'receiver': receiver,
-      if (service != null) 'service': service,
-      if (vacancy != null) 'vacancy': vacancy,
-      if (task != null) 'task': task,
+      'receiver_id': receiverId,
+      'ad_type': adType,
+      'ad_id': adId,
       'body': body,
+      if (messageId != null && messageId!.isNotEmpty) 'message_id': messageId,
     };
   }
 
   factory SendMessageRequest.fromJson(Map<String, dynamic> json) {
     return SendMessageRequest(
-      receiver: json['receiver']?.toString() ?? '',
-      service: int.tryParse('${json['service'] ?? ''}'),
-      vacancy: int.tryParse('${json['vacancy'] ?? ''}'),
-      task: int.tryParse('${json['task'] ?? ''}'),
+      receiverId: json['receiver_id']?.toString() ?? '',
+      adType: json['ad_type']?.toString() ?? '',
+      adId: json['ad_id']?.toString() ?? '',
       body: json['body']?.toString() ?? '',
+      messageId: json['message_id']?.toString(),
     );
   }
 }

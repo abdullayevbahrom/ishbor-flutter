@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
+import 'package:top_jobs/feature/profile/data/model/ask_question_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
 import 'package:top_jobs/models/image.dart';
@@ -111,5 +112,23 @@ void main() {
     expect(feedback.senderId, '019e88b7-b706-7caa-bb84-dd2f0ebec111');
     expect(feedback.message, 'Great service');
     expect(feedback.createdAt, isNotNull);
+  });
+
+  test('message request serializes ad contract fields', () {
+    final request = SendMessageRequest(
+      receiverId: '019e88b7-b706-7caa-bb84-dd2f0ebec222',
+      adType: 'task',
+      adId: '019e88b7-b706-7caa-bb84-dd2f0ebec999',
+      body: 'Hello',
+      messageId: '019e88b7-b706-7caa-bb84-dd2f0ebec777',
+    );
+
+    expect(request.toJson(), {
+      'receiver_id': '019e88b7-b706-7caa-bb84-dd2f0ebec222',
+      'ad_type': 'task',
+      'ad_id': '019e88b7-b706-7caa-bb84-dd2f0ebec999',
+      'body': 'Hello',
+      'message_id': '019e88b7-b706-7caa-bb84-dd2f0ebec777',
+    });
   });
 }

@@ -34,12 +34,14 @@ class MessagesRepositoryImpl extends MessagesRepository {
 
   @override
   Future<Either<Failure, Message>> createMessage({
-    required int taskId,
-    required int receiverId,
+    required String receiverId,
+    required String adType,
+    required String adId,
   }) async {
     final response = await _messagesDataSource.createMessage(
-      taskId: taskId,
       receiverId: receiverId,
+      adType: adType,
+      adId: adId,
     );
 
     return response.fold(
@@ -127,16 +129,15 @@ class MessagesRepositoryImpl extends MessagesRepository {
   }
 
   @override
-  Future<Either<Failure, void>> makeMessageRead(int messageId)async {
-    final response= await _messagesDataSource.makeMessageRead(messageId);
+  Future<Either<Failure, void>> makeMessageRead(int messageId) async {
+    final response = await _messagesDataSource.makeMessageRead(messageId);
     return response.fold(
-          (l) {
+      (l) {
         return Left(Failure(message: l.message));
       },
-          (r) {
+      (r) {
         return Right(r);
       },
     );
-
   }
 }

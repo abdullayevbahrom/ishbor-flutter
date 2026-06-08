@@ -159,12 +159,22 @@ class _WSendMessageUserState extends State<WSendMessageUser> {
                     child: AppButton(
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
+                          final adType =
+                              widget.vacancyId != null
+                                  ? 'vacancy'
+                                  : widget.serviceId != null
+                                  ? 'service'
+                                  : 'task';
+                          final adId =
+                              widget.vacancyId?.toString() ??
+                              widget.serviceId?.toString() ??
+                              widget.taskId?.toString() ??
+                              '';
                           context.read<AskQuestionCubit>().askQuestion(
                             SendMessageRequest(
-                              vacancy: widget.vacancyId,
-                              service: widget.serviceId,
-                              task: widget.taskId,
-                              receiver: widget.receiverId,
+                              receiverId: widget.receiverId,
+                              adType: adType,
+                              adId: adId,
                               body: _controller.text.trim(),
                             ),
                           );

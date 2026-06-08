@@ -16,8 +16,9 @@ abstract class MessagesRepository {
   });
 
   Future<Either<Failure, Message>> createMessage({
-    required int taskId,
-    required int receiverId,
+    required String receiverId,
+    required String adType,
+    required String adId,
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
@@ -35,5 +36,4 @@ abstract class MessagesRepository {
   });
 
   Future<Either<Failure, void>> makeMessageRead(int messageId);
-
 }
