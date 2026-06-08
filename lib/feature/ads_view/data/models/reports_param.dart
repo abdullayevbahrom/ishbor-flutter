@@ -1,5 +1,5 @@
 class ReportsParam {
-  final int? userId;
+  final String? userId;
   final int? taskId;
   final int? serviceId;
   final int? vacancyId;

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 
@@ -32,19 +32,43 @@ class UserDataSourceImpl extends UserDataSource {
 
   UserDataSourceImpl(this._dio);
 
+  Map<String, dynamic> _payload(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final data = responseData['data'];
+      if (data is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(data);
+      }
+
+      return Map<String, dynamic>.from(responseData);
+    }
+
+    return <String, dynamic>{};
+  }
+
+  String _messageFromResponse(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final fallback = responseData.values.isNotEmpty
+          ? responseData.values.first
+          : 'Unknown error';
+      return (responseData['message'] ?? responseData['error'] ?? fallback)
+          .toString();
+    }
+
+    return responseData?.toString() ?? 'Unknown error';
+  }
+
   @override
   Future<Either<Failure, User>> fetchUser() async {
     try {
+      if (kDebugMode) {
+        debugPrint('[PROFILE][fetch] GET ${ApiConstants.me}');
+      }
       final response = await _dio.get(ApiConstants.me);
 
       if (response.statusCode == 200) {
-        return Right(User.fromMap(response.data));
+        return Right(User.fromMap(_payload(response.data)));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -65,14 +89,14 @@ class UserDataSourceImpl extends UserDataSource {
         data: userProfile.toJson(),
       );
 
+      if (kDebugMode) {
+        debugPrint('[PROFILE][edit] PATCH ${ApiConstants.meEdit}');
+      }
+
       if (response.statusCode == 200) {
-        return Right(User.fromMap(response.data));
+        return Right(User.fromMap(_payload(response.data)));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -88,7 +112,12 @@ class UserDataSourceImpl extends UserDataSource {
     required List<File> portfolios,
   }) async {
     try {
-      FormData data = FormData.fromMap({});
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE][portfolio] POST ${ApiConstants.mePortfolios} files=${portfolios.length}',
+        );
+      }
+      final FormData data = FormData.fromMap({});
 
       if (portfolios.isNotEmpty) {
         for (File file in portfolios) {
@@ -109,13 +138,9 @@ class UserDataSourceImpl extends UserDataSource {
 
       final response = await _dio.post(ApiConstants.mePortfolios, data: data);
       if (response.statusCode == 200) {
-        return Right(User.fromMap(response.data));
+        return Right(User.fromMap(_payload(response.data)));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -130,10 +155,15 @@ class UserDataSourceImpl extends UserDataSource {
   Future<Either<Failure, User>> uploadVerificationDoc({
     required File file,
   }) async {
-    FormData data = FormData.fromMap({});
+    final FormData data = FormData.fromMap({});
 
     final String fileName = file.path.split("/").last;
     final String type = file.path.split(".").last;
+    if (kDebugMode) {
+      debugPrint(
+        '[PROFILE][verification-doc] POST ${ApiConstants.meVerificationDoc} file=$fileName type=$type',
+      );
+    }
     data.files.add(
       MapEntry<String, MultipartFile>(
         "uploadedVerificationDoc",
@@ -152,13 +182,9 @@ class UserDataSourceImpl extends UserDataSource {
       );
 
       if (response.statusCode == 200) {
-        return Right(User.fromMap(response.data));
+        return Right(User.fromMap(_payload(response.data)));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -172,19 +198,20 @@ class UserDataSourceImpl extends UserDataSource {
   @override
   Future<Either<Failure, void>> updateLocale({required String locale}) async {
     try {
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE][locale] POST ${ApiConstants.meLocale} locale=$locale',
+        );
+      }
       final response = await _dio.post(
         ApiConstants.meLocale,
-        options: Options(headers: {'Accept-Language': locale}),
+        data: {'locale': locale},
       );
 
       if (response.statusCode == 204) {
         return const Right(null);
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -206,6 +233,11 @@ class UserDataSourceImpl extends UserDataSource {
 
       final String fileName = file.path.split("/").last;
       final String type = file.path.split(".").last;
+      if (kDebugMode) {
+        debugPrint(
+          '[PROFILE][avatar] POST ${ApiConstants.meAvatar} file=$fileName type=$type',
+        );
+      }
       data.files.add(
         MapEntry<String, MultipartFile>(
           "uploadedAvatar",
@@ -219,13 +251,9 @@ class UserDataSourceImpl extends UserDataSource {
       final response = await _dio.post(ApiConstants.meAvatar, data: data);
 
       if (response.statusCode == 200) {
-        return Right(User.fromMap(response.data));
+        return Right(User.fromMap(_payload(response.data)));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _messageFromResponse(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);

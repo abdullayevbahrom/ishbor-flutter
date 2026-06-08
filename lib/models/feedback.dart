@@ -8,7 +8,7 @@ import 'package:top_jobs/models/vacancy.dart';
 
 
 class FeedbackModel extends Equatable {
-  final int id;
+  final String id;
   final User sender;
   final User receiver;
   final Task? task;
@@ -48,7 +48,7 @@ class FeedbackModel extends Equatable {
 
   static FeedbackModel fromMap(Map<String, dynamic> data) {
     return FeedbackModel(
-      id: data['id'],
+      id: data['id']?.toString() ?? '',
       sender: User.fromMap(data['sender']),
       receiver: User.fromMap(data['receiver']),
       task: data['task'] != null ? Task.fromMap(data['task']) : null,
@@ -62,7 +62,7 @@ class FeedbackModel extends Equatable {
   }
 
   FeedbackModel copyWith({
-    int? id,
+    String? id,
     User? sender,
     User? receiver,
     Task? task,

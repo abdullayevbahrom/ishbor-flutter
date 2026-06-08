@@ -17,7 +17,7 @@ import '../../../../../common/presentation/widget/w_loading_item.dart';
 import '../../../cubits/other_profile_cubit/other_profile_cubit.dart';
 
 class WTabBar extends StatefulWidget {
-  final int userId;
+  final String userId;
 
   WTabBar({super.key, required this.userId});
 

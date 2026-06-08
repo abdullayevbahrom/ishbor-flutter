@@ -34,22 +34,30 @@ class PaginatedFeedbackResponse {
   });
 
   factory PaginatedFeedbackResponse.fromJson(Map<String, dynamic> json) {
+    final payload = json['data'] is Map<String, dynamic>
+        ? Map<String, dynamic>.from(json['data'] as Map<String, dynamic>)
+        : json;
+    final rawItems = payload['items'] as List<dynamic>? ?? const [];
     return PaginatedFeedbackResponse(
-      currentPageNumber: json['current_page_number'],
-      numItemsPerPage: json['num_items_per_page'],
-      items:(json['items'] as List<dynamic>)
-          .map((item) => FeedbackModel.fromMap(item))
+      currentPageNumber: payload['current_page_number'] ?? 1,
+      numItemsPerPage: payload['num_items_per_page'] ?? rawItems.length,
+      items: rawItems
+          .map((item) => FeedbackModel.fromMap(Map<String, dynamic>.from(item)))
           .toList(),
-      totalCount: json['total_count'],
-      paginatorOptions: PaginatorOptions.fromMap(json['paginator_options']),
-      customParameters: CustomParameters.fromMap(json['custom_parameters']),
-      route: json['route'],
-      params: json['params'] ?? {},
-      pageRange: json['page_range'],
-      pageLimit: json['page_limit'],
-      template: json['template'],
-      sortableTemplate: json['sortable_template'],
-      filtrationTemplate: json['filtration_template'],
+      totalCount: payload['total_count'] ?? rawItems.length,
+      paginatorOptions: PaginatorOptions.fromMap(
+        payload['paginator_options'] ?? const {},
+      ),
+      customParameters: CustomParameters.fromMap(
+        payload['custom_parameters'] ?? const {},
+      ),
+      route: payload['route'] ?? '',
+      params: payload['params'] ?? {},
+      pageRange: payload['page_range'] ?? 1,
+      pageLimit: payload['page_limit'],
+      template: payload['template'] ?? '',
+      sortableTemplate: payload['sortable_template'] ?? '',
+      filtrationTemplate: payload['filtration_template'] ?? '',
     );
   }
 
@@ -86,5 +94,4 @@ class PaginatedFeedbackResponse {
   }
 
 }
-
 

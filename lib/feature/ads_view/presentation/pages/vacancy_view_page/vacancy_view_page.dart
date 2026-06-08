@@ -156,7 +156,7 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
                     if (context.read<UserCubit>().state.user !=
                         vacancy?.customer)
                       WAdsAuthorConnect(
-                        customerId: vacancy?.customer.id ?? 0,
+                        customerId: vacancy?.customer.id ?? '',
                         vacancyId: vacancy?.id,
                         phoneNumbers: [
                           vacancy?.phoneNumber,

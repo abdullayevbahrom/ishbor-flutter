@@ -12,7 +12,7 @@ class QueryParams {
   final int? page;
   final String? city;
   final double? priceMin;
-  final int? customer;
+  final String? customer;
 
   QueryParams({
     this.title,

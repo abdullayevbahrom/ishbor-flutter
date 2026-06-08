@@ -17,7 +17,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   FeedbackCubit(this._feedBackRepository) : super(const FeedbackState());
   final FeedBackRepository _feedBackRepository;
 
-  Future<void> fetchFeedbacksCount(int userId) async {
+  Future<void> fetchFeedbacksCount(String userId) async {
     emit(state.copyWith(countSt: RequestStatus.loading));
 
     final response = await _feedBackRepository.fetchFeedBackCount(id: userId);
@@ -34,7 +34,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     );
   }
 
-  Future<void> fetchFeedBackList(int userId) async {
+  Future<void> fetchFeedBackList(String userId) async {
     emit(state.copyWith(listSt: RequestStatus.loading));
 
     final response = await _feedBackRepository.fetchFeedBackList(id: userId);

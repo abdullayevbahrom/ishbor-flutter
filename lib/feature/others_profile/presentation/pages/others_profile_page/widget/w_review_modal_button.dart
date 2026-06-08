@@ -24,7 +24,7 @@ class WReviewModalButton extends StatefulWidget {
     required this.feedbackCubit,
   });
 
-  final int receiverId;
+  final String receiverId;
   final FeedbackCubit feedbackCubit;
 
   show(BuildContext context) {

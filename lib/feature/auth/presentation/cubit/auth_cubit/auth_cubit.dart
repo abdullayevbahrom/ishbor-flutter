@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
@@ -32,7 +33,14 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logOut() async {
     emit(state.copyWith(logOutSt: RequestStatus.loading));
+    if (kDebugMode) {
+      debugPrint('[AUTH][logout] requested');
+    }
     _otpCode = null;
+    final refreshToken = await storageService.fetchRefreshToken();
+    if (refreshToken != null && refreshToken.isNotEmpty) {
+      await _authRepository.logout(refreshToken: refreshToken);
+    }
     await sl<StorageService>().clearAuth();
     navigatorKey.currentContext?.read<UserCubit>().fetchUser();
     emit(state.copyWith(logOutSt: RequestStatus.loaded));
@@ -56,6 +64,9 @@ class AuthCubit extends Cubit<AuthState> {
     response.fold(
       (l) {
         emit(state.copyWith(status: RequestStatus.error, errorText: l.message));
+        if (kDebugMode) {
+          debugPrint('[AUTH][login][warn] ${l.message}');
+        }
         showErrorToast(l.message ?? LocaleKeys.error.tr());
       },
       (r) async {
@@ -64,6 +75,9 @@ class AuthCubit extends Cubit<AuthState> {
         await storageService.putExpireDate(r.expiresAt);
         _otpCode = null;
         emit(state.copyWith(status: RequestStatus.loaded));
+        if (kDebugMode) {
+          debugPrint('[AUTH][login] success');
+        }
         showSuccessToast(LocaleKeys.loginSuccessful.tr());
       },
     );
@@ -104,6 +118,9 @@ class AuthCubit extends Cubit<AuthState> {
             errorText: l.message,
           ),
         );
+        if (kDebugMode) {
+          debugPrint('[AUTH][verify-phone][warn] ${l.message}');
+        }
         showErrorToast(l.message);
       },
       (r) {
@@ -146,6 +163,9 @@ class AuthCubit extends Cubit<AuthState> {
     response.fold(
       (l) {
         emit(state.copyWith(loginSt: RequestStatus.error));
+        if (kDebugMode) {
+          debugPrint('[AUTH][sms][warn] verification failed');
+        }
         showErrorToast(LocaleKeys.verificationHasNotBeenPassed.tr());
       },
       (r) async {
@@ -165,6 +185,9 @@ class AuthCubit extends Cubit<AuthState> {
           await storageService.putExpireDate(r.expiresAt);
           _otpCode = null;
           emit(state.copyWith(loginSt: RequestStatus.loaded));
+          if (kDebugMode) {
+            debugPrint('[AUTH][sms] login success');
+          }
           showSuccessToast(LocaleKeys.loginSuccessful.tr());
         }
       },
@@ -193,6 +216,9 @@ class AuthCubit extends Cubit<AuthState> {
             loginSt: RequestStatus.loaded,
           ),
         );
+        if (kDebugMode) {
+          debugPrint('[AUTH][register] success');
+        }
         showSuccessToast(LocaleKeys.registerSuccess.tr());
         navigatorKey.currentContext?.pop();
       },
@@ -205,6 +231,9 @@ class AuthCubit extends Cubit<AuthState> {
     );
     response.fold(
       (l) {
+        if (kDebugMode) {
+          debugPrint('[AUTH][resend][warn] ${l.message}');
+        }
         showErrorToast(null);
       },
       (r) {

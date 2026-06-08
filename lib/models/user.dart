@@ -5,7 +5,7 @@ import 'package:top_jobs/models/image.dart';
 import '../feature/common/data/models/category.dart';
 
 class User extends Equatable {
-  final int id;
+  final String id;
   final int? contentCount;
   final int? contentLimit;
   final int? chatGptLimit;
@@ -115,7 +115,7 @@ class User extends Equatable {
   ];
 
   static User fromMap(Map<String, dynamic> data) => User(
-    id: data['id'],
+    id: data['id']?.toString() ?? '',
     contentCount: data['content_count'],
     contentLimit: data['content_limit'],
     chatGptLimit: data['chat_gpt_limit'],
@@ -132,17 +132,23 @@ class User extends Equatable {
             ? AppImage.fromMap(Map.from(data['avatar']))
             : null,
     categories:
-        List.from(
-          data['categories'],
-        ).map((cat) => CategoryModel.fromMap(cat)).toList(),
+        data['categories'] != null
+            ? List.from(
+              data['categories'],
+            ).map((cat) => CategoryModel.fromMap(cat)).toList()
+            : [],
     portfolios:
-        List.from(
-          data['portfolios'],
-        ).map((img) => AppImage.fromMap(Map.from(img))).toList(),
+        data['portfolios'] != null
+            ? List.from(
+              data['portfolios'],
+            ).map((img) => AppImage.fromMap(Map.from(img))).toList()
+            : [],
     uploadedPortfolios:
-        List.from(
-          data['uploaded_portfolios'],
-        ).map((img) => AppImage.fromMap(Map.from(img))).toList(),
+        data['uploaded_portfolios'] != null
+            ? List.from(
+              data['uploaded_portfolios'],
+            ).map((img) => AppImage.fromMap(Map.from(img))).toList()
+            : [],
     city: data['city'],
     gender: data['gender'],
     locale: data['locale'],

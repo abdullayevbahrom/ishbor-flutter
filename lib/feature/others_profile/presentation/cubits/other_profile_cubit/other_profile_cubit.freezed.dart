@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$OtherProfileState {
 
- int? get userId; int get index; RequestStatus get vacancy; RequestStatus get service; RequestStatus get task; VacancyPaginationResponse? get listVacancy; PaginatedServiceResponse? get listService; PaginatedTaskListResponse? get listTask; String? get vacancyError; String? get serviceError; String? get taskError;
+ String? get userId; int get index; RequestStatus get vacancy; RequestStatus get service; RequestStatus get task; VacancyPaginationResponse? get listVacancy; PaginatedServiceResponse? get listService; PaginatedTaskListResponse? get listTask; String? get vacancyError; String? get serviceError; String? get taskError;
 /// Create a copy of OtherProfileState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $OtherProfileStateCopyWith<$Res>  {
   factory $OtherProfileStateCopyWith(OtherProfileState value, $Res Function(OtherProfileState) _then) = _$OtherProfileStateCopyWithImpl;
 @useResult
 $Res call({
- int? userId, int index, RequestStatus vacancy, RequestStatus service, RequestStatus task, VacancyPaginationResponse? listVacancy, PaginatedServiceResponse? listService, PaginatedTaskListResponse? listTask, String? vacancyError, String? serviceError, String? taskError
+ String? userId, int index, RequestStatus vacancy, RequestStatus service, RequestStatus task, VacancyPaginationResponse? listVacancy, PaginatedServiceResponse? listService, PaginatedTaskListResponse? listTask, String? vacancyError, String? serviceError, String? taskError
 });
 
 
@@ -63,9 +63,9 @@ class _$OtherProfileStateCopyWithImpl<$Res>
 /// Create a copy of OtherProfileState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? userId = freezed,Object? index = null,Object? vacancy = null,Object? service = null,Object? task = null,Object? listVacancy = freezed,Object? listService = freezed,Object? listTask = freezed,Object? vacancyError = freezed,Object? serviceError = freezed,Object? taskError = freezed,}) {
-  return _then(_self.copyWith(
+return _then(_self.copyWith(
 userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int?,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as String?,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
 as int,vacancy: null == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as RequestStatus,service: null == service ? _self.service : service // ignore: cast_nullable_to_non_nullable
 as RequestStatus,task: null == task ? _self.task : task // ignore: cast_nullable_to_non_nullable
@@ -160,7 +160,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _OtherProfileState() when $default != null:
 return $default(_that.userId,_that.index,_that.vacancy,_that.service,_that.task,_that.listVacancy,_that.listService,_that.listTask,_that.vacancyError,_that.serviceError,_that.taskError);case _:
@@ -181,7 +181,7 @@ return $default(_that.userId,_that.index,_that.vacancy,_that.service,_that.task,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)  $default,) {final _that = this;
 switch (_that) {
 case _OtherProfileState():
 return $default(_that.userId,_that.index,_that.vacancy,_that.service,_that.task,_that.listVacancy,_that.listService,_that.listTask,_that.vacancyError,_that.serviceError,_that.taskError);case _:
@@ -201,7 +201,7 @@ return $default(_that.userId,_that.index,_that.vacancy,_that.service,_that.task,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? userId,  int index,  RequestStatus vacancy,  RequestStatus service,  RequestStatus task,  VacancyPaginationResponse? listVacancy,  PaginatedServiceResponse? listService,  PaginatedTaskListResponse? listTask,  String? vacancyError,  String? serviceError,  String? taskError)?  $default,) {final _that = this;
 switch (_that) {
 case _OtherProfileState() when $default != null:
 return $default(_that.userId,_that.index,_that.vacancy,_that.service,_that.task,_that.listVacancy,_that.listService,_that.listTask,_that.vacancyError,_that.serviceError,_that.taskError);case _:
@@ -219,7 +219,7 @@ class _OtherProfileState implements OtherProfileState {
   const _OtherProfileState({this.userId = null, this.index = 0, this.vacancy = RequestStatus.initial, this.service = RequestStatus.initial, this.task = RequestStatus.initial, this.listVacancy = null, this.listService = null, this.listTask = null, this.vacancyError = null, this.serviceError = null, this.taskError = null});
   
 
-@override@JsonKey() final  int? userId;
+@override@JsonKey() final  String? userId;
 @override@JsonKey() final  int index;
 @override@JsonKey() final  RequestStatus vacancy;
 @override@JsonKey() final  RequestStatus service;
@@ -261,7 +261,7 @@ abstract mixin class _$OtherProfileStateCopyWith<$Res> implements $OtherProfileS
   factory _$OtherProfileStateCopyWith(_OtherProfileState value, $Res Function(_OtherProfileState) _then) = __$OtherProfileStateCopyWithImpl;
 @override @useResult
 $Res call({
- int? userId, int index, RequestStatus vacancy, RequestStatus service, RequestStatus task, VacancyPaginationResponse? listVacancy, PaginatedServiceResponse? listService, PaginatedTaskListResponse? listTask, String? vacancyError, String? serviceError, String? taskError
+ String? userId, int index, RequestStatus vacancy, RequestStatus service, RequestStatus task, VacancyPaginationResponse? listVacancy, PaginatedServiceResponse? listService, PaginatedTaskListResponse? listTask, String? vacancyError, String? serviceError, String? taskError
 });
 
 
@@ -281,7 +281,7 @@ class __$OtherProfileStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? userId = freezed,Object? index = null,Object? vacancy = null,Object? service = null,Object? task = null,Object? listVacancy = freezed,Object? listService = freezed,Object? listTask = freezed,Object? vacancyError = freezed,Object? serviceError = freezed,Object? taskError = freezed,}) {
   return _then(_OtherProfileState(
 userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
-as int?,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
+as String?,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
 as int,vacancy: null == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as RequestStatus,service: null == service ? _self.service : service // ignore: cast_nullable_to_non_nullable
 as RequestStatus,task: null == task ? _self.task : task // ignore: cast_nullable_to_non_nullable

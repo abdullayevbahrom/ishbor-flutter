@@ -33,8 +33,8 @@ class OtherProfileCubit extends Cubit<OtherProfileState> {
   void resetFilter() {
     _filters = QueryParams.empty();
   }
-/// shu yerda xato bor
-  void updateIndex({required int index,required int userId}) {
+
+  void updateIndex({required int index, required String userId}) {
     emit(state.copyWith(index: index));
     switch (index) {
       case 0:
@@ -49,7 +49,7 @@ class OtherProfileCubit extends Cubit<OtherProfileState> {
     }
   }
 
-  Future<void> fetchVacancy(int userId) async {
+  Future<void> fetchVacancy(String userId) async {
     emit(state.copyWith(vacancy: RequestStatus.loading, userId: userId));
     final response = await _vacancyRepository.fetchVacancies(
       queryParams: QueryParams(
@@ -71,7 +71,7 @@ class OtherProfileCubit extends Cubit<OtherProfileState> {
     );
   }
 
-  Future<void> fetchServices(int userId) async {
+  Future<void> fetchServices(String userId) async {
     emit(state.copyWith(service: RequestStatus.loading, userId: userId));
     final response = await _serviceRepository.fetchServices(
       queryParams: QueryParams(
@@ -93,7 +93,7 @@ class OtherProfileCubit extends Cubit<OtherProfileState> {
     );
   }
 
-  Future<void> fetchTasks(int userId) async {
+  Future<void> fetchTasks(String userId) async {
     emit(state.copyWith(task: RequestStatus.loading, userId: userId));
     final response = await _taskRepository.fetchTasks(
       queryParams: QueryParams(

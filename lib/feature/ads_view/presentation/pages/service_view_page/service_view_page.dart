@@ -151,7 +151,7 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
                     service?.phoneNumber2,
                     service?.phoneNumber3,
                   ],
-                  customerId: service?.customer.id ?? 0,
+                  customerId: service?.customer.id ?? '',
                   serviceId: service?.id,
                 ),
               22.verticalSpace,

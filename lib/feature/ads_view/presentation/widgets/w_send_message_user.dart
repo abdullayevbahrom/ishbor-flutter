@@ -25,7 +25,7 @@ class WSendMessageUser extends StatefulWidget {
   });
 
   final String title;
-  final int receiverId;
+  final String receiverId;
   final int? vacancyId;
   final int? serviceId;
   final int? taskId;

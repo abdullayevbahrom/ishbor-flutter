@@ -1,5 +1,5 @@
 class SendMessageRequest {
-  final int receiver;
+  final String receiver;
   final int? service;
   final int? vacancy;
   final int? task;
@@ -25,9 +25,11 @@ class SendMessageRequest {
 
   factory SendMessageRequest.fromJson(Map<String, dynamic> json) {
     return SendMessageRequest(
-      receiver: json['receiver'],
-      service: json['service'],
-      body: json['body'],
+      receiver: json['receiver']?.toString() ?? '',
+      service: int.tryParse('${json['service'] ?? ''}'),
+      vacancy: int.tryParse('${json['vacancy'] ?? ''}'),
+      task: int.tryParse('${json['task'] ?? ''}'),
+      body: json['body']?.toString() ?? '',
     );
   }
 }

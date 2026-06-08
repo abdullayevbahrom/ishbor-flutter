@@ -231,7 +231,7 @@ class _WTaskViewPageState extends State<WTaskViewPage> {
                     task?.phoneNumber2,
                     task?.phoneNumber3,
                   ],
-                  customerId: task?.customer.id ?? 0,
+                  customerId: task?.customer.id ?? '',
                   taskId: task?.id,
                   hasUserRequest: task?.hasUserRequest,
                   onPressedApply: () {

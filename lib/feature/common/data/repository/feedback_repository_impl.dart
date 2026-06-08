@@ -12,7 +12,7 @@ class FeedBackRepositoryImpl extends FeedBackRepository {
   FeedBackRepositoryImpl(this._feedBackDataSource);
 
   @override
-  Future<Either<Failure, int>> fetchFeedBackCount({required int id}) async {
+  Future<Either<Failure, int>> fetchFeedBackCount({required String id}) async {
     final response = await _feedBackDataSource.fetchFeedBackCount(id: id);
 
     return response.fold(
@@ -27,7 +27,7 @@ class FeedBackRepositoryImpl extends FeedBackRepository {
 
   @override
   Future<Either<Failure, PaginatedFeedbackResponse>> fetchFeedBackList({
-    required int id,
+    required String id,
   }) async {
     final response = await _feedBackDataSource.fetchFeedBackList(id: id);
     return response.fold(
@@ -41,16 +41,19 @@ class FeedBackRepositoryImpl extends FeedBackRepository {
   }
 
   @override
-  Future<Either<Failure, FeedbackModel>> addFeedBack({required FeedbackRequestModel feedbackModel}) async{
-   final response= await _feedBackDataSource.addFeedBack(feedbackModel: feedbackModel);
-   return response.fold(
-         (l) {
-       return Left(Failure(message: l.message));
-     },
-         (r) {
-       return Right(r);
-     },
-   );
-
+  Future<Either<Failure, FeedbackModel>> addFeedBack({
+    required FeedbackRequestModel feedbackModel,
+  }) async {
+    final response = await _feedBackDataSource.addFeedBack(
+      feedbackModel: feedbackModel,
+    );
+    return response.fold(
+      (l) {
+        return Left(Failure(message: l.message));
+      },
+      (r) {
+        return Right(r);
+      },
+    );
   }
 }

@@ -1,11 +1,11 @@
 class FeedbackRequestModel {
   final String? message;
-  final int? receiver;
+  final String? receiver;
   final bool? like;
   final bool? dislike;
-  final int? task;
-  final int? vacancy;
-  final int? service;
+  final String? task;
+  final String? vacancy;
+  final String? service;
 
   FeedbackRequestModel({
     this.message,
@@ -20,12 +20,12 @@ class FeedbackRequestModel {
   factory FeedbackRequestModel.fromJson(Map<String, dynamic> json) {
     return FeedbackRequestModel(
       message: json['message'] as String?,
-      receiver: json['receiver'] as int?,
+      receiver: json['receiver']?.toString(),
       like: json['like'] as bool?,
       dislike: json['dislike'] as bool?,
-      task: json['task'] as int?,
-      vacancy: json['vacancy'] as int?,
-      service: json['service'] as int?,
+      task: json['task']?.toString(),
+      vacancy: json['vacancy']?.toString(),
+      service: json['service']?.toString(),
     );
   }
 

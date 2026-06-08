@@ -28,16 +28,16 @@ class UserProfileUpdateRequest {
             : null;
 
     return {
-      if (firstName != null) 'firstName': firstName,
-      if (lastName != null) 'lastName': lastName,
+      if (firstName != null) 'first_name': firstName,
+      if (lastName != null) 'last_name': lastName,
       if (parsedBirthDay != null)
-        'birthDay': DateFormat(
+        'birth_day': DateFormat(
           'yyyy/MM/dd',
         ).format(parsedBirthDay),
       if (email != null && (email ?? '').isNotEmpty) 'email': email,
       if (city != null && (city ?? '').isNotEmpty) 'city': city ?? '',
       if (gender != null && (gender ?? '').isNotEmpty) 'gender': gender,
-      if (aboutMe != null && (aboutMe ?? '').isNotEmpty) 'aboutMe': aboutMe,
+      if (aboutMe != null && (aboutMe ?? '').isNotEmpty) 'about_me': aboutMe,
       if (categories != null && (categories ?? []).isNotEmpty)
         'categories': categories,
     };

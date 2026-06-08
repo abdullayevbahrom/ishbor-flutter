@@ -25,6 +25,12 @@ abstract class AuthDatasource {
   Future<Either<Failure, AuthSuccess>> smsRegistration({
     required SmsRegistrationParams params,
   });
+
+  Future<Either<Failure, AuthSuccess>> refresh({
+    required String refreshToken,
+  });
+
+  Future<Either<Failure, void>> logout({required String refreshToken});
 }
 
 class AuthDataSourceImpl extends AuthDatasource {
@@ -153,6 +159,54 @@ class AuthDataSourceImpl extends AuthDatasource {
 
       if (response.statusCode == 200) {
         return Right(AuthSuccess.fromJson(_payload(response.data)));
+      }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
+    } on DioException catch (e) {
+      final failure = DioFailure.fromDioError(e);
+      return Left(Failure(message: failure.message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, AuthSuccess>> refresh({
+    required String refreshToken,
+  }) async {
+    try {
+      final response = await _dio.post(
+        ApiConstants.authRefresh,
+        data: {'refresh_token': refreshToken},
+        options: Options(extra: {'skip_authorization': true}),
+      );
+
+      if (response.statusCode == 200) {
+        return Right(AuthSuccess.fromJson(_payload(response.data)));
+      }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
+    } on DioException catch (e) {
+      final failure = DioFailure.fromDioError(e);
+      return Left(Failure(message: failure.message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> logout({required String refreshToken}) async {
+    try {
+      final response = await _dio.post(
+        ApiConstants.authLogout,
+        data: {'refresh_token': refreshToken},
+        options: Options(extra: {'skip_authorization': true}),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        return const Right(null);
       }
 
       return Left(Failure(message: _messageFromResponse(response.data)));

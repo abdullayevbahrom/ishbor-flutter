@@ -6,10 +6,10 @@ import '../../data/models/feedback_model.dart';
 import '../../data/models/feedbacks.dart';
 
 abstract class FeedBackRepository {
-  Future<Either<Failure, int>> fetchFeedBackCount({required int id});
+  Future<Either<Failure, int>> fetchFeedBackCount({required String id});
 
   Future<Either<Failure, PaginatedFeedbackResponse>> fetchFeedBackList({
-    required int id,
+    required String id,
   });
 
   Future<Either<Failure, FeedbackModel>> addFeedBack({

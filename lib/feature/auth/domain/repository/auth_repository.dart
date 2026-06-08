@@ -20,4 +20,10 @@ abstract class AuthRepository{
   Future<Either<Failure, AuthSuccess>> smsRegistration({
     required SmsRegistrationParams params,
   });
+
+  Future<Either<Failure, AuthSuccess>> refresh({
+    required String refreshToken,
+  });
+
+  Future<Either<Failure, void>> logout({required String refreshToken});
 }

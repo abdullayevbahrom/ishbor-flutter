@@ -33,7 +33,7 @@ class WAdsAuthorConnect extends StatefulWidget {
   });
 
   final List<String?> phoneNumbers;
-  final int customerId;
+  final String customerId;
   final int? vacancyId;
   final int? serviceId;
   final int? taskId;

@@ -78,6 +78,36 @@ class AuthRepositoryImpl extends AuthRepository {
   }
 
   @override
+  Future<Either<Failure, AuthSuccess>> refresh({
+    required String refreshToken,
+  }) async {
+    final response = await _authDatasource.refresh(refreshToken: refreshToken);
+
+    return response.fold(
+      (l) {
+        return Left(Failure(message: l.message));
+      },
+      (r) {
+        return Right(r);
+      },
+    );
+  }
+
+  @override
+  Future<Either<Failure, void>> logout({required String refreshToken}) async {
+    final response = await _authDatasource.logout(refreshToken: refreshToken);
+
+    return response.fold(
+      (l) {
+        return Left(Failure(message: l.message));
+      },
+      (r) {
+        return Right(r);
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, AuthSuccess>> checkAuth({
     required CheckModel checkModel,
   }) async {

@@ -115,7 +115,10 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
                   BlocProvider(
                     create: (context) => feedBackCubit,
                     child: BlocBuilder<FeedbackCubit, FeedbackState>(
-                      bloc: feedBackCubit..fetchFeedbacksCount(user?.id ?? 0),
+                      bloc:
+                          user?.id == null
+                              ? feedBackCubit
+                              : feedBackCubit..fetchFeedbacksCount(user!.id),
                       builder: (context, state) {
                         return GestureDetector(
                           onTap: () {},
