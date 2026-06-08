@@ -7,12 +7,15 @@ import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 
 import '../../../../core/network/api_http.dart';
+import '../../../../core/network/api_response.dart';
 import '../../../../models/message.dart';
 import '../../../profile/data/model/ask_question_model.dart';
 import '../models/paginated_message_record.dart';
 
 abstract class MessagesDataSource {
-  Future<Either<Failure, Message>> fetchMessageById({required int messageId});
+  Future<Either<Failure, Message>> fetchMessageById({
+    required Object messageId,
+  });
 
   Future<Either<Failure, PaginatedChatMessageResponse>> fetchMessages({
     required CommonQueryParams queryParams,
@@ -25,12 +28,12 @@ abstract class MessagesDataSource {
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
-    required int messageId,
+    required Object messageId,
     required CommonQueryParams queryParams,
   });
 
   Future<Either<Failure, void>> uploadFile({
-    required int messageId,
+    required Object messageId,
     required String path,
   });
 
@@ -38,7 +41,7 @@ abstract class MessagesDataSource {
     required SendMessageRequest sendMessage,
   });
 
-  Future<Either<Failure, void>> makeMessageRead(int messageId);
+  Future<Either<Failure, void>> makeMessageRead(Object messageId);
 }
 
 class MessagesDataSourceImpl extends MessagesDataSource {
@@ -60,15 +63,18 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       }
       final response = await _dio.post(
         ApiConstants.postMessage,
-        data: {
-          'receiver_id': receiverId,
-          'ad_type': adType,
-          'ad_id': adId,
-        },
+        data: {'receiver_id': receiverId, 'ad_type': adType, 'ad_id': adId},
       );
 
       if (response.statusCode == 200) {
-        return Right(Message.fromMap(response.data));
+        final payload = ApiDataResponse.fromJson(
+          response.data,
+          (json) => Message.fromMap(Map<String, dynamic>.from(json as Map)),
+        );
+        if (payload.data == null) {
+          return const Left(Failure(message: 'Malformed message payload'));
+        }
+        return Right(payload.data!);
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
@@ -92,13 +98,20 @@ class MessagesDataSourceImpl extends MessagesDataSource {
 
   @override
   Future<Either<Failure, Message>> fetchMessageById({
-    required int messageId,
+    required Object messageId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchMessage(messageId));
 
       if (response.statusCode == 200) {
-        return Right(Message.fromMap(response.data));
+        final payload = ApiDataResponse.fromJson(
+          response.data,
+          (json) => Message.fromMap(Map<String, dynamic>.from(json as Map)),
+        );
+        if (payload.data == null) {
+          return const Left(Failure(message: 'Malformed message payload'));
+        }
+        return Right(payload.data!);
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
@@ -145,7 +158,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
 
   @override
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
-    required int messageId,
+    required Object messageId,
     required CommonQueryParams queryParams,
   }) async {
     try {
@@ -174,7 +187,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
 
   @override
   Future<Either<Failure, void>> uploadFile({
-    required int messageId,
+    required Object messageId,
     required String path,
   }) async {
     try {
@@ -250,7 +263,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> makeMessageRead(int messageId) async {
+  Future<Either<Failure, void>> makeMessageRead(Object messageId) async {
     try {
       final response = await _dio.post(ApiConstants.makeMessageRead(messageId));
       if (response.statusCode == 204) {

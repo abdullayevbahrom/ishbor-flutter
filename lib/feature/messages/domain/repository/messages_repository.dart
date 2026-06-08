@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 
@@ -9,7 +8,9 @@ import '../../../profile/data/model/ask_question_model.dart';
 import '../../data/models/paginated_message_record.dart';
 
 abstract class MessagesRepository {
-  Future<Either<Failure, Message>> fetchMessageById({required int messageId});
+  Future<Either<Failure, Message>> fetchMessageById({
+    required Object messageId,
+  });
 
   Future<Either<Failure, PaginatedChatMessageResponse>> fetchMessages({
     required CommonQueryParams queryParams,
@@ -22,12 +23,12 @@ abstract class MessagesRepository {
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
-    required int messageId,
+    required Object messageId,
     required CommonQueryParams queryParams,
   });
 
   Future<Either<Failure, void>> uploadFile({
-    required int messageId,
+    required Object messageId,
     required String path,
   });
 
@@ -35,5 +36,5 @@ abstract class MessagesRepository {
     required SendMessageRequest sendMessage,
   });
 
-  Future<Either<Failure, void>> makeMessageRead(int messageId);
+  Future<Either<Failure, void>> makeMessageRead(Object messageId);
 }

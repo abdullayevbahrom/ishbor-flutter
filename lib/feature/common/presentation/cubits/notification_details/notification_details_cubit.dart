@@ -27,7 +27,7 @@ class NotificationDetailsCubit extends Cubit<NotificationDetailsState> {
   final TaskRepository _taskRepository;
   final MessagesRepository _messagesRepository;
 
-  Future<void> fetchDetails({required String type, required int id}) async {
+  Future<void> fetchDetails({required String type, required dynamic id}) async {
     emit(state.copyWith(status: RequestStatus.loading));
 
     if (type == 'vacancy') {

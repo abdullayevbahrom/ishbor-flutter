@@ -1,4 +1,5 @@
 import '../../../../models/message.dart';
+import '../../../../core/network/api_response.dart';
 
 class PaginatedChatMessageResponse {
   final int currentPageNumber;
@@ -28,13 +29,16 @@ class PaginatedChatMessageResponse {
   }
 
   factory PaginatedChatMessageResponse.fromJson(Map<String, dynamic> json) {
+    final response = ApiListResponse.fromJson(
+      json,
+      (item) => Message.fromMap(Map<String, dynamic>.from(item as Map)),
+    );
+
     return PaginatedChatMessageResponse(
-      currentPageNumber: json['current_page_number'],
-      numItemsPerPage: json['num_items_per_page'],
-      totalCount: json['total_count'],
-      items: (json['items'] as List)
-          .map((e) => Message.fromMap(e))
-          .toList(),
+      currentPageNumber: response.currentPageNumber ?? response.page ?? 1,
+      numItemsPerPage: response.numItemsPerPage ?? 0,
+      totalCount: response.totalCount ?? response.items.length,
+      items: response.items,
     );
   }
 

@@ -138,7 +138,7 @@ class AppRoutes {
         path: Routes.chat,
         pageBuilder:
             (context, state) =>
-                CupertinoPage(child: ChatPage(messageId: state.extra as int)),
+                CupertinoPage(child: ChatPage(messageId: state.extra ?? '')),
       ),
       GoRoute(
         path: Routes.filterForm,
@@ -295,9 +295,7 @@ class AppRoutes {
           return CupertinoPage(
             child: BlocProvider(
               create: (context) => sl<PaymentCubit>(),
-              child: PaymentPage(
-                transactionId: parsedTransactionId,
-              ),
+              child: PaymentPage(transactionId: parsedTransactionId),
             ),
           );
         },

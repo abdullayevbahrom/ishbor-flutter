@@ -1,4 +1,3 @@
-
 import 'package:dartz/dartz.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/feature/messages/data/datasource/messages_datasource.dart';
@@ -56,7 +55,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
 
   @override
   Future<Either<Failure, Message>> fetchMessageById({
-    required int messageId,
+    required Object messageId,
   }) async {
     final response = await _messagesDataSource.fetchMessageById(
       messageId: messageId,
@@ -73,7 +72,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
 
   @override
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsById({
-    required int messageId,
+    required Object messageId,
     required CommonQueryParams queryParams,
   }) async {
     final response = await _messagesDataSource.fetchRecordsById(
@@ -93,7 +92,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
 
   @override
   Future<Either<Failure, void>> uploadFile({
-    required int messageId,
+    required Object messageId,
     required String path,
   }) async {
     final response = await _messagesDataSource.uploadFile(
@@ -129,7 +128,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
   }
 
   @override
-  Future<Either<Failure, void>> makeMessageRead(int messageId) async {
+  Future<Either<Failure, void>> makeMessageRead(Object messageId) async {
     final response = await _messagesDataSource.makeMessageRead(messageId);
     return response.fold(
       (l) {

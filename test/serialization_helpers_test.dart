@@ -2,11 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
+import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 import 'package:top_jobs/feature/profile/data/model/ask_question_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
 import 'package:top_jobs/models/image.dart';
 import 'package:top_jobs/models/localized_text.dart';
+import 'package:top_jobs/models/message_record.dart';
 
 void main() {
   test('snake case mapper normalizes nested payloads', () {
@@ -130,5 +132,61 @@ void main() {
       'body': 'Hello',
       'message_id': '019e88b7-b706-7caa-bb84-dd2f0ebec777',
     });
+  });
+
+  test('message record parses dto payload without nested users', () {
+    final record = MessageRecord.fromMap({
+      'id': '019e88b7-b706-7caa-bb84-dd2f0ebec300',
+      'message_id': '019e88b7-b706-7caa-bb84-dd2f0ebec301',
+      'sender_id': '019e88b7-b706-7caa-bb84-dd2f0ebec302',
+      'receiver_id': '019e88b7-b706-7caa-bb84-dd2f0ebec303',
+      'read': false,
+      'body': 'Hello',
+      'file': 'https://cdn.example.com/chat/file.pdf',
+      'created_at': '2026-06-04T10:00:00+05:00',
+    });
+
+    expect(record.id, '019e88b7-b706-7caa-bb84-dd2f0ebec300');
+    expect(record.messageId, '019e88b7-b706-7caa-bb84-dd2f0ebec301');
+    expect(record.sender.id, '019e88b7-b706-7caa-bb84-dd2f0ebec302');
+    expect(record.receiver?.id, '019e88b7-b706-7caa-bb84-dd2f0ebec303');
+    expect(record.file?.url, 'https://cdn.example.com/chat/file.pdf');
+  });
+
+  test('message list response unwraps data envelope and uuid ids', () {
+    final response = PaginatedChatMessageResponse.fromJson({
+      'data': {
+        'items': [
+          {
+            'id': '019e88b7-b706-7caa-bb84-dd2f0ebec310',
+            'sender_id': '019e88b7-b706-7caa-bb84-dd2f0ebec311',
+            'receiver_id': '019e88b7-b706-7caa-bb84-dd2f0ebec312',
+            'sender': {
+              'id': '019e88b7-b706-7caa-bb84-dd2f0ebec311',
+              'full_name': 'Sender User',
+              'avatar': 'https://cdn.example.com/avatar.png',
+            },
+            'receiver': {
+              'id': '019e88b7-b706-7caa-bb84-dd2f0ebec312',
+              'full_name': 'Receiver User',
+            },
+            'ad_type': 'task',
+            'ad_id': '019e88b7-b706-7caa-bb84-dd2f0ebec313',
+            'created_at': '2026-06-04T10:00:00+05:00',
+          },
+        ],
+        'totalCount': 1,
+        'currentPageNumber': 1,
+        'numItemsPerPage': 10,
+      },
+    });
+
+    expect(response.totalCount, 1);
+    expect(response.items.single.id, '019e88b7-b706-7caa-bb84-dd2f0ebec310');
+    expect(
+      response.items.single.senderId,
+      '019e88b7-b706-7caa-bb84-dd2f0ebec311',
+    );
+    expect(response.items.single.receiver?.fullName, 'Receiver User');
   });
 }

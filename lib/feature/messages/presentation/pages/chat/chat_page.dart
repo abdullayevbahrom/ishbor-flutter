@@ -27,7 +27,7 @@ import '../../cubits/chat_cubit/chat_cubit.dart';
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key, required this.messageId});
 
-  final int messageId;
+  final Object messageId;
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -80,21 +80,22 @@ class _ChatPageState extends State<ChatPage> {
                 backgroundColor: AppColors.cFBFBFD,
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [AppHeader(isPopAvailable: true),
+                  children: [
+                    AppHeader(isPopAvailable: true),
 
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-
-                          if(state.messageSt.isLoaded()) ChatHeader(
-                          sender:
-                                  userId == state.message?.sender.id.toString()
+                          if (state.messageSt.isLoaded())
+                            ChatHeader(
+                              sender:
+                                  userId == state.message?.senderId
                                       ? state.message?.receiver
                                       : state.message?.sender,
                             ),
 
-                          if(state.messageSt.isLoading()) WChatHeaderLoading(),
+                          if (state.messageSt.isLoading()) WChatHeaderLoading(),
                           if (state.fetchSt.isLoading())
                             Expanded(child: WChatLoading()),
                           if (state.fetchSt.isError())
@@ -104,186 +105,190 @@ class _ChatPageState extends State<ChatPage> {
                             //   WErrorWidget(
                             //     errorText: LocaleKeys.noMessages.tr(),
                             //   ),
-                          Expanded(
-                            child: Stack(
-                              children: [
-                                SingleChildScrollView(
-                                  reverse: true,
-                                  controller:
-                                      context
-                                          .read<ChatCubit>()
-                                          .scrollController,
-                                  child: Column(
-                                    children: [
-                                      ListView.separated(
-                                        primary: false,
-                                        shrinkWrap: true,
-                                        reverse: true,
-                                        //controller: chatCubit.scrollController,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.symmetric(
-                                          horizontal: 16.w,
-                                          vertical: 20.h,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          if (state.isLoadingMore &&
-                                              state
+                            Expanded(
+                              child: Stack(
+                                children: [
+                                  SingleChildScrollView(
+                                    reverse: true,
+                                    controller:
+                                        context
+                                            .read<ChatCubit>()
+                                            .scrollController,
+                                    child: Column(
+                                      children: [
+                                        ListView.separated(
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          reverse: true,
+                                          //controller: chatCubit.scrollController,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 16.w,
+                                            vertical: 20.h,
+                                          ),
+                                          itemBuilder: (context, index) {
+                                            if (state.isLoadingMore &&
+                                                state
+                                                        .messageRecords
+                                                        ?.items
+                                                        .length ==
+                                                    index) {
+                                              return WLoadingLottie();
+                                            }
+                                            final messageRecord =
+                                                state
+                                                    .messageRecords
+                                                    ?.items[index];
+                                            if (messageRecord != null &&
+                                                !chatCubit.messageKey
+                                                    .containsKey(
+                                                      messageRecord.id,
+                                                    )) {}
+                                            final isFirstMessage =
+                                                (state
+                                                            .messageRecords
+                                                            ?.items
+                                                            .length ??
+                                                        0) >
+                                                    0 &&
+                                                index ==
+                                                    (state
+                                                                .messageRecords
+                                                                ?.items
+                                                                .length ??
+                                                            0) -
+                                                        1;
+                                            return MessageBubble(
+                                              enableFirstMessage:
+                                                  isFirstMessage,
+                                              isCurrentUser:
+                                                  messageRecord?.senderId ==
+                                                  context
+                                                      .read<UserCubit>()
+                                                      .state
+                                                      .user
+                                                      ?.id,
+                                              message: messageRecord,
+                                              currentUserId:
+                                                  context
+                                                      .read<UserCubit>()
+                                                      .state
+                                                      .user!
+                                                      .id,
+                                              fieldKey:
+                                                  chatCubit.messageKey[state
+                                                      .messageRecords
+                                                      ?.items[index]
+                                                      .id],
+                                              vacancy: state.message?.vacancy,
+                                              service: state.message?.service,
+                                              task: state.message?.task,
+                                            );
+                                          },
+                                          separatorBuilder:
+                                              (context, index) =>
+                                                  AppUtils.hSizedBox16,
+                                          itemCount:
+                                              (state
                                                       .messageRecords
                                                       ?.items
-                                                      .length ==
-                                                  index) {
-                                            return WLoadingLottie();
-                                          }
-                                          final messageRecord =
-                                              state
-                                                  .messageRecords
-                                                  ?.items[index];
-                                          if (messageRecord != null &&
-                                              !chatCubit.messageKey.containsKey(
-                                                messageRecord.id,
-                                              )) {}
-                                          final isFirstMessage =
-                                              (state
-                                                          .messageRecords
-                                                          ?.items
-                                                          .length ??
-                                                      0) >
-                                                  0 &&
-                                              index ==
-                                                  (state
-                                                              .messageRecords
-                                                              ?.items
-                                                              .length ??
-                                                          0) -
-                                                      1;
-                                          return MessageBubble(
-                                            enableFirstMessage: isFirstMessage,
-                                            isCurrentUser:
-                                                messageRecord?.sender.id ==
-                                                context
-                                                    .read<UserCubit>()
-                                                    .state
-                                                    .user
-                                                    ?.id,
-                                            message: messageRecord,
-                                            currentUserId:
-                                                context
-                                                    .read<UserCubit>()
-                                                    .state
-                                                    .user!
-                                                    .id,
-                                            fieldKey:
-                                                chatCubit.messageKey[state
-                                                    .messageRecords
-                                                    ?.items[index]
-                                                    .id],
-                                            vacancy: state.message?.vacancy,
-                                            service: state.message?.service,
-                                            task: state.message?.task,
-                                          );
-                                        },
-                                        separatorBuilder:
-                                            (context, index) =>
-                                                AppUtils.hSizedBox16,
-                                        itemCount:
-                                            (state
-                                                    .messageRecords
-                                                    ?.items
-                                                    .length ??
-                                                0) +
-                                            (state.isLoadingMore ? 1 : 0),
-                                      ),
-                                      ListView.separated(
-                                        primary: false,
-                                        shrinkWrap: true,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        padding: EdgeInsets.only(
-                                          right: 16.w,
-                                          bottom: 30.h,
+                                                      .length ??
+                                                  0) +
+                                              (state.isLoadingMore ? 1 : 0),
                                         ),
-                                        itemBuilder: (context, index) {
-                                          return AnimatedMenuContainer(
-                                            open: true,
-                                            duration:
-                                                TimeDelayCons.durationMill100,
-                                            curve: Curves.ease,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                DecoratedBox(
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.cFF9914,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                          18.r,
-                                                        ),
-                                                  ),
-                                                  child: Text(
-                                                    state
-                                                        .sendingMessages[index],
-                                                    style: AppTextStyles
-                                                        .size15Regular
-                                                        .copyWith(
-                                                          color:
-                                                              AppColors.cFFFFFF,
-                                                        ),
-                                                  ).paddingSymmetric(
-                                                    vertical: 8.h,
-                                                    horizontal: 12.w,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  CupertinoIcons.clock,
-                                                  color: AppColors.cBDC0C6,
-                                                  size: 16,
-                                                ).paddingOnly(
-                                                  top: 5.h,
-                                                  right: 5,
-                                                ),
-                                              ],
-                                            ).paddingOnly(left: 100.w),
-                                          );
-                                        },
-                                        separatorBuilder:
-                                            (context, index) =>
-                                                AppUtils.hSizedBox16,
-                                        itemCount: state.sendingMessages.length,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                if (state.enableDownIcon)
-                                  Positioned(
-                                    right: 10.w,
-                                    bottom: 50.h,
-                                    child: FadeInUp(
-                                      child: FloatingActionButton(
-                                        onPressed: () {
-                                          chatCubit.scrollToEnd();
-                                        },
-                                        backgroundColor: AppColors.cFFFFFF,
-                                        shape: OutlineInputBorder(
-                                          borderSide: BorderSide.none,
-                                          borderRadius: BorderRadius.circular(
-                                            50.r,
+                                        ListView.separated(
+                                          primary: false,
+                                          shrinkWrap: true,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          padding: EdgeInsets.only(
+                                            right: 16.w,
+                                            bottom: 30.h,
                                           ),
+                                          itemBuilder: (context, index) {
+                                            return AnimatedMenuContainer(
+                                              open: true,
+                                              duration:
+                                                  TimeDelayCons.durationMill100,
+                                              curve: Curves.ease,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.cFF9914,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            18.r,
+                                                          ),
+                                                    ),
+                                                    child: Text(
+                                                      state
+                                                          .sendingMessages[index],
+                                                      style: AppTextStyles
+                                                          .size15Regular
+                                                          .copyWith(
+                                                            color:
+                                                                AppColors
+                                                                    .cFFFFFF,
+                                                          ),
+                                                    ).paddingSymmetric(
+                                                      vertical: 8.h,
+                                                      horizontal: 12.w,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    CupertinoIcons.clock,
+                                                    color: AppColors.cBDC0C6,
+                                                    size: 16,
+                                                  ).paddingOnly(
+                                                    top: 5.h,
+                                                    right: 5,
+                                                  ),
+                                                ],
+                                              ).paddingOnly(left: 100.w),
+                                            );
+                                          },
+                                          separatorBuilder:
+                                              (context, index) =>
+                                                  AppUtils.hSizedBox16,
+                                          itemCount:
+                                              state.sendingMessages.length,
                                         ),
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.keyboard_arrow_down_rounded,
-                                            color: AppColors.c2E3A59,
-                                            size: 35.r,
+                                      ],
+                                    ),
+                                  ),
+                                  if (state.enableDownIcon)
+                                    Positioned(
+                                      right: 10.w,
+                                      bottom: 50.h,
+                                      child: FadeInUp(
+                                        child: FloatingActionButton(
+                                          onPressed: () {
+                                            chatCubit.scrollToEnd();
+                                          },
+                                          backgroundColor: AppColors.cFFFFFF,
+                                          shape: OutlineInputBorder(
+                                            borderSide: BorderSide.none,
+                                            borderRadius: BorderRadius.circular(
+                                              50.r,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.keyboard_arrow_down_rounded,
+                                              color: AppColors.c2E3A59,
+                                              size: 35.r,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
                           ChatInputBar(),
                         ],
                       ),

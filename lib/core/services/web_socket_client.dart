@@ -5,7 +5,7 @@ import 'package:web_socket_channel/io.dart';
 import '../../injection_container.dart';
 
 class WebsocketClient {
-  static Future<IOWebSocketChannel> initChat(int messageId) async {
+  static Future<IOWebSocketChannel> initChat(Object messageId) async {
     final String? token = await sl<StorageService>().fetchToken();
     return IOWebSocketChannel.connect(
       Uri.parse('${ApiConstants.wsUrl}/messages/$messageId?token=$token'),

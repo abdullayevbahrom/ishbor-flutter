@@ -27,8 +27,9 @@ class ChatCubit extends Cubit<ChatState> {
   ChatCubit(this._messagesRepository) : super(const ChatState());
   final MessagesRepository _messagesRepository;
   IOWebSocketChannel? _channel;
+  String? _messageId;
 
-  Map<int, GlobalKey> messageKey = {};
+  Map<String, GlobalKey> messageKey = {};
 
   final TextEditingController messageController = TextEditingController();
   final ScrollController scrollController = ScrollController();
@@ -83,9 +84,13 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> fetchMoreMessageReports() async {
+    if (_messageId == null || _messageId!.isEmpty) {
+      return;
+    }
+
     emit(state.copyWith(isLoadingMore: true));
     final response = await _messagesRepository.fetchRecordsById(
-      messageId: state.messageId!,
+      messageId: _messageId!,
       queryParams: CommonQueryParams(
         pageNumber: pageNumber,
         pageSize: pageSize,
@@ -130,9 +135,10 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> fetchMessageReports(int messageId) async {
+  Future<void> fetchMessageReports(Object messageId) async {
+    _messageId = messageId.toString();
     makeMessageRead(messageId);
-    emit(state.copyWith(fetchSt: RequestStatus.loading, messageId: messageId));
+    emit(state.copyWith(fetchSt: RequestStatus.loading));
     final response = await _messagesRepository.fetchRecordsById(
       messageId: messageId,
       queryParams: CommonQueryParams(
@@ -153,13 +159,13 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> makeMessageRead(int messageId) async {
+  Future<void> makeMessageRead(Object messageId) async {
     final response = await _messagesRepository.makeMessageRead(messageId);
 
     response.fold((l) {}, (r) {});
   }
 
-  Future<void> initChat(int messageId) async {
+  Future<void> initChat(Object messageId) async {
     _channel = await WebsocketClient.initChat(messageId);
     _channel?.stream.listen(
       (event) {
@@ -216,7 +222,7 @@ class ChatCubit extends Cubit<ChatState> {
     //scrollToFirstUnreadMessage(state.messageRecords?.items ?? []);
   }
 
-  Future<void> pickFile(int messageId) async {
+  Future<void> pickFile(Object messageId) async {
     try {
       final result = await FilePicker.platform.pickFiles();
       if (result != null && result.files.single.path != null) {
@@ -250,7 +256,7 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
-  Future<void> fetchMessageById(int id) async {
+  Future<void> fetchMessageById(Object id) async {
     emit(state.copyWith(messageSt: RequestStatus.loading));
     final response = await _messagesRepository.fetchMessageById(messageId: id);
     response.fold(

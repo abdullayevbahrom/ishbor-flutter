@@ -34,7 +34,7 @@ class MessageBubble extends StatefulWidget {
   });
 
   final MessageRecord? message;
-  final int currentUserId;
+  final String currentUserId;
   final GlobalKey? fieldKey;
   final bool isCurrentUser;
   final bool enableFirstMessage;
@@ -157,7 +157,10 @@ class _MessageBubbleState extends State<MessageBubble> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.vacancy?.title ?? widget.service?.title ?? widget.task?.title ?? '',
+                            widget.vacancy?.title ??
+                                widget.service?.title ??
+                                widget.task?.title ??
+                                '',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.size17Bold.copyWith(
@@ -165,7 +168,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                             ),
                           ),
                           Text(
-                            price != null ? "${Formatters.moneyFormat(price.toInt().toString())} ${price > 50000 ? "UZS" : "USD"}" : LocaleKeys.salaryIsNegotiable.tr(),
+                            price != null
+                                ? "${Formatters.moneyFormat(price.toInt().toString())} ${price > 50000 ? "UZS" : "USD"}"
+                                : LocaleKeys.salaryIsNegotiable.tr(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: AppTextStyles.size16Medium.copyWith(
@@ -261,7 +266,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                     ),
                   ),
             ],
-          ).paddingSymmetric(horizontal: 12.w,vertical: 8.h),
+          ).paddingSymmetric(horizontal: 12.w, vertical: 8.h),
         ),
         Align(
           alignment:

@@ -10,7 +10,6 @@ import 'package:top_jobs/feature/common/presentation/widget/app_cached_network_i
 import 'package:top_jobs/feature/common/presentation/widget/w_default_user_avatar.dart';
 import 'package:top_jobs/models/message.dart';
 
-
 class WMessageItem extends StatelessWidget {
   const WMessageItem({super.key, required this.message, required this.onTap});
 
@@ -20,7 +19,8 @@ class WMessageItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final me = context.read<UserCubit>().state.user;
-    final user = (me?.id != message?.sender.id ? message?.sender : message?.receiver);
+    final user =
+        me?.id != message?.senderId ? message?.sender : message?.receiver;
     return InkWell(
       onTap: onTap,
       child: Ink(
@@ -67,7 +67,11 @@ class WMessageItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          Formatters.formatLastRecord(message!.lastRecord!),
+                          message?.lastRecord != null
+                              ? Formatters.formatLastRecord(
+                                message!.lastRecord!,
+                              )
+                              : '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.size15Regular.copyWith(
