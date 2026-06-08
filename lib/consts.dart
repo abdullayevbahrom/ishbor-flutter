@@ -1,5 +1,3 @@
-library topjobconsts;
-
 const String _defaultApiBaseUrl = 'https://api.ishbor.uz';
 const String _defaultWsUrl = 'wss://ws.ishbor.uz';
 

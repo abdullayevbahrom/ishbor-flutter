@@ -41,7 +41,7 @@ class DioInterceptors extends Interceptor {
         DioException(
           requestOptions: options,
           error: error,
-          stackTrace: stackTrace is StackTrace ? stackTrace : StackTrace.current,
+          stackTrace: stackTrace,
           type: DioExceptionType.unknown,
           message: error.toString(),
         ),
@@ -157,7 +157,8 @@ class DioInterceptors extends Interceptor {
   }
 
   void _normalizeRequest(RequestOptions options) {
-    options.queryParameters = _normalizeValue(options.queryParameters) as Map<String, dynamic>;
+    options.queryParameters =
+        _normalizeValue(options.queryParameters) as Map<String, dynamic>;
 
     if (options.data is FormData) {
       return;

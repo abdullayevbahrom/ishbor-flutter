@@ -26,7 +26,7 @@ class DioFailure implements Exception {
     final statusCode = error.response?.statusCode;
 
     sl<ExceptionListener>().invoke(
-      stackTrace: error.stackTrace ?? StackTrace.current,
+      stackTrace: error.stackTrace,
       method: error.requestOptions.method,
       requestUri: error.requestOptions.uri,
       queryString:
