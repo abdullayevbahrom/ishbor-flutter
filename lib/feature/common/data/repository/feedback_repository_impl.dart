@@ -4,7 +4,6 @@ import 'package:top_jobs/feature/common/data/datasource/feedback_datasource.dart
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
 import 'package:top_jobs/feature/common/data/models/feedbacks.dart';
 import 'package:top_jobs/feature/common/domain/repository/feedback_repository.dart';
-import 'package:top_jobs/models/feedback.dart';
 
 class FeedBackRepositoryImpl extends FeedBackRepository {
   final FeedBackDataSource _feedBackDataSource;
@@ -41,7 +40,7 @@ class FeedBackRepositoryImpl extends FeedBackRepository {
   }
 
   @override
-  Future<Either<Failure, FeedbackModel>> addFeedBack({
+  Future<Either<Failure, void>> addFeedBack({
     required FeedbackRequestModel feedbackModel,
   }) async {
     final response = await _feedBackDataSource.addFeedBack(

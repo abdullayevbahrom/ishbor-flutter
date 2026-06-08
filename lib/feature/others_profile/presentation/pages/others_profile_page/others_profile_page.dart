@@ -71,7 +71,11 @@ class WReviews extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<FeedbackCubit>()..fetchFeedBackList(user.id),
+      create:
+          (context) =>
+              sl<FeedbackCubit>()
+                ..fetchFeedBackList(user.id)
+                ..fetchFeedbacksCount(user.id),
       child: BlocBuilder<FeedbackCubit, FeedbackState>(
         builder: (context, state) {
           return Column(
@@ -139,7 +143,7 @@ class WReviews extends StatelessWidget {
                                     width: 2.7.r,
                                   ).paddingOnly(right: 8.w),
                                   Text(
-                                    "${state.listFeedBack?.totalCount}",
+                                    "${state.countFeedback}",
                                     style: AppTextStyles.size20Medium.copyWith(
                                       color: AppColors.cC1C1C1,
                                     ),
@@ -174,7 +178,6 @@ class WReviews extends StatelessWidget {
                       text: LocaleKeys.writeReview.tr(),
                       color: AppColors.cFF9914,
                     ),
-
                   ],
                 ).paddingAll(16.r),
               ),
@@ -183,7 +186,7 @@ class WReviews extends StatelessWidget {
                 ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.listFeedBack?.items.length??0,
+                  itemCount: state.listFeedBack?.items.length ?? 0,
                   separatorBuilder: (context, index) => AppUtils.hSizedBox16,
                   itemBuilder: (context, index) {
                     return FeedBackItem(

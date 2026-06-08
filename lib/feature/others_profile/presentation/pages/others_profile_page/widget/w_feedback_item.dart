@@ -30,7 +30,11 @@ class FeedBackItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              AppCachedNetworkImage(height: 60.h, radius: 30.h),
+              AppCachedNetworkImage(
+                imageUrl: feedbackModel?.senderAvatarUrl,
+                height: 60.h,
+                radius: 30.h,
+              ),
               AppUtils.wSizedBox20,
               Column(
                 spacing: 4.h,
@@ -38,11 +42,13 @@ class FeedBackItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "${feedbackModel?.sender.fullName ?? ''}",
+                    feedbackModel?.senderName ?? feedbackModel?.senderId ?? '',
                     style: AppTextStyles.size17Medium,
                   ),
                   Text(
-                    Formatters.timeAgo(DateTime.now()),
+                    Formatters.timeAgo(
+                      feedbackModel?.createdAt ?? DateTime.now(),
+                    ),
                     style: AppTextStyles.size15Regular.copyWith(
                       color: AppColors.cBDC0C6,
                     ),

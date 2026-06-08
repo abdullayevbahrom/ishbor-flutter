@@ -1,90 +1,123 @@
-
 import 'package:equatable/equatable.dart';
 import 'package:top_jobs/core/helpers/date_time_parser.dart';
-import 'package:top_jobs/models/service.dart';
-import 'package:top_jobs/models/task.dart';
-import 'package:top_jobs/models/user.dart';
-import 'package:top_jobs/models/vacancy.dart';
-
 
 class FeedbackModel extends Equatable {
   final String id;
-  final User sender;
-  final User receiver;
-  final Task? task;
-  final Vacancy? vacancy;
-  final Service? service;
+  final String receiverType;
+  final String receiverId;
+  final String? senderId;
   final DateTime? createdAt;
   final bool? like;
   final bool? dislike;
   final String? message;
+  final Map<String, dynamic>? metaData;
+  final String? status;
+  final String? senderName;
+  final String? senderAvatarUrl;
 
-  FeedbackModel({
+  const FeedbackModel({
     required this.id,
-    required this.sender,
-    required this.receiver,
-    this.task,
-    this.vacancy,
-    this.service,
-     this.createdAt,
+    required this.receiverType,
+    required this.receiverId,
+    this.senderId,
+    this.createdAt,
     this.like,
     this.dislike,
-    this.message
+    this.message,
+    this.metaData,
+    this.status,
+    this.senderName,
+    this.senderAvatarUrl,
   });
 
   @override
   List<Object?> get props => [
     id,
-    sender,
-    receiver,
-    task,
-    vacancy,
-    service,
+    receiverType,
+    receiverId,
+    senderId,
     createdAt,
     like,
     dislike,
-    message
+    message,
+    metaData,
+    status,
+    senderName,
+    senderAvatarUrl,
   ];
 
   static FeedbackModel fromMap(Map<String, dynamic> data) {
+    final sender = data['sender'];
+    final senderMap =
+        sender is Map<String, dynamic> ? sender : <String, dynamic>{};
+    final rawMetaData = data['meta_data'];
+
     return FeedbackModel(
       id: data['id']?.toString() ?? '',
-      sender: User.fromMap(data['sender']),
-      receiver: User.fromMap(data['receiver']),
-      task: data['task'] != null ? Task.fromMap(data['task']) : null,
-      vacancy: data['vacancy'] != null ? Vacancy.fromMap(data['vacancy']) : null,
-      service: data['service'] != null ? Service.fromMap(data['service']) : null,
+      receiverType: data['receiver_type']?.toString() ?? '',
+      receiverId: data['receiver_id']?.toString() ?? '',
+      senderId: data['sender_id']?.toString(),
       createdAt: parseNullableDateTime(data['created_at']),
-      like: data['like'] != null ? data['like'] : null,
-      dislike: data['dislike'] != null ? data['dislike'] : null,
-      message: data['message'] != null ? data['message'] : null,
+      like: data['like'] as bool?,
+      dislike: data['dislike'] as bool?,
+      message: data['message']?.toString(),
+      metaData:
+          rawMetaData is Map<String, dynamic>
+              ? Map<String, dynamic>.from(rawMetaData)
+              : null,
+      status: data['status']?.toString(),
+      senderName: senderMap['full_name']?.toString(),
+      senderAvatarUrl: _senderAvatarUrl(senderMap['avatar']),
     );
+  }
+
+  static String? _senderAvatarUrl(dynamic avatar) {
+    if (avatar is String && avatar.isNotEmpty) {
+      return avatar;
+    }
+    if (avatar is Map<String, dynamic>) {
+      final url = avatar['url'] ?? avatar['original'];
+      if (url != null && url.toString().isNotEmpty) {
+        return url.toString();
+      }
+      final urls = avatar['urls'];
+      if (urls is Map<String, dynamic>) {
+        final original = urls['original'];
+        if (original != null && original.toString().isNotEmpty) {
+          return original.toString();
+        }
+      }
+    }
+    return null;
   }
 
   FeedbackModel copyWith({
     String? id,
-    User? sender,
-    User? receiver,
-    Task? task,
-    Vacancy? vacancy,
-    Service? service,
+    String? receiverType,
+    String? receiverId,
+    String? senderId,
     DateTime? createdAt,
     bool? like,
     bool? dislike,
     String? message,
+    Map<String, dynamic>? metaData,
+    String? status,
+    String? senderName,
+    String? senderAvatarUrl,
   }) {
     return FeedbackModel(
       id: id ?? this.id,
-      sender: sender ?? this.sender,
-      receiver: receiver ?? this.receiver,
-      task: task ?? this.task,
-      vacancy: vacancy ?? this.vacancy,
-      service: service ?? this.service,
+      receiverType: receiverType ?? this.receiverType,
+      receiverId: receiverId ?? this.receiverId,
+      senderId: senderId ?? this.senderId,
       createdAt: createdAt ?? this.createdAt,
       like: like ?? this.like,
       dislike: dislike ?? this.dislike,
       message: message ?? this.message,
+      metaData: metaData ?? this.metaData,
+      status: status ?? this.status,
+      senderName: senderName ?? this.senderName,
+      senderAvatarUrl: senderAvatarUrl ?? this.senderAvatarUrl,
     );
   }
-
 }

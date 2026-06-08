@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
@@ -8,7 +9,6 @@ import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.d
 import '../../../../../core/helpers/enum_helpers.dart';
 import '../../../data/models/feedback_model.dart';
 import '../../../data/models/feedbacks.dart';
-
 part 'feedback_state.dart';
 
 part 'feedback_cubit.freezed.dart';
@@ -18,7 +18,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   final FeedBackRepository _feedBackRepository;
 
   Future<void> fetchFeedbacksCount(String userId) async {
-    emit(state.copyWith(countSt: RequestStatus.loading));
+    emit(state.copyWith(countSt: RequestStatus.loading, userId: userId));
 
     final response = await _feedBackRepository.fetchFeedBackCount(id: userId);
 
@@ -35,7 +35,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
   }
 
   Future<void> fetchFeedBackList(String userId) async {
-    emit(state.copyWith(listSt: RequestStatus.loading));
+    emit(state.copyWith(listSt: RequestStatus.loading, userId: userId));
 
     final response = await _feedBackRepository.fetchFeedBackList(id: userId);
 
@@ -53,23 +53,33 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     required FeedbackRequestModel feedBackRequest,
   }) async {
     emit(state.copyWith(addReviewSt: RequestStatus.loading));
+    if (kDebugMode) {
+      debugPrint(
+        '[FIX][FEEDBACK][submit] receiverType=${feedBackRequest.receiverType} receiverId=${feedBackRequest.receiverId}',
+      );
+    }
 
     final response = await _feedBackRepository.addFeedBack(
       feedbackModel: feedBackRequest,
     );
 
-    response.fold(
-      (l) {
+    await response.fold(
+      (l) async {
         emit(state.copyWith(addReviewSt: RequestStatus.error));
+        if (kDebugMode) {
+          debugPrint('[FIX][FEEDBACK][submit][error] ${l.message}');
+        }
       },
-      (r) {
-        final oldFeedBacks = state.listFeedBack?.items ?? [];
-        final list = state.listFeedBack?.copyWith(
-          items: [...oldFeedBacks]..add(r),
-        );
-        emit(
-          state.copyWith(addReviewSt: RequestStatus.loaded, listFeedBack: list),
-        );
+      (_) async {
+        emit(state.copyWith(addReviewSt: RequestStatus.loaded));
+        final userId = state.userId ?? feedBackRequest.receiverId;
+        if (userId != null && userId.isNotEmpty) {
+          await fetchFeedBackList(userId);
+          await fetchFeedbacksCount(userId);
+        }
+        if (kDebugMode) {
+          debugPrint('[FIX][FEEDBACK][submit] success');
+        }
         showSuccessToast("Success");
         navigatorKey.currentContext?.pop();
       },

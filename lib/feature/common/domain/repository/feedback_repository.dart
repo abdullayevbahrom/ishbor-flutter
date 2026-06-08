@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/network/api_http.dart';
-import '../../../../models/feedback.dart';
 import '../../data/models/feedback_model.dart';
 import '../../data/models/feedbacks.dart';
 
@@ -12,7 +11,7 @@ abstract class FeedBackRepository {
     required String id,
   });
 
-  Future<Either<Failure, FeedbackModel>> addFeedBack({
+  Future<Either<Failure, void>> addFeedBack({
     required FeedbackRequestModel feedbackModel,
   });
 }

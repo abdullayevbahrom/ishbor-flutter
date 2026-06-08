@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FeedbackState {
 
- RequestStatus get countSt; RequestStatus get listSt; RequestStatus get addReviewSt; PaginatedFeedbackResponse? get listFeedBack; String? get errorText; int get countFeedback;
+ String? get userId; RequestStatus get countSt; RequestStatus get listSt; RequestStatus get addReviewSt; PaginatedFeedbackResponse? get listFeedBack; String? get errorText; int get countFeedback;
 /// Create a copy of FeedbackState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $FeedbackStateCopyWith<FeedbackState> get copyWith => _$FeedbackStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedbackState&&(identical(other.countSt, countSt) || other.countSt == countSt)&&(identical(other.listSt, listSt) || other.listSt == listSt)&&(identical(other.addReviewSt, addReviewSt) || other.addReviewSt == addReviewSt)&&(identical(other.listFeedBack, listFeedBack) || other.listFeedBack == listFeedBack)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.countFeedback, countFeedback) || other.countFeedback == countFeedback));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedbackState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.countSt, countSt) || other.countSt == countSt)&&(identical(other.listSt, listSt) || other.listSt == listSt)&&(identical(other.addReviewSt, addReviewSt) || other.addReviewSt == addReviewSt)&&(identical(other.listFeedBack, listFeedBack) || other.listFeedBack == listFeedBack)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.countFeedback, countFeedback) || other.countFeedback == countFeedback));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
+int get hashCode => Object.hash(runtimeType,userId,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
 
 @override
 String toString() {
-  return 'FeedbackState(countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
+  return 'FeedbackState(userId: $userId, countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $FeedbackStateCopyWith<$Res>  {
   factory $FeedbackStateCopyWith(FeedbackState value, $Res Function(FeedbackState) _then) = _$FeedbackStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus countSt, RequestStatus listSt, RequestStatus addReviewSt, PaginatedFeedbackResponse? listFeedBack, String? errorText, int countFeedback
+ String? userId, RequestStatus countSt, RequestStatus listSt, RequestStatus addReviewSt, PaginatedFeedbackResponse? listFeedBack, String? errorText, int countFeedback
 });
 
 
@@ -62,9 +62,10 @@ class _$FeedbackStateCopyWithImpl<$Res>
 
 /// Create a copy of FeedbackState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? countSt = null,Object? listSt = null,Object? addReviewSt = null,Object? listFeedBack = freezed,Object? errorText = freezed,Object? countFeedback = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? userId = freezed,Object? countSt = null,Object? listSt = null,Object? addReviewSt = null,Object? listFeedBack = freezed,Object? errorText = freezed,Object? countFeedback = null,}) {
   return _then(_self.copyWith(
-countSt: null == countSt ? _self.countSt : countSt // ignore: cast_nullable_to_non_nullable
+userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,countSt: null == countSt ? _self.countSt : countSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,listSt: null == listSt ? _self.listSt : listSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,addReviewSt: null == addReviewSt ? _self.addReviewSt : addReviewSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,listFeedBack: freezed == listFeedBack ? _self.listFeedBack : listFeedBack // ignore: cast_nullable_to_non_nullable
@@ -155,10 +156,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? userId,  RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedbackState() when $default != null:
-return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
+return $default(_that.userId,_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
   return orElse();
 
 }
@@ -176,10 +177,10 @@ return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? userId,  RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)  $default,) {final _that = this;
 switch (_that) {
 case _FeedbackState():
-return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
+return $default(_that.userId,_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -196,10 +197,10 @@ return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? userId,  RequestStatus countSt,  RequestStatus listSt,  RequestStatus addReviewSt,  PaginatedFeedbackResponse? listFeedBack,  String? errorText,  int countFeedback)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedbackState() when $default != null:
-return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
+return $default(_that.userId,_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,_that.errorText,_that.countFeedback);case _:
   return null;
 
 }
@@ -211,9 +212,10 @@ return $default(_that.countSt,_that.listSt,_that.addReviewSt,_that.listFeedBack,
 
 
 class _FeedbackState implements FeedbackState {
-  const _FeedbackState({this.countSt = RequestStatus.initial, this.listSt = RequestStatus.initial, this.addReviewSt = RequestStatus.initial, this.listFeedBack = null, this.errorText = null, this.countFeedback = 0});
+  const _FeedbackState({this.userId = null, this.countSt = RequestStatus.initial, this.listSt = RequestStatus.initial, this.addReviewSt = RequestStatus.initial, this.listFeedBack = null, this.errorText = null, this.countFeedback = 0});
   
 
+@override@JsonKey() final  String? userId;
 @override@JsonKey() final  RequestStatus countSt;
 @override@JsonKey() final  RequestStatus listSt;
 @override@JsonKey() final  RequestStatus addReviewSt;
@@ -231,16 +233,16 @@ _$FeedbackStateCopyWith<_FeedbackState> get copyWith => __$FeedbackStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedbackState&&(identical(other.countSt, countSt) || other.countSt == countSt)&&(identical(other.listSt, listSt) || other.listSt == listSt)&&(identical(other.addReviewSt, addReviewSt) || other.addReviewSt == addReviewSt)&&(identical(other.listFeedBack, listFeedBack) || other.listFeedBack == listFeedBack)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.countFeedback, countFeedback) || other.countFeedback == countFeedback));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedbackState&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.countSt, countSt) || other.countSt == countSt)&&(identical(other.listSt, listSt) || other.listSt == listSt)&&(identical(other.addReviewSt, addReviewSt) || other.addReviewSt == addReviewSt)&&(identical(other.listFeedBack, listFeedBack) || other.listFeedBack == listFeedBack)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.countFeedback, countFeedback) || other.countFeedback == countFeedback));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
+int get hashCode => Object.hash(runtimeType,userId,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
 
 @override
 String toString() {
-  return 'FeedbackState(countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
+  return 'FeedbackState(userId: $userId, countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
 }
 
 
@@ -251,7 +253,7 @@ abstract mixin class _$FeedbackStateCopyWith<$Res> implements $FeedbackStateCopy
   factory _$FeedbackStateCopyWith(_FeedbackState value, $Res Function(_FeedbackState) _then) = __$FeedbackStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus countSt, RequestStatus listSt, RequestStatus addReviewSt, PaginatedFeedbackResponse? listFeedBack, String? errorText, int countFeedback
+ String? userId, RequestStatus countSt, RequestStatus listSt, RequestStatus addReviewSt, PaginatedFeedbackResponse? listFeedBack, String? errorText, int countFeedback
 });
 
 
@@ -268,9 +270,10 @@ class __$FeedbackStateCopyWithImpl<$Res>
 
 /// Create a copy of FeedbackState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? countSt = null,Object? listSt = null,Object? addReviewSt = null,Object? listFeedBack = freezed,Object? errorText = freezed,Object? countFeedback = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? userId = freezed,Object? countSt = null,Object? listSt = null,Object? addReviewSt = null,Object? listFeedBack = freezed,Object? errorText = freezed,Object? countFeedback = null,}) {
   return _then(_FeedbackState(
-countSt: null == countSt ? _self.countSt : countSt // ignore: cast_nullable_to_non_nullable
+userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
+as String?,countSt: null == countSt ? _self.countSt : countSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,listSt: null == listSt ? _self.listSt : listSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,addReviewSt: null == addReviewSt ? _self.addReviewSt : addReviewSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,listFeedBack: freezed == listFeedBack ? _self.listFeedBack : listFeedBack // ignore: cast_nullable_to_non_nullable

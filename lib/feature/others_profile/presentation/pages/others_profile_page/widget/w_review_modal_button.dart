@@ -69,9 +69,9 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
           child: SafeArea(
             child: Material(
               color: AppColors.cFFFFFF,
-              borderRadius:BorderRadius.only(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(20.r),
-                topRight: Radius.circular(20.r)
+                topRight: Radius.circular(20.r),
               ),
               child: SizedBox(
                 width: 100.sw,
@@ -158,7 +158,8 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
                           widget.feedbackCubit.addFeedBack(
                             feedBackRequest: FeedbackRequestModel(
                               message: controller.text.trim(),
-                              receiver: widget.receiverId,
+                              receiverType: 'user',
+                              receiverId: widget.receiverId,
                               like: isActive == 1,
                               dislike: isActive == 2,
                             ),

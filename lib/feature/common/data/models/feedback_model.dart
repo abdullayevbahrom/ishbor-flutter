@@ -1,43 +1,35 @@
 class FeedbackRequestModel {
   final String? message;
-  final String? receiver;
+  final String? receiverType;
+  final String? receiverId;
   final bool? like;
   final bool? dislike;
-  final String? task;
-  final String? vacancy;
-  final String? service;
 
   FeedbackRequestModel({
     this.message,
-    this.receiver,
+    this.receiverType,
+    this.receiverId,
     this.like,
     this.dislike,
-    this.task,
-    this.vacancy,
-    this.service,
   });
 
   factory FeedbackRequestModel.fromJson(Map<String, dynamic> json) {
     return FeedbackRequestModel(
       message: json['message'] as String?,
-      receiver: json['receiver']?.toString(),
+      receiverType: json['receiver_type']?.toString(),
+      receiverId: json['receiver_id']?.toString(),
       like: json['like'] as bool?,
       dislike: json['dislike'] as bool?,
-      task: json['task']?.toString(),
-      vacancy: json['vacancy']?.toString(),
-      service: json['service']?.toString(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       if (message != null) 'message': message,
-      if (receiver != null) 'receiver': receiver,
+      if (receiverType != null) 'receiver_type': receiverType,
+      if (receiverId != null) 'receiver_id': receiverId,
       if (like != null) 'like': like,
       if (dislike != null) 'dislike': dislike,
-      if (task != null) 'task': task,
-      if (vacancy != null) 'vacancy': vacancy,
-      if (service != null) 'service': service,
     };
   }
 }

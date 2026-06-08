@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
-import 'package:top_jobs/models/feedback.dart';
 
 import '../models/feedback_model.dart';
 import '../models/feedbacks.dart';
@@ -15,7 +14,7 @@ abstract class FeedBackDataSource {
     required String id,
   });
 
-  Future<Either<Failure, FeedbackModel>> addFeedBack({
+  Future<Either<Failure, void>> addFeedBack({
     required FeedbackRequestModel feedbackModel,
   });
 }
@@ -29,14 +28,17 @@ class FeedBackDataSourceImpl extends FeedBackDataSource {
   Future<Either<Failure, int>> fetchFeedBackCount({required String id}) async {
     try {
       if (kDebugMode) {
-        debugPrint('[FEEDBACK][count] GET ${ApiConstants.userFeedbacksCount(id)}');
+        debugPrint(
+          '[FEEDBACK][count] GET ${ApiConstants.userFeedbacksCount(id)}',
+        );
       }
       final response = await _dio.get(ApiConstants.userFeedbacksCount(id));
 
       if (response.statusCode == 200) {
-        final payload = response.data is Map<String, dynamic>
-            ? (response.data['data'] ?? response.data)
-            : response.data;
+        final payload =
+            response.data is Map<String, dynamic>
+                ? (response.data['data'] ?? response.data)
+                : response.data;
         if (payload is int) {
           return Right(payload);
         }
@@ -91,12 +93,12 @@ class FeedBackDataSourceImpl extends FeedBackDataSource {
   }
 
   @override
-  Future<Either<Failure, FeedbackModel>> addFeedBack({
+  Future<Either<Failure, void>> addFeedBack({
     required FeedbackRequestModel feedbackModel,
   }) async {
     try {
       if (kDebugMode) {
-        debugPrint('[FEEDBACK][create] POST ${ApiConstants.feedbacks}');
+        debugPrint('[FIX][FEEDBACK][create] POST ${ApiConstants.feedbacks}');
       }
       final response = await _dio.post(
         ApiConstants.feedbacks,
@@ -106,7 +108,12 @@ class FeedBackDataSourceImpl extends FeedBackDataSource {
       if (response.statusCode == 200 ||
           response.statusCode == 201 ||
           response.statusCode == 202) {
-        return Right(FeedbackModel.fromMap(response.data));
+        if (kDebugMode) {
+          debugPrint(
+            '[FIX][FEEDBACK][create] accepted receiverType=${feedbackModel.receiverType} receiverId=${feedbackModel.receiverId}',
+          );
+        }
+        return const Right(null);
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
@@ -116,6 +123,11 @@ class FeedBackDataSourceImpl extends FeedBackDataSource {
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
+      if (kDebugMode) {
+        debugPrint(
+          '[FIX][FEEDBACK][create][error] receiverType=${feedbackModel.receiverType} receiverId=${feedbackModel.receiverId} message=${failure.message}',
+        );
+      }
       return Left(Failure(message: failure.message));
     } on Exception catch (e) {
       debugPrint(e.toString());
