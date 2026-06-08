@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 
 import '../models/contact_click_params.dart';
@@ -21,8 +22,9 @@ class ContactClickDataSourceImpl extends ContactClickDatasource {
     required ContactClickParams contactClickParams,
   }) async {
     try {
-      final response = await _dio.post("/contact-click",
-      data: contactClickParams.toJson()
+      final response = await _dio.post(
+        ApiConstants.contentContactClick,
+        data: contactClickParams.toJson(),
       );
 
       if (response.statusCode == 204) {

@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/feature/performers_view/data/models/paginated_task_requests.dart';
 import 'package:top_jobs/models/task_request.dart';
@@ -40,7 +41,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/tasks/${params.taskId}/task-requests',
+        ApiConstants.applyTask(params.taskId),
         data: {"message": params.message, "price": params.price},
       );
 
@@ -68,7 +69,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/task-requests/${taskRequestId}/cancel-by-customer',
+        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/cancel-by-customer',
       );
 
       if (response.statusCode == 204) {
@@ -95,7 +96,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/task-requests/${taskRequestId}/accept',
+        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/accept',
       );
 
       if (response.statusCode == 204) {
@@ -122,7 +123,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '/task-requests/${taskRequestId}/finish-by-customer',
+        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/finish-by-customer',
       );
 
       if (response.statusCode == 204) {
@@ -148,7 +149,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
     required int taskId,
   }) async {
     try {
-      final response = await _dio.get('/tasks/${taskId}/task-requests');
+      final response = await _dio.get(ApiConstants.fetchListTaskRequests(taskId));
       if (response.statusCode == 200) {
         return Right(PaginatedTaskRequestList.fromJson(response.data));
       } else {
@@ -172,7 +173,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
     required int taskId,
   }) async {
     try {
-      final response = await _dio.get('/tasks/${taskId}/task-requests/own');
+      final response = await _dio.get(ApiConstants.fetchOwnTaskRequest(taskId));
 
       if (response.statusCode == 200) {
         return Right(TaskRequest.fromMap(response.data['request']));

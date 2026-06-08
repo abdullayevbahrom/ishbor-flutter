@@ -35,7 +35,7 @@ class ChatPage extends StatefulWidget {
 
 class _ChatPageState extends State<ChatPage> {
   final chatCubit = sl<ChatCubit>();
-  int? userId;
+  String? userId;
 
   @override
   void initState() {
@@ -88,8 +88,8 @@ class _ChatPageState extends State<ChatPage> {
                         children: [
 
                           if(state.messageSt.isLoaded()) ChatHeader(
-                              sender:
-                                  userId == state.message?.sender.id
+                          sender:
+                                  userId == state.message?.sender.id.toString()
                                       ? state.message?.receiver
                                       : state.message?.sender,
                             ),

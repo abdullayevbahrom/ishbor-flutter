@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:top_jobs/core/network/api_http.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
+import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/feature/auth/data/models/auth_success.dart';
 
 import '../models/check_model.dart';
@@ -28,9 +28,9 @@ abstract class AuthDatasource {
 }
 
 class AuthDataSourceImpl extends AuthDatasource {
-  final Dio _dio;
-
   AuthDataSourceImpl(this._dio);
+
+  final Dio _dio;
 
   @override
   Future<Either<Failure, void>> sendCodeAgain({
@@ -38,34 +38,19 @@ class AuthDataSourceImpl extends AuthDatasource {
   }) async {
     try {
       final response = await _dio.post(
-        ApiConstants.sendCodeAgain,
-        data: {'phoneNumber': phoneNumber},
+        ApiConstants.authRequestCode,
+        data: {'phone_number': phoneNumber},
       );
-      if (response.statusCode == 204) {
+
+      if (response.statusCode == 200) {
         return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          final data = response.data as Map<String, dynamic>;
-          final fallback = data.values.isNotEmpty
-              ? data.values.first.toString()
-              : 'Unknown error';
-          return Left(
-            Failure(
-              message:
-                  data['message'] ??
-                  data['error'] ??
-                  data['phoneNumber'] ??
-                  fallback,
-            ),
-          );
-        } else {
-          return Left(Failure(message: response.data));
-        }
       }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -77,22 +62,20 @@ class AuthDataSourceImpl extends AuthDatasource {
   }) async {
     try {
       final response = await _dio.post(
-        "security/check-phone",
-        data: {"phoneNumber": phoneNumber},
+        ApiConstants.authRequestCode,
+        data: {'phone_number': phoneNumber},
       );
+
       if (response.statusCode == 200) {
-        return Right(response.data['exists']);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        final payload = _payload(response.data);
+        return Right(payload['exists'] == true);
       }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -105,22 +88,19 @@ class AuthDataSourceImpl extends AuthDatasource {
   }) async {
     try {
       final response = await _dio.post(
-        "security/verify-sms-login",
-        data: {"phoneNumber": phoneNumber, "code": code},
+        ApiConstants.authVerifyCode,
+        data: {'phone_number': phoneNumber, 'code': code},
       );
+
       if (response.statusCode == 200) {
-        return Right(AuthSuccess.fromJson(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Right(AuthSuccess.fromJson(_payload(response.data)));
       }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -132,30 +112,27 @@ class AuthDataSourceImpl extends AuthDatasource {
   }) async {
     try {
       final response = await _dio.post(
-        "security/sms-registration",
+        ApiConstants.authRegister,
         data: {
-          "phoneNumber": params.phoneNumber,
-          "firstName": params.firstName,
-          "type": params.userType,
-          //"password": params.password,
-          if ((params.lastName ?? '').isNotEmpty) "lastName": params.lastName,
+          'phone_number': params.phoneNumber,
+          'code': params.code,
+          'type': params.userType,
+          'first_name': params.firstName,
+          if ((params.lastName ?? '').isNotEmpty) 'last_name': params.lastName,
           if ((params.middleName ?? '').isNotEmpty)
-            "middleName": params.middleName,
+            'middle_name': params.middleName,
         },
       );
-      if (response.statusCode == 200) {
-        return Right(AuthSuccess.fromJson(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return Right(AuthSuccess.fromJson(_payload(response.data)));
       }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -167,25 +144,49 @@ class AuthDataSourceImpl extends AuthDatasource {
   }) async {
     try {
       final response = await _dio.post(
-        ApiConstants.loginCheck,
-        data: {"_username": checkModel.name, "_password": checkModel.password},
+        ApiConstants.authVerifyCode,
+        data: {
+          'phone_number': checkModel.name,
+          'code': checkModel.password,
+        },
       );
 
       if (response.statusCode == 200) {
-        return Right(AuthSuccess.fromJson(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Right(AuthSuccess.fromJson(_payload(response.data)));
       }
+
+      return Left(Failure(message: _messageFromResponse(response.data)));
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  Map<String, dynamic> _payload(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final data = responseData['data'];
+      if (data is Map<String, dynamic>) {
+        return Map<String, dynamic>.from(data);
+      }
+      return Map<String, dynamic>.from(responseData);
+    }
+
+    return <String, dynamic>{};
+  }
+
+  String _messageFromResponse(dynamic responseData) {
+    if (responseData is Map<String, dynamic>) {
+      final firstValue = responseData.values.isNotEmpty ? responseData.values.first : 'Unknown error';
+      return (
+        responseData['message'] ??
+        responseData['error'] ??
+        firstValue
+      ).toString();
+    }
+
+    return responseData?.toString() ?? 'Unknown error';
   }
 }

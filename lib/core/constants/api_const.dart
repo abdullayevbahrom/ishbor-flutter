@@ -1,173 +1,161 @@
+import 'package:top_jobs/consts.dart';
+
 sealed class ApiConstants {
   ApiConstants._();
 
-  /// === BASE URL endpoints ===
-  static const String baseUrl = 'https://api.ishbor.uz/';
+  static String get baseUrl => apiBaseUrl;
+  static String get wsUrl => websocketUrl;
+  static const String apiPrefix = '/api/v1';
 
-  ///  Websocket url
-  static const String wsUrl = 'wss://ws.ishbor.uz/';
+  static String _route(String path) => '$apiPrefix/$path';
+  static String _id(Object value) => value.toString();
 
   /// === OPEN STREET endpoints ===
   static const String reverseLocation =
-      "https://nominatim.openstreetmap.org/reverse";
+      'https://nominatim.openstreetmap.org/reverse';
   static const String searchLocation =
-      "https://nominatim.openstreetmap.org/search";
-
-  /// === ChatGPT endpoints ===
-  static const String chatGpt = "https://api.ishbor.uz/chatgpt";
+      'https://nominatim.openstreetmap.org/search';
 
   /// === Common endpoints ===
   static const String similar = 'similar';
 
-  /// === Notifications endpoints ===
-  static const String notifications = 'notifications';
+  /// === Auth ===
+  static String get authRequestCode => _route('auth/request-code');
+  static String get authVerifyCode => _route('auth/verify-code');
+  static String get authRegister => _route('auth/register');
+  static String get authRefresh => _route('auth/refresh');
+  static String get authLogout => _route('auth/logout');
 
-  static String makeReadNotification(int id) =>
-      "$notifications/${id}/make-read";
+  /// === Notifications ===
+  static String get notifications => _route('notifications');
+  static String makeReadNotification(Object id) =>
+      '$notifications/${_id(id)}/make-read';
 
-  ///  === VACANCIES endpoints ===
-  static const String vacancies = 'vacancies';
-  static const String vacanciesGeo = '$vacancies/geo';
-  static const String myVacancies = 'me/vacancies/customer';
-  static const String myVacancyApplies = 'me/vacancies/performer';
-  static const String vacancyFavorite = "me/vacancy/favorites";
+  /// === Vacancies ===
+  static String get vacancies => _route('vacancies');
+  static String get vacanciesGeo => '$vacancies/geo';
+  static String get myVacancies => _route('me/vacancies/customer');
+  static String get myVacancyApplies => _route('me/vacancies/performer');
+  static String get vacancyFavorite => _route('me/vacancy/favorites');
 
-  static String fetchVacancy(int id) => '$vacancies/$id';
+  static String fetchVacancy(Object id) => '$vacancies/${_id(id)}';
+  static String fetchSimilarVacancy(Object id) =>
+      '$vacancies/${_id(id)}/$similar';
+  static String applyVacancy(Object id) =>
+      '$vacancies/${_id(id)}/vacancy-requests';
+  static String fetchOwnVacancyRequest(Object id) =>
+      '$vacancies/${_id(id)}/vacancy-requests/own';
+  static String fetchListVacancyRequests(Object id) =>
+      '$vacancies/${_id(id)}/vacancy-requests';
+  static String updateVacancy(Object id) => '$vacancies/${_id(id)}/update';
+  static String liftUpVacancyById(Object id) =>
+      '$vacancies/${_id(id)}/lift-up';
+  static String changeVacancyStatusById(Object id) =>
+      '$vacancies/${_id(id)}/change-status';
+  static String toggleVacancyFavorite(Object id) =>
+      '$vacancies/${_id(id)}/favorite';
+  static String deleteVacancyById(Object id) => '$vacancies/${_id(id)}';
 
-  static String fetchSimilarVacancy(int id) => '$vacancies/$id/$similar';
+  /// === Categories ===
+  static String get categories => _route('categories');
+  static String get popularCategories => _route('categories/popular');
 
-  static String applyVacancy(int id) => '$vacancies/$id/vacancy-requests';
+  /// === Services ===
+  static String get services => _route('services');
+  static String get servicesGeo => '$services/geo';
+  static String get myServices => _route('me/services/customer');
+  static String get myServiceApplies => _route('me/services/performer');
+  static String get serviceFavorite => _route('me/service/favorites');
 
-  static String fetchOwnVacancyRequest(int id) =>
-      '$vacancies/$id/vacancy-requests/own';
+  static String fetchService(Object id) => '$services/${_id(id)}';
+  static String fetchSimilarService(Object id) =>
+      '$services/${_id(id)}/$similar';
+  static String updateService(Object id) => '$services/${_id(id)}/update';
+  static String uploadServiceImages(Object id) => '$services/${_id(id)}/images';
+  static String liftUpServiceById(Object id) => '$services/${_id(id)}/lift-up';
+  static String deactivateServiceById(Object id) =>
+      '$services/${_id(id)}/change-status';
+  static String toggleServiceFavorite(Object id) =>
+      '$services/${_id(id)}/favorite';
+  static String deleteServiceById(Object id) => '$services/${_id(id)}';
 
-  static String fetchListVacancyRequests(int id) =>
-      '$vacancies/$id/vacancy-requests';
+  /// === Tasks ===
+  static String get tasks => _route('tasks');
+  static String get tasksGeo => '$tasks/geo';
+  static String get myTasks => _route('me/tasks/customer');
+  static String get myTaskApplies => _route('me/tasks/performer');
+  static String get taskFavorite => _route('me/task/favorites');
 
-  static String updateVacancy(int id) => '$vacancies/$id/update';
+  static String fetchTask(Object id) => '$tasks/${_id(id)}';
+  static String fetchSimilarTask(Object id) => '$tasks/${_id(id)}/$similar';
+  static String applyTask(Object id) => '$tasks/${_id(id)}/task-requests';
+  static String fetchOwnTaskRequest(Object id) =>
+      '$tasks/${_id(id)}/task-requests/own';
+  static String fetchListTaskRequests(Object id) =>
+      '$tasks/${_id(id)}/task-requests';
+  static String updateTask(Object id) => '$tasks/${_id(id)}/update';
+  static String uploadTaskImages(Object id) => '$tasks/${_id(id)}/images';
+  static String liftUpTaskById(Object id) => '$tasks/${_id(id)}/lift-up';
+  static String deactivateTaskById(Object id) =>
+      '$tasks/${_id(id)}/change-status';
+  static String toggleTaskFavorite(Object id) =>
+      '$tasks/${_id(id)}/favorite';
+  static String deleteTaskById(Object id) => '$tasks/${_id(id)}';
 
-  static String liftUpVacancyById(int id) => '$vacancies/$id/lift-up';
+  static String vacancyContact(Object vacancyId) =>
+      _route('vacancies/${_id(vacancyId)}/phone');
+  static String serviceContact(Object serviceId) =>
+      _route('services/${_id(serviceId)}/phone');
+  static String taskContact(Object taskId) =>
+      _route('tasks/${_id(taskId)}/phone');
 
-  static String changeVacancyStatusById(int id) =>
-      '$vacancies/$id/change-status';
+  /// === User ===
+  static String get me => _route('me');
+  static String get meEdit => '$me/edit';
+  static String get mePortfolios => '$me/portfolios';
+  static String get meVerificationDoc => '$me/verification-doc';
+  static String get meLocale => '$me/locale';
+  static String get meAvatar => '$me/avatar';
+  static String get meDestroyAccount => '$me/destroy-account';
+  static String get meLocaleSync => '$me/locale';
 
-  static String toggleVacancyFavorite(int id) => "$vacancies/$id/favorite";
+  static String userFeedbacks(Object userId) =>
+      _route('users/${_id(userId)}/feedbacks');
+  static String userFeedbacksCount(Object userId) =>
+      _route('users/${_id(userId)}/feedbacks/count');
+  static String get feedbacks => _route('feedbacks');
 
-  static String deleteVacancyById(int id) => '$vacancies/$id';
+  /// === Cities ===
+  static String get cities => _route('cities');
 
-  /// === CATEGORIES endpoints ===
-  static const String categories = "categories";
-
-  /// === SERVICES endpoints ===
-  static const String services = 'services';
-  static const String servicesGeo = '$services/geo';
-  static const String myServices = 'me/services/customer';
-  static const String myServiceApplies = 'me/services/performer';
-  static const String serviceFavorite = "me/service/favorites";
-
-  static String fetchService(int id) => '$services/$id';
-
-  static String fetchSimilarService(int id) => '$services/$id/$similar';
-
-  static String updateService(int id) => '$services/$id/update';
-
-  static String uploadServiceImages(int id) => '$services/$id/images';
-
-  static String liftUpServiceById(int id) => '$services/$id/lift-up';
-
-  static String deactivateServiceById(int id) => '$services/$id/change-status';
-
-  static String toggleServiceFavorite(int id) => "$services/$id/favorite";
-
-  static String deleteServiceById(int id) => '$services/$id';
-
-  /// === TASKS endpoints ===
-  static const String tasks = 'tasks';
-  static const String tasksGeo = '$tasks/geo';
-  static const String myTasks = 'me/tasks/customer';
-  static const String myTaskApplies = 'me/tasks/performer';
-  static const String taskFavorite = "me/task/favorites";
-
-  static String fetchTask(int id) => '$tasks/$id';
-
-  static String fetchSimilarTask(int id) => '$tasks/$id/$similar';
-
-  static String applyTask(int id) => '$tasks/$id/task-requests';
-
-  static String fetchOwnTaskRequest(int id) => '$tasks/$id/task-requests/own';
-
-  static String fetchListTaskRequests(int id) => '$tasks/$id/task-requests';
-
-  static String updateTask(int id) => '$tasks/$id/update';
-
-  static String uploadTaskImages(int id) => '$tasks/$id/images';
-
-  static String liftUpTaskById(int id) => '$tasks/$id/lift-up';
-
-  static String deactivateTaskById(int id) => '$tasks/$id/change-status';
-
-  static String toggleTaskFavorite(int id) => "$tasks/$id/favorite";
-
-  static String deleteTaskById(int id) => '$tasks/$id';
-
-  static String vacancyContact(int vacancyId) => "vacancies/$vacancyId/phone";
-
-  static String serviceContact(int serviceId) => "services/$serviceId/phone";
-
-  static String taskContact(int taskId) => "tasks/$taskId/phone";
-
-  /// === AUTH endpoints ===
-  static const String loginCheck = 'security/login_check';
-  static const String authLogin = 'security/connect/';
-  static const String authRegistration = 'v2/security/auth-registration';
-  static const String register = 'security/registration';
-  static const String verifyPhone = 'security/verify-phone';
-  static const String forgotPassword = 'security/forgot-password';
-  static const String forgotPasswordVerify = 'security/forgot-password/verify';
-  static const String sendCodeAgain = 'security/verify-phone/send-again';
-
-  /// ==== USER endpoints ====
-  static const String me = 'me';
-  static const String meEdit = '$me/edit';
-  static const String mePortfolios = '$me/portfolios';
-  static const String meVerificationDoc = '$me/verification-doc';
-  static const String meLocale = "$me/locale";
-  static const String meAvatar = "$me/avatar";
-
-  /// ==== FEEDBACK endpoints ====
-  static String userFeedbacks(int userId) => 'users/$userId/feedbacks';
-
-  static String userFeedbacksCount(int userId) =>
-      'users/$userId/feedbacks/count';
-  static const String feedbacks = "feedbacks";
-
-  /// ==== CITIES endpoints ====
-  static const String cities = "cities";
-
-  /// ==== MESSAGES endpoints ====
-  static const String messages = 'messages';
-
-  static String fetchMessage(int id) => '$messages/$id';
-
+  /// === Messages ===
+  static String get messages => _route('messages');
+  static String fetchMessage(Object id) => '$messages/${_id(id)}';
   static String listMessages(String type) => '$messages/$type';
+  static String get postMessage => messages;
+  static String messageRecords(Object messageId) =>
+      '$messages/${_id(messageId)}/records';
+  static String uploadMessageFile(Object messageId) =>
+      '$messages/${_id(messageId)}/upload';
+  static String get askQuestion => '$messages/records';
+  static String makeMessageRead(Object messageId) =>
+      '$messages/${_id(messageId)}/records/make-read';
 
-  static String postMessage() => messages;
+  /// === Payments / Reports ===
+  static String get paymentTransactions => _route('payment-transactions');
+  static String get reports => _route('reports');
+  static String get contentContactClick => _route('content-contact-click/');
 
-  static String messageRecords(int messageId) => '$messages/$messageId/records';
+  /// === AI / Search / Misc ===
+  static String get chatGpt => _route('chatgpt');
+  static String get search => _route('search/');
 
-  static String uploadMessageFile(int messageId) =>
-      '$messages/$messageId/upload';
-  static String askQuestion = "$messages/records";
-
-  static String makeMessageRead(int messageId) =>
-      "$messages/$messageId/records/make-read";
-
-  static const String paymentTransactions = "/payment-transactions";
-  static const String reports = '/reports';
-
-  static const String yandexApiKey = "d5d11899-3666-4363-98c8-ffc2f4c11a1f";
-  static const String yandexGeocodeKey = "773f30b3-80df-4c93-8f3f-99ff4833ca4b";
-  static const String yandexSuggestKey = "6773b3db-3070-4fab-a39a-9f8b468106a8";
+  /// === Yandex / external ===
+  static const String yandexApiKey = 'd5d11899-3666-4363-98c8-ffc2f4c11a1f';
+  static const String yandexGeocodeKey =
+      '773f30b3-80df-4c93-8f3f-99ff4833ca4b';
+  static const String yandexSuggestKey =
+      '6773b3db-3070-4fab-a39a-9f8b468106a8';
 
   static String yandexGeoSuggest({
     required String search,

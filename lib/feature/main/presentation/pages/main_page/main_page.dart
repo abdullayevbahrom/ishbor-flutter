@@ -98,7 +98,9 @@ class _MainPageState extends State<MainPage>
       }
       context.read<AuthCubit>().logInWithTelegram(
         AuthSuccess(
-          token: widget.payload?['token'],
+          accessToken: widget.payload?['token'],
+          refreshToken: widget.payload?['refresh_token'],
+          expiresIn: null,
           expiresAt: expiresAt,
         ),
       );

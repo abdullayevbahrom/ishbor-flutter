@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
@@ -168,7 +169,7 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
                 ),
               18.verticalSpace,
               WShareAdsLink(
-                link: "https://api.ishbor.uz/vacancy-view?id=${vacancy?.id}",
+                link: "${ApiConstants.baseUrl}/vacancy-view?id=${vacancy?.id}",
               ),
               17.verticalSpace,
               WAdsAuthorPreView(

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/feature/ads_view/data/models/task_request_params.dart';
@@ -265,7 +266,7 @@ class _WTaskViewPageState extends State<WTaskViewPage> {
               color: AppColors.c15CF74,
             ).paddingSymmetric(horizontal: 16.w),
           22.verticalSpace,
-          WShareAdsLink(link: "https://api.ishbor.uz/task-view?id=${task?.id}"),
+          WShareAdsLink(link: "${ApiConstants.baseUrl}/task-view?id=${task?.id}"),
           WAdsAuthorPreView(
             onPressedAuthorAds: () {
               if (user == task?.customer) {

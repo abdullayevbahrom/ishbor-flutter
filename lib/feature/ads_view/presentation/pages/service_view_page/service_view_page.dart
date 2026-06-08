@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:skeletonizer/skeletonizer.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/export.dart';
 import 'package:top_jobs/feature/ads_view/presentation/cubits/service_view_cubit/service_view_cubit.dart';
@@ -155,7 +156,7 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
                 ),
               22.verticalSpace,
               WShareAdsLink(
-                link: "https://api.ishbor.uz/service-view?id=${service?.id}",
+                link: "${ApiConstants.baseUrl}/service-view?id=${service?.id}",
               ),
               WAdsAuthorPreView(
                 onPressedAuthorAds: () {

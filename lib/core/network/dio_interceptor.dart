@@ -1,39 +1,52 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+import '../../consts.dart';
+import '../constants/api_const.dart';
 import '../services/storage_service.dart';
 
 class DioInterceptors extends Interceptor {
+  DioInterceptors(this._storageService, this._dio);
+
   final StorageService _storageService;
   final Dio _dio;
   final Random _random = Random();
-
-  DioInterceptors(this._storageService, this._dio);
+  Future<void>? _refreshInFlight;
 
   static const int _maxNetworkRetryCount = 2;
   static const int _maxUnauthorizedRetryCount = 1;
+  static const Duration _refreshSkew = Duration(minutes: 1);
 
   @override
-  void onRequest(
+  Future<void> onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    String? token = await _storageService.fetchToken();
-    String? deviceToken = await _storageService.fetchDeviceToken();
-
-    if (deviceToken != null) {
-      options.headers.addAll({
-        "X-Device-Token": deviceToken,
-        "X-Device-Type": Platform.isAndroid ? "android" : "ios",
-      });
+    try {
+      await _prepareRequest(options);
+      handler.next(options);
+    } catch (error, stackTrace) {
+      if (kDebugMode) {
+        debugPrint('[DIO][request][error] ${options.method} ${options.uri}');
+        debugPrint('$error');
+      }
+      handler.reject(
+        DioException(
+          requestOptions: options,
+          error: error,
+          stackTrace: stackTrace is StackTrace ? stackTrace : StackTrace.current,
+          type: DioExceptionType.unknown,
+          message: error.toString(),
+        ),
+      );
     }
-
-    if (token != null) {
-      options.headers.addAll({"Authorization": "Bearer $token"});
-    }
-    return super.onRequest(options, handler);
   }
 
   @override
@@ -44,19 +57,28 @@ class DioInterceptors extends Interceptor {
     final requestOptions = err.requestOptions;
     final retryAttempt = _retryAttempt(requestOptions);
 
-    if (err.response?.statusCode == 401 &&
+    if (_shouldRefreshOnUnauthorized(err) &&
         retryAttempt < _maxUnauthorizedRetryCount) {
       try {
+        await _refreshTokens(force: true);
         handler.resolve(
-          await _retry(
-            requestOptions,
-            attempt: retryAttempt + 1,
-            markUnauthorizedRetry: true,
-          ),
+          await _retry(requestOptions, attempt: retryAttempt + 1),
         );
         return;
       } on DioException catch (e) {
+        await _storageService.clearAuth();
         handler.next(e);
+        return;
+      } catch (error) {
+        await _storageService.clearAuth();
+        handler.next(
+          DioException(
+            requestOptions: requestOptions,
+            type: DioExceptionType.unknown,
+            message: error.toString(),
+            error: error,
+          ),
+        );
         return;
       }
     }
@@ -74,6 +96,221 @@ class DioInterceptors extends Interceptor {
     }
 
     handler.next(err);
+  }
+
+  Future<void> _prepareRequest(RequestOptions options) async {
+    if (_shouldBypassInterceptors(options)) {
+      return;
+    }
+
+    _normalizeRequest(options);
+
+    final headers = Map<String, dynamic>.from(options.headers);
+    headers['Accept'] ??= 'application/json';
+    headers['X-Device-Type'] ??=
+        Platform.isAndroid ? 'android' : 'ios';
+
+    final deviceToken = await _ensureDeviceToken();
+    if (deviceToken != null && deviceToken.isNotEmpty) {
+      headers['X-Device-Token'] = deviceToken;
+    }
+
+    final shouldAttachAuthorization = _shouldAttachAuthorization(options);
+    if (shouldAttachAuthorization &&
+        await _storageService.hasFreshToken(skew: _refreshSkew)) {
+      final token = await _storageService.fetchToken();
+      if (token != null && token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+    } else if (shouldAttachAuthorization) {
+      await _refreshTokens();
+      final token = await _storageService.fetchToken();
+      if (token != null && token.isNotEmpty) {
+        headers['Authorization'] = 'Bearer $token';
+      }
+    }
+
+    final timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+    final rawBody = _canonicalRequestBody(options.data);
+    headers['X-Timestamp'] = timestamp.toString();
+
+    if (_shouldSignRequest(options)) {
+      headers['X-Signature'] = _buildSignature(
+        path: options.uri.path,
+        rawBody: rawBody,
+        timestamp: timestamp,
+      );
+    }
+
+    options.headers
+      ..clear()
+      ..addAll(headers);
+
+    if (kDebugMode) {
+      debugPrint(
+        '[DIO][request] ${options.method} ${options.uri.path}'
+        ' ts=$timestamp bodyHash=${sha256.convert(utf8.encode(rawBody)).toString().substring(0, 8)}'
+        ' auth=${headers.containsKey("Authorization")}'
+        ' device=${headers.containsKey("X-Device-Token")}',
+      );
+    }
+  }
+
+  void _normalizeRequest(RequestOptions options) {
+    options.queryParameters = _normalizeValue(options.queryParameters) as Map<String, dynamic>;
+
+    if (options.data is FormData) {
+      return;
+    }
+
+    options.data = _normalizeValue(options.data);
+  }
+
+  dynamic _normalizeValue(dynamic value) {
+    if (value is Map) {
+      final entries = value.entries
+          .map(
+            (entry) => MapEntry(
+              _toSnakeCase(entry.key.toString()),
+              _normalizeValue(entry.value),
+            ),
+          )
+          .toList()
+        ..sort((left, right) => left.key.compareTo(right.key));
+
+      return Map<String, dynamic>.fromEntries(entries);
+    }
+
+    if (value is List) {
+      return value.map(_normalizeValue).toList();
+    }
+
+    return value;
+  }
+
+  String _canonicalRequestBody(dynamic data) {
+    if (data == null) {
+      return '';
+    }
+
+    if (data is FormData) {
+      return '';
+    }
+
+    if (data is String) {
+      return data;
+    }
+
+    if (data is Map || data is List) {
+      return jsonEncode(data);
+    }
+
+    return jsonEncode(data);
+  }
+
+  bool _shouldBypassInterceptors(RequestOptions options) {
+    if (options.extra['skip_signature'] == true) {
+      return true;
+    }
+
+    if (!options.uri.isAbsolute) {
+      return false;
+    }
+
+    final apiHost = Uri.parse(apiBaseUrl).host;
+    return options.uri.host != apiHost;
+  }
+
+  bool _shouldAttachAuthorization(RequestOptions options) {
+    if (options.extra['skip_authorization'] == true) {
+      return false;
+    }
+
+    return !options.uri.path.startsWith('/api/v1/auth/');
+  }
+
+  bool _shouldSignRequest(RequestOptions options) {
+    if (options.extra['skip_signature'] == true) {
+      return false;
+    }
+
+    if (!options.uri.isAbsolute) {
+      return true;
+    }
+
+    final apiHost = Uri.parse(apiBaseUrl).host;
+    return options.uri.host == apiHost;
+  }
+
+  Future<String?> _ensureDeviceToken() async {
+    final stored = await _storageService.fetchDeviceToken();
+    if (stored != null && stored.isNotEmpty) {
+      return stored;
+    }
+
+    try {
+      final token = await _fetchFirebaseDeviceToken();
+      if (token != null && token.isNotEmpty) {
+        await _storageService.putDeviceToken(token);
+      }
+      return token;
+    } catch (error) {
+      if (kDebugMode) {
+        debugPrint('[DIO][device-token] failed to bootstrap: $error');
+      }
+      return null;
+    }
+  }
+
+  Future<String?> _fetchFirebaseDeviceToken() async {
+    try {
+      return await FirebaseMessaging.instance.getToken();
+    } catch (_) {
+      return null;
+    }
+  }
+
+  String _buildSignature({
+    required String path,
+    required String rawBody,
+    required int timestamp,
+  }) {
+    final payload = '$path|$rawBody|$timestamp';
+    final secret = apiSignatureSecret;
+    if (secret.isEmpty && kDebugMode) {
+      debugPrint('[DIO][signature] API_SIGNATURE_SECRET is empty');
+    }
+
+    final key = utf8.encode(secret);
+    final bytes = utf8.encode(payload);
+    final hmacSha256 = Hmac(sha256, key);
+    return hmacSha256.convert(bytes).toString();
+  }
+
+  String _toSnakeCase(String value) {
+    final buffer = StringBuffer();
+    for (var index = 0; index < value.length; index++) {
+      final char = value[index];
+      final isUpper = char.toUpperCase() == char && char.toLowerCase() != char;
+      if (isUpper && index > 0) {
+        buffer.write('_');
+      }
+      buffer.write(char.toLowerCase());
+    }
+    return buffer.toString();
+  }
+
+  bool _shouldRefreshOnUnauthorized(DioException err) {
+    if (err.response?.statusCode != 401) {
+      return false;
+    }
+
+    final path = err.requestOptions.uri.path;
+    if (path.startsWith('/api/v1/auth/')) {
+      return false;
+    }
+
+    return true;
   }
 
   int _retryAttempt(RequestOptions requestOptions) =>
@@ -117,30 +354,17 @@ class DioInterceptors extends Interceptor {
   Future<Response<dynamic>> _retry(
     RequestOptions requestOptions, {
     required int attempt,
-    bool markUnauthorizedRetry = false,
   }) async {
-    String? token = await _storageService.fetchToken();
-    String? deviceToken = await _storageService.fetchDeviceToken();
-
-    final headers = Map<String, dynamic>.from(requestOptions.headers);
-    if (token != null) {
-      headers["Authorization"] = "Bearer $token";
-    }
-    if (deviceToken != null) {
-      headers["X-Device-Token"] = deviceToken;
-      headers["X-Device-Type"] = Platform.isAndroid ? "android" : "ios";
-    }
-
-    final options = Options(
+    await _prepareRequest(requestOptions);
+    final retryOptions = Options(
       method: requestOptions.method,
-      headers: headers,
+      headers: Map<String, dynamic>.from(requestOptions.headers),
       responseType: requestOptions.responseType,
       contentType: requestOptions.contentType,
       sendTimeout: requestOptions.sendTimeout,
       receiveTimeout: requestOptions.receiveTimeout,
       extra: {
         ...requestOptions.extra,
-        'retried': markUnauthorizedRetry,
         'retry_attempt': attempt,
       },
     );
@@ -148,7 +372,84 @@ class DioInterceptors extends Interceptor {
     return _dio.requestUri<dynamic>(
       requestOptions.uri,
       data: requestOptions.data,
-      options: options,
+      options: retryOptions,
     );
+  }
+
+  Future<void> _refreshTokens({bool force = false}) async {
+    final refreshToken = await _storageService.fetchRefreshToken();
+    if (refreshToken == null || refreshToken.isEmpty) {
+      return;
+    }
+
+    if (!force && await _storageService.hasFreshToken(skew: _refreshSkew)) {
+      return;
+    }
+
+    if (_refreshInFlight != null) {
+      return _refreshInFlight!;
+    }
+
+    final completer = Completer<void>();
+    _refreshInFlight = completer.future;
+
+    try {
+      final response = await _dio.post(
+        ApiConstants.authRefresh,
+        data: {'refresh_token': refreshToken},
+        options: Options(
+          extra: {
+            'skip_authorization': true,
+            'skip_signature': false,
+            'skip_token_refresh': true,
+          },
+        ),
+      );
+
+      final payload = response.data is Map<String, dynamic>
+          ? (response.data['data'] is Map<String, dynamic>
+              ? Map<String, dynamic>.from(response.data['data'])
+              : Map<String, dynamic>.from(response.data))
+          : <String, dynamic>{};
+
+      final accessToken = payload['access_token'] as String?;
+      final newRefreshToken = payload['refresh_token'] as String? ?? refreshToken;
+      final expiresIn = payload['expires_in'] is int
+          ? payload['expires_in'] as int
+          : int.tryParse('${payload['expires_in'] ?? ''}');
+
+      if (accessToken == null || accessToken.isEmpty) {
+        throw StateError('Refresh response missing access_token.');
+      }
+
+      await _storageService.putToken(accessToken);
+      await _storageService.putRefreshToken(newRefreshToken);
+      await _storageService.putExpireDate(
+        expiresIn != null
+            ? DateTime.now().add(Duration(seconds: expiresIn))
+            : null,
+      );
+
+      if (kDebugMode) {
+        debugPrint(
+          '[DIO][refresh] success expiresIn=${expiresIn ?? 'unknown'}',
+        );
+      }
+
+      completer.complete();
+    } catch (error, stackTrace) {
+      completer.completeError(error, stackTrace);
+      if (error is DioException) {
+        rethrow;
+      }
+      throw DioException(
+        requestOptions: RequestOptions(path: ApiConstants.authRefresh),
+        type: DioExceptionType.unknown,
+        message: error.toString(),
+        error: error,
+      );
+    } finally {
+      _refreshInFlight = null;
+    }
   }
 }

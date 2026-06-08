@@ -1,7 +1,11 @@
 import 'dart:convert';
+
 import 'package:hive/hive.dart';
+
 import 'package:top_jobs/feature/ads_form/data/models/request/vacancy_params.dart';
+
 import '../constants/app_locale_keys.dart';
+
 class StorageService {
   static final StorageService instance = StorageService._();
 
@@ -17,11 +21,19 @@ class StorageService {
     return await _box.get(_StorageKeys.token, defaultValue: null);
   }
 
-  Future<void> putUserId(int userId) async {
+  Future<void> putRefreshToken(String? refreshToken) async {
+    await _box.put(_StorageKeys.refreshToken, refreshToken);
+  }
+
+  Future<String?> fetchRefreshToken() async {
+    return await _box.get(_StorageKeys.refreshToken, defaultValue: null);
+  }
+
+  Future<void> putUserId(String? userId) async {
     await _box.put(_StorageKeys.userId, userId);
   }
 
-  Future<int?> fetchUserId() async {
+  Future<String?> fetchUserId() async {
     return await _box.get(_StorageKeys.userId, defaultValue: null);
   }
 
@@ -31,6 +43,20 @@ class StorageService {
 
   Future<DateTime?> getExpireDate() async {
     return _box.get(_StorageKeys.tokenExpireDate, defaultValue: null);
+  }
+
+  Future<bool> hasFreshToken({Duration skew = const Duration(minutes: 1)}) async {
+    final token = await fetchToken();
+    if (token == null || token.isEmpty) {
+      return false;
+    }
+
+    final expireDate = await getExpireDate();
+    if (expireDate == null) {
+      return true;
+    }
+
+    return expireDate.isAfter(DateTime.now().add(skew));
   }
 
   Future<void> putDeviceToken(String? deviceToken) async {
@@ -93,6 +119,13 @@ class StorageService {
     await _box.clear();
   }
 
+  Future<void> clearAuth() async {
+    await _box.delete(_StorageKeys.token);
+    await _box.delete(_StorageKeys.refreshToken);
+    await _box.delete(_StorageKeys.tokenExpireDate);
+    await _box.delete(_StorageKeys.userId);
+  }
+
   Future<void> putCountOfPhoneReq() async {
     final countOfReq = await getCountOfPhoneReq();
     await _box.put(_StorageKeys.countOfPhoneReq, countOfReq + 1);
@@ -105,6 +138,7 @@ class StorageService {
 
 class _StorageKeys {
   static const String token = "token";
+  static const String refreshToken = "refreshToken";
   static const String tokenExpireDate = "tokenExpireDate";
   static const String password = "password";
   static const String searchQuery = "searchQuery";

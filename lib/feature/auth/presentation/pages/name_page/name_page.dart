@@ -122,6 +122,7 @@ class NamePage extends StatelessWidget {
                         final data = _userNameController.text.trim().split(' ');
                         context.read<AuthCubit>().registerUser(
                           params: SmsRegistrationParams(
+                            code: context.read<AuthCubit>().otpCode ?? '',
                             userType: userType,
                             phoneNumber: phoneNumber,
                             firstName: data.length >= 2 ? data[1] : data[0],

@@ -1,5 +1,5 @@
 class ContactClickParams {
-  final int id;
+  final String id;
   final String type;
   final String contact;
 

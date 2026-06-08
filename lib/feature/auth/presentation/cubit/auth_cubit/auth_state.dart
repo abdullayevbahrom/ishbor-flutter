@@ -10,7 +10,7 @@ abstract class AuthState with _$AuthState {
     @Default(RequestStatus.initial) RequestStatus loginSt,
     @Default(RequestStatus.initial) RequestStatus resendSt,
     @Default(null) String? errorText,
-   @Default(null) String? validateError,
-    @Default(null) String? type
+    @Default(null) String? validateError,
+    @Default(null) String? type,
   }) = _AuthState;
 }

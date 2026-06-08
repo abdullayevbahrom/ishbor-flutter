@@ -26,10 +26,14 @@ class AuthCubit extends Cubit<AuthState> {
 
   final AuthRepository _authRepository;
   final storageService = sl<StorageService>();
+  String? _otpCode;
+
+  String? get otpCode => _otpCode;
 
   Future<void> logOut() async {
     emit(state.copyWith(logOutSt: RequestStatus.loading));
-    await sl<StorageService>().clear();
+    _otpCode = null;
+    await sl<StorageService>().clearAuth();
     navigatorKey.currentContext?.read<UserCubit>().fetchUser();
     emit(state.copyWith(logOutSt: RequestStatus.loaded));
   }
@@ -56,7 +60,9 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (r) async {
         await storageService.putToken(r.token);
+        await storageService.putRefreshToken(r.refreshToken);
         await storageService.putExpireDate(r.expiresAt);
+        _otpCode = null;
         emit(state.copyWith(status: RequestStatus.loaded));
         showSuccessToast(LocaleKeys.loginSuccessful.tr());
       },
@@ -67,13 +73,16 @@ class AuthCubit extends Cubit<AuthState> {
     final token = await storageService.fetchToken();
     if (token == null) {
       await storageService.putToken(authSuccess.token);
+      await storageService.putRefreshToken(authSuccess.refreshToken);
       await storageService.putExpireDate(authSuccess.expiresAt);
+      _otpCode = null;
       showSuccessToast(LocaleKeys.loginSuccessful.tr());
       navigatorKey.currentContext?.read<UserCubit>().fetchUser();
     }
   }
 
   Future<void> verifyPhoneNumber({required String phoneNumber}) async {
+    _otpCode = null;
     emit(state.copyWith(verifyPhoneSt: RequestStatus.loading));
     if (phoneNumber == '+998123456789') {
       await Future.delayed(Duration(seconds: 2));
@@ -144,6 +153,7 @@ class AuthCubit extends Cubit<AuthState> {
         navigatorKey.currentContext?.pop();
 
         if (r.token == null) {
+          _otpCode = code;
           emit(state.copyWith(loginSt: RequestStatus.warning));
           UserTypePage(
             phoneNumber: phone.replaceAll(" ", ''),
@@ -151,7 +161,9 @@ class AuthCubit extends Cubit<AuthState> {
           showSuccessToast(LocaleKeys.verifySuccess.tr());
         } else {
           await storageService.putToken(r.token);
+          await storageService.putRefreshToken(r.refreshToken);
           await storageService.putExpireDate(r.expiresAt);
+          _otpCode = null;
           emit(state.copyWith(loginSt: RequestStatus.loaded));
           showSuccessToast(LocaleKeys.loginSuccessful.tr());
         }
@@ -162,7 +174,9 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> registerUser({required SmsRegistrationParams params}) async {
     emit(state.copyWith(registerSt: RequestStatus.loading));
 
-    final response = await _authRepository.smsRegistration(params: params);
+    final response = await _authRepository.smsRegistration(
+      params: params.copyWithCode(_otpCode ?? params.code),
+    );
     response.fold(
       (l) {
         emit(state.copyWith(registerSt: RequestStatus.error));
@@ -170,7 +184,9 @@ class AuthCubit extends Cubit<AuthState> {
       },
       (r) async {
         await storageService.putToken(r.token);
+        await storageService.putRefreshToken(r.refreshToken);
         await storageService.putExpireDate(r.expiresAt);
+        _otpCode = null;
         emit(
           state.copyWith(
             registerSt: RequestStatus.loaded,

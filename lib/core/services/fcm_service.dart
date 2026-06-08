@@ -205,9 +205,14 @@ class FcmNotificationService {
   final _messaging = FirebaseMessaging.instance;
   final _localNotifications = FlutterLocalNotificationsPlugin();
   bool _isFlutterLocalNotificationsInitialized = false;
+  bool _isInitialized = false;
   final _logger = Logger();
 
   Future<void> initialize() async {
+    if (_isInitialized) {
+      return;
+    }
+
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     /// Request permission
@@ -225,24 +230,21 @@ class FcmNotificationService {
 
     // Get and store device token
     await _getAndStoreDeviceToken();
+    FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
+      _logger.i('FCM token refreshed');
+      await StorageService.instance.putDeviceToken(token);
+    });
 
     // Check for pending navigation after app launch
     await _checkPendingNavigation();
+    _isInitialized = true;
   }
 
   Future<void> _getAndStoreDeviceToken() async {
-    if (Platform.isIOS) {
-      // final result = await _isIosRealDevice();
-
-      final token = await _messaging.getToken();
-      if (token != null) {
-        await StorageService.instance.putDeviceToken(token);
-      }
-    } else if (Platform.isAndroid) {
-      final token = await _messaging.getToken();
-      if (token != null) {
-        await StorageService.instance.putDeviceToken(token);
-      }
+    final token = await _messaging.getToken();
+    if (token != null && token.isNotEmpty) {
+      _logger.i('FCM token captured');
+      await StorageService.instance.putDeviceToken(token);
     }
   }
 

@@ -30,6 +30,7 @@ import 'package:top_jobs/feature/main/presentation/cubit/main_cubit/main_cubit.d
 import 'package:top_jobs/feature/messages/presentation/cubits/message_cubit/message_cubit.dart';
 import 'package:top_jobs/injection_container.dart' as di;
 import 'package:top_jobs/injection_container.dart';
+import 'package:top_jobs/core/services/fcm_service.dart';
 
 import 'firebase_options.dart';
 
@@ -63,6 +64,7 @@ Future<void> main() async {
         Hive.openBox(AppLocaleKeys.appName),
       ]);
       di.init();
+      await FcmNotificationService.instance.initialize();
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);

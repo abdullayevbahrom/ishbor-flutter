@@ -376,7 +376,9 @@ class AppRoutes {
           }
           navigatorKey.currentContext?.read<AuthCubit>().logInWithTelegram(
             AuthSuccess(
-              token: uri.queryParameters['token'],
+              accessToken: uri.queryParameters['token'],
+              refreshToken: uri.queryParameters['refresh_token'],
+              expiresIn: null,
               expiresAt: expiresAt,
             ),
           );

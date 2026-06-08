@@ -77,7 +77,7 @@ class WAuthorPhoneNumbers extends StatelessWidget {
                 onTap: () {
                   context.read<AskQuestionCubit>().addContactClick(
                     params: ContactClickParams(
-                      id: id,
+                      id: id.toString(),
                       type: type,
                       contact: "${phoneNumbers[index]}",
                     ),

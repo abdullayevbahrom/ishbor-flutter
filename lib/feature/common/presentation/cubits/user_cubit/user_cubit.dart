@@ -90,7 +90,7 @@ class UserCubit extends Cubit<UserState> {
       response.fold(
         (l) => emit(state.copyWith(status: RequestStatus.error, user: null)),
         (r) async {
-          await sl<StorageService>().putUserId(r.id);
+          await sl<StorageService>().putUserId(r.id.toString());
           emit(
             state.copyWith(
               status: RequestStatus.loaded,

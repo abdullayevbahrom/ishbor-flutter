@@ -1,14 +1,33 @@
 library topjobconsts;
 
+const String _defaultApiBaseUrl = 'https://api.ishbor.uz';
+const String _defaultWsUrl = 'wss://ws.ishbor.uz';
+
+const String apiBaseUrl = String.fromEnvironment(
+  'API_BASE_URL',
+  defaultValue: _defaultApiBaseUrl,
+);
+
+const String websocketUrl = String.fromEnvironment(
+  'WS_URL',
+  defaultValue: _defaultWsUrl,
+);
+
+const String apiSignatureSecret = String.fromEnvironment(
+  'API_SIGNATURE_SECRET',
+  defaultValue: '',
+);
+
+const String appEnvironment = String.fromEnvironment(
+  'APP_ENV',
+  defaultValue: 'prod',
+);
+
 const bool isProd = bool.fromEnvironment('dart.vm.product');
 
-const String baseUrl = bool.fromEnvironment('dart.vm.product')
-  ? 'https://api.topjob.uz'
-  : 'https://api.topjob.uz';
+const String baseUrl = apiBaseUrl;
 
-const String wsUrl = bool.fromEnvironment('dart.vm.product')
-  ? 'wss://ws.topjob.uz'
-  : 'wss://ws.topjob.uz';
+const String wsUrl = websocketUrl;
 
 const Map<String, String> paymentIcons = {
   'cash': 'assets/img/p_cash.jpg',
