@@ -93,6 +93,14 @@ sealed class ApiConstants {
       '$tasks/${_id(id)}/task-requests/own';
   static String fetchListTaskRequests(Object id) =>
       '$tasks/${_id(id)}/task-requests';
+  static String fetchTaskRequest(Object id) =>
+      _route('task-requests/${_id(id)}');
+  static String cancelTaskRequestByCustomer(Object id) =>
+      _route('task-requests/${_id(id)}/cancel-by-customer');
+  static String acceptTaskRequest(Object id) =>
+      _route('task-requests/${_id(id)}/accept');
+  static String finishTaskRequestByCustomer(Object id) =>
+      _route('task-requests/${_id(id)}/finish-by-customer');
   static String updateTask(Object id) => '$tasks/${_id(id)}/update';
   static String uploadTaskImages(Object id) => '$tasks/${_id(id)}/images';
   static String liftUpTaskById(Object id) => '$tasks/${_id(id)}/lift-up';

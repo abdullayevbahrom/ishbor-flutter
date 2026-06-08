@@ -299,7 +299,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   @override
   Future<Either<Failure, Vacancy>> fetchVacancyById({required int id}) async {
     try {
-      final response = await _dio.get('${ApiConstants.vacancies}/$id');
+      final response = await _dio.get(ApiConstants.fetchVacancy(id));
       if (response.statusCode == 200) {
         return Right(Vacancy.fromMap(response.data));
       } else {

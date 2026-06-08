@@ -69,7 +69,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/cancel-by-customer',
+        ApiConstants.cancelTaskRequestByCustomer(taskRequestId),
       );
 
       if (response.statusCode == 204) {
@@ -96,7 +96,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/accept',
+        ApiConstants.acceptTaskRequest(taskRequestId),
       );
 
       if (response.statusCode == 204) {
@@ -123,7 +123,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }) async {
     try {
       final response = await _dio.post(
-        '${ApiConstants.apiPrefix}/task-requests/${taskRequestId}/finish-by-customer',
+        ApiConstants.finishTaskRequestByCustomer(taskRequestId),
       );
 
       if (response.statusCode == 204) {

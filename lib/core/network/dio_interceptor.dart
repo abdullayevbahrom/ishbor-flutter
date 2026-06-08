@@ -10,6 +10,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 
 import '../../consts.dart';
 import '../constants/api_const.dart';
+import 'snake_case_mapper.dart';
 import '../services/storage_service.dart';
 
 class DioInterceptors extends Interceptor {
@@ -157,36 +158,15 @@ class DioInterceptors extends Interceptor {
   }
 
   void _normalizeRequest(RequestOptions options) {
-    options.queryParameters =
-        _normalizeValue(options.queryParameters) as Map<String, dynamic>;
+    options.queryParameters = SnakeCaseMapper.normalizeQuery(
+      options.queryParameters,
+    );
 
     if (options.data is FormData) {
       return;
     }
 
-    options.data = _normalizeValue(options.data);
-  }
-
-  dynamic _normalizeValue(dynamic value) {
-    if (value is Map) {
-      final entries = value.entries
-          .map(
-            (entry) => MapEntry(
-              _toSnakeCase(entry.key.toString()),
-              _normalizeValue(entry.value),
-            ),
-          )
-          .toList()
-        ..sort((left, right) => left.key.compareTo(right.key));
-
-      return Map<String, dynamic>.fromEntries(entries);
-    }
-
-    if (value is List) {
-      return value.map(_normalizeValue).toList();
-    }
-
-    return value;
+    options.data = SnakeCaseMapper.normalizeBody(options.data);
   }
 
   String _canonicalRequestBody(dynamic data) {
@@ -286,19 +266,6 @@ class DioInterceptors extends Interceptor {
     final bytes = utf8.encode(payload);
     final hmacSha256 = Hmac(sha256, key);
     return hmacSha256.convert(bytes).toString();
-  }
-
-  String _toSnakeCase(String value) {
-    final buffer = StringBuffer();
-    for (var index = 0; index < value.length; index++) {
-      final char = value[index];
-      final isUpper = char.toUpperCase() == char && char.toLowerCase() != char;
-      if (isUpper && index > 0) {
-        buffer.write('_');
-      }
-      buffer.write(char.toLowerCase());
-    }
-    return buffer.toString();
   }
 
   bool _shouldRefreshOnUnauthorized(DioException err) {
