@@ -218,7 +218,7 @@ class FcmNotificationService {
     final hasPermission = await _requestPermission();
 
     if (!hasPermission) {
-      return;
+      _logger.w('FCM permission denied; continuing device-token bootstrap');
     }
 
     /// Set up Flutter local notifications first

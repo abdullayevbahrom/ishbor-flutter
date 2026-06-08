@@ -114,6 +114,11 @@ class DioInterceptors extends Interceptor {
     final deviceToken = await _ensureDeviceToken();
     if (deviceToken != null && deviceToken.isNotEmpty) {
       headers['X-Device-Token'] = deviceToken;
+    } else if (_shouldAttachAuthorization(options)) {
+      throw StateError(
+        '[DIO][device-token] unable to bootstrap token for '
+        '${options.method} ${options.uri.path}',
+      );
     }
 
     final shouldAttachAuthorization = _shouldAttachAuthorization(options);
@@ -233,6 +238,9 @@ class DioInterceptors extends Interceptor {
       final token = await _fetchFirebaseDeviceToken();
       if (token != null && token.isNotEmpty) {
         await _storageService.putDeviceToken(token);
+        if (kDebugMode) {
+          debugPrint('[DIO][device-token] bootstrapped from Firebase');
+        }
       }
       return token;
     } catch (error) {
