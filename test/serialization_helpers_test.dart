@@ -172,6 +172,13 @@ void main() {
             },
             'ad_type': 'task',
             'ad_id': '019e88b7-b706-7caa-bb84-dd2f0ebec313',
+            'ad_preview': {
+              'id': '019e88b7-b706-7caa-bb84-dd2f0ebec313',
+              'type': 'task',
+              'title': {'uz': 'Task title', 'ru': 'Task title'},
+              'image': 'https://cdn.example.com/task.png',
+              'price': 150000,
+            },
             'created_at': '2026-06-04T10:00:00+05:00',
           },
         ],
@@ -188,5 +195,10 @@ void main() {
       '019e88b7-b706-7caa-bb84-dd2f0ebec311',
     );
     expect(response.items.single.receiver?.fullName, 'Receiver User');
+    expect(response.items.single.adPreview?.type, 'task');
+    expect(
+      response.items.single.adPreview?.imageUrl,
+      'https://cdn.example.com/task.png',
+    );
   });
 }

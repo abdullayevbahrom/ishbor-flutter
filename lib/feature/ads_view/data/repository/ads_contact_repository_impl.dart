@@ -11,7 +11,7 @@ class AdsContactRepositoryImpl implements AdsContactRepository {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchServiceContact({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     final response = await _adsContactDataSource.fetchServiceContact(
       serviceId: serviceId,
@@ -28,7 +28,7 @@ class AdsContactRepositoryImpl implements AdsContactRepository {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchTaskContact({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     final response = await _adsContactDataSource.fetchTaskContact(
       taskId: taskId,
@@ -45,7 +45,7 @@ class AdsContactRepositoryImpl implements AdsContactRepository {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchVacancyContact({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     final response = await _adsContactDataSource.fetchVacancyContact(
       vacancyId: vacancyId,

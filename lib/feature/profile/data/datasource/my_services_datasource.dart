@@ -7,7 +7,7 @@ import '../../../../core/constants/api_const.dart';
 
 abstract class MyServicesDataSource {
   Future<Either<Failure, void>> changeStatusById({
-    required int serviceId,
+    required dynamic serviceId,
     required String status,
   });
 }
@@ -19,7 +19,7 @@ class MyServicesDataSourceImpl implements MyServicesDataSource {
 
   @override
   Future<Either<Failure, void>> changeStatusById({
-    required int serviceId,
+    required dynamic serviceId,
     required String status,
   }) async {
     try {

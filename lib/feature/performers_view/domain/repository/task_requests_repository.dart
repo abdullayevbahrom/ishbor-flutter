@@ -10,10 +10,10 @@ abstract class TaskRequestsRepository {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required int taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({required dynamic taskId});
 
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   });
 
   Future<Either<Failure, void>> choosePerformer({required int taskRequestId});

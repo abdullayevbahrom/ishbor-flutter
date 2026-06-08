@@ -5,14 +5,14 @@ import '../../data/models/ads_contact_model.dart';
 
 abstract class AdsContactRepository{
   Future<Either<Failure, AdsContactModel>> fetchVacancyContact({
-    required int vacancyId,
+    required dynamic vacancyId,
   });
 
   Future<Either<Failure, AdsContactModel>> fetchServiceContact({
-    required int serviceId,
+    required dynamic serviceId,
   });
 
   Future<Either<Failure, AdsContactModel>> fetchTaskContact({
-    required int taskId,
+    required dynamic taskId,
   });
 }

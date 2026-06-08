@@ -13,7 +13,7 @@ class MyVacanciesRepositoryImpl implements MyVacanciesRepository {
   @override
   Future<Either<Failure, void>> changeVacancyStatus({
     required String status,
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     final response = await _myVacanciesDataSource.changeVacancyStatus(
       status: status,

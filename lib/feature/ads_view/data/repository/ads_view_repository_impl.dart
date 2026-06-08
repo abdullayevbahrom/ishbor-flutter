@@ -13,7 +13,7 @@ class AdsViewRepositoryImpl extends AdsViewRepository {
 
   @override
   Future<Either<Failure, ServiceModel>> fetchServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     final response = await _adsViewDataSource.fetchServiceById(
       serviceId: serviceId,
@@ -30,7 +30,7 @@ class AdsViewRepositoryImpl extends AdsViewRepository {
 
   @override
   Future<Either<Failure, TaskModel>> fetchTaskById({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     final response = await _adsViewDataSource.fetchTaskById(taskId: taskId);
     return response.fold(
@@ -45,7 +45,7 @@ class AdsViewRepositoryImpl extends AdsViewRepository {
 
   @override
   Future<Either<Failure, Vacancy>> fetchVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     final response = await _adsViewDataSource.fetchVacancyById(
       vacancyId: vacancyId,

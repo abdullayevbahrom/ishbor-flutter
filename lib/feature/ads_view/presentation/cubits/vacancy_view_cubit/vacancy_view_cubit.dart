@@ -21,7 +21,7 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
   int pageNumber = 1;
   int pageSize = 10;
 
-  void fetchData(int vacancyId) {
+  void fetchData(dynamic vacancyId) {
     reset();
     fetchVacancyById(vacancyId);
   }
@@ -30,7 +30,7 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
     pageNumber = 1;
   }
 
-  Future<void> fetchVacancyById(int vacancyId) async {
+  Future<void> fetchVacancyById(dynamic vacancyId) async {
     emit(state.copyWith(status: RequestStatus.loading, vacancyId: vacancyId));
     final response = await _adsViewRepository.fetchVacancyById(
       vacancyId: vacancyId,

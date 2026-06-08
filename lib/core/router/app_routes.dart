@@ -51,9 +51,9 @@ import '../../models/vacancy.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-int? _tryParseId(GoRouterState state) {
+dynamic _tryParseId(GoRouterState state) {
   final rawId = state.uri.queryParameters['id'];
-  return rawId == null ? null : int.tryParse(rawId);
+  return rawId == null ? null : (int.tryParse(rawId) ?? rawId);
 }
 
 DateTime? _tryParseExpiresAt(Uri uri) {

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ServiceViewState {
 
- RequestStatus get status; RequestStatus get similarServiceSt; bool get isLoadingMore; ServiceModel? get service; PaginatedServiceResponse? get listService; int? get serviceId;
+ RequestStatus get status; RequestStatus get similarServiceSt; bool get isLoadingMore; ServiceModel? get service; PaginatedServiceResponse? get listService; dynamic get serviceId;
 /// Create a copy of ServiceViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,12 +25,12 @@ $ServiceViewStateCopyWith<ServiceViewState> get copyWith => _$ServiceViewStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarServiceSt, similarServiceSt) || other.similarServiceSt == similarServiceSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.service, service) || other.service == service)&&(identical(other.listService, listService) || other.listService == listService)&&(identical(other.serviceId, serviceId) || other.serviceId == serviceId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ServiceViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarServiceSt, similarServiceSt) || other.similarServiceSt == similarServiceSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.service, service) || other.service == service)&&(identical(other.listService, listService) || other.listService == listService)&&const DeepCollectionEquality().equals(other.serviceId, serviceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarServiceSt,isLoadingMore,service,listService,serviceId);
+int get hashCode => Object.hash(runtimeType,status,similarServiceSt,isLoadingMore,service,listService,const DeepCollectionEquality().hash(serviceId));
 
 @override
 String toString() {
@@ -45,7 +45,7 @@ abstract mixin class $ServiceViewStateCopyWith<$Res>  {
   factory $ServiceViewStateCopyWith(ServiceViewState value, $Res Function(ServiceViewState) _then) = _$ServiceViewStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus similarServiceSt, bool isLoadingMore, ServiceModel? service, PaginatedServiceResponse? listService, int? serviceId
+ RequestStatus status, RequestStatus similarServiceSt, bool isLoadingMore, ServiceModel? service, PaginatedServiceResponse? listService, dynamic serviceId
 });
 
 
@@ -70,7 +70,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,service: freezed == service ? _self.service : service // ignore: cast_nullable_to_non_nullable
 as ServiceModel?,listService: freezed == listService ? _self.listService : listService // ignore: cast_nullable_to_non_nullable
 as PaginatedServiceResponse?,serviceId: freezed == serviceId ? _self.serviceId : serviceId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  int? serviceId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  dynamic serviceId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ServiceViewState() when $default != null:
 return $default(_that.status,_that.similarServiceSt,_that.isLoadingMore,_that.service,_that.listService,_that.serviceId);case _:
@@ -176,7 +176,7 @@ return $default(_that.status,_that.similarServiceSt,_that.isLoadingMore,_that.se
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  int? serviceId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  dynamic serviceId)  $default,) {final _that = this;
 switch (_that) {
 case _ServiceViewState():
 return $default(_that.status,_that.similarServiceSt,_that.isLoadingMore,_that.service,_that.listService,_that.serviceId);case _:
@@ -196,7 +196,7 @@ return $default(_that.status,_that.similarServiceSt,_that.isLoadingMore,_that.se
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  int? serviceId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarServiceSt,  bool isLoadingMore,  ServiceModel? service,  PaginatedServiceResponse? listService,  dynamic serviceId)?  $default,) {final _that = this;
 switch (_that) {
 case _ServiceViewState() when $default != null:
 return $default(_that.status,_that.similarServiceSt,_that.isLoadingMore,_that.service,_that.listService,_that.serviceId);case _:
@@ -219,7 +219,7 @@ class _ServiceViewState implements ServiceViewState {
 @override@JsonKey() final  bool isLoadingMore;
 @override@JsonKey() final  ServiceModel? service;
 @override@JsonKey() final  PaginatedServiceResponse? listService;
-@override@JsonKey() final  int? serviceId;
+@override@JsonKey() final  dynamic serviceId;
 
 /// Create a copy of ServiceViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,12 +231,12 @@ _$ServiceViewStateCopyWith<_ServiceViewState> get copyWith => __$ServiceViewStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ServiceViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarServiceSt, similarServiceSt) || other.similarServiceSt == similarServiceSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.service, service) || other.service == service)&&(identical(other.listService, listService) || other.listService == listService)&&(identical(other.serviceId, serviceId) || other.serviceId == serviceId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ServiceViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarServiceSt, similarServiceSt) || other.similarServiceSt == similarServiceSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.service, service) || other.service == service)&&(identical(other.listService, listService) || other.listService == listService)&&const DeepCollectionEquality().equals(other.serviceId, serviceId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarServiceSt,isLoadingMore,service,listService,serviceId);
+int get hashCode => Object.hash(runtimeType,status,similarServiceSt,isLoadingMore,service,listService,const DeepCollectionEquality().hash(serviceId));
 
 @override
 String toString() {
@@ -251,7 +251,7 @@ abstract mixin class _$ServiceViewStateCopyWith<$Res> implements $ServiceViewSta
   factory _$ServiceViewStateCopyWith(_ServiceViewState value, $Res Function(_ServiceViewState) _then) = __$ServiceViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus similarServiceSt, bool isLoadingMore, ServiceModel? service, PaginatedServiceResponse? listService, int? serviceId
+ RequestStatus status, RequestStatus similarServiceSt, bool isLoadingMore, ServiceModel? service, PaginatedServiceResponse? listService, dynamic serviceId
 });
 
 
@@ -276,7 +276,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,service: freezed == service ? _self.service : service // ignore: cast_nullable_to_non_nullable
 as ServiceModel?,listService: freezed == listService ? _self.listService : listService // ignore: cast_nullable_to_non_nullable
 as PaginatedServiceResponse?,serviceId: freezed == serviceId ? _self.serviceId : serviceId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 

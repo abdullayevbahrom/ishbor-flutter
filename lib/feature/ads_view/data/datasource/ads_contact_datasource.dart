@@ -7,15 +7,15 @@ import 'package:top_jobs/feature/ads_view/data/models/ads_contact_model.dart';
 
 abstract class AdsContactDataSource {
   Future<Either<Failure, AdsContactModel>> fetchVacancyContact({
-    required int vacancyId,
+    required dynamic vacancyId,
   });
 
   Future<Either<Failure, AdsContactModel>> fetchServiceContact({
-    required int serviceId,
+    required dynamic serviceId,
   });
 
   Future<Either<Failure, AdsContactModel>> fetchTaskContact({
-    required int taskId,
+    required dynamic taskId,
   });
 }
 
@@ -26,7 +26,7 @@ class AdsContactDataSourceImpl implements AdsContactDataSource {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchServiceContact({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.serviceContact(serviceId));
@@ -50,7 +50,7 @@ class AdsContactDataSourceImpl implements AdsContactDataSource {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchTaskContact({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.taskContact(taskId));
@@ -74,7 +74,7 @@ class AdsContactDataSourceImpl implements AdsContactDataSource {
 
   @override
   Future<Either<Failure, AdsContactModel>> fetchVacancyContact({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.vacancyContact(vacancyId));

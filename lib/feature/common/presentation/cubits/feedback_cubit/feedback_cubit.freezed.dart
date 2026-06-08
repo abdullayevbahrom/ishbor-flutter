@@ -12,7 +12,7 @@ part of 'feedback_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$FeedbackState {
+mixin _$FeedbackState implements DiagnosticableTreeMixin {
 
  String? get userId; RequestStatus get countSt; RequestStatus get listSt; RequestStatus get addReviewSt; PaginatedFeedbackResponse? get listFeedBack; String? get errorText; int get countFeedback;
 /// Create a copy of FeedbackState
@@ -22,6 +22,12 @@ mixin _$FeedbackState {
 $FeedbackStateCopyWith<FeedbackState> get copyWith => _$FeedbackStateCopyWithImpl<FeedbackState>(this as FeedbackState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'FeedbackState'))
+    ..add(DiagnosticsProperty('userId', userId))..add(DiagnosticsProperty('countSt', countSt))..add(DiagnosticsProperty('listSt', listSt))..add(DiagnosticsProperty('addReviewSt', addReviewSt))..add(DiagnosticsProperty('listFeedBack', listFeedBack))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('countFeedback', countFeedback));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,userId,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'FeedbackState(userId: $userId, countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
 }
 
@@ -211,7 +217,7 @@ return $default(_that.userId,_that.countSt,_that.listSt,_that.addReviewSt,_that.
 /// @nodoc
 
 
-class _FeedbackState implements FeedbackState {
+class _FeedbackState with DiagnosticableTreeMixin implements FeedbackState {
   const _FeedbackState({this.userId = null, this.countSt = RequestStatus.initial, this.listSt = RequestStatus.initial, this.addReviewSt = RequestStatus.initial, this.listFeedBack = null, this.errorText = null, this.countFeedback = 0});
   
 
@@ -230,6 +236,12 @@ class _FeedbackState implements FeedbackState {
 _$FeedbackStateCopyWith<_FeedbackState> get copyWith => __$FeedbackStateCopyWithImpl<_FeedbackState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'FeedbackState'))
+    ..add(DiagnosticsProperty('userId', userId))..add(DiagnosticsProperty('countSt', countSt))..add(DiagnosticsProperty('listSt', listSt))..add(DiagnosticsProperty('addReviewSt', addReviewSt))..add(DiagnosticsProperty('listFeedBack', listFeedBack))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('countFeedback', countFeedback));
+}
 
 @override
 bool operator ==(Object other) {
@@ -241,7 +253,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,userId,countSt,listSt,addReviewSt,listFeedBack,errorText,countFeedback);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'FeedbackState(userId: $userId, countSt: $countSt, listSt: $listSt, addReviewSt: $addReviewSt, listFeedBack: $listFeedBack, errorText: $errorText, countFeedback: $countFeedback)';
 }
 

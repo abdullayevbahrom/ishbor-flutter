@@ -25,9 +25,9 @@ class WAdsReport extends StatefulWidget {
   });
 
   final String? userId;
-  final int? vacancyId;
-  final int? serviceId;
-  final int? taskId;
+  final dynamic vacancyId;
+  final dynamic serviceId;
+  final dynamic taskId;
 
   show(BuildContext context) {
     showModalBottomSheet(

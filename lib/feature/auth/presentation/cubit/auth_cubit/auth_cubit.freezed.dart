@@ -12,7 +12,7 @@ part of 'auth_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$AuthState {
+mixin _$AuthState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; RequestStatus get registerSt; RequestStatus get logOutSt; RequestStatus get verifyPhoneSt; RequestStatus get loginSt; RequestStatus get resendSt; String? get errorText; String? get validateError; String? get type;
 /// Create a copy of AuthState
@@ -22,6 +22,12 @@ mixin _$AuthState {
 $AuthStateCopyWith<AuthState> get copyWith => _$AuthStateCopyWithImpl<AuthState>(this as AuthState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('registerSt', registerSt))..add(DiagnosticsProperty('logOutSt', logOutSt))..add(DiagnosticsProperty('verifyPhoneSt', verifyPhoneSt))..add(DiagnosticsProperty('loginSt', loginSt))..add(DiagnosticsProperty('resendSt', resendSt))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('validateError', validateError))..add(DiagnosticsProperty('type', type));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,registerSt,logOutSt,verifyPhoneSt,loginSt,resendSt,errorText,validateError,type);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState(status: $status, registerSt: $registerSt, logOutSt: $logOutSt, verifyPhoneSt: $verifyPhoneSt, loginSt: $loginSt, resendSt: $resendSt, errorText: $errorText, validateError: $validateError, type: $type)';
 }
 
@@ -213,7 +219,7 @@ return $default(_that.status,_that.registerSt,_that.logOutSt,_that.verifyPhoneSt
 /// @nodoc
 
 
-class _AuthState implements AuthState {
+class _AuthState with DiagnosticableTreeMixin implements AuthState {
   const _AuthState({this.status = RequestStatus.initial, this.registerSt = RequestStatus.initial, this.logOutSt = RequestStatus.initial, this.verifyPhoneSt = RequestStatus.initial, this.loginSt = RequestStatus.initial, this.resendSt = RequestStatus.initial, this.errorText = null, this.validateError = null, this.type = null});
   
 
@@ -234,6 +240,12 @@ class _AuthState implements AuthState {
 _$AuthStateCopyWith<_AuthState> get copyWith => __$AuthStateCopyWithImpl<_AuthState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AuthState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('registerSt', registerSt))..add(DiagnosticsProperty('logOutSt', logOutSt))..add(DiagnosticsProperty('verifyPhoneSt', verifyPhoneSt))..add(DiagnosticsProperty('loginSt', loginSt))..add(DiagnosticsProperty('resendSt', resendSt))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('validateError', validateError))..add(DiagnosticsProperty('type', type));
+}
 
 @override
 bool operator ==(Object other) {
@@ -245,7 +257,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,registerSt,logOutSt,verifyPhoneSt,loginSt,resendSt,errorText,validateError,type);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AuthState(status: $status, registerSt: $registerSt, logOutSt: $logOutSt, verifyPhoneSt: $verifyPhoneSt, loginSt: $loginSt, resendSt: $resendSt, errorText: $errorText, validateError: $validateError, type: $type)';
 }
 

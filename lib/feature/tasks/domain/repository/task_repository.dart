@@ -29,15 +29,15 @@ abstract class TaskRepository {
     required LocationFilterModel query,
   });
 
-  Future<Either<Failure, void>> liftUpTaskById({required int taskId});
+  Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId});
 
   Future<Either<Failure, void>> deactivateTaskById({
     required TaskRequestModel taskModel,
   });
 
-  Future<Either<Failure, void>> deleteTaskById({required int taskId});
+  Future<Either<Failure, void>> deleteTaskById({required dynamic taskId});
 
-  Future<Either<Failure, void>> toggleTaskById({required int taskId});
+  Future<Either<Failure, void>> toggleTaskById({required dynamic taskId});
 
   Future<Either<Failure, PaginatedTaskListResponse>> fetchMyTasks({
     required CommonQueryParams queryParams,

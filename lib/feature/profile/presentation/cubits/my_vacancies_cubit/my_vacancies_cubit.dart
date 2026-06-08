@@ -91,7 +91,7 @@ class MyVacanciesCubit extends Cubit<MyVacanciesState> {
     );
   }
 
-  Future<void> liftUpVacancyById(int vacancyId) async {
+  Future<void> liftUpVacancyById(dynamic vacancyId) async {
     emit(state.copyWith(liftUpSt: RequestStatus.loading));
     final response = await _vacancyRepository.liftUpVacancyById(
       vacancyId: vacancyId,
@@ -109,7 +109,7 @@ class MyVacanciesCubit extends Cubit<MyVacanciesState> {
     );
   }
 
-  Future<void> deactivateVacancyById(int vacancyId, int index) async {
+  Future<void> deactivateVacancyById(dynamic vacancyId, int index) async {
     emit(state.copyWith(deactivateSt: RequestStatus.loading));
     final response = await _myVacanciesRepository.changeVacancyStatus(
       status: "deactivated",
@@ -143,7 +143,7 @@ class MyVacanciesCubit extends Cubit<MyVacanciesState> {
     );
   }
 
-  Future<void> activateVacancyById(int vacancyId, int index) async {
+  Future<void> activateVacancyById(dynamic vacancyId, int index) async {
     emit(state.copyWith(deactivateSt: RequestStatus.loading));
     final response = await _myVacanciesRepository.changeVacancyStatus(
       status: "moderation",
@@ -177,7 +177,7 @@ class MyVacanciesCubit extends Cubit<MyVacanciesState> {
     );
   }
 
-  Future<void> deleteVacancyById(int vacancyId, int index) async {
+  Future<void> deleteVacancyById(dynamic vacancyId, int index) async {
     emit(state.copyWith(deleteSt: RequestStatus.loading));
 
     final response = await _vacancyRepository.deleteVacancyById(

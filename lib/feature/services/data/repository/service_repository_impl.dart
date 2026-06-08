@@ -167,7 +167,7 @@ class ServiceRepositoryImpl extends ServiceRepository {
 
   @override
   Future<Either<Failure, void>> deleteServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     final response = await _serviceDataSource.deleteServiceById(
       serviceId: serviceId,
@@ -185,7 +185,7 @@ class ServiceRepositoryImpl extends ServiceRepository {
 
   @override
   Future<Either<Failure, void>> liftUpServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     final response = await _serviceDataSource.liftUpServiceById(
       serviceId: serviceId,
@@ -203,7 +203,7 @@ class ServiceRepositoryImpl extends ServiceRepository {
 
   @override
   Future<Either<Failure, void>> toggleServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     final response = await _serviceDataSource.toggleServiceById(
       serviceId: serviceId,

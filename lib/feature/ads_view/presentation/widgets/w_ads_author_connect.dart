@@ -34,9 +34,9 @@ class WAdsAuthorConnect extends StatefulWidget {
 
   final List<String?> phoneNumbers;
   final String customerId;
-  final int? vacancyId;
-  final int? serviceId;
-  final int? taskId;
+  final dynamic vacancyId;
+  final dynamic serviceId;
+  final dynamic taskId;
   final VoidCallback? onPressedApply;
   final bool? hasUserRequest;
 

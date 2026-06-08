@@ -75,10 +75,8 @@ class ChatInputBar extends StatelessWidget {
                     context.read<ChatCubit>().sendMessage({
                       "sender": context.read<UserCubit>().state.user?.id,
                       "type":
-                          state.message?.vacancy != null
-                              ? "vacancy message"
-                              : state.message?.service != null
-                              ? "service message"
+                          state.message?.adType != null
+                              ? "${state.message?.adType} message"
                               : "task message",
                       "body":
                           context
@@ -87,7 +85,7 @@ class ChatInputBar extends StatelessWidget {
                               .text
                               .trim(),
                     });
-                 context.read<ChatCubit>().scrollToEnd();
+                    context.read<ChatCubit>().scrollToEnd();
                   }
                 },
                 borderRadius: BorderRadius.circular(20.r),

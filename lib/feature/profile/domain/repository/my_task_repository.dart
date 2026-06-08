@@ -4,7 +4,7 @@ import '../../../../core/network/api_http.dart';
 
 abstract class MyTasksRepository{
   Future<Either<Failure, void>> changeStatusById({
-    required int taskId,
+    required dynamic taskId,
     required String status,
   });
 }

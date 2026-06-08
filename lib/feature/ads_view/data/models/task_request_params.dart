@@ -1,5 +1,5 @@
 class TaskRequestParams {
-  final int taskId;
+  final dynamic taskId;
   final String message;
   final String price;
 

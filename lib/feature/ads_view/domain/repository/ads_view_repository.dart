@@ -6,10 +6,10 @@ import '../../../services/data/models/service.dart';
 import '../../../tasks/data/models/task_model.dart';
 
 abstract class AdsViewRepository{
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int vacancyId});
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required dynamic vacancyId});
 
   Future<Either<Failure, ServiceModel>> fetchServiceById(
-      {required int serviceId});
+      {required dynamic serviceId});
 
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int taskId});
+  Future<Either<Failure, TaskModel>> fetchTaskById({required dynamic taskId});
 }

@@ -32,7 +32,7 @@ import '../../widgets/w_ads_title_view.dart';
 class WVacancyViewPage extends StatefulWidget {
   WVacancyViewPage({super.key, required this.vacancyId});
 
-  final int vacancyId;
+  final dynamic vacancyId;
 
   @override
   State<WVacancyViewPage> createState() => _WVacancyViewPageState();

@@ -1,8 +1,8 @@
 class ReportsParam {
   final String? userId;
-  final int? taskId;
-  final int? serviceId;
-  final int? vacancyId;
+  final dynamic taskId;
+  final dynamic serviceId;
+  final dynamic vacancyId;
   final String body;
 
   ReportsParam({

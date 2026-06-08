@@ -181,6 +181,8 @@ class _ChatPageState extends State<ChatPage> {
                                                       .messageRecords
                                                       ?.items[index]
                                                       .id],
+                                              adPreview:
+                                                  state.message?.adPreview,
                                               vacancy: state.message?.vacancy,
                                               service: state.message?.service,
                                               task: state.message?.task,

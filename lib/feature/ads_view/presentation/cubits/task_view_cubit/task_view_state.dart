@@ -11,6 +11,6 @@ abstract class TaskViewState with _$TaskViewState {
     @Default(null) TaskModel? task,
     @Default(null)  PaginatedTaskListResponse? listTasks,
     @Default(null) TaskRequest? myRequest,
-    @Default(null) int? taskId
+    @Default(null) dynamic taskId
   }) = _TaskViewState;
 }

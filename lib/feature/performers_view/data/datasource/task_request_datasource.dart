@@ -13,10 +13,10 @@ abstract class TaskRequestDataSource {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required int taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({required dynamic taskId});
 
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   });
 
   Future<Either<Failure, void>> choosePerformer({required int taskRequestId});
@@ -146,7 +146,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
 
   @override
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchListTaskRequests(taskId));
@@ -170,7 +170,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
 
   @override
   Future<Either<Failure, TaskRequest>> ownRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchOwnTaskRequest(taskId));

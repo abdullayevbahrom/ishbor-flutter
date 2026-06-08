@@ -43,15 +43,15 @@ abstract class TaskDataSource {
 
   Future<Either<Failure, TaskModel>> fetchTaskById({required int id});
 
-  Future<Either<Failure, void>> liftUpTaskById({required int taskId});
+  Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId});
 
   Future<Either<Failure, void>> deactivateTaskById({
     required TaskRequestModel task,
   });
 
-  Future<Either<Failure, void>> deleteTaskById({required int taskId});
+  Future<Either<Failure, void>> deleteTaskById({required dynamic taskId});
 
-  Future<Either<Failure, void>> toggleTaskById({required int taskId});
+  Future<Either<Failure, void>> toggleTaskById({required dynamic taskId});
 }
 
 class TaskDataSourceImpl extends TaskDataSource {
@@ -333,7 +333,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> liftUpTaskById({required int taskId}) async {
+  Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId}) async {
     try {
       final response = await _dio.post(ApiConstants.liftUpTaskById(taskId));
       if (response.statusCode == 204) {
@@ -382,7 +382,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteTaskById({required int taskId}) async {
+  Future<Either<Failure, void>> deleteTaskById({required dynamic taskId}) async {
     try {
       final response = await _dio.delete(ApiConstants.deleteTaskById(taskId));
       if (response.statusCode == 204) {
@@ -404,7 +404,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> toggleTaskById({required int taskId}) async {
+  Future<Either<Failure, void>> toggleTaskById({required dynamic taskId}) async {
     try {
       final response = await _dio.post(ApiConstants.toggleTaskFavorite(taskId));
       if (response.statusCode == 204) {

@@ -36,15 +36,15 @@ abstract class ServiceDataSource {
     required LocationFilterModel query,
   });
 
-  Future<Either<Failure, void>> liftUpServiceById({required int serviceId});
+  Future<Either<Failure, void>> liftUpServiceById({required dynamic serviceId});
 
   Future<Either<Failure, void>> deactivateServiceById({
     required ServiceCreateRequest service,
   });
 
-  Future<Either<Failure, void>> deleteServiceById({required int serviceId});
+  Future<Either<Failure, void>> deleteServiceById({required dynamic serviceId});
 
-  Future<Either<Failure, void>> toggleServiceById({required int serviceId});
+  Future<Either<Failure, void>> toggleServiceById({required dynamic serviceId});
 
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,
@@ -361,7 +361,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
   @override
   Future<Either<Failure, void>> deleteServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     try {
       final response = await _dio.delete(
@@ -387,7 +387,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
   @override
   Future<Either<Failure, void>> liftUpServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     try {
       final response = await _dio.post(
@@ -413,7 +413,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
   @override
   Future<Either<Failure, void>> toggleServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     try {
       final response = await _dio.post(

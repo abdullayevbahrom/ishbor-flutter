@@ -1,7 +1,7 @@
 import 'dart:io';
 
 class TaskRequestModel {
-  final int? taskId;
+  final dynamic taskId;
   final String title;
   final List<int>? categoryIds;
   final String city;

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VacancyViewState {
 
- RequestStatus get status; RequestStatus get similarVacanciesSt; bool get isLoadingMore; VacancyPaginationResponse? get listSimilarVacancy; Vacancy? get vacancy; int? get vacancyId;
+ RequestStatus get status; RequestStatus get similarVacanciesSt; bool get isLoadingMore; VacancyPaginationResponse? get listSimilarVacancy; Vacancy? get vacancy; dynamic get vacancyId;
 /// Create a copy of VacancyViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,12 +25,12 @@ $VacancyViewStateCopyWith<VacancyViewState> get copyWith => _$VacancyViewStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&(identical(other.vacancyId, vacancyId) || other.vacancyId == vacancyId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&const DeepCollectionEquality().equals(other.vacancyId, vacancyId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,isLoadingMore,listSimilarVacancy,vacancy,vacancyId);
+int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,isLoadingMore,listSimilarVacancy,vacancy,const DeepCollectionEquality().hash(vacancyId));
 
 @override
 String toString() {
@@ -45,7 +45,7 @@ abstract mixin class $VacancyViewStateCopyWith<$Res>  {
   factory $VacancyViewStateCopyWith(VacancyViewState value, $Res Function(VacancyViewState) _then) = _$VacancyViewStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacanciesSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, int? vacancyId
+ RequestStatus status, RequestStatus similarVacanciesSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, dynamic vacancyId
 });
 
 
@@ -70,7 +70,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
 as VacancyPaginationResponse?,vacancy: freezed == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as Vacancy?,vacancyId: freezed == vacancyId ? _self.vacancyId : vacancyId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 
@@ -155,7 +155,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  int? vacancyId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VacancyViewState() when $default != null:
 return $default(_that.status,_that.similarVacanciesSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId);case _:
@@ -176,7 +176,7 @@ return $default(_that.status,_that.similarVacanciesSt,_that.isLoadingMore,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  int? vacancyId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId)  $default,) {final _that = this;
 switch (_that) {
 case _VacancyViewState():
 return $default(_that.status,_that.similarVacanciesSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId);case _:
@@ -196,7 +196,7 @@ return $default(_that.status,_that.similarVacanciesSt,_that.isLoadingMore,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  int? vacancyId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacanciesSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId)?  $default,) {final _that = this;
 switch (_that) {
 case _VacancyViewState() when $default != null:
 return $default(_that.status,_that.similarVacanciesSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId);case _:
@@ -219,7 +219,7 @@ class _VacancyViewState implements VacancyViewState {
 @override@JsonKey() final  bool isLoadingMore;
 @override@JsonKey() final  VacancyPaginationResponse? listSimilarVacancy;
 @override@JsonKey() final  Vacancy? vacancy;
-@override@JsonKey() final  int? vacancyId;
+@override@JsonKey() final  dynamic vacancyId;
 
 /// Create a copy of VacancyViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -231,12 +231,12 @@ _$VacancyViewStateCopyWith<_VacancyViewState> get copyWith => __$VacancyViewStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&(identical(other.vacancyId, vacancyId) || other.vacancyId == vacancyId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&const DeepCollectionEquality().equals(other.vacancyId, vacancyId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,isLoadingMore,listSimilarVacancy,vacancy,vacancyId);
+int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,isLoadingMore,listSimilarVacancy,vacancy,const DeepCollectionEquality().hash(vacancyId));
 
 @override
 String toString() {
@@ -251,7 +251,7 @@ abstract mixin class _$VacancyViewStateCopyWith<$Res> implements $VacancyViewSta
   factory _$VacancyViewStateCopyWith(_VacancyViewState value, $Res Function(_VacancyViewState) _then) = __$VacancyViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacanciesSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, int? vacancyId
+ RequestStatus status, RequestStatus similarVacanciesSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, dynamic vacancyId
 });
 
 
@@ -276,7 +276,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
 as VacancyPaginationResponse?,vacancy: freezed == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as Vacancy?,vacancyId: freezed == vacancyId ? _self.vacancyId : vacancyId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 

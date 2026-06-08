@@ -30,15 +30,15 @@ abstract class ServiceRepository {
     required LocationFilterModel query,
   });
 
-  Future<Either<Failure, void>> liftUpServiceById({required int serviceId});
+  Future<Either<Failure, void>> liftUpServiceById({required dynamic serviceId});
 
   Future<Either<Failure, void>> deactivateServiceById({
     required ServiceCreateRequest service,
   });
 
-  Future<Either<Failure, void>> deleteServiceById({required int serviceId});
+  Future<Either<Failure, void>> deleteServiceById({required dynamic serviceId});
 
-  Future<Either<Failure, void>> toggleServiceById({required int serviceId});
+  Future<Either<Failure, void>> toggleServiceById({required dynamic serviceId});
 
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,

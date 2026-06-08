@@ -81,7 +81,7 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
 
   @override
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     final response = await _requestDataSource.listRequestsTask(taskId: taskId);
     return response.fold(
@@ -96,7 +96,7 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
 
   @override
   Future<Either<Failure, TaskRequest>> ownRequestsTask({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     final response = await _requestDataSource.ownRequestsTask(taskId: taskId);
     return response.fold(

@@ -37,15 +37,15 @@ abstract class VacancyRepository {
     required LocationFilterModel queryParams,
   });
 
-  Future<Either<Failure, void>> liftUpVacancyById({required int vacancyId});
+  Future<Either<Failure, void>> liftUpVacancyById({required dynamic vacancyId});
 
   Future<Either<Failure, void>> deactivateVacancyById({
     required VacancyRequest vacancy,
   });
 
-  Future<Either<Failure, void>> deleteVacancyById({required int vacancyId});
+  Future<Either<Failure, void>> deleteVacancyById({required dynamic vacancyId});
 
-  Future<Either<Failure, void>> toggleFavorite({required int vacancyId});
+  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId});
 
   Future<Either<Failure, VacancyPaginationResponse>> fetchUserVacancies({
     required CommonQueryParams queryParams,

@@ -8,7 +8,7 @@ import '../../../../core/constants/api_const.dart';
 abstract class MyVacanciesDataSource {
   Future<Either<Failure, void>> changeVacancyStatus({
     required String status,
-    required int vacancyId,
+    required dynamic vacancyId,
   });
 }
 
@@ -20,7 +20,7 @@ class MyVacanciesDataSourceImpl implements MyVacanciesDataSource {
   @override
   Future<Either<Failure, void>> changeVacancyStatus({
     required String status,
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     try {
       final response = await _dio.patch(

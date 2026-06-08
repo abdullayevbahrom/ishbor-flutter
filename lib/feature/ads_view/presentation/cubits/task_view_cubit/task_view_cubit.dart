@@ -32,7 +32,7 @@ class TaskViewCubit extends Cubit<TaskViewState> {
   int size = 10;
   int page = 1;
 
-  fetchData(int taskId) {
+  fetchData(dynamic taskId) {
     reset();
     fetchTaskById(taskId);
     //fetchListRequestsTask();
@@ -42,7 +42,7 @@ class TaskViewCubit extends Cubit<TaskViewState> {
     page = 1;
   }
 
-  Future<void> fetchTaskById(int taskId) async {
+  Future<void> fetchTaskById(dynamic taskId) async {
     emit(state.copyWith(status: RequestStatus.loading, taskId: taskId));
     final response = await _adsViewRepository.fetchTaskById(taskId: taskId);
 

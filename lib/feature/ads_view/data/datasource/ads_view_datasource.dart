@@ -9,13 +9,13 @@ import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import '../../../../models/vacancy.dart';
 
 abstract class AdsViewDataSource {
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int vacancyId});
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required dynamic vacancyId});
 
   Future<Either<Failure, ServiceModel>> fetchServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   });
 
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int taskId});
+  Future<Either<Failure, TaskModel>> fetchTaskById({required dynamic taskId});
 
 
 }
@@ -27,7 +27,7 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
 
   @override
   Future<Either<Failure, ServiceModel>> fetchServiceById({
-    required int serviceId,
+    required dynamic serviceId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchService(serviceId));
@@ -51,7 +51,7 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
 
   @override
   Future<Either<Failure, TaskModel>> fetchTaskById({
-    required int taskId,
+    required dynamic taskId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchTask(taskId));
@@ -75,7 +75,7 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
 
   @override
   Future<Either<Failure, Vacancy>> fetchVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchVacancy(vacancyId));

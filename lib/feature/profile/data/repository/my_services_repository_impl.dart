@@ -10,7 +10,7 @@ class MyServicesRepositoryImpl implements MyServiceRepository {
 
   @override
   Future<Either<Failure, void>> changeStatusById({
-    required int serviceId,
+    required dynamic serviceId,
     required String status,
   }) async {
     final response = await _myServicesDataSource.changeStatusById(

@@ -46,13 +46,13 @@ abstract class VacancyDataSource {
     required LocationFilterModel queryParams,
   });
 
-  Future<Either<Failure, void>> liftUpVacancyById({required int vacancyId});
+  Future<Either<Failure, void>> liftUpVacancyById({required dynamic vacancyId});
 
   Future<Either<Failure, void>> deactivateVacancyById({
     required VacancyRequest vacancy,
   });
 
-  Future<Either<Failure, void>> deleteVacancyById({required int vacancyId});
+  Future<Either<Failure, void>> deleteVacancyById({required dynamic vacancyId});
 
   Future<Either<Failure, VacancyPaginationResponse>> fetchUserVacancies({
     required CommonQueryParams queryParams,
@@ -62,7 +62,7 @@ abstract class VacancyDataSource {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, void>> toggleFavorite({required int vacancyId});
+  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId});
 }
 
 class VacancyDataSourceImpl extends VacancyDataSource {
@@ -450,7 +450,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
 
   @override
   Future<Either<Failure, void>> deleteVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     try {
       final response = await _dio.delete(
@@ -477,7 +477,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
 
   @override
   Future<Either<Failure, void>> liftUpVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     try {
       final response = await _dio.post(
@@ -503,7 +503,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> toggleFavorite({required int vacancyId}) async {
+  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId}) async {
     try {
       final response = await _dio.post(
         ApiConstants.toggleVacancyFavorite(vacancyId),

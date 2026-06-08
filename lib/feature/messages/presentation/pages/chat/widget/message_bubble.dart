@@ -17,6 +17,7 @@ import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import '../../../../../../core/helpers/formatters.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
+import '../../../../../../models/message_ad_preview.dart';
 import '../../../../../../models/message_record.dart';
 import '../../../../../../models/vacancy.dart';
 
@@ -29,6 +30,7 @@ class MessageBubble extends StatefulWidget {
     required this.isCurrentUser,
     required this.enableFirstMessage,
     this.service,
+    this.adPreview,
     this.task,
     this.vacancy,
   });
@@ -39,6 +41,7 @@ class MessageBubble extends StatefulWidget {
   final bool isCurrentUser;
   final bool enableFirstMessage;
   final ServiceModel? service;
+  final MessageAdPreview? adPreview;
   final TaskModel? task;
   final Vacancy? vacancy;
 
@@ -95,15 +98,18 @@ class _MessageBubbleState extends State<MessageBubble> {
   @override
   Widget build(BuildContext context) {
     final imageUrl =
-        widget.vacancy?.images?.isNotEmpty == true
+        widget.adPreview?.imageUrl ??
+        (widget.vacancy?.images?.isNotEmpty == true
             ? widget.vacancy?.images?.first.urls['original']
             : widget.task?.images.isNotEmpty == true
             ? widget.task?.images.first.urls['original']
             : widget.service?.images?.isNotEmpty == true
             ? widget.service?.images?.first.urls['original']
-            : null;
+            : null);
 
     final price =
+        widget.adPreview?.price ??
+        widget.adPreview?.salaryMin ??
         widget.vacancy?.salaryMin ??
         widget.service?.price ??
         widget.task?.price ??
@@ -115,12 +121,22 @@ class _MessageBubbleState extends State<MessageBubble> {
               : CrossAxisAlignment.start,
       children: [
         if (widget.enableFirstMessage)
-          if (widget.vacancy != null ||
+          if (widget.adPreview != null ||
+              widget.vacancy != null ||
               widget.service != null ||
               widget.task != null)
             InkWell(
               onTap: () {
-                if (widget.vacancy != null) {
+                final previewId = int.tryParse(widget.adPreview?.id ?? '') ?? (widget.adPreview?.id?.isNotEmpty == true ? widget.adPreview?.id : null);
+                if (previewId != null && widget.adPreview?.type == 'vacancy') {
+                  context.push("/vacancy-view?id=$previewId");
+                } else if (previewId != null &&
+                    widget.adPreview?.type == 'service') {
+                  context.push("/service-view?id=$previewId");
+                } else if (previewId != null &&
+                    widget.adPreview?.type == 'task') {
+                  context.push("/task-view?id=$previewId");
+                } else if (widget.vacancy != null) {
                   context.push("/vacancy-view?id=${widget.vacancy?.id}");
                 } else if (widget.service != null) {
                   context.push("/service-view?id=${widget.service?.id}");
@@ -157,7 +173,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.vacancy?.title ??
+                            widget.adPreview?.titleUz ??
+                                widget.adPreview?.titleRu ??
+                                widget.vacancy?.title ??
                                 widget.service?.title ??
                                 widget.task?.title ??
                                 '',
@@ -169,7 +187,7 @@ class _MessageBubbleState extends State<MessageBubble> {
                           ),
                           Text(
                             price != null
-                                ? "${Formatters.moneyFormat(price.toInt().toString())} ${price > 50000 ? "UZS" : "USD"}"
+                                ? "${Formatters.moneyFormat(price.toInt().toString())} ${widget.adPreview?.salaryCurrency ?? (price > 50000 ? "UZS" : "USD")}"
                                 : LocaleKeys.salaryIsNegotiable.tr(),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,

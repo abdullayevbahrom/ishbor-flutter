@@ -63,7 +63,7 @@ class _$OtherProfileStateCopyWithImpl<$Res>
 /// Create a copy of OtherProfileState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? userId = freezed,Object? index = null,Object? vacancy = null,Object? service = null,Object? task = null,Object? listVacancy = freezed,Object? listService = freezed,Object? listTask = freezed,Object? vacancyError = freezed,Object? serviceError = freezed,Object? taskError = freezed,}) {
-return _then(_self.copyWith(
+  return _then(_self.copyWith(
 userId: freezed == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String?,index: null == index ? _self.index : index // ignore: cast_nullable_to_non_nullable
 as int,vacancy: null == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable

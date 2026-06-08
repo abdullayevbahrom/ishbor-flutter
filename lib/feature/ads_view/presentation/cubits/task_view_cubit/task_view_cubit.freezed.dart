@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$TaskViewState {
 
- RequestStatus get status; RequestStatus get similarTasksSt; RequestStatus get requestTasksSt; RequestStatus get ownTaskRequestSt; bool get isLoadingMore; TaskModel? get task; PaginatedTaskListResponse? get listTasks; TaskRequest? get myRequest; int? get taskId;
+ RequestStatus get status; RequestStatus get similarTasksSt; RequestStatus get requestTasksSt; RequestStatus get ownTaskRequestSt; bool get isLoadingMore; TaskModel? get task; PaginatedTaskListResponse? get listTasks; TaskRequest? get myRequest; dynamic get taskId;
 /// Create a copy of TaskViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,12 +25,12 @@ $TaskViewStateCopyWith<TaskViewState> get copyWith => _$TaskViewStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarTasksSt, similarTasksSt) || other.similarTasksSt == similarTasksSt)&&(identical(other.requestTasksSt, requestTasksSt) || other.requestTasksSt == requestTasksSt)&&(identical(other.ownTaskRequestSt, ownTaskRequestSt) || other.ownTaskRequestSt == ownTaskRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.task, task) || other.task == task)&&(identical(other.listTasks, listTasks) || other.listTasks == listTasks)&&(identical(other.myRequest, myRequest) || other.myRequest == myRequest)&&(identical(other.taskId, taskId) || other.taskId == taskId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TaskViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarTasksSt, similarTasksSt) || other.similarTasksSt == similarTasksSt)&&(identical(other.requestTasksSt, requestTasksSt) || other.requestTasksSt == requestTasksSt)&&(identical(other.ownTaskRequestSt, ownTaskRequestSt) || other.ownTaskRequestSt == ownTaskRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.task, task) || other.task == task)&&(identical(other.listTasks, listTasks) || other.listTasks == listTasks)&&(identical(other.myRequest, myRequest) || other.myRequest == myRequest)&&const DeepCollectionEquality().equals(other.taskId, taskId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,taskId);
+int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,const DeepCollectionEquality().hash(taskId));
 
 @override
 String toString() {
@@ -45,7 +45,7 @@ abstract mixin class $TaskViewStateCopyWith<$Res>  {
   factory $TaskViewStateCopyWith(TaskViewState value, $Res Function(TaskViewState) _then) = _$TaskViewStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus similarTasksSt, RequestStatus requestTasksSt, RequestStatus ownTaskRequestSt, bool isLoadingMore, TaskModel? task, PaginatedTaskListResponse? listTasks, TaskRequest? myRequest, int? taskId
+ RequestStatus status, RequestStatus similarTasksSt, RequestStatus requestTasksSt, RequestStatus ownTaskRequestSt, bool isLoadingMore, TaskModel? task, PaginatedTaskListResponse? listTasks, TaskRequest? myRequest, dynamic taskId
 });
 
 
@@ -73,7 +73,7 @@ as bool,task: freezed == task ? _self.task : task // ignore: cast_nullable_to_no
 as TaskModel?,listTasks: freezed == listTasks ? _self.listTasks : listTasks // ignore: cast_nullable_to_non_nullable
 as PaginatedTaskListResponse?,myRequest: freezed == myRequest ? _self.myRequest : myRequest // ignore: cast_nullable_to_non_nullable
 as TaskRequest?,taskId: freezed == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 
@@ -158,7 +158,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  int? taskId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  dynamic taskId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TaskViewState() when $default != null:
 return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.ownTaskRequestSt,_that.isLoadingMore,_that.task,_that.listTasks,_that.myRequest,_that.taskId);case _:
@@ -179,7 +179,7 @@ return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.own
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  int? taskId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  dynamic taskId)  $default,) {final _that = this;
 switch (_that) {
 case _TaskViewState():
 return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.ownTaskRequestSt,_that.isLoadingMore,_that.task,_that.listTasks,_that.myRequest,_that.taskId);case _:
@@ -199,7 +199,7 @@ return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.own
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  int? taskId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarTasksSt,  RequestStatus requestTasksSt,  RequestStatus ownTaskRequestSt,  bool isLoadingMore,  TaskModel? task,  PaginatedTaskListResponse? listTasks,  TaskRequest? myRequest,  dynamic taskId)?  $default,) {final _that = this;
 switch (_that) {
 case _TaskViewState() when $default != null:
 return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.ownTaskRequestSt,_that.isLoadingMore,_that.task,_that.listTasks,_that.myRequest,_that.taskId);case _:
@@ -225,7 +225,7 @@ class _TaskViewState implements TaskViewState {
 @override@JsonKey() final  TaskModel? task;
 @override@JsonKey() final  PaginatedTaskListResponse? listTasks;
 @override@JsonKey() final  TaskRequest? myRequest;
-@override@JsonKey() final  int? taskId;
+@override@JsonKey() final  dynamic taskId;
 
 /// Create a copy of TaskViewState
 /// with the given fields replaced by the non-null parameter values.
@@ -237,12 +237,12 @@ _$TaskViewStateCopyWith<_TaskViewState> get copyWith => __$TaskViewStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarTasksSt, similarTasksSt) || other.similarTasksSt == similarTasksSt)&&(identical(other.requestTasksSt, requestTasksSt) || other.requestTasksSt == requestTasksSt)&&(identical(other.ownTaskRequestSt, ownTaskRequestSt) || other.ownTaskRequestSt == ownTaskRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.task, task) || other.task == task)&&(identical(other.listTasks, listTasks) || other.listTasks == listTasks)&&(identical(other.myRequest, myRequest) || other.myRequest == myRequest)&&(identical(other.taskId, taskId) || other.taskId == taskId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TaskViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarTasksSt, similarTasksSt) || other.similarTasksSt == similarTasksSt)&&(identical(other.requestTasksSt, requestTasksSt) || other.requestTasksSt == requestTasksSt)&&(identical(other.ownTaskRequestSt, ownTaskRequestSt) || other.ownTaskRequestSt == ownTaskRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.task, task) || other.task == task)&&(identical(other.listTasks, listTasks) || other.listTasks == listTasks)&&(identical(other.myRequest, myRequest) || other.myRequest == myRequest)&&const DeepCollectionEquality().equals(other.taskId, taskId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,taskId);
+int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,const DeepCollectionEquality().hash(taskId));
 
 @override
 String toString() {
@@ -257,7 +257,7 @@ abstract mixin class _$TaskViewStateCopyWith<$Res> implements $TaskViewStateCopy
   factory _$TaskViewStateCopyWith(_TaskViewState value, $Res Function(_TaskViewState) _then) = __$TaskViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus similarTasksSt, RequestStatus requestTasksSt, RequestStatus ownTaskRequestSt, bool isLoadingMore, TaskModel? task, PaginatedTaskListResponse? listTasks, TaskRequest? myRequest, int? taskId
+ RequestStatus status, RequestStatus similarTasksSt, RequestStatus requestTasksSt, RequestStatus ownTaskRequestSt, bool isLoadingMore, TaskModel? task, PaginatedTaskListResponse? listTasks, TaskRequest? myRequest, dynamic taskId
 });
 
 
@@ -285,7 +285,7 @@ as bool,task: freezed == task ? _self.task : task // ignore: cast_nullable_to_no
 as TaskModel?,listTasks: freezed == listTasks ? _self.listTasks : listTasks // ignore: cast_nullable_to_non_nullable
 as PaginatedTaskListResponse?,myRequest: freezed == myRequest ? _self.myRequest : myRequest // ignore: cast_nullable_to_non_nullable
 as TaskRequest?,taskId: freezed == taskId ? _self.taskId : taskId // ignore: cast_nullable_to_non_nullable
-as int?,
+as dynamic,
   ));
 }
 

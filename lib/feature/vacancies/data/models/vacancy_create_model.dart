@@ -42,7 +42,7 @@ import '../../../../models/address.dart';
 // }
 
 class VacancyRequest {
-  final int? vacancyId;
+  final dynamic vacancyId;
   final String title;
   final int? categories;
   final String city;

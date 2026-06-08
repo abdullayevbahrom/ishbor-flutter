@@ -187,7 +187,7 @@ class VacancyRepositoryImpl extends VacancyRepository {
 
   @override
   Future<Either<Failure, void>> deleteVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     final response = await _vacancyDataSource.deleteVacancyById(
       vacancyId: vacancyId,
@@ -205,7 +205,7 @@ class VacancyRepositoryImpl extends VacancyRepository {
 
   @override
   Future<Either<Failure, void>> liftUpVacancyById({
-    required int vacancyId,
+    required dynamic vacancyId,
   }) async {
     final response = await _vacancyDataSource.liftUpVacancyById(
       vacancyId: vacancyId,
@@ -222,7 +222,7 @@ class VacancyRepositoryImpl extends VacancyRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleFavorite({required int vacancyId}) async {
+  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId}) async {
     final response = await _vacancyDataSource.toggleFavorite(
       vacancyId: vacancyId,
     );

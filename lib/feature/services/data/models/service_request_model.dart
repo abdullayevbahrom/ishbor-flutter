@@ -1,7 +1,7 @@
 import 'dart:io';
 
 class ServiceCreateRequest {
-  final int? serviceId;
+  final dynamic serviceId;
   final String title;
   final List<int>? categoryIds;
   final String city;

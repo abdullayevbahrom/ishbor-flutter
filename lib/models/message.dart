@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:top_jobs/core/helpers/date_time_parser.dart';
+import 'package:top_jobs/models/message_ad_preview.dart';
 import 'package:top_jobs/models/user.dart';
 import 'package:top_jobs/models/vacancy.dart';
 
@@ -15,6 +16,7 @@ class Message extends Equatable {
   final User? receiver;
   final String? adType;
   final String? adId;
+  final MessageAdPreview? adPreview;
   final Vacancy? vacancy;
   final ServiceModel? service;
   final TaskModel? task;
@@ -22,7 +24,7 @@ class Message extends Equatable {
   final MessageRecord? lastRecord;
   final bool? hasNewRecord;
 
-  Message({
+  const Message({
     required this.id,
     required this.senderId,
     required this.sender,
@@ -30,6 +32,7 @@ class Message extends Equatable {
     required this.receiver,
     this.adType,
     this.adId,
+    this.adPreview,
     this.vacancy,
     this.service,
     this.task,
@@ -47,6 +50,7 @@ class Message extends Equatable {
     receiver,
     adType,
     adId,
+    adPreview,
     task,
     createdAt,
     lastRecord,
@@ -68,6 +72,12 @@ class Message extends Equatable {
       receiver: _messageUserFromMap(data['receiver'], fallbackId: receiverId),
       adType: data['ad_type']?.toString(),
       adId: data['ad_id']?.toString(),
+      adPreview:
+          data['ad_preview'] is Map
+              ? MessageAdPreview.fromMap(
+                Map<String, dynamic>.from(data['ad_preview'] as Map),
+              )
+              : null,
       vacancy:
           data['vacancy'] != null ? Vacancy.fromMap(data['vacancy']) : null,
       service:
@@ -92,6 +102,7 @@ class Message extends Equatable {
     User? receiver,
     String? adType,
     String? adId,
+    MessageAdPreview? adPreview,
     Vacancy? vacancy,
     ServiceModel? service,
     TaskModel? task,
@@ -107,6 +118,7 @@ class Message extends Equatable {
       receiver: receiver ?? this.receiver,
       adType: adType ?? this.adType,
       adId: adId ?? this.adId,
+      adPreview: adPreview ?? this.adPreview,
       vacancy: vacancy ?? this.vacancy,
       service: service ?? this.service,
       task: task ?? this.task,
