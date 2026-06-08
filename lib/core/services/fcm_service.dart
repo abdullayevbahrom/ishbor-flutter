@@ -218,7 +218,9 @@ class FcmNotificationService {
     final hasPermission = await _requestPermission();
 
     if (!hasPermission) {
-      _logger.w('FCM permission denied; continuing device-token bootstrap');
+      _logger.w(
+        '[FIX] FCM permission denied; continuing device-token bootstrap',
+      );
     }
 
     /// Set up Flutter local notifications first
@@ -230,7 +232,7 @@ class FcmNotificationService {
     // Get and store device token
     await _getAndStoreDeviceToken();
     FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
-      _logger.i('FCM token refreshed');
+      _logger.i('[FIX] FCM token refreshed');
       await StorageService.instance.putDeviceToken(token);
     });
 
@@ -242,7 +244,7 @@ class FcmNotificationService {
   Future<void> _getAndStoreDeviceToken() async {
     final token = await _messaging.getToken();
     if (token != null && token.isNotEmpty) {
-      _logger.i('FCM token captured');
+      _logger.i('[FIX] FCM token captured');
       await StorageService.instance.putDeviceToken(token);
     }
   }

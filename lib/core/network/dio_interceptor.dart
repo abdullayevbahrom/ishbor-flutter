@@ -239,13 +239,13 @@ class DioInterceptors extends Interceptor {
       if (token != null && token.isNotEmpty) {
         await _storageService.putDeviceToken(token);
         if (kDebugMode) {
-          debugPrint('[DIO][device-token] bootstrapped from Firebase');
+          debugPrint('[FIX][DIO][device-token] bootstrapped from Firebase');
         }
       }
       return token;
     } catch (error) {
       if (kDebugMode) {
-        debugPrint('[DIO][device-token] failed to bootstrap: $error');
+        debugPrint('[FIX][DIO][device-token] failed to bootstrap: $error');
       }
       return null;
     }
