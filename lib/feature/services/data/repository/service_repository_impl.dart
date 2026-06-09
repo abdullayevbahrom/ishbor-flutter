@@ -17,204 +17,76 @@ class ServiceRepositoryImpl extends ServiceRepository {
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchServices({
     required QueryParams queryParams,
-  }) async {
-    final response = await _serviceDataSource.fetchServices(
-      queryParams: queryParams,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.fetchServices(queryParams: queryParams);
   }
 
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchSimilarServices({
     required CommonQueryParams queryParams,
-  }) async {
-    final response = await _serviceDataSource.fetchSimilarServices(
-      queryParams: queryParams,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.fetchSimilarServices(queryParams: queryParams);
   }
 
   @override
   Future<Either<Failure, ServiceModel>> createService({
     required ServiceCreateRequest service,
-  }) async {
-    final response = await _serviceDataSource.createService(service: service);
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.createService(service: service);
   }
 
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServiceApplies({
     required CommonQueryParams queryParams,
-  }) async {
-    final response = await _serviceDataSource.fetchMyServiceApplies(
-      queryParams: queryParams,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.fetchMyServiceApplies(queryParams: queryParams);
   }
 
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,
-  }) async {
-    final response = await _serviceDataSource.fetchMyServices(
-      queryParams: queryParams,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.fetchMyServices(queryParams: queryParams);
   }
 
   @override
-  Future<Either<Failure, ServiceModel>> fetchServiceById({
-    required int id,
-  }) async {
-    final response = await _serviceDataSource.fetchServiceById(id: id);
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, ServiceModel>> fetchServiceById({required Object id}) {
+    return _serviceDataSource.fetchServiceById(id: id);
   }
 
   @override
   Future<Either<Failure, List<ServiceModel>>> fetchServiceGeo({
     required LocationFilterModel query,
-  }) async {
-    final response = await _serviceDataSource.fetchServiceGeo(query: query);
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.fetchServiceGeo(query: query);
   }
 
   @override
   Future<Either<Failure, ServiceModel>> editService({
     required ServiceCreateRequest service,
-  }) async {
-    final response = await _serviceDataSource.editService(service: service);
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.editService(service: service);
   }
 
   @override
   Future<Either<Failure, void>> deactivateServiceById({
     required ServiceCreateRequest service,
-  }) async {
-    final response = await _serviceDataSource.deactivateServiceById(
-      service: service,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _serviceDataSource.deactivateServiceById(service: service);
   }
 
   @override
-  Future<Either<Failure, void>> deleteServiceById({
-    required dynamic serviceId,
-  }) async {
-    final response = await _serviceDataSource.deleteServiceById(
-      serviceId: serviceId,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> deleteServiceById({required Object serviceId}) {
+    return _serviceDataSource.deleteServiceById(serviceId: serviceId);
   }
 
   @override
-  Future<Either<Failure, void>> liftUpServiceById({
-    required dynamic serviceId,
-  }) async {
-    final response = await _serviceDataSource.liftUpServiceById(
-      serviceId: serviceId,
-    );
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> liftUpServiceById({required Object serviceId}) {
+    return _serviceDataSource.liftUpServiceById(serviceId: serviceId);
   }
 
   @override
-  Future<Either<Failure, void>> toggleServiceById({
-    required dynamic serviceId,
-  }) async {
-    final response = await _serviceDataSource.toggleServiceById(
-      serviceId: serviceId,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> toggleServiceById({required Object serviceId}) {
+    return _serviceDataSource.toggleServiceById(serviceId: serviceId);
   }
 }

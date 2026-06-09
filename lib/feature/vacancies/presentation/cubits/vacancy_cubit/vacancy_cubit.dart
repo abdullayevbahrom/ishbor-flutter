@@ -146,7 +146,7 @@ class VacancyCubit extends Cubit<VacancyState> {
     );
   }
 
-  Future<void> fetchSimilarVacancies(int id) async {
+  Future<void> fetchSimilarVacancies(String id) async {
     emit(state.copyWith(similarVacSt: RequestStatus.loading));
 
     final response = await _vacancyRepository.fetchSimilarVacancies(

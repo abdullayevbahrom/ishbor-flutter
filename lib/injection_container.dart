@@ -25,11 +25,24 @@ import 'package:top_jobs/feature/auth/data/datasource/auth_data_source.dart';
 import 'package:top_jobs/feature/auth/data/repository/auth_repository_impl.dart';
 import 'package:top_jobs/feature/auth/domain/repository/auth_repository.dart';
 import 'package:top_jobs/feature/auth/presentation/cubit/auth_cubit/auth_cubit.dart';
+import 'package:top_jobs/feature/common/data/datasource/ai_datasource.dart';
+import 'package:top_jobs/feature/common/data/datasource/search_datasource.dart';
+import 'package:top_jobs/feature/common/data/repository/ai_repository_impl.dart';
+import 'package:top_jobs/feature/common/data/repository/search_repository_impl.dart';
+import 'package:top_jobs/feature/common/domain/repository/ai_repository.dart';
+import 'package:top_jobs/feature/common/domain/repository/search_repository.dart';
+import 'package:top_jobs/feature/common/data/datasource/catalog_datasource.dart';
+import 'package:top_jobs/feature/common/data/repository/catalog_repository_impl.dart';
+import 'package:top_jobs/feature/common/domain/repository/catalog_repository.dart';
 import 'package:top_jobs/feature/common/data/datasource/category_datasource.dart';
 import 'package:top_jobs/feature/common/data/datasource/cities_datasource.dart';
 import 'package:top_jobs/feature/common/data/datasource/contact_click_datasource.dart';
 import 'package:top_jobs/feature/common/data/datasource/feedback_datasource.dart';
 import 'package:top_jobs/feature/common/data/datasource/notification_datasource.dart';
+import 'package:top_jobs/feature/common/data/datasource/realtime_datasource.dart';
+import 'package:top_jobs/feature/common/data/repository/realtime_repository_impl.dart';
+import 'package:top_jobs/feature/common/domain/repository/realtime_repository.dart';
+import 'package:top_jobs/feature/common/presentation/cubits/realtime_cubit/realtime_cubit.dart';
 import 'package:top_jobs/feature/common/data/datasource/user_data_source.dart';
 import 'package:top_jobs/feature/common/data/repository/category_repository_impl.dart';
 import 'package:top_jobs/feature/common/data/repository/cities_repository_impl.dart';
@@ -97,6 +110,10 @@ import 'package:top_jobs/feature/services/data/repository/service_repository_imp
 import 'package:top_jobs/feature/services/domain/repository/service_repository.dart';
 import 'package:top_jobs/feature/services/presentation/cubits/service_cubit/service_cubit.dart';
 import 'package:top_jobs/feature/tasks/data/datasource/task_datasource.dart';
+import 'package:top_jobs/feature/performers_view/data/datasource/vacancy_request_datasource.dart';
+import 'package:top_jobs/feature/performers_view/data/repository/vacancy_requests_repository_impl.dart';
+import 'package:top_jobs/feature/performers_view/domain/repository/vacancy_requests_repository.dart';
+import 'package:top_jobs/feature/performers_view/presentation/cubits/vacancy_requests_cubit/vacancy_requests_cubit.dart';
 import 'package:top_jobs/feature/tasks/data/repository/task_repository_impl.dart';
 import 'package:top_jobs/feature/tasks/domain/repository/task_repository.dart';
 import 'package:top_jobs/feature/tasks/presentation/cubits/task_cubit/task_cubit.dart';
@@ -180,18 +197,18 @@ void initCubits() {
   sl.registerFactory(() => YandexMapCubit(sl()));
   sl.registerFactory<MapViewCubit>(() => MapViewCubit(sl(), sl(), sl()));
   sl.registerFactory<SuggestionsCubit>(() => SuggestionsCubit(sl()));
-  sl.registerFactory<FavoritesCubit>(
-        () => FavoritesCubit(sl(), sl(), sl(), sl()),
-  );
+  sl.registerFactory(() => FavoritesCubit(sl(), sl(), sl(), sl()));
   sl.registerFactory(() => ExpandedViewCubit(sl(), sl(), sl()));
-  sl.registerFactory(() => VacancyViewCubit(sl(), sl()));
+  sl.registerFactory(() => VacancyViewCubit(sl(), sl(), sl()));
   sl.registerFactory(() => ServiceViewCubit(sl(), sl()));
   sl.registerFactory(() => TaskViewCubit(sl(), sl(), sl()));
   sl.registerFactory(() => PaymentCubit(sl()));
   sl.registerFactory(() => TaskRequestsCubit(sl()));
+  sl.registerFactory(() => VacancyRequestsCubit(sl()));
   sl.registerFactory<MessageCubit>(() => MessageCubit(sl()));
   sl.registerFactory(() => VacancyFormCubit(sl(), sl(), sl()));
-  sl.registerFactory<AdsContactCubit>(() => AdsContactCubit(sl(), sl()));
+  sl.registerFactory(() => AdsContactCubit(sl(), sl()));
+  sl.registerFactory(() => RealtimeCubit(sl()));
 }
 
 void initRepositories() {
@@ -204,6 +221,15 @@ void initRepositories() {
 
   sl.registerLazySingleton<CategoryRepository>(
         () => CategoryRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<CatalogRepository>(
+        () => CatalogRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<SearchRepository>(
+        () => SearchRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<AiRepository>(
+        () => AiRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton<ServiceRepository>(
@@ -240,6 +266,9 @@ void initRepositories() {
   sl.registerLazySingleton<TaskRequestsRepository>(
         () => TaskRequestsRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton<VacancyRequestsRepository>(
+        () => VacancyRequestsRepositoryImpl(sl()),
+  );
   sl.registerLazySingleton<VacancyFormRepository>(
         () => VacancyFormRepositoryImpl(sl()),
   );
@@ -260,6 +289,9 @@ void initRepositories() {
   sl.registerLazySingleton<AdsContactRepository>(
         () => AdsContactRepositoryImpl(sl()),
   );
+  sl.registerLazySingleton<RealtimeRepository>(
+        () => RealtimeRepositoryImpl(sl()),
+  );
 }
 
 void initDataSources() {
@@ -271,6 +303,15 @@ void initDataSources() {
   );
   sl.registerLazySingleton<CategoryDataSource>(
         () => CategoryDataSourceImpl(dio: sl()),
+  );
+  sl.registerLazySingleton<CatalogDataSource>(
+        () => CatalogDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<SearchDataSource>(
+        () => SearchDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<AiDataSource>(
+        () => AiDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<ServiceDataSource>(
@@ -309,6 +350,9 @@ void initDataSources() {
   sl.registerLazySingleton<TaskRequestDataSource>(
         () => TaskRequestDataSourceImpl(sl()),
   );
+  sl.registerLazySingleton<VacancyRequestDataSource>(
+        () => VacancyRequestDataSourceImpl(sl()),
+  );
   sl.registerLazySingleton<VacancyFormDataSource>(
         () => VacancyFormDataSourceImpl(sl()),
   );
@@ -327,5 +371,8 @@ void initDataSources() {
   );
   sl.registerLazySingleton<AdsContactDataSource>(
         () => AdsContactDataSourceImpl(sl()),
+  );
+  sl.registerLazySingleton<RealtimeDataSource>(
+        () => RealtimeDataSourceImpl(sl()),
   );
 }

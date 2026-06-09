@@ -12,16 +12,22 @@ class CategoryRepositoryImpl extends CategoryRepository {
   CategoryRepositoryImpl(this._categoryDataSource);
 
   @override
-  Future<Either<Failure, CategoryListResponse>> fetchCategories({ required QueryParams queryParams}) async {
-    final response = await _categoryDataSource.fetchCategories(queryParams: queryParams);
+  Future<Either<Failure, CategoryListResponse>> fetchCategories({
+    required QueryParams queryParams,
+  }) {
+    return _categoryDataSource.fetchCategories(queryParams: queryParams);
+  }
 
-    return response.fold(
-      (failure) {
-        return Left(Failure(message: failure.message));
-      },
-      (response) {
-        return Right(response);
-      },
-    );
+  @override
+  Future<Either<Failure, CategoryListResponse>> fetchPopularCategories({
+    String? city,
+    int? size,
+  }) {
+    return _categoryDataSource.fetchPopularCategories(city: city, size: size);
+  }
+
+  @override
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id}) {
+    return _categoryDataSource.fetchCategoryById(id: id);
   }
 }

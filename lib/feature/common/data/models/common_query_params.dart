@@ -1,7 +1,7 @@
 class CommonQueryParams {
   final int? pageNumber;
   final int? pageSize;
-  final int? id;
+  final String? id;
 
   CommonQueryParams({this.pageNumber, this.pageSize, this.id});
 

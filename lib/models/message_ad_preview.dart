@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:top_jobs/models/localized_text.dart';
 
 class MessageAdPreview extends Equatable {
   final String id;
   final String type;
-  final String? titleUz;
-  final String? titleRu;
+  final LocalizedText title;
   final String? imageUrl;
   final double? price;
   final double? salaryMin;
@@ -13,8 +13,7 @@ class MessageAdPreview extends Equatable {
   const MessageAdPreview({
     required this.id,
     required this.type,
-    this.titleUz,
-    this.titleRu,
+    required this.title,
     this.imageUrl,
     this.price,
     this.salaryMin,
@@ -23,23 +22,20 @@ class MessageAdPreview extends Equatable {
 
   @override
   List<Object?> get props => [
-    id,
-    type,
-    titleUz,
-    titleRu,
-    imageUrl,
-    price,
-    salaryMin,
-    salaryCurrency,
-  ];
+        id,
+        type,
+        title,
+        imageUrl,
+        price,
+        salaryMin,
+        salaryCurrency,
+      ];
 
   factory MessageAdPreview.fromMap(Map<String, dynamic> data) {
-    final title = data['title'];
     return MessageAdPreview(
       id: data['id']?.toString() ?? '',
       type: data['type']?.toString() ?? '',
-      titleUz: title is Map ? title['uz']?.toString() : null,
-      titleRu: title is Map ? title['ru']?.toString() : null,
+      title: LocalizedText.fromJson(data['title']),
       imageUrl: data['image']?.toString(),
       price: (data['price'] as num?)?.toDouble(),
       salaryMin: (data['salary_min'] as num?)?.toDouble(),

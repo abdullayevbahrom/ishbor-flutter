@@ -123,7 +123,7 @@ class VacancyRepositoryImpl extends VacancyRepository {
   }
 
   @override
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int id}) async {
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id}) async {
     final response = await _vacancyDataSource.fetchVacancyById(id: id);
 
     return response.fold(

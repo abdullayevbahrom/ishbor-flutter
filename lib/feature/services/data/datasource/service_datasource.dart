@@ -30,21 +30,21 @@ abstract class ServiceDataSource {
     required ServiceCreateRequest service,
   });
 
-  Future<Either<Failure, ServiceModel>> fetchServiceById({required int id});
+  Future<Either<Failure, ServiceModel>> fetchServiceById({required Object id});
 
   Future<Either<Failure, List<ServiceModel>>> fetchServiceGeo({
     required LocationFilterModel query,
   });
 
-  Future<Either<Failure, void>> liftUpServiceById({required dynamic serviceId});
+  Future<Either<Failure, void>> liftUpServiceById({required Object serviceId});
 
   Future<Either<Failure, void>> deactivateServiceById({
     required ServiceCreateRequest service,
   });
 
-  Future<Either<Failure, void>> deleteServiceById({required dynamic serviceId});
+  Future<Either<Failure, void>> deleteServiceById({required Object serviceId});
 
-  Future<Either<Failure, void>> toggleServiceById({required dynamic serviceId});
+  Future<Either<Failure, void>> toggleServiceById({required Object serviceId});
 
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,
@@ -72,16 +72,11 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       if (response.statusCode == 200) {
         return Right(PaginatedServiceResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -99,16 +94,11 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       if (response.statusCode == 200) {
         return Right(PaginatedServiceResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -121,84 +111,196 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       FormData data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null)
-          'categories': jsonEncode(service.categoryIds ?? []),
+        if (service.categoryIds != null) 'categories': jsonEncode(service.categoryIds ?? []),
         'description': service.description,
-        if (service.price.isNotEmpty) 'price': service.price,
-        "city": service.city,
-        'address': {
-          if (service.addressLine != null) 'addressLine': service.addressLine,
-          if (service.latitude != null) 'latitude': service.latitude,
-          if (service.longitude != null) 'longitude': service.longitude,
-        },
-        "phoneNumber": service.phoneNumber,
-        if ((service.phoneNumber1 ?? '').isNotEmpty)
-          "phoneNumber1": service.phoneNumber1,
-        if ((service.phoneNumber2 ?? '').isNotEmpty)
-          "phoneNumber2": service.phoneNumber2,
-        if ((service.phoneNumber3 ?? '').isNotEmpty)
-          "phoneNumber3": service.phoneNumber3,
-
-        if (service.negotiable) 'negotiable': service.negotiable,
+        'price': service.price,
+        'city': service.city,
+        'phone_number': service.phoneNumber,
+        if (service.telegram != null) 'telegram': service.telegram,
+        if (service.address != null) 'address': jsonEncode(service.address),
+        'negotiable': service.negotiable,
       });
 
-      if (service.uploadedImages.isNotEmpty) {
-        for (File file in service.uploadedImages) {
-          final String fileName = file.path.split("/").last;
-          final String type = file.path.split(".").last;
+      if (service.uploadedImages != null) {
+        for (var image in service.uploadedImages!) {
           data.files.add(
-            MapEntry<String, MultipartFile>(
-              "uploadedImages[]",
-              MultipartFile.fromBytes(
-                file.readAsBytesSync(),
-                filename: fileName,
-                contentType: DioMediaType("image", type),
-              ),
+            MapEntry(
+              'uploadedImages[]',
+              await MultipartFile.fromFile(image.path),
             ),
           );
         }
       }
+
       final response = await _dio.post(ApiConstants.services, data: data);
-      if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data));
+
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
   }
 
   @override
-  Future<Either<Failure, PaginatedServiceResponse>> fetchMyServiceApplies({
-    required CommonQueryParams queryParams,
+  Future<Either<Failure, ServiceModel>> editService({
+    required ServiceCreateRequest service,
+  }) async {
+    try {
+      FormData data = FormData.fromMap({
+        'title': service.title,
+        if (service.categoryIds != null) 'categories': jsonEncode(service.categoryIds ?? []),
+        'description': service.description,
+        'price': service.price,
+        'city': service.city,
+        'phone_number': service.phoneNumber,
+        if (service.telegram != null) 'telegram': service.telegram,
+        if (service.address != null) 'address': jsonEncode(service.address),
+        'negotiable': service.negotiable,
+      });
+
+      if (service.uploadedImages != null) {
+        for (var image in service.uploadedImages!) {
+          data.files.add(
+            MapEntry(
+              'uploadedImages[]',
+              await MultipartFile.fromFile(image.path),
+            ),
+          );
+        }
+      }
+
+      final response = await _dio.patch(
+        ApiConstants.updateService(service.id!),
+        data: data,
+      );
+
+      if (response.statusCode == 200) {
+        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, ServiceModel>> fetchServiceById({required Object id}) async {
+    try {
+      final response = await _dio.get(ApiConstants.fetchService(id));
+      if (response.statusCode == 200) {
+        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<ServiceModel>>> fetchServiceGeo({
+    required LocationFilterModel query,
   }) async {
     try {
       final response = await _dio.get(
-        ApiConstants.myServiceApplies,
-        queryParameters: queryParams.toMap(),
+        ApiConstants.servicesGeo,
+        queryParameters: query.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(PaginatedServiceResponse.fromMap(response.data));
+        final List items = response.data['items'] ?? response.data['data'] ?? [];
+        return Right(items.map((e) => ServiceModel.fromMap(e)).toList());
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> liftUpServiceById({required Object serviceId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.liftUpServiceById(serviceId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deactivateServiceById({
+    required ServiceCreateRequest service,
+  }) async {
+    try {
+      final response = await _dio.patch(
+        ApiConstants.deactivateServiceById(service.id!),
+        data: {'status': service.status},
+      );
+      if (response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteServiceById({required Object serviceId}) async {
+    try {
+      final response = await _dio.delete(ApiConstants.deleteServiceById(serviceId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> toggleServiceById({required Object serviceId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.toggleServiceFavorite(serviceId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -216,224 +318,42 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       if (response.statusCode == 200) {
         return Right(PaginatedServiceResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
   }
 
   @override
-  Future<Either<Failure, ServiceModel>> fetchServiceById({
-    required int id,
-  }) async {
-    try {
-      final response = await _dio.get(ApiConstants.services + '/$id');
-      if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, List<ServiceModel>>> fetchServiceGeo({
-    required LocationFilterModel query,
+  Future<Either<Failure, PaginatedServiceResponse>> fetchMyServiceApplies({
+    required CommonQueryParams queryParams,
   }) async {
     try {
       final response = await _dio.get(
-        ApiConstants.servicesGeo,
-        queryParameters: query.toJson(),
+        ApiConstants.myServiceApplies,
+        queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(
-          (response.data as List).map((e) => ServiceModel.fromMap(e)).toList(),
-        );
+        return Right(PaginatedServiceResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
   }
 
-  @override
-  Future<Either<Failure, ServiceModel>> editService({
-    required ServiceCreateRequest service,
-  }) async {
-    try {
-      Map<String, dynamic> data = {
-        'title': service.title,
-        // if (service.categoryIds != null)
-        //   'categories': jsonEncode(service.categoryIds ?? []),
-        'description': service.description,
-        if (service.price.isNotEmpty) 'price': service.price,
-        "city": service.city,
-        'address': {
-          if (service.addressLine != null) 'addressLine': service.addressLine,
-          if (service.latitude != null) 'latitude': service.latitude,
-          if (service.longitude != null) 'longitude': service.longitude,
-        },
-        "phoneNumber": service.phoneNumber,
-        if ((service.phoneNumber1 ?? '').isNotEmpty)
-          "phoneNumber1": service.phoneNumber1,
-        if ((service.phoneNumber2 ?? '').isNotEmpty)
-          "phoneNumber2": service.phoneNumber2,
-        if ((service.phoneNumber3 ?? '').isNotEmpty)
-          "phoneNumber3": service.phoneNumber3,
-        if (service.negotiable) 'negotiable': service.negotiable,
-      };
-      final response = await _dio.patch(
-        ApiConstants.updateService(service.serviceId!),
-        data: data,
-      );
-      if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
+  String _extractMessage(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      return data['message']?.toString() ?? data.toString();
     }
-  }
-
-  @override
-  Future<Either<Failure, void>> deactivateServiceById({
-    required ServiceCreateRequest service,
-  }) async {
-    try {
-      final response = await _dio.patch(
-        ApiConstants.deactivateServiceById(service.serviceId!),
-        data: {"status": "deactivated"},
-      );
-      if (response.statusCode == 200) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> deleteServiceById({
-    required dynamic serviceId,
-  }) async {
-    try {
-      final response = await _dio.delete(
-        ApiConstants.deleteServiceById(serviceId),
-      );
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> liftUpServiceById({
-    required dynamic serviceId,
-  }) async {
-    try {
-      final response = await _dio.post(
-        ApiConstants.liftUpServiceById(serviceId),
-      );
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> toggleServiceById({
-    required dynamic serviceId,
-  }) async {
-    try {
-      final response = await _dio.post(
-        ApiConstants.toggleServiceFavorite(serviceId),
-      );
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
+    return data?.toString() ?? 'Unknown error';
   }
 }

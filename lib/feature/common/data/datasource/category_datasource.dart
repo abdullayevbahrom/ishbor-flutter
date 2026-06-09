@@ -11,6 +11,13 @@ abstract class CategoryDataSource {
   Future<Either<Failure, CategoryListResponse>> fetchCategories({
     required QueryParams queryParams,
   });
+
+  Future<Either<Failure, CategoryListResponse>> fetchPopularCategories({
+    String? city,
+    int? size,
+  });
+
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id});
 }
 
 class CategoryDataSourceImpl extends CategoryDataSource {
@@ -32,18 +39,63 @@ class CategoryDataSourceImpl extends CategoryDataSource {
       if (response.statusCode == 200) {
         return Right(CategoryListResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Future<Either<Failure, CategoryListResponse>> fetchPopularCategories({
+    String? city,
+    int? size,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.popularCategories,
+        queryParameters: {
+          if (city != null) 'city': city,
+          if (size != null) 'size': size,
+        },
+      );
+      if (response.statusCode == 200) {
+        return Right(CategoryListResponse.fromMap(response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id}) async {
+    try {
+      final response = await _dio.get(ApiConstants.fetchCategory(id));
+      if (response.statusCode == 200) {
+        return Right(CategoryModel.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  String _extractMessage(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      return data['message']?.toString() ?? data.toString();
+    }
+    return data?.toString() ?? 'Unknown error';
   }
 }

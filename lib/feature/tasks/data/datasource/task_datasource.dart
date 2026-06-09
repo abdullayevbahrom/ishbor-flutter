@@ -41,7 +41,7 @@ abstract class TaskDataSource {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int id});
+  Future<Either<Failure, TaskModel>> fetchTaskById({required String id});
 
   Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId});
 
@@ -120,25 +120,25 @@ class TaskDataSourceImpl extends TaskDataSource {
     try {
       FormData data = FormData.fromMap({
         'title': task.title,
-        "phoneNumber": task.phoneNumber,
+        "phone_number": task.phoneNumber,
         if ((task.phoneNumber1 ?? '').isNotEmpty)
-          "phoneNumber1": task.phoneNumber1,
+          "phone_number1": task.phoneNumber1,
         if ((task.phoneNumber2 ?? '').isNotEmpty)
-          "phoneNumber2": task.phoneNumber2,
+          "phone_number2": task.phoneNumber2,
         if ((task.phoneNumber3 ?? '').isNotEmpty)
-          "phoneNumber3": task.phoneNumber3,
+          "phone_number3": task.phoneNumber3,
 
         if (task.categoryIds != null)
           'categories': jsonEncode(task.categoryIds ?? []),
         'description': task.description,
         'price': task.price,
-        "paymentMethods": jsonEncode([task.paymentMethod]),
-        "startsAt": task.startTime,
-        "expiresAt": task.exprTime,
+        "payment_methods": jsonEncode([task.paymentMethod]),
+        "starts_at": task.startTime,
+        "expires_at": task.exprTime,
         "city": task.city,
         'addresses': jsonEncode([
           {
-            if (task.addressLine != null) 'addressLine': task.addressLine,
+            if (task.addressLine != null) 'address_line': task.addressLine,
             if (task.latitude != null) 'latitude': task.latitude,
             if (task.longitude != null) 'longitude': task.longitude,
           },
@@ -235,7 +235,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int id}) async {
+  Future<Either<Failure, TaskModel>> fetchTaskById({required String id}) async {
     try {
       final response = await _dio.get(ApiConstants.tasks + '/$id');
       if (response.statusCode == 200) {
@@ -296,13 +296,13 @@ class TaskDataSourceImpl extends TaskDataSource {
         //   'categories': jsonEncode(task.categoryIds ?? []),
         'description': task.description,
         'price': task.price,
-        "paymentMethods": jsonEncode([task.paymentMethod]),
-        "startsAt": task.startTime,
-        "expiresAt": task.exprTime,
+        "payment_methods": jsonEncode([task.paymentMethod]),
+        "starts_at": task.startTime,
+        "expires_at": task.exprTime,
         "city": task.city,
         'addresses': jsonEncode([
           {
-            if (task.addressLine != null) 'addressLine': task.addressLine,
+            if (task.addressLine != null) 'address_line': task.addressLine,
             if (task.latitude != null) 'latitude': task.latitude,
             if (task.longitude != null) 'longitude': task.longitude,
           },

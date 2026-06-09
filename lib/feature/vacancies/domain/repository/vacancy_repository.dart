@@ -31,7 +31,7 @@ abstract class VacancyRepository {
     required VacancyRequest vacancy,
   });
 
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int id});
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id});
 
   Future<Either<Failure, List<Vacancy>>> fetchVacanciesGeo({
     required LocationFilterModel queryParams,

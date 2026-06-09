@@ -10,19 +10,41 @@ abstract class TaskRequestsRepository {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required dynamic taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId});
 
-  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required dynamic taskId,
+  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
+    required Object taskId,
+    int? page,
+    int? size,
+    String? status,
   });
 
-  Future<Either<Failure, void>> choosePerformer({required int taskRequestId});
-
-  Future<Either<Failure, void>> cancelTaskRequestByCustomer({
-    required int taskRequestId,
+  Future<Either<Failure, PaginatedTaskRequestList>> listAllRequests({
+    int? page,
+    int? size,
+    String? status,
   });
 
-  Future<Either<Failure, void>> finishTaskRequestByCustomer({
-    required int taskRequestId,
+  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId});
+
+  Future<Either<Failure, void>> acceptRequest({required Object requestId});
+
+  Future<Either<Failure, void>> cancelRequestByCustomer({
+    required Object requestId,
   });
+
+  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({
+    required Object requestId,
+  });
+
+  Future<Either<Failure, void>> finishRequestByCustomer({
+    required Object requestId,
+  });
+
+  Future<Either<Failure, TaskRequest>> changeStatus({
+    required Object requestId,
+    required String status,
+  });
+
+  Future<Either<Failure, void>> deleteRequest({required Object requestId});
 }

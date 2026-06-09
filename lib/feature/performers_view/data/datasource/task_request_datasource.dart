@@ -13,21 +13,43 @@ abstract class TaskRequestDataSource {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required dynamic taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId});
 
-  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required dynamic taskId,
+  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
+    required Object taskId,
+    int? page,
+    int? size,
+    String? status,
   });
 
-  Future<Either<Failure, void>> choosePerformer({required int taskRequestId});
-
-  Future<Either<Failure, void>> cancelTaskRequestByCustomer({
-    required int taskRequestId,
+  Future<Either<Failure, PaginatedTaskRequestList>> listAllRequests({
+    int? page,
+    int? size,
+    String? status,
   });
 
-  Future<Either<Failure, void>> finishTaskRequestByCustomer({
-    required int taskRequestId,
+  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId});
+
+  Future<Either<Failure, void>> acceptRequest({required Object requestId});
+
+  Future<Either<Failure, void>> cancelRequestByCustomer({
+    required Object requestId,
   });
+
+  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({
+    required Object requestId,
+  });
+
+  Future<Either<Failure, void>> finishRequestByCustomer({
+    required Object requestId,
+  });
+
+  Future<Either<Failure, TaskRequest>> changeStatus({
+    required Object requestId,
+    required String status,
+  });
+
+  Future<Either<Failure, void>> deleteRequest({required Object requestId});
 }
 
 class TaskRequestDataSourceImpl extends TaskRequestDataSource {
@@ -45,151 +67,225 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
         data: {"message": params.message, "price": params.price},
       );
 
-      if (response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data));
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
   }
 
   @override
-  Future<Either<Failure, void>> cancelTaskRequestByCustomer({
-    required int taskRequestId,
-  }) async {
-    try {
-      final response = await _dio.post(
-        ApiConstants.cancelTaskRequestByCustomer(taskRequestId),
-      );
-
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> choosePerformer({
-    required int taskRequestId,
-  }) async {
-    try {
-      final response = await _dio.post(
-        ApiConstants.acceptTaskRequest(taskRequestId),
-      );
-
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, void>> finishTaskRequestByCustomer({
-    required int taskRequestId,
-  }) async {
-    try {
-      final response = await _dio.post(
-        ApiConstants.finishTaskRequestByCustomer(taskRequestId),
-      );
-
-      if (response.statusCode == 204) {
-        return const Right(null);
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required dynamic taskId,
-  }) async {
-    try {
-      final response = await _dio.get(ApiConstants.fetchListTaskRequests(taskId));
-      if (response.statusCode == 200) {
-        return Right(PaginatedTaskRequestList.fromJson(response.data));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
-      }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({
-    required dynamic taskId,
-  }) async {
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId}) async {
     try {
       final response = await _dio.get(ApiConstants.fetchOwnTaskRequest(taskId));
-
       if (response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data['request']));
-      } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
+        if (response.data['data'] == null) {
+          return Left(Failure(message: "Not found"));
         }
+        return Right(TaskRequest.fromMap(response.data['data']));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
+    required Object taskId,
+    int? page,
+    int? size,
+    String? status,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.fetchListTaskRequests(taskId),
+        queryParameters: {
+          if (page != null) 'page': page,
+          if (size != null) 'size': size,
+          if (status != null) 'status': status,
+        },
+      );
+      if (response.statusCode == 200) {
+        return Right(PaginatedTaskRequestList.fromMap(response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, PaginatedTaskRequestList>> listAllRequests({
+    int? page,
+    int? size,
+    String? status,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.taskRequests,
+        queryParameters: {
+          if (page != null) 'page': page,
+          if (size != null) 'size': size,
+          if (status != null) 'status': status,
+        },
+      );
+      if (response.statusCode == 200) {
+        return Right(PaginatedTaskRequestList.fromMap(response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId}) async {
+    try {
+      final response = await _dio.get(ApiConstants.fetchTaskRequest(requestId));
+      if (response.statusCode == 200) {
+        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> acceptRequest({required Object requestId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.acceptTaskRequest(requestId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> cancelRequestByCustomer({required Object requestId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.cancelTaskRequestByCustomer(requestId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({required Object requestId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.cancelTaskRequestByPerformer(requestId));
+      if (response.statusCode == 200) {
+        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> finishRequestByCustomer({required Object requestId}) async {
+    try {
+      final response = await _dio.post(ApiConstants.finishTaskRequestByCustomer(requestId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> changeStatus({
+    required Object requestId,
+    required String status,
+  }) async {
+    try {
+      final response = await _dio.patch(
+        ApiConstants.changeTaskRequestStatus(requestId),
+        data: {'status': status},
+      );
+      if (response.statusCode == 200) {
+        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteRequest({required Object requestId}) async {
+    try {
+      final response = await _dio.delete(ApiConstants.deleteTaskRequest(requestId));
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  String _extractMessage(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      return data['message']?.toString() ?? data.toString();
+    }
+    return data?.toString() ?? 'Unknown error';
   }
 }

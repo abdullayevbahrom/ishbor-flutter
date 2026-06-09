@@ -25,7 +25,7 @@ class WAuthorPhoneNumbers extends StatelessWidget {
 
   final List<String?> phoneNumbers;
   final String type;
-  final int id;
+  final String id;
 
   show(BuildContext context) {
     showModalBottomSheet(

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:top_jobs/core/helpers/date_time_parser.dart';
 
 class CategoryTranslation extends Equatable {
-  final int id;
+  final String id;
   final String locale;
   final String? name;
 
@@ -17,7 +17,7 @@ class CategoryTranslation extends Equatable {
 
   factory CategoryTranslation.fromJson(Map<String, dynamic> json) {
     return CategoryTranslation(
-      id: json['id'] as int,
+      id: json['id']?.toString() ?? '',
       locale: json['locale'] as String,
       name: json['name'] as String?,
     );
@@ -28,10 +28,10 @@ class CategoryTranslation extends Equatable {
 }
 
 class CategoryModel extends Equatable {
-  final int id;
+  final String id;
   final String path;
   final int level;
-  final int? parent;
+  final String? parent;
   final CategoryModel? parentObj;
   final Map<String, dynamic>? iconUrls;
   final Map<String, dynamic>? iconSmallUrls;
@@ -68,10 +68,10 @@ class CategoryModel extends Equatable {
     final translationsData = data['translations'] as List<dynamic>? ?? [];
 
     return CategoryModel(
-      id: data['id'] as int,
-      path: data['path'] as String,
-      level: data['level'] as int,
-      parent: data['parent'] as int?,
+      id: data['id']?.toString() ?? '',
+      path: data['path'] as String? ?? '',
+      level: data['level'] as int? ?? 0,
+      parent: data['parent']?.toString(),
       parentObj: data['parentObj'] != null
           ? CategoryModel.fromMap(Map<String, dynamic>.from(data['parentObj']))
           : null,

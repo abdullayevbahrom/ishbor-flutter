@@ -6,18 +6,19 @@ import 'package:top_jobs/feature/common/domain/repository/notification_repositor
 import '../../../data/models/notifications.dart';
 
 part 'notification_state.dart';
-
 part 'notification_cubit.freezed.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
-  NotificationCubit(this._notificationsRepository)
-    : super(const NotificationState());
+  NotificationCubit(this._notificationsRepository) : super(const NotificationState());
   final NotificationsRepository _notificationsRepository;
 
-  Future<void> fetchNotifications() async {
+  Future<void> fetchNotifications({String? content}) async {
     emit(state.copyWith(status: RequestStatus.loading));
 
-    final response = await _notificationsRepository.fetchNotifications();
+    final response = content != null
+        ? await _notificationsRepository.fetchNotificationsByContent(content: content)
+        : await _notificationsRepository.fetchNotifications();
+
     response.fold(
       (l) {
         emit(state.copyWith(status: RequestStatus.error, errorText: l.message));
@@ -30,6 +31,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> makeNotificationRead(int index) async {
+    if (state.listNotification == null || index < 0 || index >= state.listNotification!.items.length) {
+      return;
+    }
     final response = await _notificationsRepository.makeNotificationRead(
       notificationId: state.listNotification!.items[index].id,
     );
@@ -44,8 +48,27 @@ class NotificationCubit extends Cubit<NotificationState> {
           listNotification: state.listNotification?.copyWith(items: oldItems),
         ),
       );
+      checkNewNotification();
     });
-    checkNewNotification();
+  }
+
+  Future<void> makeNotificationReadByContent(String content) async {
+    final response = await _notificationsRepository.makeNotificationReadByContent(
+      content: content,
+    );
+    response.fold((l) {}, (r) {
+      final List<AppNotification> oldItems = state.listNotification?.items.map((e) {
+            return e.copyWith(read: true); // This is approximate if filter is not clear
+          }).toList() ??
+          [];
+
+      emit(
+        state.copyWith(
+          listNotification: state.listNotification?.copyWith(items: oldItems),
+        ),
+      );
+      checkNewNotification();
+    });
   }
 
   void checkNewNotification() {

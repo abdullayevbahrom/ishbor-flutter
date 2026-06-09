@@ -15,34 +15,36 @@ class NotificationsRepositoryImpl extends NotificationsRepository {
   @override
   Future<Either<Failure, NotificationListResponse>> fetchNotifications({
     Map<String, dynamic>? queryParams,
-  }) async {
-    final response = await _notificationsDataSource.fetchNotifications(
-      queryParams,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
+  }) {
+    return _notificationsDataSource.fetchNotifications(queryParams);
+  }
+
+  @override
+  Future<Either<Failure, NotificationListResponse>> fetchNotificationsByContent({
+    required String content,
+    Map<String, dynamic>? queryParams,
+  }) {
+    return _notificationsDataSource.fetchNotificationsByContent(
+      content: content,
+      queryParams: queryParams,
     );
   }
 
   @override
   Future<Either<Failure, void>> makeNotificationRead({
-    required int notificationId,
-  }) async {
-    final response = await _notificationsDataSource.makeNotificationRead(
+    required Object notificationId,
+  }) {
+    return _notificationsDataSource.makeNotificationRead(
       notificationId: notificationId,
     );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
+  }
+
+  @override
+  Future<Either<Failure, void>> makeNotificationReadByContent({
+    required String content,
+  }) {
+    return _notificationsDataSource.makeNotificationReadByContent(
+      content: content,
     );
   }
 }

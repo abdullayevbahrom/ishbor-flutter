@@ -9,40 +9,34 @@ class TaskRequest extends AdRequest {
   final double price;
 
   TaskRequest({
-    required id,
+    required super.id,
     required this.task,
-    required performer,
-    required status,
+    required super.performer,
+    required super.status,
     required this.price,
-    message,
-    required createdAt,
-  }) : super(
-         id: id,
-         performer: performer,
-         status: status,
-         createdAt: createdAt,
-         message: message,
-       );
+    super.message,
+    required super.createdAt,
+  });
 
   @override
   List<Object?> get props => [
-    id,
-    task,
-    performer,
-    status,
-    price,
-    message,
-    createdAt,
-  ];
+        id,
+        task,
+        performer,
+        status,
+        price,
+        message,
+        createdAt,
+      ];
 
   static TaskRequest fromMap(Map<String, dynamic> data) {
     return TaskRequest(
-      id: data['id'],
+      id: data['id']?.toString() ?? '',
       task: data['task'] != null ? TaskModel.fromJson(data['task']) : null,
       performer: User.fromMap(data['performer']),
-      price: data['price'],
-      status: data['status'],
-      message: data['message'] != null ? data['message'] : null,
+      price: (data['price'] as num?)?.toDouble() ?? 0.0,
+      status: data['status']?.toString() ?? '',
+      message: data['message']?.toString(),
       createdAt: parseRequiredDateTime(data['created_at']),
     );
   }

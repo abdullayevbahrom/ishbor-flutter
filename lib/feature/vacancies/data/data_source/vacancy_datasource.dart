@@ -40,7 +40,7 @@ abstract class VacancyDataSource {
     required VacancyRequest vacancy,
   });
 
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int id});
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id});
 
   Future<Either<Failure, List<Vacancy>>> fetchVacanciesGeo({
     required LocationFilterModel queryParams,
@@ -185,21 +185,21 @@ class VacancyDataSourceImpl extends VacancyDataSource {
             'longitude': vacancy.address?.longitude,
         },
 
-        'salaryMin': vacancy.salaryMin,
-        'salaryMax': vacancy.salaryMax,
+        'salary_min': vacancy.salaryMin,
+        'salary_max': vacancy.salaryMax,
         //'skills': vacancy.skills,
-        'shortDescription': vacancy.shortDescription,
+        'short_description': vacancy.shortDescription,
         //'whoCanRespond': vacancy.whoCanRespond,
-        'employmentType': vacancy.employmentType,
+        'employment_type': vacancy.employmentType,
         // 'jobModes':  ["flexible"],
-        'partialJobOpportunity': vacancy.partialJobOpportunity,
-        "phoneNumber": vacancy.phoneNumber,
+        'partial_job_opportunity': vacancy.partialJobOpportunity,
+        "phone_number": vacancy.phoneNumber,
         if ((vacancy.phoneNumber1 ?? '').isNotEmpty)
-          "phoneNumber1": vacancy.phoneNumber1,
+          "phone_number1": vacancy.phoneNumber1,
         if ((vacancy.phoneNumber2 ?? '').isNotEmpty)
-          "phoneNumber2": vacancy.phoneNumber2,
+          "phone_number2": vacancy.phoneNumber2,
         if ((vacancy.phoneNumber3 ?? '').isNotEmpty)
-          "phoneNumber3": vacancy.phoneNumber3,
+          "phone_number3": vacancy.phoneNumber3,
       });
 
       if (vacancy.images.isNotEmpty) {
@@ -297,7 +297,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }
 
   @override
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required int id}) async {
+  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id}) async {
     try {
       final response = await _dio.get(ApiConstants.fetchVacancy(id));
       if (response.statusCode == 200) {
@@ -370,22 +370,22 @@ class VacancyDataSourceImpl extends VacancyDataSource {
           if (vacancy.address?.longitude != null)
             'longitude': vacancy.address?.longitude,
         },
-        'salaryMin': vacancy.salaryMin ?? 0,
-        'salaryMax': vacancy.salaryMax ?? 0,
+        'salary_min': vacancy.salaryMin ?? 0,
+        'salary_max': vacancy.salaryMax ?? 0,
         'skills': vacancy.skills,
         if (vacancy.shortDescription.isNotEmpty)
-          'shortDescription': vacancy.shortDescription,
-        'whoCanRespond': vacancy.whoCanRespond,
-        'employmentType': vacancy.employmentType,
+          'short_description': vacancy.shortDescription,
+        'who_can_respond': vacancy.whoCanRespond,
+        'employment_type': vacancy.employmentType,
         if (vacancy.partialJobOpportunity != null)
-          'partialJobOpportunity': vacancy.partialJobOpportunity,
-        "phoneNumber": vacancy.phoneNumber,
+          'partial_job_opportunity': vacancy.partialJobOpportunity,
+        "phone_number": vacancy.phoneNumber,
         if ((vacancy.phoneNumber1 ?? '').isNotEmpty)
-          "phoneNumber1": vacancy.phoneNumber1,
+          "phone_number1": vacancy.phoneNumber1,
         if ((vacancy.phoneNumber2 ?? '').isNotEmpty)
-          "phoneNumber2": vacancy.phoneNumber2,
+          "phone_number2": vacancy.phoneNumber2,
         if ((vacancy.phoneNumber3 ?? '').isNotEmpty)
-          "phoneNumber3": vacancy.phoneNumber3,
+          "phone_number3": vacancy.phoneNumber3,
       };
       final response = await _dio.patch(
         ApiConstants.updateVacancy(vacancy.vacancyId!),

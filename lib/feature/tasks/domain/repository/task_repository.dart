@@ -23,7 +23,7 @@ abstract class TaskRepository {
 
   Future<Either<Failure, TaskModel>> editTask({required TaskRequestModel task});
 
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int id});
+  Future<Either<Failure, TaskModel>> fetchTaskById({required String id});
 
   Future<Either<Failure, List<TaskModel>>> fetchTaskGeo({
     required LocationFilterModel query,

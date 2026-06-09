@@ -59,7 +59,7 @@ class PaginatedTaskListResponse {
 }
 
 class TaskModel {
-  final int id;
+  final String id;
   final String status;
   final String title;
   final String? description;
@@ -147,7 +147,7 @@ class TaskModel {
     String? phoneNumber2,
     String? phoneNumber3,
     String? phoneNumber4,
-    int? id,
+    String? id,
     String? status,
     String? title,
     String? description,
@@ -228,7 +228,7 @@ class TaskModel {
 
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-      id: json['id'],
+      id: json['id']?.toString() ?? '',
       status: json['status'],
       title: json['title'],
       titleUz: json['title_uz'],
@@ -239,7 +239,12 @@ class TaskModel {
       shortDescription: json['short_description'],
       shortDescriptionUz: json['short_description_uz'],
       shortDescriptionRu: json['short_description_ru'],
-      customer: User.fromMap(json['customer']),
+      customer:
+          json['customer'] != null
+              ? User.fromMap(json['customer'])
+              : (json['user'] != null
+                  ? User.fromMap(json['user'])
+                  : User.fromMap(json['owner'] ?? {})),
       phoneNumber: json['phone_number'],
       phoneNumber1: json['phone_number1'],
       phoneNumber2: json['phone_number2'],

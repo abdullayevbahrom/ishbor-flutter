@@ -10,8 +10,17 @@ abstract class NotificationsDataSource {
     Map<String, dynamic>? queryParams,
   );
 
+  Future<Either<Failure, NotificationListResponse>> fetchNotificationsByContent({
+    required String content,
+    Map<String, dynamic>? queryParams,
+  });
+
   Future<Either<Failure, void>> makeNotificationRead({
-    required int notificationId,
+    required Object notificationId,
+  });
+
+  Future<Either<Failure, void>> makeNotificationReadByContent({
+    required String content,
   });
 }
 
@@ -33,16 +42,35 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
       if (response.statusCode == 200) {
         return Right(NotificationListResponse.fromMap(response.data));
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, NotificationListResponse>> fetchNotificationsByContent({
+    required String content,
+    Map<String, dynamic>? queryParams,
+  }) async {
+    try {
+      final response = await _dio.get(
+        ApiConstants.notificationsByContent(content),
+        queryParameters: queryParams,
+      );
+
+      if (response.statusCode == 200) {
+        return Right(NotificationListResponse.fromMap(response.data));
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
@@ -50,27 +78,50 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
 
   @override
   Future<Either<Failure, void>> makeNotificationRead({
-    required int notificationId,
+    required Object notificationId,
   }) async {
     try {
       final response = await _dio.post(
         ApiConstants.makeReadNotification(notificationId),
       );
-      if (response.statusCode == 204) {
+      if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
       debugPrint(e.toString());
       rethrow;
     }
+  }
+
+  @override
+  Future<Either<Failure, void>> makeNotificationReadByContent({
+    required String content,
+  }) async {
+    try {
+      final response = await _dio.post(
+        ApiConstants.makeReadNotificationByContent(content),
+      );
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        return const Right(null);
+      } else {
+        return Left(Failure(message: _extractMessage(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  String _extractMessage(dynamic data) {
+    if (data is Map<String, dynamic>) {
+      return data['message']?.toString() ?? data.toString();
+    }
+    return data?.toString() ?? 'Unknown error';
   }
 }

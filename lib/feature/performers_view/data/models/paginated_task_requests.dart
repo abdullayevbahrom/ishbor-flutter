@@ -13,7 +13,7 @@ class PaginatedTaskRequestList {
     required this.totalCount,
   });
 
-  factory PaginatedTaskRequestList.fromJson(Map<String, dynamic> json) {
+  factory PaginatedTaskRequestList.fromMap(Map<String, dynamic> json) {
     return PaginatedTaskRequestList(
       currentPageNumber: json['current_page_number'] ?? 0,
       numItemsPerPage: json['num_items_per_page'] ?? 0,

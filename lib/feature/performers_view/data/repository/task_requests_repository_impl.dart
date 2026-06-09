@@ -15,97 +15,84 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
   @override
   Future<Either<Failure, TaskRequest>> applyRequestTask({
     required TaskRequestParams params,
-  }) async {
-    final response = await _requestDataSource.applyRequestTask(params: params);
-
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  }) {
+    return _requestDataSource.applyRequestTask(params: params);
   }
 
   @override
-  Future<Either<Failure, void>> cancelTaskRequestByCustomer({
-    required int taskRequestId,
-  }) async {
-    final response = await _requestDataSource.cancelTaskRequestByCustomer(
-      taskRequestId: taskRequestId,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> cancelRequestByCustomer({
+    required Object requestId,
+  }) {
+    return _requestDataSource.cancelRequestByCustomer(requestId: requestId);
   }
 
   @override
-  Future<Either<Failure, void>> choosePerformer({
-    required int taskRequestId,
-  }) async {
-    final response = await _requestDataSource.choosePerformer(
-      taskRequestId: taskRequestId,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> acceptRequest({
+    required Object requestId,
+  }) {
+    return _requestDataSource.acceptRequest(requestId: requestId);
   }
 
   @override
-  Future<Either<Failure, void>> finishTaskRequestByCustomer({
-    required int taskRequestId,
-  }) async {
-    final response = await _requestDataSource.finishTaskRequestByCustomer(
-      taskRequestId: taskRequestId,
-    );
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+  Future<Either<Failure, void>> finishRequestByCustomer({
+    required Object requestId,
+  }) {
+    return _requestDataSource.finishRequestByCustomer(requestId: requestId);
   }
 
   @override
-  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsTask({
-    required dynamic taskId,
-  }) async {
-    final response = await _requestDataSource.listRequestsTask(taskId: taskId);
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
+  Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
+    required Object taskId,
+    int? page,
+    int? size,
+    String? status,
+  }) {
+    return _requestDataSource.listRequestsByTask(
+      taskId: taskId,
+      page: page,
+      size: size,
+      status: status,
     );
   }
 
   @override
   Future<Either<Failure, TaskRequest>> ownRequestsTask({
-    required dynamic taskId,
-  }) async {
-    final response = await _requestDataSource.ownRequestsTask(taskId: taskId);
-    return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
+    required Object taskId,
+  }) {
+    return _requestDataSource.ownRequestsTask(taskId: taskId);
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({
+    required Object requestId,
+  }) {
+    return _requestDataSource.cancelRequestByPerformer(requestId: requestId);
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> changeStatus({
+    required Object requestId,
+    required String status,
+  }) {
+    return _requestDataSource.changeStatus(requestId: requestId, status: status);
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteRequest({required Object requestId}) {
+    return _requestDataSource.deleteRequest(requestId: requestId);
+  }
+
+  @override
+  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId}) {
+    return _requestDataSource.getRequestDetail(requestId: requestId);
+  }
+
+  @override
+  Future<Either<Failure, PaginatedTaskRequestList>> listAllRequests({
+    int? page,
+    int? size,
+    String? status,
+  }) {
+    return _requestDataSource.listAllRequests(page: page, size: size, status: status);
   }
 }

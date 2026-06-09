@@ -28,8 +28,17 @@ sealed class ApiConstants {
 
   /// === Notifications ===
   static String get notifications => _route('notifications');
+  static String notificationsByContent(String content) =>
+      '$notifications/$content';
   static String makeReadNotification(Object id) =>
       '$notifications/${_id(id)}/make-read';
+  static String makeReadNotificationByContent(String content) =>
+      '$notifications/$content/make-read';
+
+  /// === Realtime ===
+  static String get realtimeStatus => _route('realtime/status');
+  static String get heartbeat => '$realtimeStatus/heartbeat';
+  static String userStatus(Object userId) => '$realtimeStatus/${_id(userId)}';
 
   /// === Vacancies ===
   static String get vacancies => _route('vacancies');
@@ -93,14 +102,30 @@ sealed class ApiConstants {
       '$tasks/${_id(id)}/task-requests/own';
   static String fetchListTaskRequests(Object id) =>
       '$tasks/${_id(id)}/task-requests';
+  static String get taskRequests => _route('task-requests');
   static String fetchTaskRequest(Object id) =>
-      _route('task-requests/${_id(id)}');
+      '$taskRequests/${_id(id)}';
   static String cancelTaskRequestByCustomer(Object id) =>
-      _route('task-requests/${_id(id)}/cancel-by-customer');
+      '$taskRequests/${_id(id)}/cancel-by-customer';
+  static String cancelTaskRequestByPerformer(Object id) =>
+      '$taskRequests/${_id(id)}/cancel-by-performer';
   static String acceptTaskRequest(Object id) =>
-      _route('task-requests/${_id(id)}/accept');
+      '$taskRequests/${_id(id)}/accept';
   static String finishTaskRequestByCustomer(Object id) =>
-      _route('task-requests/${_id(id)}/finish-by-customer');
+      '$taskRequests/${_id(id)}/finish-by-customer';
+  static String changeTaskRequestStatus(Object id) =>
+      '$taskRequests/${_id(id)}/change-status';
+  static String deleteTaskRequest(Object id) =>
+      '$taskRequests/${_id(id)}';
+
+  static String get vacancyRequests => _route('vacancy-requests');
+  static String fetchVacancyRequest(Object id) =>
+      '$vacancyRequests/${_id(id)}';
+  static String changeVacancyRequestStatus(Object id) =>
+      '$vacancyRequests/${_id(id)}/change-status';
+  static String deleteVacancyRequest(Object id) =>
+      '$vacancyRequests/${_id(id)}';
+
   static String updateTask(Object id) => '$tasks/${_id(id)}/update';
   static String uploadTaskImages(Object id) => '$tasks/${_id(id)}/images';
   static String liftUpTaskById(Object id) => '$tasks/${_id(id)}/lift-up';
@@ -136,11 +161,24 @@ sealed class ApiConstants {
   /// === Cities ===
   static String get cities => _route('cities');
 
+  /// === Categories / Tags ===
+  static String get categories => _route('categories');
+  static String get popularCategories => _route('categories/popular');
+  static String fetchCategory(Object id) => '$categories/${_id(id)}';
+  static String get tags => _route('tags');
+  static String fetchTag(Object id) => '$tags/${_id(id)}';
+
+  /// === Third Party Ads ===
+  static String get thirdPartyAds => _route('third-party-ads');
+
   /// === Messages ===
   static String get messages => _route('messages');
   static String fetchMessage(Object id) => '$messages/${_id(id)}';
   static String listMessages(String type) => '$messages/$type';
   static String get postMessage => messages;
+  static String get postMessageRecord => '$messages/records';
+  static String fetchMessageRecord(Object id) => '$messages/records/${_id(id)}';
+  static String get answerMessage => '$messages/answer';
   static String messageRecords(Object messageId) =>
       '$messages/${_id(messageId)}/records';
   static String uploadMessageFile(Object messageId) =>
@@ -148,14 +186,34 @@ sealed class ApiConstants {
   static String get askQuestion => '$messages/records';
   static String makeMessageRead(Object messageId) =>
       '$messages/${_id(messageId)}/records/make-read';
+  static String get deleteMessageRecords => '$messages/records';
 
   /// === Payments / Reports ===
   static String get paymentTransactions => _route('payment-transactions');
+  static String fetchPaymentTransaction(Object id) =>
+      '$paymentTransactions/${_id(id)}';
+  static String checkPaymentTransaction(Object id) =>
+      '$paymentTransactions/${_id(id)}/check';
+  static String payFromBalance(String content, Object contentId, String top) =>
+      '$paymentTransactions/$content/${_id(contentId)}/top/$top';
+  static String payByProvider(
+    String content,
+    Object contentId,
+    String top,
+    String provider,
+  ) =>
+      '$paymentTransactions/$content/${_id(contentId)}/top/$top/$provider';
+  static String postPayFromBalance(Object postId) =>
+      '$paymentTransactions/post/${_id(postId)}';
+  static String postPayByProvider(Object postId, String provider) =>
+      '$paymentTransactions/post/${_id(postId)}/$provider';
+
   static String get reports => _route('reports');
   static String get contentContactClick => _route('content-contact-click/');
 
   /// === AI / Search / Misc ===
   static String get chatGpt => _route('chatgpt');
+  static String get chatGptDescription => '$chatGpt/description';
   static String get search => _route('search/');
 
   /// === Yandex / external ===

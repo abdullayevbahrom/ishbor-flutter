@@ -171,17 +171,17 @@ class VacancyParams {
 }
 
 class TagModel {
-  final int? id;
+  final String? id;
   final String? name;
 
   TagModel({this.id, this.name});
 
-  TagModel copyWith({int? id, String? name}) {
+  TagModel copyWith({String? id, String? name}) {
     return TagModel(id: id ?? this.id, name: name ?? this.name);
   }
 
   factory TagModel.fromJson(Map<String, dynamic> json) {
-    return TagModel(id: json['id'] as int?, name: json['name'] as String?);
+    return TagModel(id: json['id']?.toString(), name: json['name'] as String?);
   }
 
   Map<String, dynamic> toJson() {

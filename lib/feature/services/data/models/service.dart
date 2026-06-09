@@ -220,13 +220,18 @@ class ServiceModel extends AdPricable {
   ];
 
   static ServiceModel fromMap(Map<String, dynamic> data) => ServiceModel(
-    id: data['id'],
+    id: data['id']?.toString() ?? '',
     status: data['status'],
     title: data['title'],
     createdAt: parseRequiredDateTime(data['created_at']),
     description: data['description'] ?? '',
     shortDescription: data['short_description'] ?? '',
-    customer: User.fromMap(data['customer']),
+    customer:
+        data['customer'] != null
+            ? User.fromMap(data['customer'])
+            : (data['user'] != null
+                ? User.fromMap(data['user'])
+                : User.fromMap(data['owner'] ?? {})),
     phoneNumber: data['phone_number'],
     performer:
         data['performer'] != null ? User.fromMap(data['performer']) : null,

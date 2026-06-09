@@ -98,7 +98,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Either<Failure, TaskModel>> fetchTaskById({required int id}) async {
+  Future<Either<Failure, TaskModel>> fetchTaskById({required String id}) async {
     final response = await _taskDataSource.fetchTaskById(id: id);
 
     return response.fold(

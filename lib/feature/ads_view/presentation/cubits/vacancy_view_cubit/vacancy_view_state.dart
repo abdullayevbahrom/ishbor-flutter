@@ -5,10 +5,12 @@ abstract class VacancyViewState with _$VacancyViewState {
   const factory VacancyViewState({
     @Default(RequestStatus.initial) RequestStatus status,
     @Default(RequestStatus.initial) RequestStatus similarVacanciesSt,
+    @Default(RequestStatus.initial) RequestStatus applyVacancySt,
+    @Default(RequestStatus.initial) RequestStatus ownRequestSt,
     @Default(false) bool isLoadingMore,
     @Default(null) VacancyPaginationResponse? listSimilarVacancy,
     @Default(null) Vacancy? vacancy,
-    @Default(null ) dynamic vacancyId
-}) = _VacancyViewState;
-
+    @Default(null) dynamic vacancyId,
+    @Default(null) VacancyRequest? ownRequest,
+  }) = _VacancyViewState;
 }

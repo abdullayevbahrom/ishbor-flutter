@@ -15,8 +15,7 @@ part 'task_requests_state.dart';
 part 'task_requests_cubit.freezed.dart';
 
 class TaskRequestsCubit extends Cubit<TaskRequestsState> {
-  TaskRequestsCubit(this._requestsRepository)
-    : super(const TaskRequestsState());
+  TaskRequestsCubit(this._requestsRepository) : super(const TaskRequestsState());
   final TaskRequestsRepository _requestsRepository;
 
   int page = 1;
@@ -26,11 +25,13 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
     page = 1;
   }
 
-  Future<void> requestApplyTask(TaskModel taskModel) async {
+  Future<void> fetchRequestsByTask(TaskModel taskModel) async {
     emit(state.copyWith(status: RequestStatus.loading, task: taskModel));
 
-    final response = await _requestsRepository.listRequestsTask(
+    final response = await _requestsRepository.listRequestsByTask(
       taskId: taskModel.id,
+      page: page,
+      size: size,
     );
 
     response.fold(
@@ -43,7 +44,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
     );
   }
 
-  Future<void> choosePerformer(TaskRequest taskRequest) async {
+  Future<void> acceptRequest(TaskRequest taskRequest) async {
     emit(
       state.copyWith(
         choosePerformerSt: RequestStatus.loading,
@@ -51,8 +52,8 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
       ),
     );
 
-    final response = await _requestsRepository.choosePerformer(
-      taskRequestId: taskRequest.id,
+    final response = await _requestsRepository.acceptRequest(
+      requestId: taskRequest.id,
     );
 
     response.fold(
@@ -63,12 +64,12 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
             taskRequest: null,
           ),
         );
+        showErrorToast(l.message);
       },
       (r) {
         emit(
           state.copyWith(
             choosePerformerSt: RequestStatus.loaded,
-
             task: state.task?.copyWith(performer: taskRequest.performer),
             taskRequest: null,
           ),
@@ -78,16 +79,17 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
     );
   }
 
-  Future<void> cancelPerformer(TaskRequest taskRequest) async {
+  Future<void> cancelByCustomer(TaskRequest taskRequest) async {
     emit(state.copyWith(cancelPerformerSt: RequestStatus.loading));
 
-    final response = await _requestsRepository.cancelTaskRequestByCustomer(
-      taskRequestId: taskRequest.id,
+    final response = await _requestsRepository.cancelRequestByCustomer(
+      requestId: taskRequest.id,
     );
 
     response.fold(
       (l) {
         emit(state.copyWith(cancelPerformerSt: RequestStatus.error));
+        showErrorToast(l.message);
       },
       (r) {
         emit(
@@ -101,16 +103,36 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
     );
   }
 
+  Future<void> cancelByPerformer(TaskRequest taskRequest) async {
+    emit(state.copyWith(status: RequestStatus.loading));
+
+    final response = await _requestsRepository.cancelRequestByPerformer(
+      requestId: taskRequest.id,
+    );
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(status: RequestStatus.error));
+        showErrorToast(l.message);
+      },
+      (r) {
+        emit(state.copyWith(status: RequestStatus.loaded));
+        showSuccessToast(LocaleKeys.applicationCancelledSuccessfully.tr());
+      },
+    );
+  }
+
   Future<void> finishTask(TaskRequest taskRequest) async {
     emit(state.copyWith(finishTaskSt: RequestStatus.loading));
 
-    final response = await _requestsRepository.finishTaskRequestByCustomer(
-      taskRequestId: taskRequest.id,
+    final response = await _requestsRepository.finishRequestByCustomer(
+      requestId: taskRequest.id,
     );
 
     response.fold(
       (l) {
         emit(state.copyWith(finishTaskSt: RequestStatus.error));
+        showErrorToast(l.message);
       },
       (r) {
         emit(
@@ -120,6 +142,45 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
           ),
         );
         showSuccessToast(LocaleKeys.taskSuccessfullyCompleted.tr());
+      },
+    );
+  }
+
+  Future<void> changeStatus(TaskRequest taskRequest, String status) async {
+    emit(state.copyWith(status: RequestStatus.loading));
+
+    final response = await _requestsRepository.changeStatus(
+      requestId: taskRequest.id,
+      status: status,
+    );
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(status: RequestStatus.error));
+        showErrorToast(l.message);
+      },
+      (r) {
+        emit(state.copyWith(status: RequestStatus.loaded));
+        showSuccessToast(LocaleKeys.statusChangedSuccessfully.tr());
+      },
+    );
+  }
+
+  Future<void> deleteRequest(TaskRequest taskRequest) async {
+    emit(state.copyWith(status: RequestStatus.loading));
+
+    final response = await _requestsRepository.deleteRequest(
+      requestId: taskRequest.id,
+    );
+
+    response.fold(
+      (l) {
+        emit(state.copyWith(status: RequestStatus.error));
+        showErrorToast(l.message);
+      },
+      (r) {
+        emit(state.copyWith(status: RequestStatus.loaded));
+        showSuccessToast(LocaleKeys.applicationDeletedSuccessfully.tr());
       },
     );
   }

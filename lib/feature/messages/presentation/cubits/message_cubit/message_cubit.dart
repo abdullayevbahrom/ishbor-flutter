@@ -8,7 +8,6 @@ import '../../../data/models/paginated_chat_message.dart';
 import '../../../domain/repository/messages_repository.dart';
 
 part 'message_state.dart';
-
 part 'message_cubit.freezed.dart';
 
 class MessageCubit extends Cubit<MessageState> {
@@ -17,8 +16,10 @@ class MessageCubit extends Cubit<MessageState> {
   MessageCubit(this._messagesRepository) : super(const MessageState());
   int size = 10;
   int page = 1;
+  String? _currentType;
 
-  void fetchData() {
+  void fetchData({String? type}) {
+    _currentType = type;
     reset();
     fetchMessages();
   }
@@ -28,8 +29,7 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   void checkLoadMoreData() {
-    if (state.messages?.totalCount != state.messages?.items.length &&
-        !state.isLoading) {
+    if (state.messages?.totalCount != state.messages?.items.length && !state.isLoading) {
       increasePage();
       fetchMoreMessages();
     }
@@ -44,6 +44,7 @@ class MessageCubit extends Cubit<MessageState> {
 
     final response = await _messagesRepository.fetchMessages(
       queryParams: CommonQueryParams(pageNumber: page, pageSize: size),
+      type: _currentType,
     );
 
     response.fold(
@@ -62,6 +63,7 @@ class MessageCubit extends Cubit<MessageState> {
 
     final response = await _messagesRepository.fetchMessages(
       queryParams: CommonQueryParams(pageNumber: page, pageSize: size),
+      type: _currentType,
     );
 
     response.fold(
@@ -85,9 +87,11 @@ class MessageCubit extends Cubit<MessageState> {
 
   void makeMessageRead(int index) {
     final messages = List<Message>.from(state.messages?.items ?? []);
-    messages[index] = messages[index].copyWith(hasNewRecord: false);
-    emit(state.copyWith(messages: state.messages?.copyWith(items: messages)));
-    checkHasUnReadMessages();
+    if (index >= 0 && index < messages.length) {
+      messages[index] = messages[index].copyWith(hasNewRecord: false);
+      emit(state.copyWith(messages: state.messages?.copyWith(items: messages)));
+      checkHasUnReadMessages();
+    }
   }
 
   void checkHasUnReadMessages() {
