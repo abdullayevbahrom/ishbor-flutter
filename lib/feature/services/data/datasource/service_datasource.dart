@@ -47,6 +47,11 @@ abstract class ServiceDataSource {
 
   Future<Either<Failure, void>> toggleServiceById({required Object serviceId});
 
+  Future<Either<Failure, void>> deleteServiceImageById({
+    required Object serviceId,
+    required Object imageId,
+  });
+
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,
   });
@@ -189,7 +194,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       _log(
         'create',
-        'POST ${ApiConstants.services} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} images=${service.uploadedImages.length}',
+        '[FIX] POST ${ApiConstants.services} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} uploadedImages=${service.uploadedImages.length}',
       );
       FormData data = FormData.fromMap({
         'title': service.title,
@@ -208,7 +213,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         for (var image in service.uploadedImages!) {
           data.files.add(
             MapEntry(
-              'uploaded_images[]',
+              ServiceCreateRequest.uploadedImagesField,
               await MultipartFile.fromFile(image.path),
             ),
           );
@@ -239,7 +244,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       _log(
         'update',
-        'PATCH ${ApiConstants.updateService(service.serviceId!)} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} images=${service.uploadedImages.length}',
+        '[FIX] PATCH ${ApiConstants.updateService(service.serviceId!)} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} uploadedImages=${service.uploadedImages.length}',
       );
       FormData data = FormData.fromMap({
         'title': service.title,
@@ -257,7 +262,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       for (var image in service.uploadedImages) {
         data.files.add(
           MapEntry(
-            'uploaded_images[]',
+            ServiceCreateRequest.uploadedImagesField,
             await MultipartFile.fromFile(image.path),
           ),
         );
@@ -441,6 +446,37 @@ class ServiceDataSourceImpl extends ServiceDataSource {
   }
 
   @override
+  Future<Either<Failure, void>> deleteServiceImageById({
+    required Object serviceId,
+    required Object imageId,
+  }) async {
+    try {
+      _log(
+        'image-delete',
+        '[FIX] DELETE ${ApiConstants.deleteServiceImage(serviceId, imageId)}',
+      );
+      final response = await _dio.delete(
+        ApiConstants.deleteServiceImage(serviceId, imageId),
+      );
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        _log('image-delete', 'success status=${response.statusCode}');
+        return const Right(null);
+      } else {
+        _log(
+          'image-delete',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
+      }
+    } on DioException catch (e) {
+      return Left(Failure(message: DioFailure.fromDioError(e).message));
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchMyServices({
     required CommonQueryParams queryParams,
   }) async {
@@ -492,5 +528,4 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       rethrow;
     }
   }
-
 }

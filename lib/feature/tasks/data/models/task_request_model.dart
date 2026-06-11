@@ -1,6 +1,8 @@
 import 'dart:io';
 
 class TaskRequestModel {
+  static const String uploadedImagesField = 'uploadedImages';
+
   final dynamic taskId;
   final String title;
   final List<String>? categoryIds;

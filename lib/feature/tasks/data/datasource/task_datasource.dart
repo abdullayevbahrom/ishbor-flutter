@@ -56,6 +56,11 @@ abstract class TaskDataSource {
   Future<Either<Failure, void>> deleteTaskById({required dynamic taskId});
 
   Future<Either<Failure, void>> toggleTaskById({required dynamic taskId});
+
+  Future<Either<Failure, void>> deleteTaskImageById({
+    required dynamic taskId,
+    required dynamic imageId,
+  });
 }
 
 class TaskDataSourceImpl extends TaskDataSource {
@@ -190,7 +195,7 @@ class TaskDataSourceImpl extends TaskDataSource {
     try {
       _log(
         'create',
-        'POST ${ApiConstants.tasks} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} images=${task.uploadedImages.length}',
+        '[FIX] POST ${ApiConstants.tasks} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} uploadedImages=${task.uploadedImages.length}',
       );
       FormData data = FormData.fromMap({
         'title': task.title,
@@ -225,7 +230,7 @@ class TaskDataSourceImpl extends TaskDataSource {
           final String type = file.path.split(".").last;
           data.files.add(
             MapEntry<String, MultipartFile>(
-              "uploaded_images[]",
+              TaskRequestModel.uploadedImagesField,
               MultipartFile.fromBytes(
                 file.readAsBytesSync(),
                 filename: fileName,
@@ -365,7 +370,7 @@ class TaskDataSourceImpl extends TaskDataSource {
     try {
       _log(
         'update',
-        'PATCH ${ApiConstants.updateTask(task.taskId!)} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} images=${task.uploadedImages.length}',
+        '[FIX] PATCH ${ApiConstants.updateTask(task.taskId!)} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} uploadedImages=${task.uploadedImages.length}',
       );
       Map<String, dynamic> data = ({
         'title': task.title,
@@ -504,6 +509,39 @@ class TaskDataSourceImpl extends TaskDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteTaskImageById({
+    required dynamic taskId,
+    required dynamic imageId,
+  }) async {
+    try {
+      _log(
+        'image-delete',
+        '[FIX] DELETE ${ApiConstants.deleteTaskImage(taskId, imageId)}',
+      );
+      final response = await _dio.delete(
+        ApiConstants.deleteTaskImage(taskId, imageId),
+      );
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        _log('image-delete', 'success status=${response.statusCode}');
+        return const Right(null);
+      } else {
+        _log(
+          'image-delete',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
+      }
+    } on DioException catch (e) {
+      final failure = DioFailure.fromDioError(e);
+      return Left(Failure(message: failure.message));
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
   @override
   Future<Either<Failure, PaginatedTaskListResponse>> fetchRecommendedTasks({
     required CommonQueryParams queryParams,

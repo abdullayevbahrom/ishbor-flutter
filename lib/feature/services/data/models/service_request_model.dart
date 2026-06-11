@@ -1,6 +1,8 @@
 import 'dart:io';
 
 class ServiceCreateRequest {
+  static const String uploadedImagesField = 'uploadedImages';
+
   final dynamic serviceId;
   final String title;
   final List<String>? categoryIds;

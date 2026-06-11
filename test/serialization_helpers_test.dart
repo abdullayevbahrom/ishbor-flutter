@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
 import 'package:top_jobs/feature/common/data/models/category.dart';
@@ -6,7 +7,9 @@ import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
 import 'package:top_jobs/feature/common/data/models/user_update_request.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 import 'package:top_jobs/feature/profile/data/model/ask_question_model.dart';
+import 'package:top_jobs/feature/services/data/models/service_request_model.dart';
 import 'package:top_jobs/feature/services/data/models/service.dart';
+import 'package:top_jobs/feature/tasks/data/models/task_request_model.dart';
 import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
@@ -55,6 +58,16 @@ void main() {
     expect(response.totalCount, 2);
     expect(response.currentPageNumber, 3);
     expect(response.numItemsPerPage, 20);
+  });
+
+  test('multipart upload constants stay aligned with the vNext contract', () {
+    expect(ServiceCreateRequest.uploadedImagesField, 'uploadedImages');
+    expect(TaskRequestModel.uploadedImagesField, 'uploadedImages');
+    expect(ApiConstants.uploadServiceImages('019e88b7-b706-7caa-bb84-dd2f0ebec201'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images');
+    expect(ApiConstants.uploadTaskImages('019e88b7-b706-7caa-bb84-dd2f0ebec202'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images');
+    expect(ApiConstants.deleteServiceImage('019e88b7-b706-7caa-bb84-dd2f0ebec201', '019e88b7-b706-7caa-bb84-dd2f0ebec301'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images/019e88b7-b706-7caa-bb84-dd2f0ebec301');
+    expect(ApiConstants.deleteTaskImage('019e88b7-b706-7caa-bb84-dd2f0ebec202', '019e88b7-b706-7caa-bb84-dd2f0ebec302'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images/019e88b7-b706-7caa-bb84-dd2f0ebec302');
+    expect(ApiConstants.deleteVacancyImage('019e88b7-b706-7caa-bb84-dd2f0ebec203', '019e88b7-b706-7caa-bb84-dd2f0ebec303'), '/api/v1/vacancies/019e88b7-b706-7caa-bb84-dd2f0ebec203/images/019e88b7-b706-7caa-bb84-dd2f0ebec303');
   });
 
   test('localized text resolves locale fallbacks', () {

@@ -63,6 +63,11 @@ abstract class VacancyDataSource {
   });
 
   Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId});
+
+  Future<Either<Failure, void>> deleteVacancyImageById({
+    required dynamic vacancyId,
+    required dynamic imageId,
+  });
 }
 
 class VacancyDataSourceImpl extends VacancyDataSource {
@@ -554,6 +559,43 @@ class VacancyDataSourceImpl extends VacancyDataSource {
       } else {
         debugPrint(
           '[VACANCY][favorite][warn] status=${response.statusCode} payload=${response.data}',
+        );
+        if (response.data is Map<String, dynamic>) {
+          return Left(Failure(message: response.data['message']));
+        } else {
+          return Left(Failure(message: response.data));
+        }
+      }
+    } on DioException catch (e) {
+      final failure = DioFailure.fromDioError(e);
+      return Left(Failure(message: failure.message));
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteVacancyImageById({
+    required dynamic vacancyId,
+    required dynamic imageId,
+  }) async {
+    try {
+      debugPrint(
+        '[FIX][VACANCY][image-delete] DELETE ${ApiConstants.deleteVacancyImage(vacancyId, imageId)}',
+      );
+      final response = await _dio.delete(
+        ApiConstants.deleteVacancyImage(vacancyId, imageId),
+      );
+
+      if (response.statusCode == 204 || response.statusCode == 200) {
+        debugPrint(
+          '[FIX][VACANCY][image-delete] success status=${response.statusCode}',
+        );
+        return const Right(null);
+      } else {
+        debugPrint(
+          '[FIX][VACANCY][image-delete][warn] status=${response.statusCode} payload=${response.data}',
         );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
