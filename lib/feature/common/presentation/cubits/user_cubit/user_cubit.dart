@@ -12,6 +12,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.d
 import '../../../../../core/network/api_http.dart';
 import '../../../../../core/services/storage_service.dart';
 import '../../../../../core/services/web_socket_client.dart';
+import '../../../../../feature/common/domain/repository/realtime_repository.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/user.dart';
 
@@ -22,6 +23,7 @@ part 'user_cubit.freezed.dart';
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository;
   final WebsocketClient _webSocketClient;
+  bool _realtimeFallbackHandled = false;
 
   UserCubit(this._userRepository, this._webSocketClient)
     : super(const UserState());
@@ -48,7 +50,39 @@ class UserCubit extends Cubit<UserState> {
   }
 
   Future<void> initUserStatus() async {
-    _webSocketClient.initUserStatus(onError: () {}, onMessages: (data) {});
+    _realtimeFallbackHandled = false;
+    final channel = await _webSocketClient.initUserStatus(
+      onMessages: (_) {},
+      onError: (error) async {
+        await _syncRealtimeFallback('socket error: $error');
+      },
+    );
+
+    if (channel == null) {
+      await _syncRealtimeFallback('socket connect failed');
+      return;
+    }
+
+    debugPrint('[DEBUG][realtime] user status websocket connected');
+  }
+
+  Future<void> _syncRealtimeFallback(String reason) async {
+    if (_realtimeFallbackHandled) {
+      return;
+    }
+    _realtimeFallbackHandled = true;
+
+    debugPrint(
+      '[WARN][realtime] user status websocket unavailable ($reason); using HTTP heartbeat/check',
+    );
+
+    final realtimeRepository = sl<RealtimeRepository>();
+    await realtimeRepository.heartbeat();
+
+    final userId = state.user?.id;
+    if (userId != null && userId.isNotEmpty) {
+      await realtimeRepository.checkUserStatus(userId);
+    }
   }
 
   Future<void> _handleRequest<T>({

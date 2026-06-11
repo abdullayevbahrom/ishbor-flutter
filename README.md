@@ -27,6 +27,12 @@ flutter run \
 
 `APP_ENV` uchun odatiy qiymatlar: `local`, `staging`, `prod`.
 
+## Realtime / WebSocket
+
+WebSocket client avval `Authorization: Bearer <token>` va `X-Device-Token` headerlari bilan ulanadi.
+Agar socket handshake yoki stream yopilsa, user status oqimi HTTP `heartbeat` + `checkUserStatus` fallbackiga o'tadi.
+Ulanish urinishlari exponential backoff bilan qayta sinab ko‘riladi; token log qilinmaydi.
+
 # Getting Started
 
 This project is a starting point for a Flutter application.

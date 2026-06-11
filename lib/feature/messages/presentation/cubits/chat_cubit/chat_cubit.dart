@@ -183,6 +183,17 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> initChat(Object messageId) async {
     _channel = await WebsocketClient.initChat(messageId);
+    if (_channel == null) {
+      debugPrint(
+        '[WARN][messages] chat websocket unavailable; using HTTP records for messageId=${messageId.toString()}',
+      );
+      return;
+    }
+
+    debugPrint(
+      '[DEBUG][messages] chat websocket connected messageId=${messageId.toString()}',
+    );
+
     _channel?.stream.listen(
       (event) {
         final decoded = jsonDecode(event);
