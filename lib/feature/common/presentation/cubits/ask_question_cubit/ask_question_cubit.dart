@@ -51,6 +51,14 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
   }
 
   Future<void> addContactClick({required ContactClickParams params}) async {
+    if (kDebugMode) {
+      final maskedContact = params.contact.length <= 4
+          ? '****'
+          : '${params.contact.substring(0, 2)}***${params.contact.substring(params.contact.length - 2)}';
+      debugPrint(
+        '[DEBUG][contact-click] action=contact_click type=${params.type} id=${params.id} contact=$maskedContact',
+      );
+    }
     final response = await _clickRepository.addContactClick(
       contactClickParams: params,
     );
@@ -60,6 +68,25 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
 
   Future<void> reportAd(ReportsParam params) async {
     emit(state.copyWith(reportSt: RequestStatus.loading));
+    if (kDebugMode) {
+      final targetType = params.vacancyId != null
+          ? 'vacancy'
+          : params.serviceId != null
+              ? 'service'
+              : params.taskId != null
+                  ? 'task'
+                  : params.userId != null
+                      ? 'user'
+                      : 'unknown';
+      final targetId = (params.vacancyId ??
+              params.serviceId ??
+              params.taskId ??
+              params.userId)
+          ?.toString();
+      debugPrint(
+        '[DEBUG][reports] action=report targetType=$targetType targetId=${targetId ?? ''} bodyLength=${params.body.length}',
+      );
+    }
     final response = await _reportsRepository.reportAd(params: params);
 
     response.fold(

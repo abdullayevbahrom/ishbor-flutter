@@ -19,6 +19,9 @@ class FeedbackCubit extends Cubit<FeedbackState> {
 
   Future<void> fetchFeedbacksCount(String userId) async {
     emit(state.copyWith(countSt: RequestStatus.loading, userId: userId));
+    if (kDebugMode) {
+      debugPrint('[DEBUG][feedback][count] action=count userId=$userId');
+    }
 
     final response = await _feedBackRepository.fetchFeedBackCount(id: userId);
 
@@ -36,6 +39,9 @@ class FeedbackCubit extends Cubit<FeedbackState> {
 
   Future<void> fetchFeedBackList(String userId) async {
     emit(state.copyWith(listSt: RequestStatus.loading, userId: userId));
+    if (kDebugMode) {
+      debugPrint('[DEBUG][feedback][list] action=list userId=$userId');
+    }
 
     final response = await _feedBackRepository.fetchFeedBackList(id: userId);
 
@@ -55,7 +61,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
     emit(state.copyWith(addReviewSt: RequestStatus.loading));
     if (kDebugMode) {
       debugPrint(
-        '[FIX][FEEDBACK][submit] receiverType=${feedBackRequest.receiverType} receiverId=${feedBackRequest.receiverId}',
+        '[DEBUG][feedback][create] action=create receiverType=${feedBackRequest.receiverType} receiverId=${feedBackRequest.receiverId} like=${feedBackRequest.like ?? false} dislike=${feedBackRequest.dislike ?? false} messageLength=${feedBackRequest.message?.length ?? 0}',
       );
     }
 
@@ -67,7 +73,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
       (l) async {
         emit(state.copyWith(addReviewSt: RequestStatus.error));
         if (kDebugMode) {
-          debugPrint('[FIX][FEEDBACK][submit][error] ${l.message}');
+          debugPrint('[WARN][feedback][create][error] ${l.message}');
         }
       },
       (_) async {
@@ -78,7 +84,7 @@ class FeedbackCubit extends Cubit<FeedbackState> {
           await fetchFeedbacksCount(userId);
         }
         if (kDebugMode) {
-          debugPrint('[FIX][FEEDBACK][submit] success');
+          debugPrint('[DEBUG][feedback][create] success');
         }
         showSuccessToast("Success");
         navigatorKey.currentContext?.pop();
