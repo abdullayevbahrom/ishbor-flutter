@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'api_model_utils.dart';
+
 class AppImage extends Equatable {
   final String? id;
   final String? originalName;
@@ -30,22 +32,13 @@ class AppImage extends Equatable {
       );
     }
 
-    final data =
-        source is Map<String, dynamic>
-            ? Map<String, dynamic>.from(source)
-            : source is Map
-            ? Map<String, dynamic>.fromEntries(
-              source.entries.map(
-                (entry) => MapEntry(entry.key.toString(), entry.value),
-              ),
-            )
-            : <String, dynamic>{};
+    final data = unwrapData(source);
 
     final urls = data['urls'];
     return AppImage(
-      id: data['id']?.toString(),
-      originalName: data['original_name']?.toString(),
-      extension: data['extension']?.toString(),
+      id: stringValue(data['id']),
+      originalName: stringValue(data['original_name'] ?? data['originalName']),
+      extension: stringValue(data['extension']),
       urls:
           urls is Map<String, dynamic>
               ? Map<String, dynamic>.from(urls)

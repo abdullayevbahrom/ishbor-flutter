@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:top_jobs/models/image.dart';
 import 'package:top_jobs/models/localized_text.dart';
 
+import 'api_model_utils.dart';
+
 class AdCustomer extends Equatable {
   final String? id;
   final String? fullName;
@@ -24,14 +26,17 @@ class AdCustomer extends Equatable {
   });
 
   factory AdCustomer.fromJson(dynamic source) {
-    final raw = _asMap(source);
+    final raw =
+        source is String
+            ? <String, dynamic>{'id': source}
+            : unwrapData(source);
     return AdCustomer(
       raw: raw,
-      id: _asString(raw['id']),
-      fullName: _asString(raw['full_name'] ?? raw['fullName']),
-      phoneNumber: _asString(raw['phone_number'] ?? raw['phoneNumber']),
-      city: _asString(raw['city']),
-      locale: _asString(raw['locale']),
+      id: stringValue(raw['id']),
+      fullName: stringValue(raw['full_name'] ?? raw['fullName']),
+      phoneNumber: stringValue(raw['phone_number'] ?? raw['phoneNumber']),
+      city: stringValue(raw['city']),
+      locale: stringValue(raw['locale']),
       avatar: _asAppImage(raw['avatar']),
       title: _asLocalizedText(raw['title']),
     );
@@ -74,24 +79,6 @@ class AdCustomer extends Equatable {
     return null;
   }
 }
-
-Map<String, dynamic> _asMap(dynamic source) {
-  if (source is Map<String, dynamic>) {
-    return Map<String, dynamic>.from(source);
-  }
-
-  if (source is Map) {
-    return Map<String, dynamic>.fromEntries(
-      source.entries.map(
-        (entry) => MapEntry(entry.key.toString(), entry.value),
-      ),
-    );
-  }
-
-  return <String, dynamic>{};
-}
-
-String? _asString(dynamic value) => value?.toString();
 
 AppImage? _asAppImage(dynamic value) {
   if (value is String || value is Map) {

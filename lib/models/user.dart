@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:top_jobs/models/file.dart';
 import 'package:top_jobs/models/image.dart';
 
+import 'api_model_utils.dart';
 import '../feature/common/data/models/category.dart';
 
 class User extends Equatable {
@@ -114,78 +115,56 @@ class User extends Equatable {
     contentLimit,
   ];
 
-  static User fromMap(Map<String, dynamic> data) => User(
-    id: data['id']?.toString() ?? '',
-    contentCount: data['content_count'],
-    contentLimit: data['content_limit'],
-    chatGptLimit: data['chat_gpt_limit'],
-    phoneNumber: data['phone_number'],
-    email: data['email'],
-    fullName: data['full_name'],
-    firstName: data['first_name'],
-    lastName: data['last_name'],
-    middleName: data['middle_name'],
-    birthDay:
-        data['birth_day'] != null ? DateTime.tryParse(data['birth_day']) : null,
-    avatar:
-        data['avatar'] != null && data['avatar']['urls'] != null
-            ? AppImage.fromMap(Map.from(data['avatar']))
-            : null,
-    categories:
-        data['categories'] != null
-            ? List.from(
-              data['categories'],
-            ).map((cat) => CategoryModel.fromMap(cat)).toList()
-            : [],
-    portfolios:
-        data['portfolios'] != null
-            ? List.from(
-              data['portfolios'],
-            ).map((img) => AppImage.fromMap(Map.from(img))).toList()
-            : [],
-    uploadedPortfolios:
-        data['uploaded_portfolios'] != null
-            ? List.from(
-              data['uploaded_portfolios'],
-            ).map((img) => AppImage.fromMap(Map.from(img))).toList()
-            : [],
-    city: data['city'],
-    gender: data['gender'],
-    locale: data['locale'],
-    timezone: data['timezone'],
-    likesCount: data['likes_count'],
-    dislikesCount: data['dislikes_count'],
-    configured: data['configured'],
-    phoneNumberVerified: data['phone_verified'],
-    verified: data['verified'],
-    documentVerified: data['document_verified'],
-    active: data['active'],
-    balance:
-        (data['balance'] is int)
-            ? (data['balance'] as int).toDouble()
-            : data['balance'],
-    online: data['online'],
-    createdAt:
-        data['created_at'] != null
-            ? DateTime.tryParse(data['created_at'])
-            : null,
-    updatedAt:
-        data['updated_at'] != null
-            ? DateTime.tryParse(data['updated_at'])
-            : null,
-    lastActiveTime:
-        data['last_active_time'] != null
-            ? DateTime.tryParse(data['last_active_time'])
-            : null,
-    logoutTime:
-        data['logout_time'] != null
-            ? DateTime.tryParse(data['logout_time'])
-            : null,
-    aboutMe: data['about_me'],
-    verificationDoc:
-        data['verification_doc'] != null &&
-                data['verification_doc']['url'] != null
-            ? File.fromMap(Map.from(data['verification_doc']))
-            : null,
-  );
+  static User fromMap(dynamic source) {
+    final data = unwrapData(source);
+
+    return User(
+      id: stringValue(data['id']) ?? '',
+      contentCount: intValue(data['content_count']),
+      contentLimit: intValue(data['content_limit']),
+      chatGptLimit: intValue(data['chat_gpt_limit']),
+      phoneNumber: stringValue(data['phone_number'] ?? data['phoneNumber']),
+      email: stringValue(data['email']),
+      fullName: stringValue(data['full_name'] ?? data['fullName']),
+      firstName: stringValue(data['first_name'] ?? data['firstName']),
+      lastName: stringValue(data['last_name'] ?? data['lastName']),
+      middleName: stringValue(data['middle_name'] ?? data['middleName']),
+      birthDay: dateTimeValue(data['birth_day']),
+      avatar: data['avatar'] != null ? AppImage.fromJson(data['avatar']) : null,
+      categories: mappedList(
+        data['categories'],
+        CategoryModel.fromMap,
+      ),
+      portfolios: mappedList(
+        data['portfolios'],
+        AppImage.fromJson,
+      ),
+      uploadedPortfolios: mappedList(
+        data['uploaded_portfolios'],
+        AppImage.fromJson,
+      ),
+      city: stringValue(data['city']),
+      gender: stringValue(data['gender']),
+      locale: stringValue(data['locale']),
+      timezone: stringValue(data['timezone']),
+      likesCount: intValue(data['likes_count']) ?? 0,
+      dislikesCount: intValue(data['dislikes_count']) ?? 0,
+      configured: boolValue(data['configured']),
+      phoneNumberVerified: boolValue(data['phone_verified']) ?? false,
+      verified: boolValue(data['verified']),
+      documentVerified: boolValue(data['document_verified']),
+      active: boolValue(data['active']),
+      balance: doubleValue(data['balance']),
+      online: boolValue(data['online']),
+      createdAt: dateTimeValue(data['created_at']),
+      updatedAt: dateTimeValue(data['updated_at']),
+      lastActiveTime: dateTimeValue(data['last_active_time']),
+      logoutTime: dateTimeValue(data['logout_time']),
+      aboutMe: stringValue(data['about_me']),
+      verificationDoc:
+          data['verification_doc'] != null
+              ? File.fromMap(asMap(data['verification_doc']))
+              : null,
+    );
+  }
 }

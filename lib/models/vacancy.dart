@@ -1,4 +1,5 @@
 import 'package:top_jobs/models/ad_customer.dart';
+import 'package:top_jobs/models/api_model_utils.dart';
 import 'package:top_jobs/models/localized_text.dart';
 import 'package:top_jobs/models/user.dart';
 
@@ -160,15 +161,15 @@ class Vacancy extends Ad {
   ];
 
   static Vacancy fromMap(Map<String, dynamic> data) {
-    final payload = _asMap(_unwrapData(data));
+    final payload = asMap(unwrapData(data));
 
     return Vacancy(
-      id: _asString(payload['id']) ?? '',
-      status: _asString(payload['status']) ?? '',
+      id: stringValue(payload['id']) ?? '',
+      status: stringValue(payload['status']) ?? '',
       title: LocalizedText.fromJson(payload['title']),
-      createdAt: _asDateTime(payload['created_at']) ?? DateTime.now().toUtc(),
-      updatedAt: _asDateTime(payload['updated_at']),
-      liftedUpAt: _asDateTime(payload['lifted_up_at']),
+      createdAt: dateTimeValue(payload['created_at']) ?? DateTime.now().toUtc(),
+      updatedAt: dateTimeValue(payload['updated_at']),
+      liftedUpAt: dateTimeValue(payload['lifted_up_at']),
       description:
           payload['description'] != null
               ? LocalizedText.fromJson(payload['description'])
@@ -180,40 +181,40 @@ class Vacancy extends Ad {
       customer: AdCustomer.fromJson(
         payload['customer'] ?? payload['user'] ?? payload['owner'],
       ),
-      phoneNumber: _asString(payload['phone_number']),
-      phoneNumber1: _asString(payload['phone_number1']),
-      phoneNumber2: _asString(payload['phone_number2']),
-      phoneNumber3: _asString(payload['phone_number3']),
-      telegram: _asString(payload['telegram']),
+      phoneNumber: stringValue(payload['phone_number']),
+      phoneNumber1: stringValue(payload['phone_number1']),
+      phoneNumber2: stringValue(payload['phone_number2']),
+      phoneNumber3: stringValue(payload['phone_number3']),
+      telegram: stringValue(payload['telegram']),
       performer:
           payload['performer'] != null
-              ? User.fromMap(_asMap(payload['performer']))
+              ? User.fromMap(payload['performer'])
               : null,
-      viewCount: _asInt(payload['view_count']),
-      city: _asString(payload['city']),
-      moderatorNote: _asString(payload['moderator_note']),
-      categories: _asCategoryList(payload['categories']),
-      skills: _asStringList(payload['skills']),
-      salaryMin: _asDouble(payload['salary_min']),
-      salaryMax: _asDouble(payload['salary_max']),
-      salaryCurrency: _asString(payload['salary_currency']),
-      negotiable: _asBool(payload['negotiable']),
-      companyName: _asString(payload['company_name']),
-      companyDescription: _asString(payload['company_description']),
+      viewCount: intValue(payload['view_count']),
+      city: stringValue(payload['city']),
+      moderatorNote: stringValue(payload['moderator_note']),
+      categories: mappedList(payload['categories'], CategoryModel.fromMap),
+      skills: stringList(payload['skills']),
+      salaryMin: doubleValue(payload['salary_min']),
+      salaryMax: doubleValue(payload['salary_max']),
+      salaryCurrency: stringValue(payload['salary_currency']),
+      negotiable: boolValue(payload['negotiable']),
+      companyName: stringValue(payload['company_name']),
+      companyDescription: stringValue(payload['company_description']),
       address:
           payload['address'] != null
-              ? AddressModel.fromJson(_asMap(payload['address']))
+              ? AddressModel.fromJson(payload['address'])
               : null,
       partialJobOpportunity:
-          _asBool(payload['partial_job_opportunity']) ?? false,
-      employmentType: _asString(payload['employment_type']),
-      jobModes: _asStringList(payload['job_modes']),
-      whoCanRespond: _asStringList(payload['who_can_respond']),
-      images: _asImageList(payload['images']),
-      isNeedLiftUp: _asBool(payload['is_need_lift_up']) ?? false,
-      isFavorite: _asBool(payload['is_favorite']),
-      hasUserRequest: _asBool(payload['has_user_request']),
-      clickCount: _asInt(payload['click_count']),
+          boolValue(payload['partial_job_opportunity']) ?? false,
+      employmentType: stringValue(payload['employment_type']),
+      jobModes: stringList(payload['job_modes']),
+      whoCanRespond: stringList(payload['who_can_respond']),
+      images: mappedList(payload['images'], AppImage.fromJson),
+      isNeedLiftUp: boolValue(payload['is_need_lift_up']) ?? false,
+      isFavorite: boolValue(payload['is_favorite']),
+      hasUserRequest: boolValue(payload['has_user_request']),
+      clickCount: intValue(payload['click_count']),
     );
   }
 }
@@ -232,15 +233,13 @@ class VacancyPaginationResponse {
   });
 
   factory VacancyPaginationResponse.fromMap(Map<String, dynamic> map) {
-    final payload = _asMap(_unwrapData(map));
+    final payload = asMap(unwrapData(map));
 
     return VacancyPaginationResponse(
-      currentPageNumber: _asInt(payload['current_page_number']) ?? 1,
-      numItemsPerPage: _asInt(payload['num_items_per_page']) ?? 10,
-      totalCount: _asInt(payload['total_count']) ?? 0,
-      items: _asMapList(
-        payload['items'],
-      ).map(Vacancy.fromMap).toList(growable: false),
+      currentPageNumber: intValue(payload['current_page_number']) ?? 1,
+      numItemsPerPage: intValue(payload['num_items_per_page']) ?? 10,
+      totalCount: intValue(payload['total_count']) ?? 0,
+      items: mappedList(payload['items'], (item) => Vacancy.fromMap(asMap(item))),
     );
   }
 
@@ -257,150 +256,4 @@ class VacancyPaginationResponse {
       items: items ?? this.items,
     );
   }
-}
-
-Map<String, dynamic> _unwrapData(Map<String, dynamic> data) {
-  final payload = data['data'];
-
-  if (payload is Map<String, dynamic>) {
-    return Map<String, dynamic>.from(payload);
-  }
-
-  if (payload is Map) {
-    return Map<String, dynamic>.fromEntries(
-      payload.entries.map(
-        (entry) => MapEntry(entry.key.toString(), entry.value),
-      ),
-    );
-  }
-
-  return data;
-}
-
-Map<String, dynamic> _asMap(dynamic value) {
-  if (value is Map<String, dynamic>) {
-    return Map<String, dynamic>.from(value);
-  }
-
-  if (value is Map) {
-    return Map<String, dynamic>.fromEntries(
-      value.entries.map((entry) => MapEntry(entry.key.toString(), entry.value)),
-    );
-  }
-
-  return <String, dynamic>{};
-}
-
-List<Map<String, dynamic>> _asMapList(dynamic value) {
-  if (value is! List) {
-    return const <Map<String, dynamic>>[];
-  }
-
-  return value.whereType<Map>().map(_asMap).toList(growable: false);
-}
-
-List<String>? _asStringList(dynamic value) {
-  if (value is! List) {
-    return null;
-  }
-
-  return value.map((item) => item.toString()).toList(growable: false);
-}
-
-List<CategoryModel> _asCategoryList(dynamic value) {
-  if (value is! List) {
-    return const <CategoryModel>[];
-  }
-
-  return value
-      .whereType<Map>()
-      .map((item) => CategoryModel.fromMap(_asMap(item)))
-      .toList(growable: false);
-}
-
-List<AppImage> _asImageList(dynamic value) {
-  if (value is! List) {
-    return const <AppImage>[];
-  }
-
-  return value
-      .whereType<Map>()
-      .map((item) => AppImage.fromMap(_asMap(item)))
-      .toList(growable: false);
-}
-
-String? _asString(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-
-  return value.toString();
-}
-
-int? _asInt(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-
-  if (value is int) {
-    return value;
-  }
-
-  if (value is num) {
-    return value.toInt();
-  }
-
-  return int.tryParse(value.toString());
-}
-
-double? _asDouble(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-
-  if (value is double) {
-    return value;
-  }
-
-  if (value is num) {
-    return value.toDouble();
-  }
-
-  return double.tryParse(value.toString());
-}
-
-bool? _asBool(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-
-  if (value is bool) {
-    return value;
-  }
-
-  if (value is num) {
-    return value != 0;
-  }
-
-  final normalized = value.toString().toLowerCase().trim();
-  if (normalized == 'true' || normalized == '1' || normalized == 'yes') {
-    return true;
-  }
-  if (normalized == 'false' || normalized == '0' || normalized == 'no') {
-    return false;
-  }
-
-  return null;
-}
-
-DateTime? _asDateTime(dynamic value) {
-  if (value == null) {
-    return null;
-  }
-
-  if (value is DateTime) {
-    return value;
-  }
-
-  return DateTime.tryParse(value.toString());
 }

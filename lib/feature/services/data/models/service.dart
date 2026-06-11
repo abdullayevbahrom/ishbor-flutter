@@ -1,9 +1,11 @@
 import '../../../../models/ad_pricable.dart';
 import '../../../../models/address.dart';
 import '../../../../core/helpers/date_time_parser.dart';
+import '../../../../models/api_model_utils.dart';
 import '../../../../models/image.dart';
 import '../../../../models/user.dart';
 import '../../../common/data/models/category.dart';
+import '../../../../models/localized_text.dart';
 
 class PaginatedServiceResponse {
   final int currentPageNumber;
@@ -207,44 +209,50 @@ class ServiceModel extends AdPricable {
     isFavorite,
   ];
 
-  static ServiceModel fromMap(Map<String, dynamic> data) => ServiceModel(
-    id: data['id']?.toString() ?? '',
-    status: data['status'],
-    title: data['title'],
-    createdAt: parseRequiredDateTime(data['created_at']),
-    description: data['description'] ?? '',
-    shortDescription: data['short_description'] ?? '',
-    customer:
-        data['customer'] != null
-            ? User.fromMap(data['customer'])
-            : (data['user'] != null
-                ? User.fromMap(data['user'])
-                : User.fromMap(data['owner'] ?? {})),
-    phoneNumber: data['phone_number'],
-    performer:
-        data['performer'] != null ? User.fromMap(data['performer']) : null,
-    viewCount: data['view_count'],
-    city: data['city'],
-    moderatorNote: data['moderator_note'],
-    categories:
-        List.from(
-          data['categories'],
-        ).map((cat) => CategoryModel.fromMap(cat)).toList(),
-    address:
-        data['address'] != null ? AddressModel.fromJson(data['address']) : null,
-    images:
-        List.from(
-          data['images'],
-        ).map((img) => AppImage.fromMap(Map.from(img))).toList(),
-    negotiable: data['negotiable'],
-    price: data['price'],
-    isNeedLiftUp: data['is_need_lift_up'],
-    phoneNumber1: data['phone_number1'],
-    phoneNumber2: data['phone_number2'],
-    phoneNumber3: data['phone_number3'],
-    clickCount: data['click_count'],
-    isFavorite: data['is_favorite'],
-  );
+  static ServiceModel fromMap(dynamic source) {
+    final data = unwrapData(source);
+
+    return ServiceModel(
+      id: stringValue(data['id']) ?? '',
+      status: stringValue(data['status']) ?? '',
+      title: LocalizedText.fromJson(data['title']),
+      createdAt: parseRequiredDateTime(data['created_at']),
+      description:
+          data['description'] != null
+              ? LocalizedText.fromJson(data['description'])
+              : null,
+      shortDescription:
+          data['short_description'] != null
+              ? LocalizedText.fromJson(data['short_description'])
+              : null,
+      customer:
+          data['customer'] != null
+              ? User.fromMap(data['customer'])
+              : (data['user'] != null
+                  ? User.fromMap(data['user'])
+                  : User.fromMap(data['owner'] ?? {})),
+      phoneNumber: stringValue(data['phone_number']),
+      performer:
+          data['performer'] != null ? User.fromMap(data['performer']) : null,
+      viewCount: intValue(data['view_count']),
+      city: stringValue(data['city']),
+      moderatorNote: stringValue(data['moderator_note']),
+      categories: mappedList(data['categories'], CategoryModel.fromMap),
+      address:
+          data['address'] != null
+              ? AddressModel.fromJson(data['address'])
+              : null,
+      images: mappedList(data['images'], AppImage.fromJson),
+      negotiable: boolValue(data['negotiable']),
+      price: doubleValue(data['price']),
+      isNeedLiftUp: boolValue(data['is_need_lift_up']),
+      phoneNumber1: stringValue(data['phone_number1']),
+      phoneNumber2: stringValue(data['phone_number2']),
+      phoneNumber3: stringValue(data['phone_number3']),
+      clickCount: intValue(data['click_count']),
+      isFavorite: boolValue(data['is_favorite']),
+    );
+  }
 
   ServiceModel copyWith({
     String? phoneNumber1,

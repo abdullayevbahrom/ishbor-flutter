@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 
+import 'api_model_utils.dart';
+
 class TagModel extends Equatable {
   final String id;
   final String name;
@@ -9,10 +11,15 @@ class TagModel extends Equatable {
   @override
   List<Object?> get props => [id, name];
 
-  factory TagModel.fromMap(Map<String, dynamic> map) {
+  factory TagModel.fromMap(dynamic source) {
+    if (source is String) {
+      return TagModel(id: source, name: source);
+    }
+
+    final map = unwrapData(source);
     return TagModel(
-      id: map['id']?.toString() ?? '',
-      name: map['name']?.toString() ?? '',
+      id: stringValue(map['id']) ?? '',
+      name: stringValue(map['name'] ?? map['title']) ?? '',
     );
   }
 }

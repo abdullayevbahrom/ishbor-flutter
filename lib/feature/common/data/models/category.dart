@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:top_jobs/core/helpers/date_time_parser.dart';
 
+import '../../../../models/api_model_utils.dart';
+
 class CategoryTranslation extends Equatable {
   final String id;
   final String locale;
@@ -11,11 +13,12 @@ class CategoryTranslation extends Equatable {
   @override
   List<Object?> get props => [id, locale, name];
 
-  factory CategoryTranslation.fromJson(Map<String, dynamic> json) {
+  factory CategoryTranslation.fromJson(dynamic source) {
+    final json = asMap(source);
     return CategoryTranslation(
-      id: json['id']?.toString() ?? '',
-      locale: json['locale'] as String,
-      name: json['name'] as String?,
+      id: stringValue(json['id']) ?? '',
+      locale: stringValue(json['locale']) ?? '',
+      name: stringValue(json['name']),
     );
   }
 
@@ -67,48 +70,43 @@ class CategoryModel extends Equatable {
     updatedAt,
   ];
 
-  factory CategoryModel.fromMap(Map<String, dynamic> data) {
-    final childrenData = data['children'] as List<dynamic>? ?? [];
-    final translationsData = data['translations'] as List<dynamic>? ?? [];
+  factory CategoryModel.fromMap(dynamic source) {
+    if (source is String) {
+      return CategoryModel(
+        id: source,
+        path: '',
+        level: 0,
+        translations: const [],
+      );
+    }
+
+    final data = unwrapData(source);
+    final childrenData = data['children'];
+    final translationsData = data['translations'];
 
     return CategoryModel(
-      id: data['id']?.toString() ?? '',
-      path: data['path'] as String? ?? '',
-      level: data['level'] as int? ?? 0,
-      parent: data['parent']?.toString(),
+      id: stringValue(data['id']) ?? '',
+      path: stringValue(data['path'] ?? data['slug']) ?? '',
+      level: intValue(data['level']) ?? 0,
+      parent: stringValue(data['parent'] ?? data['parent_id']),
       parentObj:
-          data['parentObj'] != null
-              ? CategoryModel.fromMap(
-                Map<String, dynamic>.from(data['parentObj']),
-              )
-              : null,
+          data['parentObj'] != null ? CategoryModel.fromMap(data['parentObj']) : null,
       iconUrls:
           data['icon'] != null
-              ? data['icon'] is Map<String, dynamic>
-                  ? Map<String, dynamic>.from(data['icon'])
-                  : null
+              ? asMap(data['icon'])
               : null,
       iconSmallUrls:
           data['icon_small'] != null
-              ? data['icon_small'] is Map<String, dynamic>
-                  ? Map<String, dynamic>.from(data['icon_small'])
-                  : null
+              ? asMap(data['icon_small'])
               : null,
       children:
-          childrenData
-              .map((c) => CategoryModel.fromMap(Map<String, dynamic>.from(c)))
-              .toList(),
+          mappedList(childrenData, CategoryModel.fromMap),
       translations:
-          translationsData
-              .map(
-                (t) =>
-                    CategoryTranslation.fromJson(Map<String, dynamic>.from(t)),
-              )
-              .toList(),
+          mappedList(translationsData, CategoryTranslation.fromJson),
       createdAt: parseNullableDateTime(data['created_at']),
       updatedAt: parseNullableDateTime(data['updated_at']),
-      currentLocale: data['current_locale'] as String?,
-      defaultLocale: data['default_locale'] as String?,
+      currentLocale: stringValue(data['current_locale']),
+      defaultLocale: stringValue(data['default_locale']),
     );
   }
 }

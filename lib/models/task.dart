@@ -2,6 +2,7 @@ import 'dart:core';
 
 import 'package:top_jobs/core/helpers/date_time_parser.dart';
 import 'package:top_jobs/models/ad_customer.dart';
+import 'package:top_jobs/models/api_model_utils.dart';
 import 'package:top_jobs/models/localized_text.dart';
 import 'package:top_jobs/models/user.dart';
 
@@ -59,58 +60,43 @@ class Task extends AdPricable {
     compensation,
   ];
 
-  static Task fromMap(Map<String, dynamic> data) {
+  static Task fromMap(dynamic source) {
+    final payload = unwrapData(source);
     return Task(
-      id: data['id']?.toString() ?? '',
-      status: data['status']?.toString() ?? '',
-      title: LocalizedText.fromJson(data['title']),
+      id: stringValue(payload['id']) ?? '',
+      status: stringValue(payload['status']) ?? '',
+      title: LocalizedText.fromJson(payload['title']),
       description:
-          data['description'] != null
-              ? LocalizedText.fromJson(data['description'])
+          payload['description'] != null
+              ? LocalizedText.fromJson(payload['description'])
               : null,
       shortDescription:
-          data['short_description'] != null
-              ? LocalizedText.fromJson(data['short_description'])
+          payload['short_description'] != null
+              ? LocalizedText.fromJson(payload['short_description'])
               : null,
-      categories:
-          (data['categories'] as List?)
-              ?.map((cat) => CategoryModel.fromMap(cat))
-              .toList() ??
-          [],
-      startsAt: parseNullableDateTime(data['starts_at']),
-      expiresAt: parseNullableDateTime(data['expires_at']),
-      addresses:
-          (data['addresses'] as List?)
-              ?.map((address) => AddressModel.fromJson(address))
-              .toList() ??
-          [],
+      categories: mappedList(payload['categories'], CategoryModel.fromMap),
+      startsAt: parseNullableDateTime(payload['starts_at']),
+      expiresAt: parseNullableDateTime(payload['expires_at']),
+      addresses: mappedList(payload['addresses'], AddressModel.fromJson),
       customer: AdCustomer.fromJson(
-        data['customer'] ?? data['user'] ?? data['owner'],
+        payload['customer'] ?? payload['user'] ?? payload['owner'],
       ),
-      phoneNumber: data['phone_number']?.toString(),
+      phoneNumber: stringValue(payload['phone_number']),
       performer:
-          data['performer'] != null ? User.fromMap(data['performer']) : null,
-      price: (data['price'] as num?)?.toDouble(),
-      viewCount:
-          data['view_count'] is num
-              ? (data['view_count'] as num).toInt()
-              : null,
-      city: data['city']?.toString(),
-      images:
-          (data['images'] as List?)
-              ?.map((img) => AppImage.fromMap(Map.from(img)))
-              .toList() ??
-          [],
-      paymentMethods:
-          (data['payment_methods'] as List?)?.map((e) => e.toString()).toList(),
-      negotiable: data['negotiable'] == true,
-      remote: data['remote'] == true,
-      secureDeal: data['secure_deal'] == true,
-      compensation: data['compensation'] == true,
-      moderatorNote: data['moderator_note']?.toString(),
-      createdAt: parseRequiredDateTime(data['created_at']),
-      isFavorite: data['is_favorite'] == true,
-      hasUserRequest: data['has_user_request'] == true,
+          payload['performer'] != null ? User.fromMap(payload['performer']) : null,
+      price: doubleValue(payload['price']),
+      viewCount: intValue(payload['view_count']),
+      city: stringValue(payload['city']),
+      images: mappedList(payload['images'], AppImage.fromJson),
+      paymentMethods: stringList(payload['payment_methods']),
+      negotiable: boolValue(payload['negotiable']) ?? false,
+      remote: boolValue(payload['remote']) ?? false,
+      secureDeal: boolValue(payload['secure_deal']) ?? false,
+      compensation: boolValue(payload['compensation']) ?? false,
+      moderatorNote: stringValue(payload['moderator_note']),
+      createdAt: parseRequiredDateTime(payload['created_at']),
+      isFavorite: boolValue(payload['is_favorite']),
+      hasUserRequest: boolValue(payload['has_user_request']),
     );
   }
 }

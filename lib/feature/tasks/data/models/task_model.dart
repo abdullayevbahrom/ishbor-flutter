@@ -2,6 +2,7 @@ import '../../../../models/address.dart';
 import '../../../../models/image.dart';
 import '../../../../models/user.dart';
 import '../../../../core/helpers/date_time_parser.dart';
+import '../../../../models/api_model_utils.dart';
 import '../../../common/data/models/category.dart';
 
 class PaginatedTaskListResponse {
@@ -226,59 +227,67 @@ class TaskModel {
     );
   }
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) {
+  factory TaskModel.fromJson(dynamic source) {
+    final json = unwrapData(source);
+
     return TaskModel(
-      id: json['id']?.toString() ?? '',
-      status: json['status'],
-      title: json['title'],
-      titleUz: json['title_uz'],
-      titleRu: json['title_ru'],
-      description: json['description'],
-      descriptionUz: json['description_uz'],
-      descriptionRu: json['description_ru'],
-      shortDescription: json['short_description'],
-      shortDescriptionUz: json['short_description_uz'],
-      shortDescriptionRu: json['short_description_ru'],
+      id: stringValue(json['id']) ?? '',
+      status: stringValue(json['status']) ?? '',
+      title: _localizedValue(json['title']) ?? '',
+      titleUz:
+          _localizedLocaleValue(json['title'], 'uz') ??
+          stringValue(json['title_uz']),
+      titleRu:
+          _localizedLocaleValue(json['title'], 'ru') ??
+          stringValue(json['title_ru']),
+      description: _localizedValue(json['description']),
+      descriptionUz:
+          _localizedLocaleValue(json['description'], 'uz') ??
+          stringValue(json['description_uz']),
+      descriptionRu:
+          _localizedLocaleValue(json['description'], 'ru') ??
+          stringValue(json['description_ru']),
+      shortDescription: _localizedValue(json['short_description']),
+      shortDescriptionUz:
+          _localizedLocaleValue(json['short_description'], 'uz') ??
+          stringValue(json['short_description_uz']),
+      shortDescriptionRu:
+          _localizedLocaleValue(json['short_description'], 'ru') ??
+          stringValue(json['short_description_ru']),
       customer:
           json['customer'] != null
               ? User.fromMap(json['customer'])
               : (json['user'] != null
                   ? User.fromMap(json['user'])
                   : User.fromMap(json['owner'] ?? {})),
-      phoneNumber: json['phone_number'],
-      phoneNumber1: json['phone_number1'],
-      phoneNumber2: json['phone_number2'],
-      phoneNumber3: json['phone_number3'],
-      phoneNumber4: json['phone_number4'],
+      phoneNumber: stringValue(json['phone_number']),
+      phoneNumber1: stringValue(json['phone_number1']),
+      phoneNumber2: stringValue(json['phone_number2']),
+      phoneNumber3: stringValue(json['phone_number3']),
+      phoneNumber4: stringValue(json['phone_number4']),
       performer:
           json['performer'] != null ? User.fromMap(json['performer']) : null,
-      viewCount: json['view_count'],
-      city: json['city'],
-      moderatorNote: json['moderator_note'],
+      viewCount: intValue(json['view_count']) ?? 0,
+      city: stringValue(json['city']),
+      moderatorNote: stringValue(json['moderator_note']),
       liftedUpAt: parseRequiredDateTime(json['lifted_up_at']),
       createdAt: parseRequiredDateTime(json['created_at']),
       updatedAt: parseRequiredDateTime(json['updated_at']),
-      price: json['price'] != null ? json['price'].toDouble() : null,
-      categories: List<CategoryModel>.from(
-        json['categories'].map((x) => CategoryModel.fromMap(x)),
-      ),
-      addresses: List<AddressModel>.from(
-        json['addresses'].map((x) => AddressModel.fromJson(x)),
-      ),
+      price: doubleValue(json['price']),
+      categories: mappedList(json['categories'], CategoryModel.fromMap),
+      addresses: mappedList(json['addresses'], AddressModel.fromJson),
       startsAt: parseNullableDateTime(json['starts_at']),
       expiresAt: parseNullableDateTime(json['expires_at']),
-      paymentMethods: List<String>.from(json['payment_methods']),
-      negotiable: json['negotiable'],
-      remote: json['remote'],
-      secureDeal: json['secure_deal'],
-      compensation: json['compensation'],
-      images: List<AppImage>.from(
-        json['images'].map((x) => AppImage.fromMap(x)),
-      ),
-      isNeedLiftUp: json['is_need_lift_up'],
-      countClick: json['click_count'],
-      isFavorite: json['is_favorite'],
-      hasUserRequest: json['has_user_request'],
+      paymentMethods: stringList(json['payment_methods']) ?? const [],
+      negotiable: boolValue(json['negotiable']) ?? false,
+      remote: boolValue(json['remote']) ?? false,
+      secureDeal: boolValue(json['secure_deal']) ?? false,
+      compensation: boolValue(json['compensation']) ?? false,
+      images: mappedList(json['images'], AppImage.fromJson),
+      isNeedLiftUp: boolValue(json['is_need_lift_up']) ?? false,
+      countClick: intValue(json['click_count']),
+      isFavorite: boolValue(json['is_favorite']),
+      hasUserRequest: boolValue(json['has_user_request']),
     );
   }
 
@@ -315,6 +324,27 @@ class TaskModel {
       "is_favorite": isFavorite,
     };
   }
+}
+
+String? _localizedValue(dynamic value) {
+  if (value is String) {
+    return value;
+  }
+
+  if (value is Map) {
+    final map = asMap(value);
+    return stringValue(map['uz'] ?? map['ru'] ?? map['en']);
+  }
+
+  return stringValue(value);
+}
+
+String? _localizedLocaleValue(dynamic value, String locale) {
+  if (value is Map) {
+    return stringValue(asMap(value)[locale]);
+  }
+
+  return null;
 }
 
 class PaginatorOptions {
