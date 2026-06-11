@@ -23,13 +23,20 @@ class MyServicesDataSourceImpl implements MyServicesDataSource {
     required String status,
   }) async {
     try {
+      debugPrint(
+        '[SERVICE][status] PATCH ${ApiConstants.deactivateServiceById(serviceId)} status=$status',
+      );
       final response = await _dio.patch(
         ApiConstants.deactivateServiceById(serviceId),
         data: {"status": status},
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        debugPrint('[SERVICE][status] success status=${response.statusCode}');
         return Right(unit);
       } else {
+        debugPrint(
+          '[SERVICE][status][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {

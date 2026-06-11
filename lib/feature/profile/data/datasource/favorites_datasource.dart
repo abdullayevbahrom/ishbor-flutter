@@ -20,22 +20,71 @@ class FavoritesDataSourceImpl extends FavoritesDataSource {
 
   FavoritesDataSourceImpl(this._dio);
 
+  Map<String, dynamic> _asMap(dynamic source) {
+    if (source is Map<String, dynamic>) {
+      return Map<String, dynamic>.from(source);
+    }
+
+    if (source is Map) {
+      return Map<String, dynamic>.fromEntries(
+        source.entries.map(
+          (entry) => MapEntry(entry.key.toString(), entry.value),
+        ),
+      );
+    }
+
+    return <String, dynamic>{};
+  }
+
+  List<dynamic> _unwrapList(dynamic source) {
+    if (source is List) {
+      return source;
+    }
+
+    final raw = _asMap(source);
+    final payload = raw['data'];
+    if (payload is List) {
+      return payload;
+    }
+    if (payload is Map && payload['items'] is List) {
+      return List<dynamic>.from(payload['items'] as List);
+    }
+    if (raw['items'] is List) {
+      return List<dynamic>.from(raw['items'] as List);
+    }
+
+    return const [];
+  }
+
+  String _message(dynamic source) {
+    if (source is Map) {
+      final map = _asMap(source);
+      final message = map['message'];
+      if (message != null) {
+        return message.toString();
+      }
+    }
+
+    return source.toString();
+  }
+
   @override
   Future<Either<Failure, List<ServiceModel>>> fetchServiceFavorites() async {
     try {
+      debugPrint('[SERVICE][favorite] GET ${ApiConstants.serviceFavorite}');
       final response = await _dio.get(ApiConstants.serviceFavorite);
       if (response.statusCode == 200) {
+        debugPrint('[SERVICE][favorite] loaded status=${response.statusCode}');
         return Right(
-          (response.data as List).map((e) {
+          _unwrapList(response.data).map((e) {
             return ServiceModel.fromMap(e);
           }).toList(),
         );
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        debugPrint(
+          '[SERVICE][favorite][warn] status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -57,11 +106,7 @@ class FavoritesDataSourceImpl extends FavoritesDataSource {
           }).toList(),
         );
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
@@ -83,11 +128,7 @@ class FavoritesDataSourceImpl extends FavoritesDataSource {
           }).toList(),
         );
       } else {
-        if (response.data is Map<String, dynamic>) {
-          return Left(Failure(message: response.data['message']));
-        } else {
-          return Left(Failure(message: response.data));
-        }
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);

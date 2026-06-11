@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/feature/services/data/models/service.dart';
@@ -60,19 +61,87 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
   ServiceDataSourceImpl(this._dio);
 
+  void _log(String stage, String message) {
+    if (kDebugMode) {
+      debugPrint('[SERVICE][$stage] $message');
+    }
+  }
+
+  Map<String, dynamic> _asMap(dynamic source) {
+    if (source is Map<String, dynamic>) {
+      return Map<String, dynamic>.from(source);
+    }
+
+    if (source is Map) {
+      return Map<String, dynamic>.fromEntries(
+        source.entries.map(
+          (entry) => MapEntry(entry.key.toString(), entry.value),
+        ),
+      );
+    }
+
+    return <String, dynamic>{};
+  }
+
+  Map<String, dynamic> _unwrapMap(dynamic source) {
+    final raw = _asMap(source);
+    if (raw['data'] is Map) {
+      return _asMap(raw['data']);
+    }
+    return raw;
+  }
+
+  List<dynamic> _unwrapList(dynamic source) {
+    if (source is List) {
+      return source;
+    }
+
+    final raw = _asMap(source);
+    final payload = raw['data'];
+    if (payload is List) {
+      return payload;
+    }
+    if (payload is Map && payload['items'] is List) {
+      return List<dynamic>.from(payload['items'] as List);
+    }
+    if (raw['items'] is List) {
+      return List<dynamic>.from(raw['items'] as List);
+    }
+    if (raw['results'] is List) {
+      return List<dynamic>.from(raw['results'] as List);
+    }
+
+    return const [];
+  }
+
+  String _message(dynamic source) {
+    if (source is Map) {
+      final map = _asMap(source);
+      final message = map['message'];
+      if (message != null) {
+        return message.toString();
+      }
+    }
+
+    return source.toString();
+  }
+
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchServices({
     required QueryParams queryParams,
   }) async {
     try {
+      _log('list', 'GET ${ApiConstants.services} query=${queryParams.toMap()}');
       final response = await _dio.get(
         ApiConstants.services,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(PaginatedServiceResponse.fromMap(response.data));
+        _log('list', 'loaded status=${response.statusCode}');
+        return Right(PaginatedServiceResponse.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('list', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -87,14 +156,23 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      _log(
+        'similar',
+        'GET ${ApiConstants.fetchSimilarService(queryParams.id!)} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.fetchSimilarService(queryParams.id!),
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(PaginatedServiceResponse.fromMap(response.data));
+        _log('similar', 'loaded status=${response.statusCode}');
+        return Right(PaginatedServiceResponse.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log(
+          'similar',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -109,10 +187,14 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required ServiceCreateRequest service,
   }) async {
     try {
+      _log(
+        'create',
+        'POST ${ApiConstants.services} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} images=${service.uploadedImages.length}',
+      );
       FormData data = FormData.fromMap({
         'title': service.title,
         if (service.categoryIds != null)
-          'categories': jsonEncode(service.categoryIds ?? []),
+          'category_ids': jsonEncode(service.categoryIds ?? []),
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -126,7 +208,7 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         for (var image in service.uploadedImages!) {
           data.files.add(
             MapEntry(
-              'uploadedImages[]',
+              'uploaded_images[]',
               await MultipartFile.fromFile(image.path),
             ),
           );
@@ -136,11 +218,11 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       final response = await _dio.post(ApiConstants.services, data: data);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return Right(
-          ServiceModel.fromMap(response.data['data'] ?? response.data),
-        );
+        _log('create', 'success status=${response.statusCode}');
+        return Right(ServiceModel.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('create', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -155,10 +237,14 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required ServiceCreateRequest service,
   }) async {
     try {
+      _log(
+        'update',
+        'PATCH ${ApiConstants.updateService(service.serviceId!)} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} images=${service.uploadedImages.length}',
+      );
       FormData data = FormData.fromMap({
         'title': service.title,
         if (service.categoryIds != null)
-          'categories': jsonEncode(service.categoryIds ?? []),
+          'category_ids': jsonEncode(service.categoryIds ?? []),
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -168,28 +254,26 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         'negotiable': service.negotiable,
       });
 
-      if (service.uploadedImages != null) {
-        for (var image in service.uploadedImages!) {
-          data.files.add(
-            MapEntry(
-              'uploadedImages[]',
-              await MultipartFile.fromFile(image.path),
-            ),
-          );
-        }
+      for (var image in service.uploadedImages) {
+        data.files.add(
+          MapEntry(
+            'uploaded_images[]',
+            await MultipartFile.fromFile(image.path),
+          ),
+        );
       }
 
       final response = await _dio.patch(
-        ApiConstants.updateService(service.id!),
+        ApiConstants.updateService(service.serviceId!),
         data: data,
       );
 
-      if (response.statusCode == 200) {
-        return Right(
-          ServiceModel.fromMap(response.data['data'] ?? response.data),
-        );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        _log('update', 'success status=${response.statusCode}');
+        return Right(ServiceModel.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('update', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -204,13 +288,14 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required Object id,
   }) async {
     try {
+      _log('read', 'GET ${ApiConstants.fetchService(id)}');
       final response = await _dio.get(ApiConstants.fetchService(id));
       if (response.statusCode == 200) {
-        return Right(
-          ServiceModel.fromMap(response.data['data'] ?? response.data),
-        );
+        _log('read', 'loaded status=${response.statusCode}');
+        return Right(ServiceModel.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('read', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -225,16 +310,21 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required LocationFilterModel query,
   }) async {
     try {
+      _log('geo', 'GET ${ApiConstants.servicesGeo} query=${query.toJson()}');
       final response = await _dio.get(
         ApiConstants.servicesGeo,
-        queryParameters: query.toMap(),
+        queryParameters: query.toJson(),
       );
       if (response.statusCode == 200) {
-        final List items =
-            response.data['items'] ?? response.data['data'] ?? [];
-        return Right(items.map((e) => ServiceModel.fromMap(e)).toList());
+        _log('geo', 'loaded status=${response.statusCode}');
+        return Right(
+          _unwrapList(response.data)
+              .map((e) => ServiceModel.fromMap(_asMap(e)))
+              .toList(),
+        );
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('geo', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -249,13 +339,19 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required Object serviceId,
   }) async {
     try {
+      _log('lift-up', 'POST ${ApiConstants.liftUpServiceById(serviceId)}');
       final response = await _dio.post(
         ApiConstants.liftUpServiceById(serviceId),
       );
       if (response.statusCode == 204 || response.statusCode == 200) {
+        _log('lift-up', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log(
+          'lift-up',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -270,14 +366,20 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required ServiceCreateRequest service,
   }) async {
     try {
-      final response = await _dio.patch(
-        ApiConstants.deactivateServiceById(service.id!),
-        data: {'status': service.status},
+      _log(
+        'status',
+        'PATCH ${ApiConstants.deactivateServiceById(service.serviceId!)} status=deactivated',
       );
-      if (response.statusCode == 200) {
+      final response = await _dio.patch(
+        ApiConstants.deactivateServiceById(service.serviceId!),
+        data: {'status': 'deactivated'},
+      );
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        _log('status', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('status', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -292,13 +394,16 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required Object serviceId,
   }) async {
     try {
+      _log('delete', 'DELETE ${ApiConstants.deleteServiceById(serviceId)}');
       final response = await _dio.delete(
         ApiConstants.deleteServiceById(serviceId),
       );
       if (response.statusCode == 204 || response.statusCode == 200) {
+        _log('delete', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('delete', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -313,13 +418,19 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required Object serviceId,
   }) async {
     try {
+      _log('favorite', 'POST ${ApiConstants.toggleServiceFavorite(serviceId)}');
       final response = await _dio.post(
         ApiConstants.toggleServiceFavorite(serviceId),
       );
       if (response.statusCode == 204 || response.statusCode == 200) {
+        _log('favorite', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log(
+          'favorite',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -334,14 +445,17 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      _log('mine', 'GET ${ApiConstants.myServices} query=${queryParams.toMap()}');
       final response = await _dio.get(
         ApiConstants.myServices,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(PaginatedServiceResponse.fromMap(response.data));
+        _log('mine', 'loaded status=${response.statusCode}');
+        return Right(PaginatedServiceResponse.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('mine', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -356,14 +470,20 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      _log(
+        'applies',
+        'GET ${ApiConstants.myServiceApplies} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.myServiceApplies,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right(PaginatedServiceResponse.fromMap(response.data));
+        _log('applies', 'loaded status=${response.statusCode}');
+        return Right(PaginatedServiceResponse.fromMap(_unwrapMap(response.data)));
       } else {
-        return Left(Failure(message: _extractMessage(response.data)));
+        _log('applies', 'warn status=${response.statusCode} payload=${response.data}');
+        return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
       return Left(Failure(message: DioFailure.fromDioError(e).message));
@@ -373,10 +493,4 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     }
   }
 
-  String _extractMessage(dynamic data) {
-    if (data is Map<String, dynamic>) {
-      return data['message']?.toString() ?? data.toString();
-    }
-    return data?.toString() ?? 'Unknown error';
-  }
 }
