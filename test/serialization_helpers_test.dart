@@ -2,13 +2,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
+import 'package:top_jobs/feature/common/data/models/user_update_request.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 import 'package:top_jobs/feature/profile/data/model/ask_question_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
+import 'package:top_jobs/models/file.dart';
 import 'package:top_jobs/models/image.dart';
 import 'package:top_jobs/models/localized_text.dart';
 import 'package:top_jobs/models/message_record.dart';
+import 'package:top_jobs/models/user.dart';
 
 void main() {
   test('snake case mapper normalizes nested payloads', () {
@@ -77,6 +80,37 @@ void main() {
       'https://cdn.example.com/avatar.png',
     );
     expect(customer.title?.resolve('uz'), 'Sarlavha');
+  });
+
+  test('file and user normalize verification doc string payloads', () {
+    final file = File.fromJson('https://cdn.example.com/docs/verification.pdf');
+    final user = User.fromMap({
+      'id': '019e88b7-b706-7caa-bb84-dd2f0ebec756',
+      'phone_number': '998901112233',
+      'likes_count': 0,
+      'dislikes_count': 0,
+      'phone_verified': true,
+      'verification_doc': 'https://cdn.example.com/docs/verification.pdf',
+    });
+
+    expect(file.url, 'https://cdn.example.com/docs/verification.pdf');
+    expect(file.originalName, 'verification');
+    expect(file.extension, 'pdf');
+    expect(user.verificationDoc?.url, 'https://cdn.example.com/docs/verification.pdf');
+    expect(user.verificationDoc?.originalName, 'verification');
+    expect(user.verificationDoc?.extension, 'pdf');
+  });
+
+  test('user profile update request keeps category ids as strings', () {
+    final request = UserProfileUpdateRequest(
+      categories: ['019e88b7-b706-7caa-bb84-dd2f0ebec001'],
+      city: 'Toshkent',
+    );
+
+    expect(request.toJson(), {
+      'city': 'Toshkent',
+      'categories': ['019e88b7-b706-7caa-bb84-dd2f0ebec001'],
+    });
   });
 
   test('feedback request serializes receiver contract fields', () {

@@ -163,7 +163,7 @@ class User extends Equatable {
       aboutMe: stringValue(data['about_me']),
       verificationDoc:
           data['verification_doc'] != null
-              ? File.fromMap(asMap(data['verification_doc']))
+              ? File.fromJson(data['verification_doc'])
               : null,
     );
   }

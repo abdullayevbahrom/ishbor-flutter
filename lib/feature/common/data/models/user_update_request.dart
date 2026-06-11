@@ -8,7 +8,7 @@ class UserProfileUpdateRequest {
   final String? city;
   final String? gender;
   final String? aboutMe;
-  final List<int>? categories;
+  final List<String>? categories;
 
   UserProfileUpdateRequest({
     this.firstName,
