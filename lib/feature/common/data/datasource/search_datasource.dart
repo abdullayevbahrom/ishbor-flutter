@@ -17,6 +17,12 @@ class SearchDataSourceImpl extends SearchDataSource {
 
   SearchDataSourceImpl(this._dio);
 
+  void _log429(DioException error) {
+    if (error.response?.statusCode == 429) {
+      debugPrint('[WARN][search] rate limit hit status=429');
+    }
+  }
+
   @override
   Future<Either<Failure, Map<String, dynamic>>> globalSearch({
     required String query,
@@ -24,6 +30,9 @@ class SearchDataSourceImpl extends SearchDataSource {
     int? limit,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][search] queryLength=${query.trim().length} type=${type ?? ''} limit=${limit ?? ''}',
+      );
       final response = await _dio.get(
         ApiConstants.search,
         queryParameters: {
@@ -33,13 +42,18 @@ class SearchDataSourceImpl extends SearchDataSource {
         },
       );
       if (response.statusCode == 200) {
-        return Right(
-          Map<String, dynamic>.from(response.data['data'] ?? response.data),
-        );
+        final raw = response.data;
+        final payload =
+            raw is Map<String, dynamic>
+                ? Map<String, dynamic>.from(raw['data'] ?? raw)
+                : <String, dynamic>{};
+        debugPrint('[DEBUG][search] resultKeys=${payload.keys.toList()}');
+        return Right(payload);
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
+      _log429(e);
       return Left(Failure(message: DioFailure.fromDioError(e).message));
     } catch (e) {
       debugPrint(e.toString());
