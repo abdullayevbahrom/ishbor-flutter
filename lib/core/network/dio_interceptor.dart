@@ -51,6 +51,15 @@ class DioInterceptors extends Interceptor {
   }
 
   @override
+  void onResponse(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) {
+    _persistDeviceTokenFromResponse(response);
+    handler.next(response);
+  }
+
+  @override
   Future<void> onError(
     DioException err,
     ErrorInterceptorHandler handler,
@@ -248,6 +257,25 @@ class DioInterceptors extends Interceptor {
       }
       return null;
     }
+  }
+
+  void _persistDeviceTokenFromResponse(Response<dynamic> response) {
+    final deviceToken =
+        response.headers.value('X-Device-Token') ??
+        response.headers.value('x-device-token');
+
+    if (deviceToken == null || deviceToken.isEmpty) {
+      return;
+    }
+
+    if (kDebugMode) {
+      debugPrint(
+        '[FIX][DIO][device-token] persisted from response for '
+        '${response.requestOptions.method} ${response.requestOptions.uri.path}',
+      );
+    }
+
+    unawaited(_storageService.putDeviceToken(deviceToken));
   }
 
   Future<String?> _fetchFirebaseDeviceToken() async {

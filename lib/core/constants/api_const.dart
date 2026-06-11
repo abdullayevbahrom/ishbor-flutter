@@ -98,7 +98,7 @@ sealed class ApiConstants {
   static String myTaskFavoritesByType(String type) => _route('me/$type/favorites');
   static String get myTasks => myTasksByType('customer');
   static String get myTaskApplies => myTasksByType('performer');
-  static String get taskFavorite => myTaskFavoritesByType('tasks');
+  static String get taskFavorite => myTaskFavoritesByType('task');
 
   static String fetchTask(Object id) => '$tasks/${_id(id)}';
   static String fetchSimilarTask(Object id) => '$tasks/${_id(id)}/$similar';

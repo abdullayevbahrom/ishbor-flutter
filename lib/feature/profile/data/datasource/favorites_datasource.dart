@@ -98,14 +98,23 @@ class FavoritesDataSourceImpl extends FavoritesDataSource {
   @override
   Future<Either<Failure, List<TaskModel>>> fetchTaskFavorites() async {
     try {
+      if (kDebugMode) {
+        debugPrint('[TASK][favorite] GET ${ApiConstants.taskFavorite}');
+      }
       final response = await _dio.get(ApiConstants.taskFavorite);
       if (response.statusCode == 200) {
+        if (kDebugMode) {
+          debugPrint('[TASK][favorite] loaded status=${response.statusCode}');
+        }
         return Right(
-          (response.data as List).map((e) {
+          _unwrapList(response.data).map((e) {
             return TaskModel.fromJson(e);
           }).toList(),
         );
       } else {
+        debugPrint(
+          '[TASK][favorite][warn] status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
