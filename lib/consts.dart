@@ -1,14 +1,19 @@
 const String _defaultApiBaseUrl = 'https://api.ishbor.uz';
-const String _defaultWsUrl = 'wss://ws.ishbor.uz';
-
 const String apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: _defaultApiBaseUrl,
 );
 
-const String websocketUrl = String.fromEnvironment(
-  'WS_URL',
-  defaultValue: _defaultWsUrl,
+const String websocketUrl = String.fromEnvironment('WS_URL', defaultValue: '');
+
+const String mercureUrlOverride = String.fromEnvironment(
+  'MERCURE_URL',
+  defaultValue: '',
+);
+
+const String mercurePublicUrl = String.fromEnvironment(
+  'MERCURE_PUBLIC_URL',
+  defaultValue: '',
 );
 
 const String apiSignatureSecret = String.fromEnvironment(
@@ -25,7 +30,37 @@ const bool isProd = bool.fromEnvironment('dart.vm.product');
 
 const String baseUrl = apiBaseUrl;
 
-const String wsUrl = websocketUrl;
+String _deriveMercureUrl(String apiUrl) {
+  try {
+    final url = Uri.parse(apiUrl);
+    final mercureHost = url.host.startsWith('api.')
+        ? url.host.replaceFirst('api.', 'ws.')
+        : url.host;
+    return url.replace(
+      host: mercureHost,
+      path: '/.well-known/mercure',
+    ).toString();
+  } catch (_) {
+    return '$apiUrl/.well-known/mercure';
+  }
+}
+
+String get mercureUrl {
+  if (mercurePublicUrl.isNotEmpty) {
+    return mercurePublicUrl;
+  }
+  if (mercureUrlOverride.isNotEmpty) {
+    return mercureUrlOverride;
+  }
+  if (websocketUrl.isNotEmpty) {
+    return websocketUrl;
+  }
+  return _deriveMercureUrl(apiBaseUrl);
+}
+
+String get mercureEndpointUrl => mercureUrl;
+
+String get wsUrl => mercureUrl;
 
 const Map<String, String> paymentIcons = {
   'cash': 'assets/img/p_cash.jpg',

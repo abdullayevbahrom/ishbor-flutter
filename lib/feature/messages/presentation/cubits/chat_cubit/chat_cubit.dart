@@ -14,7 +14,6 @@ import 'package:top_jobs/core/services/web_socket_client.dart';
 import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 import 'package:top_jobs/feature/messages/domain/repository/messages_repository.dart';
 import 'package:top_jobs/models/message_record.dart';
-import 'package:web_socket_channel/io.dart';
 
 import '../../../../../models/message.dart';
 import '../../../data/models/paginated_message_record.dart';
@@ -25,7 +24,7 @@ part 'chat_cubit.freezed.dart';
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit(this._messagesRepository) : super(const ChatState());
   final MessagesRepository _messagesRepository;
-  IOWebSocketChannel? _channel;
+  MercureSubscription? _channel;
   String? _messageId;
 
   Map<String, GlobalKey> messageKey = {};
@@ -189,13 +188,13 @@ class ChatCubit extends Cubit<ChatState> {
     _channel = await WebsocketClient.initChat(messageId);
     if (_channel == null) {
       debugPrint(
-        '[WARN][messages] chat websocket unavailable; using HTTP records for messageId=${messageId.toString()}',
+        '[WARN][messages] chat mercure unavailable; using HTTP records for messageId=${messageId.toString()}',
       );
       return;
     }
 
     debugPrint(
-      '[DEBUG][messages] chat websocket connected messageId=${messageId.toString()}',
+      '[DEBUG][messages] chat mercure connected messageId=${messageId.toString()}',
     );
 
     _channel?.stream.listen(
@@ -226,13 +225,14 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> sendWebSocketMessage(Map<String, dynamic> messageData) async {
     debugPrint(
-      '[DEBUG][messages] websocket send message bodyLength=${messageData['body']?.toString().length ?? 0}',
+      '[DEBUG][messages] realtime send message bodyLength=${messageData['body']?.toString().length ?? 0}',
     );
-    final messages = List.from(state.sendingMessages);
-    messages.add(messageData['body']);
-    _channel?.sink.add(jsonEncode(messageData));
-    messageController.clear();
-    emit(state.copyWith(sendingMessages: messages));
+    await sendHttpMessage(
+      receiverId: messageData['receiver_id']?.toString() ?? '',
+      adType: messageData['ad_type']?.toString() ?? '',
+      adId: messageData['ad_id']?.toString() ?? '',
+      body: messageData['body']?.toString() ?? '',
+    );
   }
 
   Future<void> sendHttpMessage({
@@ -331,12 +331,12 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> closeConnection() async {
-    await _channel?.sink.close();
+    await _channel?.close();
   }
 
   @override
   Future<void> close() {
-    _channel?.sink.close();
+    _channel?.close();
     return super.close();
   }
 

@@ -54,16 +54,16 @@ class UserCubit extends Cubit<UserState> {
     final channel = await _webSocketClient.initUserStatus(
       onMessages: (_) {},
       onError: (error) async {
-        await _syncRealtimeFallback('socket error: $error');
+        await _syncRealtimeFallback('mercure error: $error');
       },
     );
 
     if (channel == null) {
-      await _syncRealtimeFallback('socket connect failed');
+      await _syncRealtimeFallback('mercure connect failed');
       return;
     }
 
-    debugPrint('[DEBUG][realtime] user status websocket connected');
+    debugPrint('[DEBUG][realtime] user status mercure connected');
   }
 
   Future<void> _syncRealtimeFallback(String reason) async {
@@ -73,7 +73,7 @@ class UserCubit extends Cubit<UserState> {
     _realtimeFallbackHandled = true;
 
     debugPrint(
-      '[WARN][realtime] user status websocket unavailable ($reason); using HTTP heartbeat/check',
+      '[WARN][realtime] user status mercure unavailable ($reason); using HTTP heartbeat/check',
     );
 
     final realtimeRepository = sl<RealtimeRepository>();

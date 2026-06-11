@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:collection';
 import 'dart:io';
@@ -7,9 +8,13 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/constants/app_locale_keys.dart';
 import 'package:top_jobs/core/network/dio_interceptor.dart';
+import 'package:top_jobs/core/services/web_socket_client.dart';
 import 'package:top_jobs/core/services/storage_service.dart';
+import 'package:top_jobs/feature/common/data/datasource/realtime_datasource.dart';
+import 'package:top_jobs/feature/profile/data/datasource/payment_datasource.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -201,6 +206,177 @@ void main() {
     expect(adapter.requests.last.headers['X-Device-Token'], 'response-device-token');
   });
 
+  test('mercure client subscribes to realtime topic with stored headers', () async {
+    await StorageService.instance.putToken('socket-access');
+    await StorageService.instance.putDeviceToken('socket-device');
+    await StorageService.instance.putUserId('user-42');
+
+    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    final requestReceived = Completer<void>();
+    late HttpRequest capturedRequest;
+
+    server.listen((HttpRequest request) async {
+      if (!requestReceived.isCompleted) {
+        capturedRequest = request;
+        requestReceived.complete();
+      }
+
+      request.response.statusCode = HttpStatus.ok;
+      request.response.headers.contentType = ContentType(
+        'text',
+        'event-stream',
+        charset: 'utf-8',
+      );
+      request.response.write('event: user.status.online.v1\n');
+      request.response.write(
+        'data: {"user_id":"user-42","status":"online"}\n\n',
+      );
+      await request.response.close();
+    });
+
+    final overrides = _RedirectingHttpOverrides(
+      Uri.parse('http://127.0.0.1:${server.port}'),
+    );
+
+    try {
+      await HttpOverrides.runZoned(
+        () async {
+          final channel = await MercureClient().initUserStatus();
+          expect(channel, isNotNull);
+
+          final firstMessage = await channel!.stream.first.timeout(
+            const Duration(seconds: 5),
+          );
+          final parsedMessage = jsonDecode(firstMessage) as Map<String, dynamic>;
+          expect(parsedMessage['user_id'], 'user-42');
+          expect(parsedMessage['status'], 'online');
+
+          await requestReceived.future.timeout(const Duration(seconds: 5));
+          expect(capturedRequest.uri.path, '/.well-known/mercure');
+          expect(
+            capturedRequest.uri.queryParametersAll['topic'],
+            ['users/status/user-42'],
+          );
+          expect(
+            capturedRequest.headers.value(HttpHeaders.authorizationHeader),
+            'Bearer socket-access',
+          );
+          expect(
+            capturedRequest.headers.value(HttpHeaders.acceptHeader),
+            'text/event-stream',
+          );
+          expect(capturedRequest.headers.value('x-device-token'), 'socket-device');
+
+          await channel.close();
+        },
+        createHttpClient: overrides.createHttpClient,
+      );
+    } finally {
+      await overrides.dispose();
+      await server.close(force: true);
+    }
+  });
+
+  test('realtime datasource returns success and surfaces backend errors', () async {
+    final dio = Dio();
+    final adapter = _ScriptedAdapter([
+      _ScriptedResponse(
+        method: 'POST',
+        path: ApiConstants.heartbeat,
+        statusCode: 204,
+      ),
+      _ScriptedResponse(
+        method: 'GET',
+        path: ApiConstants.userStatus('user-42'),
+        statusCode: 422,
+        body: {'message': 'User status unavailable'},
+      ),
+    ]);
+    dio.httpClientAdapter = adapter;
+
+    final dataSource = RealtimeDataSourceImpl(dio);
+
+    final heartbeatResult = await dataSource.heartbeat();
+    heartbeatResult.fold(
+      (_) => fail('Expected heartbeat() to succeed'),
+      (_) {},
+    );
+
+    final statusResult = await dataSource.checkUserStatus('user-42');
+    statusResult.fold(
+      (failure) => expect(failure.message, 'User status unavailable'),
+      (_) => fail('Expected checkUserStatus() to fail'),
+    );
+
+    expect(adapter.requests, hasLength(2));
+    expect(adapter.requests.first.path, ApiConstants.heartbeat);
+    expect(adapter.requests.last.path, ApiConstants.userStatus('user-42'));
+  });
+
+  test('payment datasource parses happy path and provider failures', () async {
+    final dio = Dio();
+    final adapter = _ScriptedAdapter([
+      _ScriptedResponse(
+        method: 'POST',
+        path: ApiConstants.paymentTransactions,
+        statusCode: 201,
+        body: {
+          'data': {
+            'id': 'txn-1',
+            'payment_url': 'https://pay.example/txn-1',
+            'status': 'pending',
+          },
+        },
+      ),
+      _ScriptedResponse(
+        method: 'POST',
+        path: ApiConstants.payByProvider('vacancy', 42, '1000', 'payme'),
+        statusCode: 422,
+        body: {'message': 'Provider rejected payment'},
+      ),
+    ]);
+    dio.httpClientAdapter = adapter;
+
+    final dataSource = PaymentDataSourceImpl(dio);
+
+    final createResult = await dataSource.createTopUp(
+      amount: 1000,
+      provider: 'payme',
+    );
+    createResult.fold(
+      (failure) => fail('Expected createTopUp() to succeed: $failure'),
+      (payload) {
+        expect(payload['id'], 'txn-1');
+        expect(payload['payment_url'], 'https://pay.example/txn-1');
+      },
+    );
+
+    final providerResult = await dataSource.payByProvider(
+      content: 'vacancy',
+      contentId: 42,
+      top: '1000',
+      provider: 'payme',
+    );
+    providerResult.fold(
+      (failure) => expect(failure.message, 'Provider rejected payment'),
+      (_) => fail('Expected payByProvider() to fail'),
+    );
+
+    expect(adapter.requests, hasLength(2));
+    expect(adapter.requests.first.path, ApiConstants.paymentTransactions);
+    expect(
+      adapter.requests.first.data,
+      {
+        'amount': 1000,
+        'provider': 'payme',
+      },
+    );
+    expect(
+      adapter.requests.last.path,
+      ApiConstants.payByProvider('vacancy', 42, '1000', 'payme'),
+    );
+  });
+
 }
 
 class _RecordedRequest {
@@ -287,4 +463,56 @@ class _ScriptedAdapter implements HttpClientAdapter {
     }
     return jsonEncode(body);
   }
+}
+
+class _RedirectingHttpOverrides extends HttpOverrides {
+  _RedirectingHttpOverrides(this.delegateUri);
+
+  final Uri delegateUri;
+  final List<_RedirectingHttpClient> _clients = <_RedirectingHttpClient>[];
+
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final delegate = super.createHttpClient(context);
+    final client = _RedirectingHttpClient(delegateUri, delegate);
+    _clients.add(client);
+    return client;
+  }
+
+  Future<void> dispose() async {
+    for (final client in _clients) {
+      client.close(force: true);
+    }
+    _clients.clear();
+  }
+}
+
+class _RedirectingHttpClient implements HttpClient {
+  _RedirectingHttpClient(this.delegateUri, this.delegate);
+
+  final Uri delegateUri;
+  final HttpClient delegate;
+
+  @override
+  Future<HttpClientRequest> openUrl(String method, Uri url) async {
+    final rewritten = delegateUri.replace(
+      path: url.path,
+      query: url.query,
+      fragment: url.fragment,
+    );
+    return delegate.openUrl(method, rewritten);
+  }
+
+  @override
+  Future<HttpClientRequest> getUrl(Uri url) {
+    return openUrl('GET', url);
+  }
+
+  @override
+  void close({bool force = false}) {
+    delegate.close(force: force);
+  }
+
+  @override
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

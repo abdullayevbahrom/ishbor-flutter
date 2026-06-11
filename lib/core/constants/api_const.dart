@@ -4,7 +4,8 @@ sealed class ApiConstants {
   ApiConstants._();
 
   static String get baseUrl => apiBaseUrl;
-  static String get wsUrl => websocketUrl;
+  static String get wsUrl => mercureEndpointUrl;
+  static String get mercureUrl => mercureEndpointUrl;
   static const String apiPrefix = '/api/v1';
 
   static String _route(String path) => '$apiPrefix/$path';

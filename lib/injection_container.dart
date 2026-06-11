@@ -139,7 +139,7 @@ void init() {
   initRepositories();
   initDataSources();
 
-  sl.registerLazySingleton(() => WebsocketClient());
+  sl.registerLazySingleton(() => MercureClient());
 
   ///Exception listener
   sl.registerLazySingleton(
