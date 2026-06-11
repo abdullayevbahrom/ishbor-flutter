@@ -23,13 +23,20 @@ class MyTasksDataSourceImpl implements MyTasksDataSource {
     required String status,
   }) async {
     try {
+      debugPrint(
+        '[TASK][status] PATCH ${ApiConstants.deactivateTaskById(taskId)} status=$status',
+      );
       final response = await _dio.patch(
         ApiConstants.deactivateTaskById(taskId),
         data: {"status": status},
       );
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        debugPrint('[TASK][status] success status=${response.statusCode}');
         return Right(unit);
       } else {
+        debugPrint(
+          '[TASK][status][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {

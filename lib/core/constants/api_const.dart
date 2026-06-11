@@ -90,11 +90,13 @@ sealed class ApiConstants {
   /// === Tasks ===
   static String get tasks => _route('tasks');
   static String get tasksGeo => '$tasks/geo';
-  static String tasksRecommended() => _route('tasks/recommended');
+  static String get recommendedTasks => _route('tasks/recommended');
+  static String tasksRecommended() => recommendedTasks;
   static String myTasksByType(String type) => _route('me/tasks/$type');
+  static String myTaskFavoritesByType(String type) => _route('me/$type/favorites');
   static String get myTasks => myTasksByType('customer');
   static String get myTaskApplies => myTasksByType('performer');
-  static String get taskFavorite => _route('me/tasks/favorites');
+  static String get taskFavorite => myTaskFavoritesByType('tasks');
 
   static String fetchTask(Object id) => '$tasks/${_id(id)}';
   static String fetchSimilarTask(Object id) => '$tasks/${_id(id)}/$similar';

@@ -33,6 +33,23 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
+  Future<Either<Failure, PaginatedTaskListResponse>> fetchRecommendedTasks({
+    required CommonQueryParams queryParams,
+  }) async {
+    final response = await _taskDataSource.fetchRecommendedTasks(
+      queryParams: queryParams,
+    );
+    return response.fold(
+      (l) {
+        return Left(Failure(message: l.message));
+      },
+      (r) {
+        return Right(r);
+      },
+    );
+  }
+
+  @override
   Future<Either<Failure, PaginatedTaskListResponse>> fetchTasks({
     required QueryParams queryParams,
   }) async {

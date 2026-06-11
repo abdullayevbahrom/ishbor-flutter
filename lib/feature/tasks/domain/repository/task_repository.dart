@@ -17,6 +17,10 @@ abstract class TaskRepository {
     required CommonQueryParams queryParams,
   });
 
+  Future<Either<Failure, PaginatedTaskListResponse>> fetchRecommendedTasks({
+    required CommonQueryParams queryParams,
+  });
+
   Future<Either<Failure, TaskModel>> createTask({
     required TaskRequestModel taskRequest,
   });
