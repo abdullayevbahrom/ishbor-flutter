@@ -212,6 +212,8 @@ class FcmNotificationService {
       return;
     }
 
+    _logger.d('[DEBUG][fcm] initialize');
+
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     /// Request permission
@@ -232,8 +234,8 @@ class FcmNotificationService {
     // Get and store device token
     await _getAndStoreDeviceToken();
     FirebaseMessaging.instance.onTokenRefresh.listen((token) async {
-      _logger.i('[FIX] FCM token refreshed');
-      await StorageService.instance.putDeviceToken(token);
+      _logger.i('[DEBUG][fcm] token refreshed');
+      await _syncDeviceToken(token, source: 'refresh');
     });
 
     // Check for pending navigation after app launch
@@ -244,8 +246,24 @@ class FcmNotificationService {
   Future<void> _getAndStoreDeviceToken() async {
     final token = await _messaging.getToken();
     if (token != null && token.isNotEmpty) {
-      _logger.i('[FIX] FCM token captured');
+      _logger.i('[DEBUG][fcm] token captured');
+      await _syncDeviceToken(token, source: 'bootstrap');
+    } else {
+      _logger.w('[WARN][fcm] token bootstrap returned empty token');
+    }
+  }
+
+  Future<void> _syncDeviceToken(
+    String token, {
+    required String source,
+  }) async {
+    try {
       await StorageService.instance.putDeviceToken(token);
+      _logger.d('[DEBUG][fcm] device token synced source=$source');
+    } catch (error) {
+      _logger.w(
+        '[WARN][fcm] failed to sync device token source=$source error=$error',
+      );
     }
   }
 
@@ -268,7 +286,7 @@ class FcmNotificationService {
       return status.authorizationStatus == AuthorizationStatus.authorized ||
           status.authorizationStatus == AuthorizationStatus.provisional;
     } catch (e) {
-      _logger.d(e.toString());
+      _logger.w('[WARN][fcm] permission request failed: $e');
       return false;
     }
   }
@@ -352,7 +370,7 @@ class FcmNotificationService {
   Future<void> _setUpMessageHandlers() async {
     // Foreground message handler
     FirebaseMessaging.onMessage.listen((message) {
-      _logger.i('Foreground message received: ${message.data}');
+      _logger.d('[DEBUG][fcm] foreground message received: ${message.data}');
       navigatorKey.currentContext
           ?.read<NotificationCubit>()
           .fetchNotifications();
@@ -365,7 +383,7 @@ class FcmNotificationService {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
-      _logger.i('Background message opened app: ${message.data}');
+      _logger.d('[DEBUG][fcm] background message opened app: ${message.data}');
 
       _handleBackgroundMessage(message);
     });
@@ -373,7 +391,7 @@ class FcmNotificationService {
     // Handle message when app is opened from killed state
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
-      _logger.i('Initial message found: ${initialMessage.data}');
+      _logger.d('[DEBUG][fcm] initial message found: ${initialMessage.data}');
       Future.delayed(const Duration(milliseconds: 500), () {
         _handleBackgroundMessage(initialMessage);
       });
@@ -388,13 +406,13 @@ class FcmNotificationService {
       final data = jsonDecode(payload) as Map<String, dynamic>;
       _navigateBasedOnData(data);
     } catch (e) {
-      _logger.e('Error parsing notification payload: $e');
+      _logger.w('[WARN][fcm] error parsing notification payload: $e');
     }
   }
 
   /// Handle background message navigation
   void _handleBackgroundMessage(RemoteMessage message) {
-    _logger.i('Handling background message: ${message.data}');
+    _logger.d('[DEBUG][fcm] handling background message: ${message.data}');
     _navigateBasedOnData(message.data);
   }
 
@@ -412,7 +430,7 @@ class FcmNotificationService {
       if (context != null) {
         _performNavigation(context, data);
       } else {
-        _logger.w('Context still null after waiting, storing for later');
+        _logger.w('[WARN][fcm] context still null after waiting, storing for later');
         _storePendingNavigation(data);
       }
     });
@@ -482,9 +500,9 @@ class FcmNotificationService {
   Future<void> _storePendingNavigation(Map<String, dynamic> data) async {
     try {
       await sl<StorageService>().putPendingKey(jsonEncode(data));
-      _logger.i('Stored pending navigation data');
+      _logger.d('[DEBUG][fcm] stored pending navigation data');
     } catch (e) {
-      _logger.e('Error storing pending navigation: $e');
+      _logger.w('[WARN][fcm] error storing pending navigation: $e');
     }
   }
 
@@ -494,7 +512,7 @@ class FcmNotificationService {
       final pendingData = await sl<StorageService>().getPendingKey();
       if (pendingData != null) {
         final data = jsonDecode(pendingData) as Map<String, dynamic>;
-        _logger.i('Found pending navigation data: $data');
+        _logger.d('[DEBUG][fcm] found pending navigation data: $data');
 
         await sl<StorageService>().putPendingKey(null);
         Future.delayed(const Duration(milliseconds: 1000), () {

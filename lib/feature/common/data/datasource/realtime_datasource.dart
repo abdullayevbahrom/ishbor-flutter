@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 
@@ -17,6 +18,7 @@ class RealtimeDataSourceImpl extends RealtimeDataSource {
   @override
   Future<Either<Failure, void>> heartbeat() async {
     try {
+      debugPrint('[DEBUG][realtime] heartbeat ping ${ApiConstants.heartbeat}');
       final response = await _dio.post(ApiConstants.heartbeat);
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
@@ -36,6 +38,9 @@ class RealtimeDataSourceImpl extends RealtimeDataSource {
     Object userId,
   ) async {
     try {
+      debugPrint(
+        '[DEBUG][realtime] check status userId=${userId.toString()} route=${ApiConstants.userStatus(userId)}',
+      );
       final response = await _dio.get(ApiConstants.userStatus(userId));
       if (response.statusCode == 200) {
         return Right(

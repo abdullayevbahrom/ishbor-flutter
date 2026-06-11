@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
 import 'package:top_jobs/feature/common/domain/repository/notification_repository.dart';
@@ -14,6 +15,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   final NotificationsRepository _notificationsRepository;
 
   Future<void> fetchNotifications({String? content}) async {
+    debugPrint(
+      '[DEBUG][notifications] cubit fetchNotifications content=${content ?? 'all'}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response =
@@ -40,6 +44,9 @@ class NotificationCubit extends Cubit<NotificationState> {
         index >= state.listNotification!.items.length) {
       return;
     }
+    debugPrint(
+      '[DEBUG][notifications] cubit makeNotificationRead index=$index notificationId=${state.listNotification!.items[index].id}',
+    );
     final response = await _notificationsRepository.makeNotificationRead(
       notificationId: state.listNotification!.items[index].id,
     );
@@ -59,6 +66,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> makeNotificationReadByContent(String content) async {
+    debugPrint(
+      '[DEBUG][notifications] cubit makeNotificationReadByContent content=$content',
+    );
     final response = await _notificationsRepository
         .makeNotificationReadByContent(content: content);
     response.fold((l) {}, (r) {

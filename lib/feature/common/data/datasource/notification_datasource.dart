@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/feature/common/data/models/notifications.dart';
@@ -35,6 +36,9 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
     Map<String, dynamic>? queryParams,
   ) async {
     try {
+      debugPrint(
+        '[DEBUG][notifications] fetch list content=all query=${queryParams ?? const {}}',
+      );
       final response = await _dio.get(
         ApiConstants.notifications,
         queryParameters: queryParams,
@@ -60,6 +64,9 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
     Map<String, dynamic>? queryParams,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][notifications] fetch by content content=$content query=${queryParams ?? const {}}',
+      );
       final response = await _dio.get(
         ApiConstants.notificationsByContent(content),
         queryParameters: queryParams,
@@ -83,6 +90,9 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
     required Object notificationId,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][notifications] make read notificationId=${notificationId.toString()}',
+      );
       final response = await _dio.post(
         ApiConstants.makeReadNotification(notificationId),
       );
@@ -104,6 +114,9 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
     required String content,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][notifications] make read by content content=$content',
+      );
       final response = await _dio.post(
         ApiConstants.makeReadNotificationByContent(content),
       );
