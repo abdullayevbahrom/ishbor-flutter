@@ -13,8 +13,8 @@ class WGenderPicker extends StatefulWidget {
 
   final TextEditingController genderController;
 
-  show(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> show(BuildContext context) {
+    return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       useSafeArea: true,
@@ -22,7 +22,7 @@ class WGenderPicker extends StatefulWidget {
       builder:
           (context) => Wrap(
             children: [
-              this.paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
+              paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
             ],
           ),
     );

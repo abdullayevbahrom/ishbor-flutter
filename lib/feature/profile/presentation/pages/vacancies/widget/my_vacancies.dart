@@ -57,7 +57,7 @@ class _MyVacanciesState extends State<MyVacancies> {
         return buildBody(
           state: state,
           onRefresh: () async {
-            context.read<MyVacanciesCubit>()..fetchMyVcData();
+            context.read<MyVacanciesCubit>().fetchMyVcData();
           },
         );
       },
@@ -69,12 +69,15 @@ class _MyVacanciesState extends State<MyVacancies> {
     required RefreshCallback onRefresh,
   }) {
     if (state.vacanciesSt.isLoading()) return WLoading();
-    if (state.vacanciesSt.isError())
+    if (state.vacanciesSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-    if (state.vacanciesSt.isLoaded())
-      if (state.myVacancies?.items == null ||
-          state.myVacancies?.items.length == 0)
+    }
+    if (state.vacanciesSt.isLoaded()) {
+      final vacancies = state.myVacancies?.items ?? [];
+      if (vacancies.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noVacancies.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: ListView.builder(
@@ -86,17 +89,18 @@ class _MyVacanciesState extends State<MyVacancies> {
         shrinkWrap: true,
         padding: EdgeInsets.only(top: 10.h),
         itemBuilder: (context, index) {
-          if (state.isLoadingMore1 && index == state.myVacancies?.items.length)
+          final vacancies = state.myVacancies?.items ?? [];
+          if (state.isLoadingMore1 && index == vacancies.length) {
             return WLoadingLottie();
-          else {
-            final vacancy = state.myVacancies?.items[index];
+          } else {
+            final vacancy = vacancies[index];
             return VacancyItem(
               onPressedFavorite: () {
                 context.read<MyVacanciesCubit>().toggleVacancy(index);
               },
               isFilterAvailable: true,
               enableStatus: true,
-              enableLiftUp: vacancy!.isNeedLiftUp,
+              enableLiftUp: vacancy.isNeedLiftUp,
               vacancy: vacancy,
               onTapDelete: () {
                 WDeleteCupertinoDialog(
@@ -137,9 +141,10 @@ class WDeleteCupertinoDialog extends StatelessWidget {
 
   final VoidCallback onPressedYes;
 
-  show(BuildContext context) {
-    showCupertinoDialog(context: context, builder: (context) => this);
-  }
+  Future<void> show(BuildContext context) => showCupertinoDialog(
+    context: context,
+    builder: (context) => this,
+  );
 
   @override
   Widget build(BuildContext context) {

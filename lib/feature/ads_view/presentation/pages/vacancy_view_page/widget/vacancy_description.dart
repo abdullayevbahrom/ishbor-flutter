@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/export.dart';
 
 import '../../../../../../models/vacancy.dart';

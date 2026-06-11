@@ -64,7 +64,7 @@ class TaskPerformersPage extends StatelessWidget {
                           salaryMin: taskModel.price,
                           bgColor: AppColors.cF7F9FC,
                           imageUrl:
-                              (taskModel.images ?? []).isNotEmpty &&
+                              taskModel.images.isNotEmpty &&
                                       taskModel.images.first.urls.isNotEmpty
                                   ? taskModel.images.first.urls['original']
                                   : null,

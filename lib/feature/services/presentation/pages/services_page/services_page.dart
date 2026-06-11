@@ -25,7 +25,7 @@ import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 import '../../../../common/presentation/widget/app_button.dart';
 
 class ServicesPage extends StatefulWidget {
-  ServicesPage({super.key});
+  const ServicesPage({super.key});
 
   @override
   State<ServicesPage> createState() => _ServicesPageState();

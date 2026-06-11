@@ -12,13 +12,13 @@ class SmartText extends StatelessWidget {
   final TextOverflow? overflow;
 
   const SmartText({
-    Key? key,
+    super.key,
     required this.text,
     this.style,
     this.textAlign,
     this.maxLines,
     this.overflow,
-  }) : super(key: key);
+  });
 
   // String _processText(String rawText) {
   //   final lines = rawText.split('\n');

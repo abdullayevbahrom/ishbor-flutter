@@ -158,7 +158,7 @@ class _GenerateVacancyState extends State<GenerateVacancy> {
                     ),
                     children: [
                       TextSpan(
-                        text: "  ${currentLength}/${dynamicMaxLength}",
+                        text: '  $currentLength/$dynamicMaxLength',
                         style: AppTextStyles.size13Medium,
                       ),
                     ],

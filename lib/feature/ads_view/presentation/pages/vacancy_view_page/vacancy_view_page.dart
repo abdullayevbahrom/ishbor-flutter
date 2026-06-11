@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
@@ -30,7 +29,7 @@ import '../../widgets/w_ads_header_action.dart';
 import '../../widgets/w_ads_title_view.dart';
 
 class WVacancyViewPage extends StatefulWidget {
-  WVacancyViewPage({super.key, required this.vacancyId});
+  const WVacancyViewPage({super.key, required this.vacancyId});
 
   final String vacancyId;
 
@@ -123,12 +122,9 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
               WAdsViewTitle(
                 vacancy: vacancy,
                 title: Formatters.translateText(
-                  uzText: vacancy == null ? null : vacancy.title.uz,
-                  ruText: vacancy == null ? null : vacancy.title.ru,
-                  defaultText:
-                      vacancy == null
-                          ? null
-                          : vacancy.title.resolve(context.locale.languageCode),
+                  uzText: vacancy?.title.uz,
+                  ruText: vacancy?.title.ru,
+                  defaultText: vacancy?.title.resolve(context.locale.languageCode),
                 ),
                 createdAt: vacancy?.createdAt ?? DateTime.now(),
                 categories: vacancy?.categories,

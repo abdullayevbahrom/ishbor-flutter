@@ -17,7 +17,7 @@ import '../../../../../../common/presentation/widget/app_cached_network_image.da
 import '../../../../../../common/presentation/widget/w_default_user_avatar.dart';
 
 class ProfileOwnerStatistics extends StatefulWidget {
-  ProfileOwnerStatistics({super.key});
+  const ProfileOwnerStatistics({super.key});
 
   @override
   State<ProfileOwnerStatistics> createState() => _ProfileOwnerStatisticsState();
@@ -31,6 +31,9 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         final user = state.user;
+        final avatar = user?.avatar;
+        final likesCount = user?.likesCount ?? 0;
+        final dislikesCount = user?.dislikesCount ?? 0;
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -38,14 +41,14 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
               mainAxisAlignment: MainAxisAlignment.start,
               spacing: 24.w,
               children: [
-                user?.avatar == null
+                avatar == null
                     ? WDefaultUserAvatar(height: 82.h)
                     :
                     //ToDo if avatar url null we use default avatar
                     AppCachedNetworkImage(
                       height: 82.h,
                       radius: 41.sp,
-                      imageUrl: user?.avatar?.urls['original'],
+                      imageUrl: avatar.urls['original'],
                     ),
                 Expanded(
                   child: Column(
@@ -53,7 +56,7 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
                     spacing: 4.h,
                     children: [
                       Text(
-                        "${user?.fullName ?? ""}",
+                        user?.fullName ?? "",
                         style: AppTextStyles.size17Medium,
                       ),
                       Text(
@@ -170,7 +173,7 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
                             width: 20.r,
                           ),
                           Text(
-                            "${user?.likesCount ?? '0'}",
+                            likesCount.toString(),
                             style: AppTextStyles.size17Medium.copyWith(
                               color: AppColors.c888888,
                             ),
@@ -200,7 +203,7 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
                             height: 20.r,
                           ),
                           Text(
-                            "${user?.dislikesCount ?? ''}",
+                            dislikesCount.toString(),
                             style: AppTextStyles.size17Medium.copyWith(
                               color: AppColors.c888888,
                             ),

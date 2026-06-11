@@ -6,7 +6,7 @@ import 'package:top_jobs/models/vacancy.dart';
 class VacancyRequest extends AdRequest {
   final Vacancy vacancy;
 
-  VacancyRequest({
+  const VacancyRequest({
     required super.id,
     required this.vacancy,
     required super.performer,

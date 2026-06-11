@@ -76,7 +76,7 @@ class _MapFilterPageState extends State<MapFilterPage> {
                                         setState(() {
                                           city = response;
                                           cityController.text =
-                                              (response as City).name ?? "NO";
+                                              (response as City).name;
                                         });
                                       }
                                     },

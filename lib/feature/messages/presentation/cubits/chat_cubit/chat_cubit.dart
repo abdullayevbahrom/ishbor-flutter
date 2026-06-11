@@ -212,7 +212,7 @@ class ChatCubit extends Cubit<ChatState> {
           onIncomingMessage([single]);
         }
       },
-      onError: (_, __) {
+      onError: (error, stackTrace) {
         emit(
           state.copyWith(
             fetchSt: RequestStatus.error,

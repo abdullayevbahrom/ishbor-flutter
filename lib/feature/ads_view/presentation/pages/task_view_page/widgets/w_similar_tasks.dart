@@ -71,7 +71,7 @@ class WSimilarTasks extends StatelessWidget {
                       ),
                       salaryMin: task.price,
                       imageUrl:
-                          (task.images ?? []).isNotEmpty
+                          task.images.isNotEmpty
                               ? task.images.first.urls['original']
                               : null,
                       bgColor: AppColors.cF7F9FC,

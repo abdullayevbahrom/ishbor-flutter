@@ -32,7 +32,7 @@ class MyServicesDataSourceImpl implements MyServicesDataSource {
       );
       if (response.statusCode == 200 || response.statusCode == 204) {
         debugPrint('[SERVICE][status] success status=${response.statusCode}');
-        return Right(unit);
+        return const Right(null);
       } else {
         debugPrint(
           '[SERVICE][status][warn] status=${response.statusCode} payload=${response.data}',

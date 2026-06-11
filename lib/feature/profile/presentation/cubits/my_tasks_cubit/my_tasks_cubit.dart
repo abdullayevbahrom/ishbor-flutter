@@ -254,7 +254,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     );
   }
 
-  checkLoadMoreMyTs() {
+  void checkLoadMoreMyTs() {
     if (state.myTasks?.items.length != state.myTasks?.totalCount &&
         !state.isLoadingMore1) {
       increasePageMyTs();
@@ -262,7 +262,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     }
   }
 
-  increasePageMyTs() {
+  void increasePageMyTs() {
     pageMyTs += 1;
   }
 

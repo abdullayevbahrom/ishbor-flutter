@@ -249,7 +249,7 @@ class MyVacanciesCubit extends Cubit<MyVacanciesState> {
     }
   }
 
-  increaseMyVcPage() {
+  void increaseMyVcPage() {
     pageMyVc += 1;
   }
 

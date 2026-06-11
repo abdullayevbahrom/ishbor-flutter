@@ -15,8 +15,8 @@ class WCityPicker extends StatefulWidget {
 
   final TextEditingController cityController;
 
-  show(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> show(BuildContext context) {
+    return showModalBottomSheet(
       context: context,
       useSafeArea: true,
       isScrollControlled: true,

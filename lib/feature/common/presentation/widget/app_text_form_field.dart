@@ -47,14 +47,13 @@ class AppTextFormField extends StatefulWidget {
   final int? currentLength;
   final Color? fillColor;
   final VoidCallback? onTap;
-  FormFieldValidator<String>? validator;
   final TextInputType? keyBoardType;
   final Function(String value)? onChanged;
   final List<TextInputFormatter>? formatters;
   final bool? obscureTextAvailable;
   final double? borderRadius;
   final String? prefixText;
-  bool obscureText = false;
+  final FormFieldValidator<String>? validator;
   final Key? fieldKey;
   final Widget? prefix;
   final VoidCallback? onSaved;
@@ -66,13 +65,10 @@ class AppTextFormField extends StatefulWidget {
 }
 
 class _AppTextFormFieldState extends State<AppTextFormField> {
-  int currentIndex = 0;
+  bool obscureText = false;
 
   @override
   void initState() {
-    setState(() {
-      currentIndex = widget.controller.text.length;
-    });
     super.initState();
   }
 
@@ -94,10 +90,10 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
       onChanged: widget.onChanged,
       onTap: widget.onTap,
       validator: widget.validator,
-      obscureText: widget.obscureText ?? false,
+      obscureText: obscureText,
 
       onFieldSubmitted: (value) {
-        widget.onSubmitted ?? ();
+        widget.onSubmitted?.call();
       },
 
       decoration: InputDecoration(
@@ -158,13 +154,13 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
                   ? IconButton(
                     onPressed: () {
                       setState(() {
-                        widget.obscureText = !widget.obscureText;
+                        obscureText = !obscureText;
                       });
                     },
                     splashColor: AppColors.cEDEDED,
                     padding: EdgeInsets.zero,
                     icon: Icon(
-                      widget.obscureText
+                      obscureText
                           ? Icons.visibility
                           : Icons.visibility_off,
                       color: AppColors.cFF9914,

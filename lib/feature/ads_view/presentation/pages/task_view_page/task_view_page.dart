@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
@@ -35,7 +34,7 @@ import '../../widgets/w_ads_author_pre_view.dart';
 import '../../widgets/w_ads_location_view.dart';
 
 class WTaskViewPage extends StatefulWidget {
-  WTaskViewPage({super.key, required this.taskId});
+  const WTaskViewPage({super.key, required this.taskId});
 
   final String taskId;
 
@@ -182,7 +181,7 @@ class _WTaskViewPageState extends State<WTaskViewPage> {
                     style: AppTextStyles.size18Medium,
                   ).paddingOnly(bottom: 8.h),
                   Text(
-                    "${Formatters.formatDateRu(task?.expiresAt ?? DateTime.now())}",
+                    Formatters.formatDateRu(task?.expiresAt ?? DateTime.now()),
                     style: AppTextStyles.size17Regular,
                   ),
                   AppUtils.hSizedBox16,

@@ -9,7 +9,6 @@ import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 
 import '../../../../core/network/api_http.dart';
-import '../../../../core/network/api_response.dart';
 import '../../../../models/message.dart';
 import '../../../profile/data/model/ask_question_model.dart';
 import '../models/paginated_message_record.dart';

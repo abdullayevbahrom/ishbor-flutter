@@ -24,6 +24,8 @@ import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 import '../../../../common/presentation/widget/w_loading_item.dart';
 
 class VacancyList extends StatefulWidget {
+  const VacancyList({super.key});
+
   @override
   State<VacancyList> createState() => _VacancyListState();
 }

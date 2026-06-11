@@ -9,7 +9,7 @@ class MyTasksRepositoryImpl implements MyTasksRepository {
   MyTasksRepositoryImpl(this._dataSource);
 
   @override
-  Future<Either<Failure, void>> changeStatusById({
+  Future<Either<Failure, Unit>> changeStatusById({
     required dynamic taskId,
     required String status,
   }) async {

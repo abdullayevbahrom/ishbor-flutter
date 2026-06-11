@@ -18,14 +18,14 @@ class WCitiesList extends StatefulWidget {
 
   const WCitiesList({super.key, required this.city});
 
-  show(BuildContext context) {
+  Future<String?> show(BuildContext context) {
     return showDialog(
       context: context,
       useSafeArea: true,
       barrierDismissible: true,
       useRootNavigator: true,
       builder:
-          (context) => this.paddingSymmetric(vertical: 180.h, horizontal: 20.w),
+          (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
     );
   }
 

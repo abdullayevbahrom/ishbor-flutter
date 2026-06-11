@@ -12,11 +12,11 @@ import 'package:top_jobs/feature/common/presentation/widget/w_check_box_list_til
 import 'package:top_jobs/feature/common/presentation/widget/w_sheet_title.dart';
 
 class WCategoryPicker extends StatefulWidget {
-  WCategoryPicker({super.key, required this.categories});
+  const WCategoryPicker({super.key, required this.categories});
 
-  List<CategoryModel> categories;
+  final List<CategoryModel> categories;
 
-  show(BuildContext context) {
+  Future<List<CategoryModel>?> show(BuildContext context) {
     return showModalBottomSheet(
       context: context,
       shape: OutlineInputBorder(
@@ -30,7 +30,7 @@ class WCategoryPicker extends StatefulWidget {
       builder:
           (context) => Wrap(
             children: [
-              this.paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
+              paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
             ],
           ),
     );

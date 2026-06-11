@@ -63,7 +63,7 @@ class FeedBackItem extends StatelessWidget {
             ],
           ),
           Text(
-            "${feedbackModel?.message ?? ''}",
+            feedbackModel?.message ?? '',
             style: AppTextStyles.size15Regular,
           ),
         ],

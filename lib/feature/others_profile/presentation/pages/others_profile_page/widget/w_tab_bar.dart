@@ -19,7 +19,7 @@ import '../../../cubits/other_profile_cubit/other_profile_cubit.dart';
 class WTabBar extends StatefulWidget {
   final String userId;
 
-  WTabBar({super.key, required this.userId});
+  const WTabBar({super.key, required this.userId});
 
   @override
   State<WTabBar> createState() => _WTabBarState();
@@ -80,7 +80,7 @@ class _WTabBarState extends State<WTabBar> {
                         tabs: List.generate(
                           tabs.length,
                           (index) => Text(
-                            "${tabs[index]}",
+                            tabs[index],
                             style: AppTextStyles.size15Medium,
                           ),
                         ),

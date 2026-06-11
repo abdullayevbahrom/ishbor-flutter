@@ -89,6 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       await context.setLocale(
                                         EasyLocale.all.first,
                                       );
+                                      if (!context.mounted) return;
                                       context.read<UserCubit>().updateLocale(
                                         EasyLocale.all.first.languageCode,
                                       );
@@ -125,6 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       await context.setLocale(
                                         EasyLocale.all.last,
                                       );
+                                      if (!context.mounted) return;
                                       context.read<UserCubit>().updateLocale(
                                         EasyLocale.all.last.languageCode,
                                       );
@@ -213,7 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         spacing: 4.h,
                                                         children: [
                                                           Text(
-                                                            "${user?.fullName ?? ""}",
+                                                            user?.fullName ?? "",
                                                             style:
                                                                 AppTextStyles
                                                                     .size17Medium,

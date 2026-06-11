@@ -12,7 +12,7 @@ import '../../../../../common/presentation/widget/w_decorated_box.dart';
 class VacancyOperationModes extends StatelessWidget {
   final Set set;
   final Function(int index) onTap;
-  List<String> operationModes = [
+  final List<String> operationModes = [
     LocaleKeys.workOnlyOnSatAndSun.tr(),
     LocaleKeys.canWorkShiftsOf46HoursADay.tr(),
     LocaleKeys.canStartToWorkAfter16_00.tr(),

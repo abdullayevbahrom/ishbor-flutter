@@ -41,12 +41,15 @@ class MyTaskAppliesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.myTaskAppliesSt.isLoading()) return WLoading();
-    if (state.myTaskAppliesSt.isError())
+    if (state.myTaskAppliesSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-
-    if (state.myTaskAppliesSt.isLoaded())
-      if (state.myTaskApplies == null || state.myTaskApplies?.items.length == 0)
+    }
+    final applies = state.myTaskApplies?.items ?? [];
+    if (state.myTaskAppliesSt.isLoaded()) {
+      if (applies.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noTasks.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: LayoutBuilder(
@@ -54,13 +57,13 @@ class MyTaskAppliesBody extends StatelessWidget {
           return ConstrainedBox(
             constraints: BoxConstraints(maxHeight: constraints.maxHeight),
             child: ListView.builder(
-              itemCount: state.myTaskApplies?.items.length ?? 0,
+              itemCount: applies.length,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.only(top: 10.h),
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                final task = state.myTaskApplies?.items[index].task;
+                final task = applies[index].task;
                 return TaskItem(
                   onPressedFavorite: () {
                     context.read<MyTasksCubit>().toggleMyAppLiedTask(index);

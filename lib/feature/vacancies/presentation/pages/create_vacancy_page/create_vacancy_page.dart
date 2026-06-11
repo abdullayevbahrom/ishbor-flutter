@@ -40,7 +40,7 @@ import '../../../../common/presentation/widget/w_basic_info_form.dart';
 import '../../../../common/presentation/widget/w_create_and_cancel_buttons.dart';
 
 class CreateVacancyPage extends StatefulWidget {
-  CreateVacancyPage({super.key, this.vacancy});
+  const CreateVacancyPage({super.key, this.vacancy});
 
   final Vacancy? vacancy;
 
@@ -114,7 +114,7 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                   if (element.id == state.category) {
                     cubit.categoryController.text =
                         element
-                            .translations[context.locale == 'ru' ? 0 : 1]
+                            .translations[context.locale.languageCode == 'ru' ? 0 : 1]
                             .name ??
                         '';
                     cubit.categories = [element.id];

@@ -24,14 +24,14 @@ class WSalaryFilterDialog extends StatefulWidget {
     required this.salaryMaxController,
   });
 
-  show(BuildContext context) {
+  Future<void> show(BuildContext context) {
     return showDialog(
       context: context,
       useSafeArea: true,
       barrierDismissible: false,
       useRootNavigator: false,
       builder:
-          (context) => this.paddingSymmetric(vertical: 250.h, horizontal: 20.w),
+          (context) => paddingSymmetric(vertical: 250.h, horizontal: 20.w),
     );
   }
 
@@ -137,9 +137,6 @@ class _WSalaryFilterDialogState extends State<WSalaryFilterDialog> {
                         widget.salaryMaxController.text,
                       );
                       checkUpdateCurrency();
-                      setState(() {
-                        Formatters.moneyFormat(widget.salaryMaxController.text);
-                      });
                     },
                     suffixIcon: TextButton(
                       onPressed: () {

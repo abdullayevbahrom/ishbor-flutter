@@ -39,12 +39,15 @@ class AppliedVacanciesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.vacanciesSt.isLoading()) return WLoading();
-    if (state.vacanciesSt.isError())
+    if (state.vacanciesSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-    if (state.vacanciesSt.isLoaded())
+    }
+    if (state.vacanciesSt.isLoaded()) {
       if (state.myAppliedVacancies?.items == null ||
-          state.myAppliedVacancies?.items.length == 0)
+          state.myAppliedVacancies!.items.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noVacancies.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: ListView.builder(
@@ -52,11 +55,11 @@ class AppliedVacanciesBody extends StatelessWidget {
         shrinkWrap: true,
         padding: EdgeInsets.only(top: 10.h),
         itemBuilder: (context, index) {
-          final vacancy = state.myAppliedVacancies?.items[index];
+          final vacancy = state.myAppliedVacancies!.items[index];
           return VacancyItem(
             onPressedFavorite: () {},
             isFilterAvailable: true,
-            vacancy: vacancy!,
+            vacancy: vacancy,
           );
         },
       ),

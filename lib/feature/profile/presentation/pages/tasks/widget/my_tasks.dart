@@ -77,12 +77,15 @@ class MyTasksBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.myTaskSt.isLoading()) return WLoading();
-    if (state.myTaskSt.isError())
+    if (state.myTaskSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-
-    if (state.myTaskSt.isLoaded())
-      if (state.myTasks == null || state.myTasks?.items.length == 0)
+    }
+    final tasks = state.myTasks?.items ?? [];
+    if (state.myTaskSt.isLoaded()) {
+      if (tasks.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noTasks.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: LayoutBuilder(
@@ -90,29 +93,25 @@ class MyTasksBody extends StatelessWidget {
           return ConstrainedBox(
             constraints: BoxConstraints(maxHeight: constraints.maxHeight),
             child: ListView.builder(
-              itemCount:
-                  state.isLoadingMore1
-                      ? (state.myTasks?.items.length ?? 0) + 1
-                      : state.myTasks?.items.length ?? 0,
+              itemCount: state.isLoadingMore1 ? tasks.length + 1 : tasks.length,
               controller: scrollController,
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               padding: EdgeInsets.only(top: 10.h),
               physics: const BouncingScrollPhysics(),
               itemBuilder: (context, index) {
-                if (state.isLoadingMore1 &&
-                    state.myTasks?.items.length == index) {
+                if (state.isLoadingMore1 && index == tasks.length) {
                   return WLoadingLottie();
                 } else {
-                  final task = state.myTasks?.items[index];
+                  final task = tasks[index];
                   return TaskItem(
                     onPressedFavorite: () {
                       context.read<MyTasksCubit>().toggleMyTask(index);
                     },
                     isPopButtonAvailable: true,
                     enableStatus: true,
-                    enableLiftUp: task?.isNeedLiftUp ?? false,
-                    task: task!,
+                    enableLiftUp: task.isNeedLiftUp,
+                    task: task,
                     onTapLiftUp: () {
                       context.read<MyTasksCubit>().liftUpTaskById(task.id);
                     },

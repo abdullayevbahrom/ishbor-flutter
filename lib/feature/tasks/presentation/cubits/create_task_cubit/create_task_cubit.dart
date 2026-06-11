@@ -110,22 +110,19 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     final response = await _taskRepository.createTask(
       taskRequest: TaskRequestModel(
         phoneNumber:
-            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
+            '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController1.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController1.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController2.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController2.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController3.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController3.text.trim().replaceAll(" ", "")}'
+                : '',
         paymentMethod: state.paymentMethod ?? '',
         title: taskNameController.text.trim(),
         categoryIds: state.categoryId != null ? [state.categoryId!] : null,
@@ -137,25 +134,29 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
         addressLine:
             state.location != null
                 ? StringHelpers.extractStreet(
-                  "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+                  state.location?.response?.geoObjectCollection?.featureMember?[0]
+                          .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+                      '',
                 )
                 : null,
         latitude:
             state.location != null
                 ? double.parse(
-                  "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}",
+                  '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}',
                 )
                 : null,
         longitude:
             state.location != null
                 ? double.parse(
-                  "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}",
+                  '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}',
                 )
                 : null,
         negotiable: state.isNegotiable,
         uploadedImages: state.images,
         city: StringHelpers.extractCity(
-          "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+          state.location?.response?.geoObjectCollection?.featureMember?[0]
+                  .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+              '',
         ),
         exprTime: state.expireDate!,
         startTime:
@@ -185,22 +186,19 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
       task: TaskRequestModel(
         taskId: taskId,
         phoneNumber:
-            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
+            '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController1.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController1.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController2.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController2.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController3.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController3.text.trim().replaceAll(" ", "")}'
+                : '',
         paymentMethod: state.paymentMethod ?? '',
         title: taskNameController.text.trim(),
         categoryIds: state.categoryId != null ? [state.categoryId!] : null,
@@ -248,7 +246,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     taskNameController.text = task.title;
     taskDescriptionController.text = task.description ?? "";
     minSalaryController.text =
-        task.negotiable ?? false ? "" : "${task.price?.toInt() ?? ''}";
+        task.negotiable ? "" : "${task.price?.toInt() ?? ''}";
     cityController.text = task.city ?? '';
     endDateController.text = Formatters.formatExpireDate(
       task.expiresAt ?? DateTime.now(),
@@ -258,15 +256,15 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     );
     taskLocationController.text =
         task.addresses.first.addressLine != null
-            ? "${task.addresses.first.addressLine ?? ''}"
+            ? task.addresses.first.addressLine!
             : "";
     latController.text =
         task.addresses.first.latitude != null
-            ? "${task.addresses.first.latitude ?? ''}"
+            ? task.addresses.first.latitude.toString()
             : "";
     longController.text =
         task.addresses.first.longitude != null
-            ? "${task.addresses.first.longitude ?? ''}"
+            ? task.addresses.first.longitude.toString()
             : "";
     categoryController.text = task.categories
         .map((e) {

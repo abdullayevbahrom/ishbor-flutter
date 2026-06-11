@@ -45,7 +45,7 @@ class AppCachedNetworkImage extends StatelessWidget {
                 height: height,
                 width: width ?? height,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(radius ?? 5.r),
+                  borderRadius: BorderRadius.circular(radius),
                   color: AppColors.cF7F9FC,
                 ),
               ),

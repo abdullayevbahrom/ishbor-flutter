@@ -128,4 +128,10 @@ class VacancyFormCubit extends Cubit<VacancyFormState> {
       );
     });
   }
+
+  @override
+  Future<void> close() async {
+    await _sub?.cancel();
+    return super.close();
+  }
 }

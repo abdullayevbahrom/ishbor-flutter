@@ -17,14 +17,14 @@ class WEmploymentTypeList extends StatefulWidget {
 
   const WEmploymentTypeList({super.key, required this.employeeTypes});
 
-  show(BuildContext context) {
+  Future<List<String>?> show(BuildContext context) {
     return showDialog(
       context: context,
       useSafeArea: true,
       barrierDismissible: true,
       useRootNavigator: true,
       builder:
-          (context) => this.paddingSymmetric(vertical: 180.h, horizontal: 20.w),
+          (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
     );
   }
 

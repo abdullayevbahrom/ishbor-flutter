@@ -26,24 +26,24 @@ class ProfileDetails extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _DetailsRow(
-              label: LocaleKeys.phoneNumber.tr() + ":",
+              label: '${LocaleKeys.phoneNumber.tr()}:',
               value: Formatters.formatUzbekPhoneNumber(
                 user?.phoneNumber ?? '-',
               ),
             ),
             _DetailsRow(
-              label: LocaleKeys.email.tr() + ":",
+              label: '${LocaleKeys.email.tr()}:',
               value: user?.email ?? '-',
             ),
             _DetailsRow(
-              label: LocaleKeys.birthDate.tr() + ":",
+              label: '${LocaleKeys.birthDate.tr()}:',
               value:
                   user?.birthDay != null
                       ? Formatters.formatDateBirthday(user!.birthDay!)
                       : "-",
             ),
             _DetailsRow(
-              label: LocaleKeys.gender.tr() + ":",
+              label: '${LocaleKeys.gender.tr()}:',
               value:
                   user?.gender != null
                       ? user?.gender == 'male'
@@ -52,18 +52,18 @@ class ProfileDetails extends StatelessWidget {
                       : '-',
             ),
             _DetailsRow(
-              label: LocaleKeys.city.tr() + ":",
+              label: '${LocaleKeys.city.tr()}:',
               value: user?.city ?? '-',
             ),
             _DetailsRow(
               label: LocaleKeys.categories.tr(),
               value:
-                  user?.categories != null && user?.categories?.length != 0
+                  user?.categories?.isNotEmpty == true
                       ? user?.categories
                               ?.map(
                                 (e) =>
                                     e
-                                        .translations[context.locale == 'ru'
+                                        .translations[context.locale.languageCode == 'ru'
                                             ? 0
                                             : 1]
                                         .name,

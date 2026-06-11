@@ -131,7 +131,7 @@ class _WUserInfoState extends State<WUserInfo> {
             final List<CategoryModel>? categories = await WCategoryPicker(
               categories: widget.categories,
             ).show(context);
-            if (categories != null && (categories ?? []).isNotEmpty) {
+            if (categories != null && categories.isNotEmpty) {
               widget.categoriesChanged(categories);
             }
           },

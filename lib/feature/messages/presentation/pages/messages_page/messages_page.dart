@@ -46,7 +46,7 @@ class _MessagesPageState extends State<MessagesPage> {
 
   void _onScroll() {
     final maxScroll = _scrollController.position.maxScrollExtent;
-    final _currentScroll = _scrollController.position.pixels;
+    final currentScroll = _scrollController.position.pixels;
     if (context.read<MainCubit>().state.isOpen) {
       context.read<MainCubit>().updateOpen(false);
     }
@@ -54,7 +54,7 @@ class _MessagesPageState extends State<MessagesPage> {
     if (context.read<MainCubit>().state.isNotificationMenuOpen) {
       context.read<MainCubit>().updateNtfMenu(false);
     }
-    if (maxScroll - _currentScroll < _scrollPix) {
+    if (maxScroll - currentScroll < _scrollPix) {
       context.read<MessageCubit>().checkLoadMoreData();
     }
   }

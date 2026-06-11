@@ -16,16 +16,16 @@ import '../../../../../common/presentation/widget/w_dialog_action_button.dart';
 class WCategoriesFilterList extends StatefulWidget {
   final List<String> listCategories;
 
-  WCategoriesFilterList({super.key, required this.listCategories});
+  const WCategoriesFilterList({super.key, required this.listCategories});
 
-  show(BuildContext context) {
+  Future<List<String>?> show(BuildContext context) {
     return showDialog(
       context: context,
       useSafeArea: true,
       barrierDismissible: true,
       useRootNavigator: true,
       builder:
-          (context) => this.paddingSymmetric(vertical: 180.h, horizontal: 20.w),
+          (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
     );
   }
 
@@ -95,7 +95,7 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                                     .state
                                     .categories
                                     ?.items[index]
-                                    .translations[context.locale == 'ru'
+                                    .translations[context.locale.languageCode == 'ru'
                                         ? 0
                                         : 1]
                                     .name ??

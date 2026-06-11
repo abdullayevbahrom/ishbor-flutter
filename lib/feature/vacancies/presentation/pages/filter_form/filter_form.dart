@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,10 +40,10 @@ class FilterForm extends StatefulWidget {
   const FilterForm({super.key, required this.queryParams});
 
   @override
-  _FilterFormState createState() => _FilterFormState();
+  FilterFormState createState() => FilterFormState();
 }
 
-class _FilterFormState extends State<FilterForm> {
+class FilterFormState extends State<FilterForm> {
   List<String> _chosenCategories = [];
   List<String> _chosenEmploymentTypes = [];
   String _chosenCity = '';
@@ -178,7 +177,7 @@ class _FilterFormState extends State<FilterForm> {
 
                   if (response != null) {
                     setState(() {
-                      _chosenEmploymentTypes = List.from(response!);
+                      _chosenEmploymentTypes = List.from(response);
                     });
                   }
                 },

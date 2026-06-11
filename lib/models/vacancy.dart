@@ -13,7 +13,6 @@ class Vacancy extends Ad {
   final double? salaryMin;
   final double? salaryMax;
   final String? salaryCurrency;
-  final bool? negotiable;
   final String? companyName;
   final String? companyDescription;
   final AddressModel? address;
@@ -30,7 +29,7 @@ class Vacancy extends Ad {
   final DateTime? updatedAt;
   final int? clickCount;
 
-  Vacancy({
+  const Vacancy({
     required super.id,
     required super.status,
     required super.title,
@@ -47,7 +46,7 @@ class Vacancy extends Ad {
     super.images,
     super.isFavorite,
     super.hasUserRequest,
-    this.negotiable,
+    super.negotiable,
     this.skills,
     this.salaryMin,
     this.salaryMax,
@@ -94,6 +93,10 @@ class Vacancy extends Ad {
     int? countClick,
     bool? hasUserRequest,
   }) {
+    final currentIsNeedLiftUp = this.isNeedLiftUp;
+    final currentClickCount = clickCount;
+    final currentIsFavorite = this.isFavorite;
+    final currentHasUserRequest = this.hasUserRequest;
     return Vacancy(
       id: id,
       status: status ?? this.status,
@@ -127,11 +130,11 @@ class Vacancy extends Ad {
       employmentType: employmentType ?? this.employmentType,
       jobModes: jobModes ?? this.jobModes,
       whoCanRespond: whoCanRespond ?? this.whoCanRespond,
-      images: images ?? this.images,
-      isNeedLiftUp: isNeedLiftUp ?? this.isNeedLiftUp,
-      clickCount: countClick ?? this.clickCount,
-      isFavorite: isFavorite ?? this.isFavorite,
-      hasUserRequest: hasUserRequest ?? this.hasUserRequest,
+      images: images,
+      isNeedLiftUp: isNeedLiftUp ?? currentIsNeedLiftUp,
+      clickCount: countClick ?? currentClickCount,
+      isFavorite: isFavorite ?? currentIsFavorite,
+      hasUserRequest: hasUserRequest ?? currentHasUserRequest,
     );
   }
 

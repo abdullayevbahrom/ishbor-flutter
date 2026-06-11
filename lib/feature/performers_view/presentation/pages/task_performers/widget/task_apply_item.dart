@@ -71,7 +71,7 @@ class TaskApplyItem extends StatelessWidget {
                               children: [
                                 SvgPicture.asset(AppIcons.icLike),
                                 Text(
-                                  '${taskRequest.performer.likesCount ?? 0}',
+                                  '${taskRequest.performer.likesCount}',
                                   style: AppTextStyles.size13Medium.copyWith(
                                     color: AppColors.c888888,
                                   ),

@@ -26,7 +26,7 @@ import '../../../../../models/user.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 
 class OthersProfilePage extends StatelessWidget {
-  OthersProfilePage({super.key, required this.user});
+  const OthersProfilePage({super.key, required this.user});
 
   final User user;
 
@@ -123,7 +123,7 @@ class WReviews extends StatelessWidget {
                                     height: 17.r,
                                   ).paddingOnly(left: 4.w),
                                   Text(
-                                    "${user.likesCount ?? '0'}",
+                                    "${user.likesCount}",
                                     style: AppTextStyles.size20Medium.copyWith(
                                       color: AppColors.c15CF74,
                                     ),
@@ -133,7 +133,7 @@ class WReviews extends StatelessWidget {
                                     height: 17.r,
                                   ).paddingOnly(left: 4.w),
                                   Text(
-                                    "${user.dislikesCount ?? '0'}",
+                                    "${user.dislikesCount}",
                                     style: AppTextStyles.size20Medium.copyWith(
                                       color: AppColors.cFF0000,
                                     ),
@@ -164,13 +164,10 @@ class WReviews extends StatelessWidget {
                     AppButton(
                       onPressed: () {
                         if (context.read<UserCubit>().state.status.isLoaded()) {
-                          BlocProvider.value(
-                            value: context.read<FeedbackCubit>(),
-                            child: WReviewModalButton(
-                              receiverId: user.id,
-                              feedbackCubit: context.read<FeedbackCubit>(),
-                            ).show(context),
-                          );
+                          WReviewModalButton(
+                            receiverId: user.id,
+                            feedbackCubit: context.read<FeedbackCubit>(),
+                          ).show(context);
                         } else {
                           LoginPage().show(context);
                         }

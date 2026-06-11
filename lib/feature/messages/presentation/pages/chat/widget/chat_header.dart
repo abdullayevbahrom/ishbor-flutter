@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/core/router/route_names.dart';

@@ -61,7 +61,7 @@ class AppButton extends StatelessWidget {
           style: ButtonStyle(
             padding: WidgetStatePropertyAll(EdgeInsets.zero),
             shadowColor: WidgetStatePropertyAll(
-              AppColors.c15CF74.withOpacity(.4),
+              AppColors.c15CF74.withValues(alpha: .4),
             ),
             side: WidgetStatePropertyAll(
               borderColor != null
@@ -94,7 +94,7 @@ class AppButton extends StatelessWidget {
                         maxLines: 1,
                         textAlign: TextAlign.center,
                         overflow: TextOverflow.ellipsis,
-                        textScaleFactor: 1,
+                        textScaler: const TextScaler.linear(1),
                         style:
                             textStyle ??
                             AppTextStyles.size17Medium.copyWith(

@@ -107,8 +107,6 @@ class ExceptionListener {
     Map<String, dynamic>? requestHeaders,
     DioException? dioException, // 👈 Qo'shildi
   }) {
-    final shortStack = stackTrace.toString().split('\n').take(3).join('\n');
-
     return '''
 <b>🚨 MOBILE API RESPONSE</b>
 
@@ -265,18 +263,4 @@ Body:
     return '${text.substring(0, max)}...\n(TRUNCATED)';
   }
 
-  String _formatError(Object error) {
-    if (error is DioException) {
-      return '''
-DioException (${error.response?.statusCode})
-${error.message}
-''';
-    }
-
-    if (error is FlutterError) {
-      return error.message;
-    }
-
-    return error.toString();
-  }
 }

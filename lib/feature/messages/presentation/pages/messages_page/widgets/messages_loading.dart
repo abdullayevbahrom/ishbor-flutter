@@ -31,6 +31,8 @@ class WMessagesLoading extends StatelessWidget {
 }
 
 class WMessageLoadingItem extends StatelessWidget {
+  const WMessageLoadingItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AnimatedButtonWrapper(

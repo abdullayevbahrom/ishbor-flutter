@@ -36,26 +36,29 @@ class MyServicesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.myServicesAppliesSt.isLoading()) return WLoading();
-    if (state.myServicesAppliesSt.isError())
+    if (state.myServicesAppliesSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-    if (state.myServicesAppliesSt.isLoaded())
-      if (state.myServicesApplies == null ||
-          state.myServicesApplies?.items.length == 0)
+    }
+    final services = state.myServicesApplies?.items ?? [];
+    if (state.myServicesAppliesSt.isLoaded()) {
+      if (services.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noServices.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: ListView.builder(
         shrinkWrap: true,
-        itemCount: state.myServicesApplies?.items.length ?? 0,
+        itemCount: services.length,
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.only(top: 10.h),
         physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
-          final service = state.myServicesApplies?.items[index];
+          final service = services[index];
           return ServiceItem(
             onPressedFavorite: () {},
             isPopButtonAvailable: true,
-            service: service!,
+            service: service,
           );
         },
       ),

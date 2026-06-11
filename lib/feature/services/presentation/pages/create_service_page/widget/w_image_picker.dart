@@ -41,7 +41,7 @@ class WImagePicker extends StatelessWidget {
               borderRadius: BorderRadius.circular(12.r),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.c15CF74.withOpacity(.4),
+                  color: AppColors.c15CF74.withValues(alpha: .4),
                   blurRadius: 15.r,
                   offset: const Offset(0, 4),
                 ),
@@ -80,7 +80,7 @@ class WImagePicker extends StatelessWidget {
             child: ListView.separated(
               shrinkWrap: true,
               scrollDirection: Axis.horizontal,
-              itemCount: images.length == 0 ? 4 : images.length,
+              itemCount: images.isEmpty ? 4 : images.length,
               itemBuilder: (context, index) {
                 return Stack(
                   children: [
@@ -89,11 +89,11 @@ class WImagePicker extends StatelessWidget {
                       width: 70.h,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: AppColors.cE0E5EB.withOpacity(.3),
+                          color: AppColors.cE0E5EB.withValues(alpha: .3),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
                         child:
-                            images.length > 0
+                            images.isNotEmpty
                                 ? Image.file(images[index], fit: BoxFit.cover)
                                 : AppUtils.kSizedBoxShrink,
                       ),

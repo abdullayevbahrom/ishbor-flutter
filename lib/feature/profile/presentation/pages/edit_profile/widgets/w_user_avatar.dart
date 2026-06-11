@@ -108,8 +108,8 @@ class WAvatarPicker extends StatelessWidget {
   final VoidCallback onTapCamera;
   final String title;
 
-  show(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> show(BuildContext context) {
+    return showModalBottomSheet(
       context: context,
       elevation: 2,
       isScrollControlled: true,
@@ -118,7 +118,7 @@ class WAvatarPicker extends StatelessWidget {
       builder: (context) {
         return Wrap(
           children: [
-            this.paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
+            paddingOnly(bottom: MediaQuery.viewInsetsOf(context).bottom),
           ],
         );
       },

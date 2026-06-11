@@ -267,37 +267,36 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
       vacancy: VacancyRequest(
         jobModes: [],
         phoneNumber:
-            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
+            '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController1.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController1.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController2.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController2.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController3.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController3.text.trim().replaceAll(" ", "")}'
+                : '',
         images: state.images,
         title: vacancyNameController.text.trim(),
         city: StringHelpers.extractCity(
-          "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+          state.location?.response?.geoObjectCollection?.featureMember?[0]
+              .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
         ),
         description: generatedDesController.text.trim(),
         address: AddressModel(
           addressLine: StringHelpers.extractStreet(
-            "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+            state.location?.response?.geoObjectCollection?.featureMember?[0]
+                .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
           ),
           latitude: double.parse(
-            "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}",
+            '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}',
           ),
           longitude: double.parse(
-            "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}",
+            '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}',
           ),
         ),
         skills: skillsController.text.trim().split(','),
@@ -342,22 +341,19 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
       vacancy: VacancyRequest(
         jobModes: [],
         phoneNumber:
-            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
+            '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController1.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController1.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController2.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController2.text.trim().replaceAll(" ", "")}'
+                : '',
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController3.text.trim().replaceAll(" ", '')
-                : "",
+                ? '+998${phoneNumberController3.text.trim().replaceAll(" ", "")}'
+                : '',
         images: state.images,
         vacancyId: vacancyId,
         title: vacancyNameController.text.trim(),
@@ -365,13 +361,14 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
         description: generatedDesController.text.trim(),
         address: AddressModel(
           addressLine: StringHelpers.extractStreet(
-            "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+            state.location?.response?.geoObjectCollection?.featureMember?[0]
+                .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
           ),
           latitude: double.parse(
-            "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}",
+            '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}',
           ),
           longitude: double.parse(
-            "${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}",
+            '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.longitude}',
           ),
         ),
         skills: [skillsController.text.trim()],

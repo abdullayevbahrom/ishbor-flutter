@@ -192,7 +192,7 @@ class NotificationItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      notification.body ?? "",
+                      notification.body,
                       maxLines: 3,
                       overflow: TextOverflow.ellipsis,
                       style: AppTextStyles.size15Medium.copyWith(

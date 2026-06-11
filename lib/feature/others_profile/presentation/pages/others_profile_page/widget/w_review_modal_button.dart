@@ -27,8 +27,8 @@ class WReviewModalButton extends StatefulWidget {
   final String receiverId;
   final FeedbackCubit feedbackCubit;
 
-  show(BuildContext context) {
-    showModalBottomSheet(
+  Future<void> show(BuildContext context) {
+    return showModalBottomSheet(
       isDismissible: true,
       isScrollControlled: true,
       context: context,

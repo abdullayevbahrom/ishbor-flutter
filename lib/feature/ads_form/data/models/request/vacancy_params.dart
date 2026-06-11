@@ -94,7 +94,7 @@ class VacancyParams {
       partialJobOpportunity:
           partialJobOpportunity ?? this.partialJobOpportunity,
       employmentType: employmentType ?? this.employmentType,
-      salaryIsNegotiable: salaryIsNegotiable ?? this.salaryIsNegotiable,
+      salaryIsNegotiable: salaryIsNegotiable,
       jobModes: jobModes ?? this.jobModes,
       uploadedImages: uploadedImages ?? this.uploadedImages,
       categories: categories ?? this.categories,

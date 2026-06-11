@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.dart';
 import 'package:top_jobs/feature/performers_view/data/models/paginated_vacancy_requests.dart';

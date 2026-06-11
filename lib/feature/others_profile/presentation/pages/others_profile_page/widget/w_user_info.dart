@@ -33,7 +33,7 @@ class WUserInfo extends StatelessWidget {
       children: [
         AppUtils.hSizedBox24,
         Text(LocaleKeys.personalData.tr(), style: AppTextStyles.size28Bold),
-        Text("${user.fullName ?? ''}", style: AppTextStyles.size28Bold),
+        Text(user.fullName ?? '', style: AppTextStyles.size28Bold),
         AppUtils.hSizedBox24,
         WDecoratedBox(
           radius: 18.r,
@@ -63,7 +63,7 @@ class WUserInfo extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                "${user.fullName ?? ''}",
+                                user.fullName ?? '',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.size17Medium,
@@ -131,16 +131,25 @@ class WUserInfo extends StatelessWidget {
                     title: LocaleKeys.birthDate.tr(),
                     description:
                         user.birthDay != null
-                            ? "${Formatters.formatDate(user.birthDay!)}"
+                            ? Formatters.formatDate(user.birthDay!)
                             : "-",
                   ),
                   WDecoratedDetailColumn(
                     title: LocaleKeys.categories.tr(),
                     description:
                         (user.categories ?? []).isNotEmpty
-                            ? '''${user.categories?.map((e) {
-                              return e.translations[locale == AppLocaleKeys.ru ? 0 : 1].name ?? '-';
-                            }).join(',')}'''
+                            ? user.categories
+                                ?.map(
+                                  (e) =>
+                                      e.translations[
+                                              locale == AppLocaleKeys.ru
+                                                  ? 0
+                                                  : 1]
+                                          .name ??
+                                      '-',
+                                )
+                                .join(', ') ??
+                                '-'
                             : "-",
                     textColor: AppColors.cFF9914,
                   ),
@@ -148,12 +157,14 @@ class WUserInfo extends StatelessWidget {
                     title: LocaleKeys.gender.tr(),
                     description:
                         user.gender != null
-                            ? "${user.gender == 'male' ? LocaleKeys.Male.tr() : LocaleKeys.Female.tr()}"
+                            ? user.gender == 'male'
+                                ? LocaleKeys.Male.tr()
+                                : LocaleKeys.Female.tr()
                             : "-",
                   ),
                   WDecoratedDetailColumn(
                     title: LocaleKeys.city.tr(),
-                    description: user.city != null ? "${user.city}" : "-",
+                    description: user.city != null ? user.city! : "-",
                   ),
                   // WDecoratedDetailColumn(
                   //   title: LocaleKeys.phoneNumber.tr(),
@@ -164,7 +175,7 @@ class WUserInfo extends StatelessWidget {
                   // ),
                   WDecoratedDetailColumn(
                     title: LocaleKeys.aboutMe.tr(),
-                    description: user.aboutMe != null ? '${user.aboutMe}' : "-",
+                    description: user.aboutMe != null ? user.aboutMe! : "-",
                   ),
 
                   Column(
@@ -206,8 +217,8 @@ class WUserInfo extends StatelessWidget {
                                       )
                                       : DecoratedBox(
                                         decoration: BoxDecoration(
-                                          color: AppColors.cE0E5EB.withOpacity(
-                                            .3,
+                                          color: AppColors.cE0E5EB.withValues(
+                                            alpha: .3,
                                           ),
                                           borderRadius: BorderRadius.circular(
                                             8.r,

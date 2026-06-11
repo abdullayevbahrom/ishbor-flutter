@@ -15,9 +15,9 @@ class CategoryTranslation extends Equatable {
   List<Object> get props => [id, locale, name];
 
   CategoryTranslation.clone(CategoryTranslation ct2)
-    : this.id = ct2.id,
-      this.locale = ct2.locale,
-      this.name = ct2.name;
+    : id = ct2.id,
+      locale = ct2.locale,
+      name = ct2.name;
 
   static CategoryTranslation fromJson(dynamic json) {
     return CategoryTranslation(

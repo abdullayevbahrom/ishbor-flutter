@@ -84,7 +84,7 @@ class VacancyEmployeeType extends StatelessWidget {
                       },
                     ),
                     AppUtils.hSizedBox8,
-                    if (formState.hasError ?? false)
+                    if (formState.hasError)
                       Text(
                         formState.errorText ?? "",
                         style: AppTextStyles.size13Medium.copyWith(

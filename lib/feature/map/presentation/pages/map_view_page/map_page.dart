@@ -24,7 +24,6 @@ class MapPage extends StatelessWidget {
   MapPage({super.key, required this.type});
 
   final String type;
-  late ClusterizedPlacemarkCollection _collection;
 
   textButtonValue(String type, MapViewState state) {
     if (type == "vacancy") {

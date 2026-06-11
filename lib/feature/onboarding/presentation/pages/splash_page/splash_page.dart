@@ -54,8 +54,9 @@ class _SplashPageState extends State<SplashPage> {
       }
     }
 
-    if (hasNewVersion && (value?.appStoreLink?.isNotEmpty ?? false)) {
-      context.go(Routes.newVersion, extra: value!.appStoreLink);
+    final appStoreLink = value?.appStoreLink;
+    if (hasNewVersion && appStoreLink?.isNotEmpty == true) {
+      context.go(Routes.newVersion, extra: appStoreLink);
     } else {
       context.go(Routes.main, extra: widget.payload);
     }

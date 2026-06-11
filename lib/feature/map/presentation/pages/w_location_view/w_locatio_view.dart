@@ -15,7 +15,6 @@ class WLocationMapView extends StatefulWidget {
 
 class _WLocationMapViewState extends State<WLocationMapView> {
   late YandexMapController _mapController;
-  List<PlacemarkMapObject> _placemarks = [];
 
   @override
   Widget build(BuildContext context) {

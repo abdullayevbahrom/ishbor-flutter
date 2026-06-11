@@ -116,8 +116,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         widget.adPreview?.salaryMin ??
         widget.vacancy?.salaryMin ??
         widget.service?.price ??
-        widget.task?.price ??
-        null;
+        widget.task?.price;
     return Column(
       crossAxisAlignment:
           widget.isCurrentUser
@@ -133,7 +132,7 @@ class _MessageBubbleState extends State<MessageBubble> {
               onTap: () {
                 final previewId =
                     int.tryParse(widget.adPreview?.id ?? '') ??
-                    (widget.adPreview?.id?.isNotEmpty == true
+                    (widget.adPreview?.id.isNotEmpty == true
                         ? widget.adPreview?.id
                         : null);
                 if (previewId != null && widget.adPreview?.type == 'vacancy') {

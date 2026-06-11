@@ -66,7 +66,7 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
   }
 
   void addImages(List<File> images) {
-    final oldImages = List<File>.from(state.images ?? []);
+    final oldImages = List<File>.from(state.images);
     oldImages.addAll(images);
     emit(state.copyWith(images: oldImages));
   }
@@ -75,19 +75,19 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
     serviceLocationController.text = Formatters.cleanAndReverseAddress(
       address?['display_name'] ?? '',
     );
-    latController.text = address?['lat'] ?? '';
-    longController.text = address?['long'] ?? "";
+    latController.text = address?['lat']?.toString() ?? '';
+    longController.text = address?['long']?.toString() ?? '';
   }
 
   void removeImage(int index) {
-    final images = List<File>.from(state.images ?? []);
+    final images = List<File>.from(state.images);
     images.removeAt(index);
     emit(state.copyWith(images: images));
   }
 
   Future<void> pickImages() async {
     final files = await ImagePickerHelper().pickMultiImage();
-    if (files.length + state.images.length >= 5) {
+    if (state.images.length + files.length >= 5) {
       showErrorToast(LocaleKeys.imagesMaxFour.tr());
     } else {
       final oldImages = List<File>.from(state.images);
@@ -100,19 +100,19 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
     emit(state.copyWith(status: RequestStatus.loading));
     final response = await _serviceRepository.createService(
       service: ServiceCreateRequest(
-        phoneNumber: "+998" + phoneNumberController.text.trim(),
+        phoneNumber: '+998${phoneNumberController.text.trim()}',
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" + phoneNumberController1.text.trim()
-                : "",
+                ? '+998${phoneNumberController1.text.trim()}'
+                : '',
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" + phoneNumberController2.text.trim()
-                : "",
+                ? '+998${phoneNumberController2.text.trim()}'
+                : '',
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" + phoneNumberController3.text.trim()
-                : "",
+                ? '+998${phoneNumberController3.text.trim()}'
+                : '',
         title: serviceNameController.text.trim(),
         categoryIds: state.category.isNotEmpty ? [state.category] : null,
         description: serviceDescriptionController.text.trim(),
@@ -123,7 +123,9 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
         addressLine:
             state.location != null
                 ? StringHelpers.extractStreet(
-                  "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+                  state.location?.response?.geoObjectCollection?.featureMember?[0]
+                      .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+                      '',
                 )
                 : null,
 
@@ -144,7 +146,7 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
         city:
             state.location != null
                 ? StringHelpers.extractCity(
-                  "${state.location?.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
+                  "${state.location!.response?.geoObjectCollection?.featureMember?[0].geoObject?.metaDataProperty?.geocoderMetaData?.text}",
                 )
                 : "",
       ),
@@ -169,21 +171,18 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
       service: ServiceCreateRequest(
         serviceId: serviceId,
         phoneNumber:
-            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
+            "+998${phoneNumberController.text.trim().replaceAll(" ", '')}",
         phoneNumber1:
             phoneNumberController1.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController1.text.trim().replaceAll(" ", '')
+                ? "+998${phoneNumberController1.text.trim().replaceAll(" ", '')}"
                 : "",
         phoneNumber2:
             phoneNumberController2.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController2.text.trim().replaceAll(" ", '')
+                ? "+998${phoneNumberController2.text.trim().replaceAll(" ", '')}"
                 : "",
         phoneNumber3:
             phoneNumberController3.text.trim().isNotEmpty
-                ? "+998" +
-                    phoneNumberController3.text.trim().replaceAll(" ", '')
+                ? "+998${phoneNumberController3.text.trim().replaceAll(" ", '')}"
                 : "",
         title: serviceNameController.text.trim(),
         categoryIds: state.category.isNotEmpty ? [state.category] : null,

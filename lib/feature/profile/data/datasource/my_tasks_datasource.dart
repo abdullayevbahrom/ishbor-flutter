@@ -6,7 +6,7 @@ import 'package:top_jobs/core/network/api_http.dart';
 import '../../../../core/constants/api_const.dart';
 
 abstract class MyTasksDataSource {
-  Future<Either<Failure, void>> changeStatusById({
+  Future<Either<Failure, Unit>> changeStatusById({
     required dynamic taskId,
     required String status,
   });
@@ -18,7 +18,7 @@ class MyTasksDataSourceImpl implements MyTasksDataSource {
   MyTasksDataSourceImpl(this._dio);
 
   @override
-  Future<Either<Failure, void>> changeStatusById({
+  Future<Either<Failure, Unit>> changeStatusById({
     required dynamic taskId,
     required String status,
   }) async {

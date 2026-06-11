@@ -48,7 +48,7 @@ class _EditProfileState extends State<EditProfile> {
   late TextEditingController _categoryController;
   late TextEditingController _aboutMeController;
   late TextEditingController _cityController;
-  List<File> _portfolios = [];
+  final List<File> _portfolios = [];
   List<CategoryModel> _categories = [];
   File? _verifyDoc;
   File? _userAvatar;
@@ -89,12 +89,14 @@ class _EditProfileState extends State<EditProfile> {
     _aboutMeController.text = user?.aboutMe ?? '';
     _cityController.text = user?.city ?? "";
     _categories = user?.categories ?? [];
+    final languageCode =
+        navigatorKey.currentContext?.locale.languageCode ?? 'uz';
     _categoryController.text =
         user?.categories
             ?.map(
               (e) =>
                   e
-                      .translations[navigatorKey.currentContext?.locale == 'ru'
+                      .translations[languageCode == 'ru'
                           ? 0
                           : 1]
                       .name,
@@ -215,8 +217,7 @@ class _EditProfileState extends State<EditProfile> {
                                         _categoryController.text = categories
                                             .map((e) {
                                               return e
-                                                  .translations[context
-                                                              .locale ==
+                                                  .translations[context.locale.languageCode ==
                                                           'ru'
                                                       ? 0
                                                       : 1]
@@ -335,22 +336,27 @@ class _EditProfileState extends State<EditProfile> {
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     Text(
-                                                      (_verifyDoc?.path
-                                                                      .split(
-                                                                        "/",
-                                                                      )
-                                                                      .last
-                                                                      .length ??
-                                                                  0) <
-                                                              19
-                                                          ? "${_verifyDoc?.path.split("/").last}"
-                                                          : "${_verifyDoc?.path.split("/").last}"
-                                                                  .substring(
-                                                                    0,
-                                                                    18,
-                                                                  ) +
-                                                              "..."
-                                                                  ".${_verifyDoc?.path.split(".").last}",
+                                                      () {
+                                                        final verifyDocPath =
+                                                            _verifyDoc?.path ??
+                                                                '';
+                                                        final verifyDocName =
+                                                            verifyDocPath
+                                                                .split('/')
+                                                                .last;
+                                                        final verifyDocExt =
+                                                            verifyDocName.contains(
+                                                                  '.',
+                                                                )
+                                                                ? '.${verifyDocName.split('.').last}'
+                                                                : '';
+                                                        if (verifyDocName
+                                                                .length <
+                                                            19) {
+                                                          return '$verifyDocName$verifyDocExt';
+                                                        }
+                                                        return '${verifyDocName.substring(0, 18)}...$verifyDocExt';
+                                                      }(),
                                                       style:
                                                           AppTextStyles
                                                               .size17Medium,

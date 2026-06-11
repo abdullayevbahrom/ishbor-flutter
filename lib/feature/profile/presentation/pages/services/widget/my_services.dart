@@ -76,11 +76,15 @@ class MyServicesBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (state.myServicesSt.isLoading()) return WLoading();
-    if (state.myServicesSt.isError())
+    if (state.myServicesSt.isError()) {
       return WErrorWidget(errorText: state.errorText);
-    if (state.myServicesSt.isLoaded())
-      if (state.myServices == null || state.myServices?.items.length == 0)
+    }
+    final services = state.myServices?.items ?? [];
+    if (state.myServicesSt.isLoaded()) {
+      if (services.isEmpty) {
         return WErrorWidget(errorText: LocaleKeys.noServices.tr());
+      }
+    }
     return WRefreshIndicator(
       onRefresh: onRefresh,
       child: LayoutBuilder(
@@ -90,26 +94,22 @@ class MyServicesBody extends StatelessWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 controller: scrollController,
-                itemCount:
-                    state.isLadingMore1
-                        ? (state.myServices?.items.length ?? 0) + 1
-                        : state.myServices?.items.length ?? 0,
+                itemCount: state.isLadingMore1 ? services.length + 1 : services.length,
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.only(top: 10.h),
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
-                  if (state.isLadingMore1 &&
-                      state.myServices?.items.length == index)
+                  if (state.isLadingMore1 && index == services.length) {
                     return WLoadingLottie();
-                  else {
-                    final service = state.myServices?.items[index];
+                  } else {
+                    final service = services[index];
                     return ServiceItem(
                       onPressedFavorite: () {
                         context.read<MyServicesCubit>().toggleService(index);
                       },
-                      enableLiftUp: (service?.isNeedLiftUp ?? false),
+                      enableLiftUp: service.isNeedLiftUp ?? false,
                       isPopButtonAvailable: true,
-                      service: service!,
+                      service: service,
                       enableStatus: true,
                       onTapLiftUp: () {
                         context.read<MyServicesCubit>().liftUpServiceById(

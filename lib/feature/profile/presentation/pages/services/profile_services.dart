@@ -12,7 +12,7 @@ import '../../../../../injection_container.dart';
 import '../../../../common/presentation/widget/app_header.dart';
 
 class ProfileServices extends StatefulWidget {
-  ProfileServices({super.key});
+  const ProfileServices({super.key});
 
   @override
   State<ProfileServices> createState() => _ProfileServicesState();

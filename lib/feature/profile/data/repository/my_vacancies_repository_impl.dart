@@ -25,7 +25,7 @@ class MyVacanciesRepositoryImpl implements MyVacanciesRepository {
         return Left(Failure(message: l.message));
       },
       (r) {
-        return Right(unit);
+        return const Right(null);
       },
     );
   }

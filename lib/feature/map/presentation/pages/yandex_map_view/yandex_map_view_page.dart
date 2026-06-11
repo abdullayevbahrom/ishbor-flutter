@@ -48,7 +48,7 @@ class _YandexMapViewPageState extends State<YandexMapViewPage> {
     }
 
     if (locStatus.isGranted) {
-      final userPoint = await fetchUserLocation();
+      await fetchUserLocation();
       addCurrentLocationPlaceMark();
       moveToCurrentLoc();
     }
@@ -102,27 +102,29 @@ class _YandexMapViewPageState extends State<YandexMapViewPage> {
     });
   }
 
-  initializeTitle(String locale) {
+  String initializeTitle(String locale) {
     if (widget.locations['vacancy'] != null) {
       final vacancy = (widget.locations['vacancy'] as Vacancy);
       return locale == 'ru'
-          ? vacancy.titleRu ?? vacancy.title
-          : vacancy.titleUz ?? vacancy.title;
+          ? vacancy.titleRu ?? vacancy.titleUz ?? ''
+          : vacancy.titleUz ?? vacancy.titleRu ?? '';
     }
 
     if (widget.locations['service'] != null) {
       final service = (widget.locations['service'] as ServiceModel);
       return locale == 'ru'
-          ? service.titleRu ?? service.title
-          : service.titleUz ?? service.title;
+          ? service.titleRu ?? service.titleUz ?? ''
+          : service.titleUz ?? service.titleRu ?? '';
     }
 
     if (widget.locations['task'] != null) {
       final task = (widget.locations['task'] as TaskModel);
       return locale == 'ru'
-          ? task.titleRu ?? task.title
-          : task.titleUz ?? task.title;
+          ? task.titleRu ?? task.titleUz ?? ''
+          : task.titleUz ?? task.titleRu ?? '';
     }
+
+    return '';
   }
 
   void addCurrentLocationPlaceMark() {
@@ -140,7 +142,7 @@ class _YandexMapViewPageState extends State<YandexMapViewPage> {
     );
   }
 
-  initializeAddress() {
+  String initializeAddress() {
     if (widget.locations['vacancy'] != null) {
       final vacancy = (widget.locations['vacancy'] as Vacancy);
       return vacancy.address?.addressLine ?? '';
@@ -155,6 +157,8 @@ class _YandexMapViewPageState extends State<YandexMapViewPage> {
       final task = (widget.locations['task'] as TaskModel);
       return task.addresses.first.addressLine ?? '';
     }
+
+    return '';
   }
 
   @override
@@ -330,7 +334,10 @@ class _YandexMapViewPageState extends State<YandexMapViewPage> {
               }
               setState(() {});
             },
-            mapObjects: [if (_placeMarkMapObject != null) _placeMarkMapObject!],
+            mapObjects: [
+              if (_placeMarkMapObject != null) _placeMarkMapObject!,
+              if (_userPlaceMarkMapObject != null) _userPlaceMarkMapObject!,
+            ],
           ),
           Positioned(
             right: 15.w,
