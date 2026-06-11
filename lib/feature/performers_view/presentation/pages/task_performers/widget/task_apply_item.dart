@@ -134,9 +134,9 @@ class TaskApplyItem extends StatelessWidget {
                             height: 40.h,
                             child: AppButton(
                               onPressed: () {
-                                context
-                                    .read<TaskRequestsCubit>()
-                                    .choosePerformer(taskRequest);
+                                context.read<TaskRequestsCubit>().acceptRequest(
+                                  taskRequest,
+                                );
                               },
                               leftIcon:
                                   isPerformer()
@@ -217,7 +217,7 @@ class TaskApplyItem extends StatelessWidget {
                                     onPressed: () {
                                       context
                                           .read<TaskRequestsCubit>()
-                                          .cancelPerformer(taskRequest);
+                                          .cancelByCustomer(taskRequest);
                                     },
                                     isLoading:
                                         state.cancelPerformerSt.isLoading(),

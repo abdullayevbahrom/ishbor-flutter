@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
@@ -93,6 +94,9 @@ class TaskViewCubit extends Cubit<TaskViewState> {
   }
 
   Future<void> applyRequestTask(TaskRequestParams params) async {
+    debugPrint(
+      '[DEBUG][TaskViewCubit] action=apply_request taskId=${params.taskId}',
+    );
     emit(state.copyWith(requestTasksSt: RequestStatus.loading));
 
     final response = await _taskRequest.applyRequestTask(params: params);
@@ -116,6 +120,9 @@ class TaskViewCubit extends Cubit<TaskViewState> {
   }
 
   Future<void> fetchOwnTaskRequest() async {
+    debugPrint(
+      '[DEBUG][TaskViewCubit] action=own_request taskId=${state.taskId}',
+    );
     emit(state.copyWith(ownTaskRequestSt: RequestStatus.loading));
 
     final response = await _taskRequest.ownRequestsTask(taskId: state.taskId!);

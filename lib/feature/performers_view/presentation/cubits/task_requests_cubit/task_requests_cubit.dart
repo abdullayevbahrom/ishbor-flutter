@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
@@ -27,6 +28,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> fetchRequestsByTask(TaskModel taskModel) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=list_by_task id=${taskModel.id}',
+    );
     emit(state.copyWith(status: RequestStatus.loading, task: taskModel));
 
     final response = await _requestsRepository.listRequestsByTask(
@@ -46,6 +50,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> acceptRequest(TaskRequest taskRequest) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=accept id=${taskRequest.id}',
+    );
     emit(
       state.copyWith(
         choosePerformerSt: RequestStatus.loading,
@@ -81,6 +88,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> cancelByCustomer(TaskRequest taskRequest) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=cancel_by_customer id=${taskRequest.id}',
+    );
     emit(state.copyWith(cancelPerformerSt: RequestStatus.loading));
 
     final response = await _requestsRepository.cancelRequestByCustomer(
@@ -105,6 +115,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> cancelByPerformer(TaskRequest taskRequest) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=cancel_by_performer id=${taskRequest.id}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _requestsRepository.cancelRequestByPerformer(
@@ -124,6 +137,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> finishTask(TaskRequest taskRequest) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=finish id=${taskRequest.id}',
+    );
     emit(state.copyWith(finishTaskSt: RequestStatus.loading));
 
     final response = await _requestsRepository.finishRequestByCustomer(
@@ -148,6 +164,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> changeStatus(TaskRequest taskRequest, String status) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=change_status id=${taskRequest.id} status=$status',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _requestsRepository.changeStatus(
@@ -168,6 +187,9 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> deleteRequest(TaskRequest taskRequest) async {
+    debugPrint(
+      '[DEBUG][TaskRequestsCubit] action=delete id=${taskRequest.id}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _requestsRepository.deleteRequest(

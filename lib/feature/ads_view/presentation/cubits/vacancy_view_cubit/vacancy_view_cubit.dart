@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
@@ -95,6 +96,9 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
   }
 
   Future<void> applyVacancyRequest(String message) async {
+    debugPrint(
+      '[DEBUG][VacancyViewCubit] action=apply_request vacancyId=${state.vacancyId}',
+    );
     emit(state.copyWith(applyVacancySt: RequestStatus.loading));
 
     final response = await _vacancyRequestRepository.applyRequestVacancy(
@@ -122,6 +126,9 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
   }
 
   Future<void> fetchOwnVacancyRequest() async {
+    debugPrint(
+      '[DEBUG][VacancyViewCubit] action=own_request vacancyId=${state.vacancyId}',
+    );
     emit(state.copyWith(ownRequestSt: RequestStatus.loading));
 
     final response = await _vacancyRequestRepository.ownRequestsVacancy(

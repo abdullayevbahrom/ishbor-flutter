@@ -12,7 +12,7 @@ part of 'task_requests_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$TaskRequestsState {
+mixin _$TaskRequestsState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; RequestStatus get choosePerformerSt; RequestStatus get cancelPerformerSt; RequestStatus get finishTaskSt; PaginatedTaskRequestList? get listTaskRequest; TaskModel? get task; TaskRequest? get taskRequest;
 /// Create a copy of TaskRequestsState
@@ -22,6 +22,12 @@ mixin _$TaskRequestsState {
 $TaskRequestsStateCopyWith<TaskRequestsState> get copyWith => _$TaskRequestsStateCopyWithImpl<TaskRequestsState>(this as TaskRequestsState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TaskRequestsState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('choosePerformerSt', choosePerformerSt))..add(DiagnosticsProperty('cancelPerformerSt', cancelPerformerSt))..add(DiagnosticsProperty('finishTaskSt', finishTaskSt))..add(DiagnosticsProperty('listTaskRequest', listTaskRequest))..add(DiagnosticsProperty('task', task))..add(DiagnosticsProperty('taskRequest', taskRequest));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,choosePerformerSt,cancelPerformerSt,finishTaskSt,listTaskRequest,task,taskRequest);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TaskRequestsState(status: $status, choosePerformerSt: $choosePerformerSt, cancelPerformerSt: $cancelPerformerSt, finishTaskSt: $finishTaskSt, listTaskRequest: $listTaskRequest, task: $task, taskRequest: $taskRequest)';
 }
 
@@ -211,7 +217,7 @@ return $default(_that.status,_that.choosePerformerSt,_that.cancelPerformerSt,_th
 /// @nodoc
 
 
-class _TaskRequestsState implements TaskRequestsState {
+class _TaskRequestsState with DiagnosticableTreeMixin implements TaskRequestsState {
   const _TaskRequestsState({this.status = RequestStatus.initial, this.choosePerformerSt = RequestStatus.initial, this.cancelPerformerSt = RequestStatus.initial, this.finishTaskSt = RequestStatus.initial, this.listTaskRequest = null, this.task = null, this.taskRequest = null});
   
 
@@ -230,6 +236,12 @@ class _TaskRequestsState implements TaskRequestsState {
 _$TaskRequestsStateCopyWith<_TaskRequestsState> get copyWith => __$TaskRequestsStateCopyWithImpl<_TaskRequestsState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TaskRequestsState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('choosePerformerSt', choosePerformerSt))..add(DiagnosticsProperty('cancelPerformerSt', cancelPerformerSt))..add(DiagnosticsProperty('finishTaskSt', finishTaskSt))..add(DiagnosticsProperty('listTaskRequest', listTaskRequest))..add(DiagnosticsProperty('task', task))..add(DiagnosticsProperty('taskRequest', taskRequest));
+}
 
 @override
 bool operator ==(Object other) {
@@ -241,7 +253,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,choosePerformerSt,cancelPerformerSt,finishTaskSt,listTaskRequest,task,taskRequest);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TaskRequestsState(status: $status, choosePerformerSt: $choosePerformerSt, cancelPerformerSt: $cancelPerformerSt, finishTaskSt: $finishTaskSt, listTaskRequest: $listTaskRequest, task: $task, taskRequest: $taskRequest)';
 }
 

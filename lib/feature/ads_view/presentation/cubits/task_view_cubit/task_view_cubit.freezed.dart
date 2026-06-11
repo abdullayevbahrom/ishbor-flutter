@@ -12,7 +12,7 @@ part of 'task_view_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$TaskViewState {
+mixin _$TaskViewState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; RequestStatus get similarTasksSt; RequestStatus get requestTasksSt; RequestStatus get ownTaskRequestSt; bool get isLoadingMore; TaskModel? get task; PaginatedTaskListResponse? get listTasks; TaskRequest? get myRequest; dynamic get taskId;
 /// Create a copy of TaskViewState
@@ -22,6 +22,12 @@ mixin _$TaskViewState {
 $TaskViewStateCopyWith<TaskViewState> get copyWith => _$TaskViewStateCopyWithImpl<TaskViewState>(this as TaskViewState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TaskViewState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('similarTasksSt', similarTasksSt))..add(DiagnosticsProperty('requestTasksSt', requestTasksSt))..add(DiagnosticsProperty('ownTaskRequestSt', ownTaskRequestSt))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('task', task))..add(DiagnosticsProperty('listTasks', listTasks))..add(DiagnosticsProperty('myRequest', myRequest))..add(DiagnosticsProperty('taskId', taskId));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,const DeepCollectionEquality().hash(taskId));
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TaskViewState(status: $status, similarTasksSt: $similarTasksSt, requestTasksSt: $requestTasksSt, ownTaskRequestSt: $ownTaskRequestSt, isLoadingMore: $isLoadingMore, task: $task, listTasks: $listTasks, myRequest: $myRequest, taskId: $taskId)';
 }
 
@@ -213,7 +219,7 @@ return $default(_that.status,_that.similarTasksSt,_that.requestTasksSt,_that.own
 /// @nodoc
 
 
-class _TaskViewState implements TaskViewState {
+class _TaskViewState with DiagnosticableTreeMixin implements TaskViewState {
   const _TaskViewState({this.status = RequestStatus.initial, this.similarTasksSt = RequestStatus.initial, this.requestTasksSt = RequestStatus.initial, this.ownTaskRequestSt = RequestStatus.initial, this.isLoadingMore = false, this.task = null, this.listTasks = null, this.myRequest = null, this.taskId = null});
   
 
@@ -234,6 +240,12 @@ class _TaskViewState implements TaskViewState {
 _$TaskViewStateCopyWith<_TaskViewState> get copyWith => __$TaskViewStateCopyWithImpl<_TaskViewState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TaskViewState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('similarTasksSt', similarTasksSt))..add(DiagnosticsProperty('requestTasksSt', requestTasksSt))..add(DiagnosticsProperty('ownTaskRequestSt', ownTaskRequestSt))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('task', task))..add(DiagnosticsProperty('listTasks', listTasks))..add(DiagnosticsProperty('myRequest', myRequest))..add(DiagnosticsProperty('taskId', taskId));
+}
 
 @override
 bool operator ==(Object other) {
@@ -245,7 +257,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,similarTasksSt,requestTasksSt,ownTaskRequestSt,isLoadingMore,task,listTasks,myRequest,const DeepCollectionEquality().hash(taskId));
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TaskViewState(status: $status, similarTasksSt: $similarTasksSt, requestTasksSt: $requestTasksSt, ownTaskRequestSt: $ownTaskRequestSt, isLoadingMore: $isLoadingMore, task: $task, listTasks: $listTasks, myRequest: $myRequest, taskId: $taskId)';
 }
 

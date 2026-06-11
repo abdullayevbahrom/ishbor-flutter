@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
@@ -25,6 +26,9 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
   }
 
   Future<void> fetchRequestsByVacancy(Vacancy vacancy) async {
+    debugPrint(
+      '[DEBUG][VacancyRequestsCubit] action=list_by_vacancy id=${vacancy.id}',
+    );
     emit(state.copyWith(status: RequestStatus.loading, vacancy: vacancy));
 
     final response = await _requestsRepository.listRequestsByVacancy(
@@ -50,6 +54,9 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
     VacancyRequest vacancyRequest,
     String status,
   ) async {
+    debugPrint(
+      '[DEBUG][VacancyRequestsCubit] action=change_status id=${vacancyRequest.id} status=$status',
+    );
     emit(
       state.copyWith(
         changeStatusSt: RequestStatus.loading,
@@ -80,6 +87,9 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
   }
 
   Future<void> deleteRequest(VacancyRequest vacancyRequest) async {
+    debugPrint(
+      '[DEBUG][VacancyRequestsCubit] action=delete id=${vacancyRequest.id}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _requestsRepository.deleteRequest(
