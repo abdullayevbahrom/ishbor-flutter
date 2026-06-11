@@ -13,22 +13,37 @@ import 'package:top_jobs/feature/common/presentation/widget/footer.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_decorated_box.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 import 'package:top_jobs/feature/profile/data/model/payment_paras.dart';
+import 'package:top_jobs/feature/profile/data/model/payment_provider.dart';
 import 'package:top_jobs/feature/profile/presentation/cubits/payment_cuubit/payment_cubit.dart';
 import 'package:top_jobs/feature/profile/presentation/pages/payment_page/widgets/w_payment_amount.dart';
 import 'package:top_jobs/feature/profile/presentation/pages/payment_page/widgets/w_payment_type.dart';
 
-class PaymentPage extends StatelessWidget {
+class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key, this.transactionId});
 
   final int? transactionId;
 
   @override
-  Widget build(BuildContext context) {
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  bool _pollingStarted = false;
+
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (transactionId != null) {
-        context.read<PaymentCubit>()..checkTransactionStatus(transactionId!);
+      if (!mounted || _pollingStarted || widget.transactionId == null) {
+        return;
       }
+      _pollingStarted = true;
+      context.read<PaymentCubit>().startTransactionPolling(widget.transactionId!);
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return WPaymentBody();
   }
 }
@@ -262,20 +277,5 @@ class MoneyInputFormatter extends TextInputFormatter {
 }
 
 String makePaymentType(int index) {
-  switch (index) {
-    case 0:
-      return "click";
-    case 1:
-      return "payme";
-    case 2:
-      return "uzum";
-    case 3:
-      return "paynet";
-    case 4:
-      return "alif";
-    case 5:
-      return "cash";
-    default:
-      return 'click';
-  }
+  return PaymentProvider.fromIndex(index).apiValue;
 }
