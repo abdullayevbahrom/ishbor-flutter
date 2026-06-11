@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
 import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 
@@ -20,6 +21,7 @@ class MessageCubit extends Cubit<MessageState> {
 
   void fetchData({String? type}) {
     _currentType = type;
+    debugPrint('[DEBUG][messages] message list fetchData type=${type ?? 'all'}');
     reset();
     fetchMessages();
   }
@@ -41,6 +43,9 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   Future<void> fetchMessages() async {
+    debugPrint(
+      '[DEBUG][messages] message list fetch page=$page size=$size type=${_currentType ?? 'all'}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _messagesRepository.fetchMessages(
@@ -60,6 +65,9 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   Future<void> fetchMoreMessages() async {
+    debugPrint(
+      '[DEBUG][messages] message list fetch more page=$page size=$size type=${_currentType ?? 'all'}',
+    );
     emit(state.copyWith(isLoading: true));
 
     final response = await _messagesRepository.fetchMessages(
@@ -87,6 +95,7 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   void makeMessageRead(int index) {
+    debugPrint('[DEBUG][messages] message list mark read index=$index');
     final messages = List<Message>.from(state.messages?.items ?? []);
     if (index >= 0 && index < messages.length) {
       messages[index] = messages[index].copyWith(hasNewRecord: false);

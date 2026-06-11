@@ -74,10 +74,8 @@ class ChatInputBar extends StatelessWidget {
                       .isNotEmpty) {
                     context.read<ChatCubit>().sendMessage({
                       "sender": context.read<UserCubit>().state.user?.id,
-                      "type":
-                          state.message?.adType != null
-                              ? "${state.message?.adType} message"
-                              : "task message",
+                      "ad_type": state.message?.adType,
+                      "ad_id": state.message?.adId,
                       "body":
                           context
                               .read<ChatCubit>()

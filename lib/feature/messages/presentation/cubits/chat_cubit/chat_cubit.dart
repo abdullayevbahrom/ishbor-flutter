@@ -88,12 +88,16 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> fetchData(Object messageId) async {
     _messageId = messageId.toString();
+    debugPrint('[DEBUG][messages] chat fetchData messageId=${_messageId ?? ''}');
     reset();
     fetchRecordsByChatId(messageId);
     initChat(messageId);
   }
 
   Future<void> fetchRecordsByChatId(Object messageId) async {
+    debugPrint(
+      '[DEBUG][messages] chat fetch records messageId=${messageId.toString()} page=$pageNumber size=$pageSize',
+    );
     emit(state.copyWith(fetchSt: RequestStatus.loading));
     final response = await _messagesRepository.fetchRecordsByChatId(
       messageId: messageId,
@@ -121,6 +125,9 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
+    debugPrint(
+      '[DEBUG][messages] chat fetch more records messageId=$_messageId page=$pageNumber size=$pageSize',
+    );
     emit(state.copyWith(isLoadingMore: true));
     final response = await _messagesRepository.fetchRecordsByChatId(
       messageId: _messageId!,
@@ -169,6 +176,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> makeMessageRead(Object messageId) async {
+    debugPrint('[DEBUG][messages] chat make message read messageId=${messageId.toString()}');
     final response = await _messagesRepository.makeMessageRead(messageId);
     response.fold((l) {}, (r) {});
   }
@@ -202,6 +210,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> sendWebSocketMessage(Map<String, dynamic> messageData) async {
+    debugPrint(
+      '[DEBUG][messages] websocket send message bodyLength=${messageData['body']?.toString().length ?? 0}',
+    );
     final messages = List.from(state.sendingMessages);
     messages.add(messageData['body']);
     _channel?.sink.add(jsonEncode(messageData));
@@ -215,6 +226,9 @@ class ChatCubit extends Cubit<ChatState> {
     required String adId,
     required String body,
   }) async {
+    debugPrint(
+      '[DEBUG][messages] http send message receiverId=$receiverId adType=$adType adId=$adId bodyLength=${body.length}',
+    );
     emit(state.copyWith(sendingMessages: [...state.sendingMessages, body]));
     final response = await _messagesRepository.sendMessage(
       receiverId: receiverId,
@@ -257,7 +271,14 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> pickFile(Object messageId) async {
     try {
       final result = await FilePicker.platform.pickFiles();
-      if (result != null && result.files.single.path != null) {
+      if (result == null || result.files.single.path == null) {
+        debugPrint(
+          '[WARN][messages] attachment validation failed: user cancelled file selection messageId=${messageId.toString()}',
+        );
+        return;
+      }
+
+      if (result.files.single.path != null) {
         final response = await _messagesRepository.uploadFile(
           messageId: messageId,
           path: result.files.single.path!,
@@ -279,6 +300,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> deleteRecords(List<Object> ids) async {
+    debugPrint(
+      '[DEBUG][messages] chat delete records count=${ids.length} ids=${ids.map((e) => e.toString()).join(',')}',
+    );
     final response = await _messagesRepository.deleteRecords(ids: ids);
     response.fold((l) {}, (r) {
       final currentItems = state.messageRecords?.items ?? [];
@@ -302,6 +326,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> fetchMessageById(Object id) async {
+    debugPrint('[DEBUG][messages] chat fetch message header id=${id.toString()}');
     emit(state.copyWith(messageSt: RequestStatus.loading));
     final response = await _messagesRepository.fetchMessageById(messageId: id);
     response.fold(
@@ -311,6 +336,38 @@ class ChatCubit extends Cubit<ChatState> {
       (r) {
         emit(state.copyWith(messageSt: RequestStatus.loaded, message: r));
       },
+    );
+  }
+
+  Future<void> fetchMessageReports(Object messageId) {
+    return fetchRecordsByChatId(messageId);
+  }
+
+  Future<void> sendMessage(Map<String, dynamic> messageData) {
+    final body = messageData['body']?.toString().trim() ?? '';
+    final currentUserId = messageData['sender']?.toString();
+    final message = state.message;
+    final receiverId =
+        currentUserId != null && currentUserId.isNotEmpty
+            ? (message?.senderId == currentUserId
+                ? message?.receiverId
+                : message?.senderId)
+            : message?.receiverId ?? message?.senderId;
+    final adType = message?.adType ?? messageData['ad_type']?.toString() ?? '';
+    final adId = message?.adId ?? messageData['ad_id']?.toString() ?? '';
+
+    if (body.isEmpty || receiverId == null || receiverId.isEmpty || adType.isEmpty || adId.isEmpty) {
+      debugPrint(
+        '[WARN][messages] send message validation failed bodyEmpty=${body.isEmpty} receiverId=${receiverId ?? ''} adType=$adType adId=$adId',
+      );
+      return Future.value();
+    }
+
+    return sendHttpMessage(
+      receiverId: receiverId,
+      adType: adType,
+      adId: adId,
+      body: body,
     );
   }
 }

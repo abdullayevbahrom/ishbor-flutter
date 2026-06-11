@@ -7,6 +7,7 @@ import 'package:top_jobs/models/message.dart';
 import 'package:top_jobs/models/message_record.dart';
 
 import '../../../common/data/models/common_query_params.dart';
+import '../../../profile/data/model/ask_question_model.dart';
 import '../models/paginated_message_record.dart';
 
 class MessagesRepositoryImpl extends MessagesRepository {
@@ -36,6 +37,13 @@ class MessagesRepositoryImpl extends MessagesRepository {
       adType: adType,
       adId: adId,
     );
+  }
+
+  @override
+  Future<Either<Failure, MessageRecord>> askQuestion({
+    required SendMessageRequest sendMessage,
+  }) {
+    return _messagesDataSource.askQuestion(sendMessage: sendMessage);
   }
 
   @override

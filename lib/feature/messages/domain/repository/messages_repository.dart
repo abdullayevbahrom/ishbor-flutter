@@ -5,6 +5,7 @@ import '../../../../core/network/api_http.dart';
 import '../../../../models/message.dart';
 import '../../../../models/message_record.dart';
 import '../../../common/data/models/common_query_params.dart';
+import '../../../profile/data/model/ask_question_model.dart';
 import '../../data/models/paginated_message_record.dart';
 
 abstract class MessagesRepository {
@@ -21,6 +22,10 @@ abstract class MessagesRepository {
     required String receiverId,
     required String adType,
     required String adId,
+  });
+
+  Future<Either<Failure, MessageRecord>> askQuestion({
+    required SendMessageRequest sendMessage,
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsByChatId({

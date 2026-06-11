@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
@@ -30,6 +31,9 @@ class AskQuestionCubit extends Cubit<AskQuestionState> {
   final ReportsRepository _reportsRepository;
 
   Future<void> askQuestion(SendMessageRequest sendMessage) async {
+    debugPrint(
+      '[DEBUG][messages] ask question receiverId=${sendMessage.receiverId} adType=${sendMessage.adType} adId=${sendMessage.adId} bodyLength=${sendMessage.body.length}',
+    );
     emit(state.copyWith(status: RequestStatus.loading));
     final response = await _messagesRepository.askQuestion(
       sendMessage: sendMessage,

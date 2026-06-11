@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -27,6 +29,10 @@ abstract class MessagesDataSource {
     required String receiverId,
     required String adType,
     required String adId,
+  });
+
+  Future<Either<Failure, MessageRecord>> askQuestion({
+    required SendMessageRequest sendMessage,
   });
 
   Future<Either<Failure, PaginatedMessageRecordResponse>> fetchRecordsByChatId({
@@ -76,6 +82,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required String adId,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] create chat receiverId=$receiverId adType=$adType adId=$adId',
+      );
       final response = await _dio.post(
         ApiConstants.postMessage,
         data: {'receiver_id': receiverId, 'ad_type': adType, 'ad_id': adId},
@@ -99,6 +108,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required Object messageId,
   }) async {
     try {
+      debugPrint('[DEBUG][messages] fetch chat id=${messageId.toString()}');
       final response = await _dio.get(ApiConstants.fetchMessage(messageId));
 
       if (response.statusCode == 200) {
@@ -124,6 +134,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
           type != null
               ? ApiConstants.listMessages(type)
               : ApiConstants.messages;
+      debugPrint(
+        '[DEBUG][messages] fetch chats type=${type ?? 'all'} page=${queryParams.pageNumber} size=${queryParams.pageSize}',
+      );
       final response = await _dio.get(
         url,
         queryParameters: queryParams.toMap(),
@@ -148,6 +161,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] fetch records messageId=${messageId.toString()} page=${queryParams.pageNumber} size=${queryParams.pageSize}',
+      );
       final response = await _dio.get(
         ApiConstants.messageRecords(messageId),
         queryParameters: queryParams.toMap(),
@@ -198,6 +214,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     Object? messageId,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] send message receiverId=$receiverId adType=$adType adId=$adId hasMessageId=${messageId != null}',
+      );
       final response = await _dio.post(
         ApiConstants.postMessageRecord,
         data: {
@@ -233,6 +252,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     Object? messageId,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] answer message receiverId=$receiverId adType=$adType adId=$adId hasMessageId=${messageId != null}',
+      );
       final response = await _dio.post(
         ApiConstants.answerMessage,
         data: {
@@ -265,7 +287,23 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required String path,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] upload attachment messageId=${messageId.toString()} path=$path',
+      );
+      final file = File(path);
+      if (!file.existsSync()) {
+        debugPrint(
+          '[WARN][messages] attachment validation failed: file does not exist path=$path messageId=${messageId.toString()}',
+        );
+        return Left(Failure(message: 'Attachment file not found'));
+      }
+
       final mimeTypes = lookupMimeType(path);
+      if (mimeTypes == null) {
+        debugPrint(
+          '[WARN][messages] attachment validation warning: mime type unresolved path=$path messageId=${messageId.toString()}',
+        );
+      }
       final data = FormData.fromMap({
         "file": await MultipartFile.fromFile(
           path,
@@ -297,6 +335,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   @override
   Future<Either<Failure, void>> makeMessageRead(Object messageId) async {
     try {
+      debugPrint('[DEBUG][messages] make message read messageId=${messageId.toString()}');
       final response = await _dio.post(ApiConstants.makeMessageRead(messageId));
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
@@ -316,6 +355,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     required List<Object> ids,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][messages] delete records count=${ids.length} ids=${ids.map((e) => e.toString()).join(',')}',
+      );
       final response = await _dio.delete(
         ApiConstants.deleteMessageRecords,
         data: {'ids': ids.map((e) => e.toString()).toList()},
@@ -338,5 +380,21 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       return data['message']?.toString() ?? data.toString();
     }
     return data?.toString() ?? 'Unknown error';
+  }
+
+  @override
+  Future<Either<Failure, MessageRecord>> askQuestion({
+    required SendMessageRequest sendMessage,
+  }) {
+    debugPrint(
+      '[DEBUG][messages] ask question receiverId=${sendMessage.receiverId} adType=${sendMessage.adType} adId=${sendMessage.adId}',
+    );
+    return this.sendMessage(
+      receiverId: sendMessage.receiverId,
+      adType: sendMessage.adType,
+      adId: sendMessage.adId,
+      body: sendMessage.body,
+      messageId: sendMessage.messageId,
+    );
   }
 }
