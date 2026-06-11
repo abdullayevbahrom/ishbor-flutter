@@ -32,13 +32,26 @@ class CategoryDataSourceImpl extends CategoryDataSource {
     required QueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][catalog] fetch categories query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.categories,
-        queryParameters: {'page': queryParams.page},
+        queryParameters: queryParams
+            .toMap()
+            .entries
+            .where((entry) => entry.value != null)
+            .fold<Map<String, dynamic>>({}, (acc, entry) {
+              acc[entry.key] = entry.value;
+              return acc;
+            }),
       );
       if (response.statusCode == 200) {
         return Right(CategoryListResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch categories failed status=${response.statusCode}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -55,6 +68,9 @@ class CategoryDataSourceImpl extends CategoryDataSource {
     int? size,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][catalog] fetch popular categories city=${city ?? ''} size=${size ?? ''}',
+      );
       final response = await _dio.get(
         ApiConstants.popularCategories,
         queryParameters: {
@@ -65,6 +81,9 @@ class CategoryDataSourceImpl extends CategoryDataSource {
       if (response.statusCode == 200) {
         return Right(CategoryListResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch popular categories failed status=${response.statusCode}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -80,12 +99,16 @@ class CategoryDataSourceImpl extends CategoryDataSource {
     required Object id,
   }) async {
     try {
+      debugPrint('[DEBUG][catalog] fetch category id=${id.toString()}');
       final response = await _dio.get(ApiConstants.fetchCategory(id));
       if (response.statusCode == 200) {
         return Right(
           CategoryModel.fromMap(response.data['data'] ?? response.data),
         );
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch category failed status=${response.statusCode} id=${id.toString()}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {

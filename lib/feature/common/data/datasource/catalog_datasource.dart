@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
+import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/feature/common/data/models/category.dart';
 import 'package:top_jobs/models/tag.dart';
 import 'package:top_jobs/models/third_party_ad.dart';
@@ -38,6 +39,9 @@ class CatalogDataSourceImpl extends CatalogDataSource {
     int? size,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][catalog] fetch popular categories city=${city ?? ''} size=${size ?? ''}',
+      );
       final response = await _dio.get(
         ApiConstants.popularCategories,
         queryParameters: {
@@ -48,6 +52,9 @@ class CatalogDataSourceImpl extends CatalogDataSource {
       if (response.statusCode == 200) {
         return Right(CategoryListResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch popular categories failed status=${response.statusCode}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -63,12 +70,16 @@ class CatalogDataSourceImpl extends CatalogDataSource {
     required Object id,
   }) async {
     try {
+      debugPrint('[DEBUG][catalog] fetch category id=${id.toString()}');
       final response = await _dio.get(ApiConstants.fetchCategory(id));
       if (response.statusCode == 200) {
         return Right(
           CategoryModel.fromMap(response.data['data'] ?? response.data),
         );
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch category failed status=${response.statusCode} id=${id.toString()}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -85,6 +96,9 @@ class CatalogDataSourceImpl extends CatalogDataSource {
     int? size,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][catalog] fetch tags page=${page ?? ''} size=${size ?? ''}',
+      );
       final response = await _dio.get(
         ApiConstants.tags,
         queryParameters: {
@@ -93,14 +107,15 @@ class CatalogDataSourceImpl extends CatalogDataSource {
         },
       );
       if (response.statusCode == 200) {
-        final List items =
-            response.data['items'] ?? response.data['data'] ?? [];
-        return Right(
-          items
-              .map((e) => TagModel.fromMap(Map<String, dynamic>.from(e)))
-              .toList(),
+        final parsed = ApiListResponse.fromJson(
+          response.data,
+          TagModel.fromMap,
         );
+        return Right(parsed.items);
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch tags failed status=${response.statusCode}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -114,6 +129,7 @@ class CatalogDataSourceImpl extends CatalogDataSource {
   @override
   Future<Either<Failure, TagModel>> fetchTagById({required Object id}) async {
     try {
+      debugPrint('[DEBUG][catalog] fetch tag id=${id.toString()}');
       final response = await _dio.get(ApiConstants.fetchTag(id));
       if (response.statusCode == 200) {
         return Right(
@@ -122,6 +138,9 @@ class CatalogDataSourceImpl extends CatalogDataSource {
           ),
         );
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch tag failed status=${response.statusCode} id=${id.toString()}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {
@@ -138,6 +157,9 @@ class CatalogDataSourceImpl extends CatalogDataSource {
     int? size,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][catalog] fetch banners page=${page ?? ''} size=${size ?? ''}',
+      );
       final response = await _dio.get(
         ApiConstants.thirdPartyAds,
         queryParameters: {
@@ -146,14 +168,15 @@ class CatalogDataSourceImpl extends CatalogDataSource {
         },
       );
       if (response.statusCode == 200) {
-        final List items =
-            response.data['items'] ?? response.data['data'] ?? [];
-        return Right(
-          items
-              .map((e) => ThirdPartyAd.fromMap(Map<String, dynamic>.from(e)))
-              .toList(),
+        final parsed = ApiListResponse.fromJson(
+          response.data,
+          ThirdPartyAd.fromMap,
         );
+        return Right(parsed.items);
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch banners failed status=${response.statusCode}',
+        );
         return Left(Failure(message: _extractMessage(response.data)));
       }
     } on DioException catch (e) {

@@ -17,10 +17,14 @@ class CitiesDataSourceImpl extends CitiesDataSource {
   @override
   Future<Either<Failure, CitiesList>> fetchCities() async {
     try {
+      debugPrint('[DEBUG][catalog] fetch cities ${ApiConstants.cities}');
       final response = await _dio.get(ApiConstants.cities);
       if (response.statusCode == 200) {
         return Right(CitiesList.fromMap(response.data));
       } else {
+        debugPrint(
+          '[WARN][catalog] fetch cities failed status=${response.statusCode}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {

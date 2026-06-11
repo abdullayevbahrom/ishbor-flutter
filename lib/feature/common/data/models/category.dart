@@ -98,7 +98,9 @@ class CategoryModel extends Equatable {
       level: intValue(data['level']) ?? 0,
       parent: stringValue(data['parent'] ?? data['parent_id']),
       parentObj:
-          data['parentObj'] != null ? CategoryModel.fromMap(data['parentObj']) : null,
+          data['parentObj'] != null
+              ? CategoryModel.fromMap(data['parentObj'])
+              : null,
       iconUrls: _iconUrlsFromSource(data['icon']),
       iconSmallUrls: _iconUrlsFromSource(data['icon_small']),
       children: mappedList(childrenData, CategoryModel.fromMap),
@@ -149,32 +151,35 @@ class PaginatorOptions extends Equatable {
 
   factory PaginatorOptions.fromMap(Map<String, dynamic> map) {
     return PaginatorOptions(
-      pageParameterName: stringValue(
-            map['pageParameterName'] ?? map['page_parameter_name'],
-          ) ??
+      pageParameterName:
+          stringValue(map['pageParameterName'] ?? map['page_parameter_name']) ??
           'page',
-      sortFieldParameterName: stringValue(
+      sortFieldParameterName:
+          stringValue(
             map['sortFieldParameterName'] ?? map['sort_field_parameter_name'],
           ) ??
           '',
-      sortDirectionParameterName: stringValue(
+      sortDirectionParameterName:
+          stringValue(
             map['sortDirectionParameterName'] ??
                 map['sort_direction_parameter_name'],
           ) ??
           '',
-      filterFieldParameterName: stringValue(
-            map['filterFieldParameterName'] ?? map['filter_field_parameter_name'],
+      filterFieldParameterName:
+          stringValue(
+            map['filterFieldParameterName'] ??
+                map['filter_field_parameter_name'],
           ) ??
           '',
-      filterValueParameterName: stringValue(
-            map['filterValueParameterName'] ?? map['filter_value_parameter_name'],
+      filterValueParameterName:
+          stringValue(
+            map['filterValueParameterName'] ??
+                map['filter_value_parameter_name'],
           ) ??
           '',
       distinct: boolValue(map['distinct']) ?? false,
-      pageOutOfRange: stringValue(
-            map['pageOutOfRange'] ?? map['page_out_of_range'],
-          ) ??
-          '',
+      pageOutOfRange:
+          stringValue(map['pageOutOfRange'] ?? map['page_out_of_range']) ?? '',
       defaultLimit: intValue(map['defaultLimit'] ?? map['default_limit']) ?? 0,
     );
   }
@@ -262,13 +267,16 @@ class CategoryListResponse extends Equatable {
     final payload = asMap(unwrapData(map));
     final items = mappedList(payload['items'], CategoryModel.fromMap);
     final currentPageNumber =
-        intValue(payload['current_page_number'] ?? payload['currentPageNumber']) ??
+        intValue(
+          payload['current_page_number'] ?? payload['currentPageNumber'],
+        ) ??
         1;
     final numItemsPerPage =
         intValue(payload['num_items_per_page'] ?? payload['numItemsPerPage']) ??
         items.length;
     final totalCount =
-        intValue(payload['total_count'] ?? payload['totalCount']) ?? items.length;
+        intValue(payload['total_count'] ?? payload['totalCount']) ??
+        items.length;
 
     if (kDebugMode &&
         (payload['paginator_options'] == null ||
@@ -297,10 +305,14 @@ class CategoryListResponse extends Equatable {
       pageLimit: intValue(payload['page_limit'] ?? payload['pageLimit']),
       template: stringValue(payload['template']) ?? '',
       sortableTemplate:
-          stringValue(payload['sortable_template'] ?? payload['sortableTemplate']) ??
+          stringValue(
+            payload['sortable_template'] ?? payload['sortableTemplate'],
+          ) ??
           '',
       filtrationTemplate:
-          stringValue(payload['filtration_template'] ?? payload['filtrationTemplate']) ??
+          stringValue(
+            payload['filtration_template'] ?? payload['filtrationTemplate'],
+          ) ??
           '',
     );
   }
@@ -338,10 +350,7 @@ List<CategoryTranslation> _categoryTranslationsFromSource(
     }
 
     if (byLocale.isNotEmpty) {
-      return _normalizeCategoryTranslations(
-        byLocale,
-        fallbackId: fallbackId,
-      );
+      return _normalizeCategoryTranslations(byLocale, fallbackId: fallbackId);
     }
   }
 
@@ -360,54 +369,27 @@ List<CategoryTranslation> _categoryTranslationsFromSource(
     }
 
     if (byLocale.isNotEmpty) {
-      return _normalizeCategoryTranslations(
-        byLocale,
-        fallbackId: fallbackId,
-      );
+      return _normalizeCategoryTranslations(byLocale, fallbackId: fallbackId);
     }
 
     final fallback = stringValue(map['value']) ?? map.values.first.toString();
     return [
-      CategoryTranslation(
-        id: '$fallbackId:ru',
-        locale: 'ru',
-        name: fallback,
-      ),
-      CategoryTranslation(
-        id: '$fallbackId:uz',
-        locale: 'uz',
-        name: fallback,
-      ),
+      CategoryTranslation(id: '$fallbackId:ru', locale: 'ru', name: fallback),
+      CategoryTranslation(id: '$fallbackId:uz', locale: 'uz', name: fallback),
     ];
   }
 
   if (source is String && source.trim().isNotEmpty) {
     final value = source.trim();
     return [
-      CategoryTranslation(
-        id: '$fallbackId:ru',
-        locale: 'ru',
-        name: value,
-      ),
-      CategoryTranslation(
-        id: '$fallbackId:uz',
-        locale: 'uz',
-        name: value,
-      ),
+      CategoryTranslation(id: '$fallbackId:ru', locale: 'ru', name: value),
+      CategoryTranslation(id: '$fallbackId:uz', locale: 'uz', name: value),
     ];
   }
 
   return [
-    CategoryTranslation(
-      id: '$fallbackId:ru',
-      locale: 'ru',
-      name: null,
-    ),
-    CategoryTranslation(
-      id: '$fallbackId:uz',
-      locale: 'uz',
-      name: null,
-    ),
+    CategoryTranslation(id: '$fallbackId:ru', locale: 'ru', name: null),
+    CategoryTranslation(id: '$fallbackId:uz', locale: 'uz', name: null),
   ];
 }
 
