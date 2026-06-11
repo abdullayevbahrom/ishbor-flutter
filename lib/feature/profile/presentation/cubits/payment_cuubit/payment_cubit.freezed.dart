@@ -12,7 +12,7 @@ part of 'payment_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$PaymentState {
+mixin _$PaymentState implements DiagnosticableTreeMixin {
 
  RequestStatus get status;
 /// Create a copy of PaymentState
@@ -22,6 +22,12 @@ mixin _$PaymentState {
 $PaymentStateCopyWith<PaymentState> get copyWith => _$PaymentStateCopyWithImpl<PaymentState>(this as PaymentState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'PaymentState'))
+    ..add(DiagnosticsProperty('status', status));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'PaymentState(status: $status)';
 }
 
@@ -205,7 +211,7 @@ return $default(_that.status);case _:
 /// @nodoc
 
 
-class _PaymentState implements PaymentState {
+class _PaymentState with DiagnosticableTreeMixin implements PaymentState {
   const _PaymentState({this.status = RequestStatus.initial});
   
 
@@ -218,6 +224,12 @@ class _PaymentState implements PaymentState {
 _$PaymentStateCopyWith<_PaymentState> get copyWith => __$PaymentStateCopyWithImpl<_PaymentState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'PaymentState'))
+    ..add(DiagnosticsProperty('status', status));
+}
 
 @override
 bool operator ==(Object other) {
@@ -229,7 +241,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'PaymentState(status: $status)';
 }
 

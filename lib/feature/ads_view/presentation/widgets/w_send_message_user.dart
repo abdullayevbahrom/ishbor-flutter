@@ -26,9 +26,9 @@ class WSendMessageUser extends StatefulWidget {
 
   final String title;
   final String receiverId;
-  final dynamic vacancyId;
-  final dynamic serviceId;
-  final dynamic taskId;
+  final String? vacancyId;
+  final String? serviceId;
+  final String? taskId;
 
   show(BuildContext context) {
     showModalBottomSheet(

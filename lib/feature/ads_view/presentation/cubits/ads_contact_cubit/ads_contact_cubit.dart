@@ -20,7 +20,7 @@ class AdsContactCubit extends Cubit<AdsContactState> {
     emit(state.copyWith(countOfPhoneReq: countOfReq));
   }
 
-  Future<void> fetchVacancyContact(dynamic vacancyId) async {
+  Future<void> fetchVacancyContact(String vacancyId) async {
     emit(state.copyWith(status: RequestStatus.loading));
     await _storageService.putCountOfPhoneReq();
     final response = await _adsContactRepository.fetchVacancyContact(
@@ -43,7 +43,7 @@ class AdsContactCubit extends Cubit<AdsContactState> {
     );
   }
 
-  Future<void> fetchServiceContact(dynamic serviceId) async {
+  Future<void> fetchServiceContact(String serviceId) async {
     emit(state.copyWith(status: RequestStatus.loading));
     final response = await _adsContactRepository.fetchServiceContact(
       serviceId: serviceId,
@@ -59,7 +59,7 @@ class AdsContactCubit extends Cubit<AdsContactState> {
     );
   }
 
-  Future<void> fetchTaskContact(dynamic taskId) async {
+  Future<void> fetchTaskContact(String taskId) async {
     emit(state.copyWith(status: RequestStatus.loading));
     final response = await _adsContactRepository.fetchTaskContact(
       taskId: taskId,

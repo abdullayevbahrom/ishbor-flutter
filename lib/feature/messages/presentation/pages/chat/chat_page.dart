@@ -27,7 +27,7 @@ import '../../cubits/chat_cubit/chat_cubit.dart';
 class ChatPage extends StatefulWidget {
   const ChatPage({super.key, required this.messageId});
 
-  final Object messageId;
+  final String messageId;
 
   @override
   State<ChatPage> createState() => _ChatPageState();

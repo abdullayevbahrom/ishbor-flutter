@@ -163,7 +163,7 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
     );
   }
 
-  Future<void> editService(dynamic serviceId) async {
+  Future<void> editService(String serviceId) async {
     emit(state.copyWith(status: RequestStatus.loading));
     final response = await _serviceRepository.editService(
       service: ServiceCreateRequest(

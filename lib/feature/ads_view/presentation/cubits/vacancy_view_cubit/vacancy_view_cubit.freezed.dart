@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VacancyViewState implements DiagnosticableTreeMixin {
 
- RequestStatus get status; RequestStatus get similarVacanciesSt; RequestStatus get applyVacancySt; RequestStatus get ownRequestSt; bool get isLoadingMore; VacancyPaginationResponse? get listSimilarVacancy; Vacancy? get vacancy; dynamic get vacancyId; VacancyRequest? get ownRequest;
+ RequestStatus get status; RequestStatus get similarVacanciesSt; RequestStatus get applyVacancySt; RequestStatus get ownRequestSt; bool get isLoadingMore; VacancyPaginationResponse? get listSimilarVacancy; Vacancy? get vacancy; String? get vacancyId; VacancyRequest? get ownRequest;
 /// Create a copy of VacancyViewState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -31,12 +31,12 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.applyVacancySt, applyVacancySt) || other.applyVacancySt == applyVacancySt)&&(identical(other.ownRequestSt, ownRequestSt) || other.ownRequestSt == ownRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&const DeepCollectionEquality().equals(other.vacancyId, vacancyId)&&(identical(other.ownRequest, ownRequest) || other.ownRequest == ownRequest));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.applyVacancySt, applyVacancySt) || other.applyVacancySt == applyVacancySt)&&(identical(other.ownRequestSt, ownRequestSt) || other.ownRequestSt == ownRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&(identical(other.vacancyId, vacancyId) || other.vacancyId == vacancyId)&&(identical(other.ownRequest, ownRequest) || other.ownRequest == ownRequest));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,applyVacancySt,ownRequestSt,isLoadingMore,listSimilarVacancy,vacancy,const DeepCollectionEquality().hash(vacancyId),ownRequest);
+int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,applyVacancySt,ownRequestSt,isLoadingMore,listSimilarVacancy,vacancy,vacancyId,ownRequest);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
@@ -51,7 +51,7 @@ abstract mixin class $VacancyViewStateCopyWith<$Res>  {
   factory $VacancyViewStateCopyWith(VacancyViewState value, $Res Function(VacancyViewState) _then) = _$VacancyViewStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacanciesSt, RequestStatus applyVacancySt, RequestStatus ownRequestSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, dynamic vacancyId, VacancyRequest? ownRequest
+ RequestStatus status, RequestStatus similarVacanciesSt, RequestStatus applyVacancySt, RequestStatus ownRequestSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, String? vacancyId, VacancyRequest? ownRequest
 });
 
 
@@ -78,7 +78,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
 as VacancyPaginationResponse?,vacancy: freezed == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as Vacancy?,vacancyId: freezed == vacancyId ? _self.vacancyId : vacancyId // ignore: cast_nullable_to_non_nullable
-as dynamic,ownRequest: freezed == ownRequest ? _self.ownRequest : ownRequest // ignore: cast_nullable_to_non_nullable
+as String?,ownRequest: freezed == ownRequest ? _self.ownRequest : ownRequest // ignore: cast_nullable_to_non_nullable
 as VacancyRequest?,
   ));
 }
@@ -164,7 +164,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId,  VacancyRequest? ownRequest)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  String? vacancyId,  VacancyRequest? ownRequest)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VacancyViewState() when $default != null:
 return $default(_that.status,_that.similarVacanciesSt,_that.applyVacancySt,_that.ownRequestSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId,_that.ownRequest);case _:
@@ -185,7 +185,7 @@ return $default(_that.status,_that.similarVacanciesSt,_that.applyVacancySt,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId,  VacancyRequest? ownRequest)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  String? vacancyId,  VacancyRequest? ownRequest)  $default,) {final _that = this;
 switch (_that) {
 case _VacancyViewState():
 return $default(_that.status,_that.similarVacanciesSt,_that.applyVacancySt,_that.ownRequestSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId,_that.ownRequest);case _:
@@ -205,7 +205,7 @@ return $default(_that.status,_that.similarVacanciesSt,_that.applyVacancySt,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  dynamic vacancyId,  VacancyRequest? ownRequest)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacanciesSt,  RequestStatus applyVacancySt,  RequestStatus ownRequestSt,  bool isLoadingMore,  VacancyPaginationResponse? listSimilarVacancy,  Vacancy? vacancy,  String? vacancyId,  VacancyRequest? ownRequest)?  $default,) {final _that = this;
 switch (_that) {
 case _VacancyViewState() when $default != null:
 return $default(_that.status,_that.similarVacanciesSt,_that.applyVacancySt,_that.ownRequestSt,_that.isLoadingMore,_that.listSimilarVacancy,_that.vacancy,_that.vacancyId,_that.ownRequest);case _:
@@ -230,7 +230,7 @@ class _VacancyViewState with DiagnosticableTreeMixin implements VacancyViewState
 @override@JsonKey() final  bool isLoadingMore;
 @override@JsonKey() final  VacancyPaginationResponse? listSimilarVacancy;
 @override@JsonKey() final  Vacancy? vacancy;
-@override@JsonKey() final  dynamic vacancyId;
+@override@JsonKey() final  String? vacancyId;
 @override@JsonKey() final  VacancyRequest? ownRequest;
 
 /// Create a copy of VacancyViewState
@@ -249,12 +249,12 @@ void debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.applyVacancySt, applyVacancySt) || other.applyVacancySt == applyVacancySt)&&(identical(other.ownRequestSt, ownRequestSt) || other.ownRequestSt == ownRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&const DeepCollectionEquality().equals(other.vacancyId, vacancyId)&&(identical(other.ownRequest, ownRequest) || other.ownRequest == ownRequest));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyViewState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacanciesSt, similarVacanciesSt) || other.similarVacanciesSt == similarVacanciesSt)&&(identical(other.applyVacancySt, applyVacancySt) || other.applyVacancySt == applyVacancySt)&&(identical(other.ownRequestSt, ownRequestSt) || other.ownRequestSt == ownRequestSt)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.vacancy, vacancy) || other.vacancy == vacancy)&&(identical(other.vacancyId, vacancyId) || other.vacancyId == vacancyId)&&(identical(other.ownRequest, ownRequest) || other.ownRequest == ownRequest));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,applyVacancySt,ownRequestSt,isLoadingMore,listSimilarVacancy,vacancy,const DeepCollectionEquality().hash(vacancyId),ownRequest);
+int get hashCode => Object.hash(runtimeType,status,similarVacanciesSt,applyVacancySt,ownRequestSt,isLoadingMore,listSimilarVacancy,vacancy,vacancyId,ownRequest);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
@@ -269,7 +269,7 @@ abstract mixin class _$VacancyViewStateCopyWith<$Res> implements $VacancyViewSta
   factory _$VacancyViewStateCopyWith(_VacancyViewState value, $Res Function(_VacancyViewState) _then) = __$VacancyViewStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacanciesSt, RequestStatus applyVacancySt, RequestStatus ownRequestSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, dynamic vacancyId, VacancyRequest? ownRequest
+ RequestStatus status, RequestStatus similarVacanciesSt, RequestStatus applyVacancySt, RequestStatus ownRequestSt, bool isLoadingMore, VacancyPaginationResponse? listSimilarVacancy, Vacancy? vacancy, String? vacancyId, VacancyRequest? ownRequest
 });
 
 
@@ -296,7 +296,7 @@ as RequestStatus,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : is
 as bool,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
 as VacancyPaginationResponse?,vacancy: freezed == vacancy ? _self.vacancy : vacancy // ignore: cast_nullable_to_non_nullable
 as Vacancy?,vacancyId: freezed == vacancyId ? _self.vacancyId : vacancyId // ignore: cast_nullable_to_non_nullable
-as dynamic,ownRequest: freezed == ownRequest ? _self.ownRequest : ownRequest // ignore: cast_nullable_to_non_nullable
+as String?,ownRequest: freezed == ownRequest ? _self.ownRequest : ownRequest // ignore: cast_nullable_to_non_nullable
 as VacancyRequest?,
   ));
 }

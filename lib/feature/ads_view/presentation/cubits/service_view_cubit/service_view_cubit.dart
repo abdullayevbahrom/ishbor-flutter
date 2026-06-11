@@ -20,7 +20,7 @@ class ServiceViewCubit extends Cubit<ServiceViewState> {
   int size = 10;
   int page = 1;
 
-  void fetchData(dynamic serviceId) {
+  void fetchData(String serviceId) {
     reset();
     fetchServiceById(serviceId);
   }
@@ -29,7 +29,7 @@ class ServiceViewCubit extends Cubit<ServiceViewState> {
     page = 1;
   }
 
-  Future<void> fetchServiceById(dynamic serviceId) async {
+  Future<void> fetchServiceById(String serviceId) async {
     emit(state.copyWith(status: RequestStatus.loading, serviceId: serviceId));
     final response = await _adsViewRepository.fetchServiceById(
       serviceId: serviceId,

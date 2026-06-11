@@ -109,7 +109,7 @@ class MyServicesCubit extends Cubit<MyServicesState> {
     );
   }
 
-  Future<void> deactivateServiceById(dynamic serviceId, int index) async {
+  Future<void> deactivateServiceById(String serviceId, int index) async {
     emit(state.copyWith(deactivateSt: RequestStatus.loading));
     final response = await _myServiceRepository.changeStatusById(
       serviceId: serviceId,
@@ -144,7 +144,7 @@ class MyServicesCubit extends Cubit<MyServicesState> {
     );
   }
 
-  Future<void> activateServiceById(dynamic serviceId, int index) async {
+  Future<void> activateServiceById(String serviceId, int index) async {
     emit(state.copyWith(deactivateSt: RequestStatus.loading));
     final response = await _myServiceRepository.changeStatusById(
       serviceId: serviceId,

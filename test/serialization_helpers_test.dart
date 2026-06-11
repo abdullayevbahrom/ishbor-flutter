@@ -37,6 +37,21 @@ void main() {
     expect(normalized['items_list'][0]['full_name'], 'John Doe');
   });
 
+  test('snake case mapper normalizes multipart form fields', () {
+    final normalized = SnakeCaseMapper.normalizeFormFields({
+      'uploadedImages': [
+        'image-1',
+        'image-2',
+      ],
+      'verificationDoc': 'https://cdn.example.com/docs/verification.pdf',
+    });
+
+    expect(normalized, {
+      'uploaded_images': ['image-1', 'image-2'],
+      'verification_doc': 'https://cdn.example.com/docs/verification.pdf',
+    });
+  });
+
   test('api data response unwraps data envelope', () {
     final response = ApiDataResponse.fromJson({
       'data': {'access_token': 'token', 'refresh_token': 'refresh'},

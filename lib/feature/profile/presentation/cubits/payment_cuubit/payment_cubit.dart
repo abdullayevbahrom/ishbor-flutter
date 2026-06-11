@@ -25,7 +25,7 @@ part 'payment_cubit.freezed.dart';
 class PaymentCubit extends Cubit<PaymentState> {
   final PaymentRepository _paymentRepository;
   Timer? _pollTimer;
-  int? _activeTransactionId;
+  String? _activeTransactionId;
 
   PaymentCubit(this._paymentRepository) : super(const PaymentState());
 
@@ -70,7 +70,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     );
   }
 
-  Future<void> startTransactionPolling(int transactionId) async {
+  Future<void> startTransactionPolling(String transactionId) async {
     _activeTransactionId = transactionId;
     _pollTimer?.cancel();
     debugPrint('[DEBUG][payment][poll] start transactionId=$transactionId');
@@ -102,7 +102,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     });
   }
 
-  Future<void> checkTransactionStatus(int transactionId) async {
+  Future<void> checkTransactionStatus(String transactionId) async {
     _activeTransactionId = transactionId;
     _pollTimer?.cancel();
     debugPrint('[DEBUG][payment][poll] manual check transactionId=$transactionId');
@@ -181,7 +181,7 @@ class PaymentCubit extends Cubit<PaymentState> {
     return directUrl ?? '';
   }
 
-  int? _extractTransactionId(Map<String, dynamic> response) {
+  String? _extractTransactionId(Map<String, dynamic> response) {
     final candidates = <dynamic>[
       response['transaction_id'],
       response['id'],
@@ -194,13 +194,10 @@ class PaymentCubit extends Cubit<PaymentState> {
 
     for (final candidate in candidates) {
       if (candidate is int) {
-        return candidate;
+        return candidate.toString();
       }
-      if (candidate is String) {
-        final parsed = int.tryParse(candidate);
-        if (parsed != null) {
-          return parsed;
-        }
+      if (candidate is String && candidate.isNotEmpty) {
+        return candidate;
       }
     }
 

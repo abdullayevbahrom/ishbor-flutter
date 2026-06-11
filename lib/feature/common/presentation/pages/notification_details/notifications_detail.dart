@@ -36,7 +36,7 @@ class _NotificationsDetailState extends State<NotificationsDetail> {
         bloc:
             cubit..fetchDetails(
               type: widget.params['type'],
-              id: widget.params['id'],
+              id: widget.params['id']?.toString() ?? '',
             ),
         builder: (context, state) {
           return Scaffold(body: buildBody(state));

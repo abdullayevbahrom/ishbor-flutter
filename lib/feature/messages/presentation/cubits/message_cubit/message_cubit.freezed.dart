@@ -12,7 +12,7 @@ part of 'message_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$MessageState {
+mixin _$MessageState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; bool get isLoading; PaginatedChatMessageResponse? get messages; bool get hasUnreadMessage;
 /// Create a copy of MessageState
@@ -22,6 +22,12 @@ mixin _$MessageState {
 $MessageStateCopyWith<MessageState> get copyWith => _$MessageStateCopyWithImpl<MessageState>(this as MessageState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MessageState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('isLoading', isLoading))..add(DiagnosticsProperty('messages', messages))..add(DiagnosticsProperty('hasUnreadMessage', hasUnreadMessage));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,isLoading,messages,hasUnreadMessage);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'MessageState(status: $status, isLoading: $isLoading, messages: $messages, hasUnreadMessage: $hasUnreadMessage)';
 }
 
@@ -208,7 +214,7 @@ return $default(_that.status,_that.isLoading,_that.messages,_that.hasUnreadMessa
 /// @nodoc
 
 
-class _MessageState implements MessageState {
+class _MessageState with DiagnosticableTreeMixin implements MessageState {
   const _MessageState({this.status = RequestStatus.initial, this.isLoading = false, this.messages = null, this.hasUnreadMessage = false});
   
 
@@ -224,6 +230,12 @@ class _MessageState implements MessageState {
 _$MessageStateCopyWith<_MessageState> get copyWith => __$MessageStateCopyWithImpl<_MessageState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'MessageState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('isLoading', isLoading))..add(DiagnosticsProperty('messages', messages))..add(DiagnosticsProperty('hasUnreadMessage', hasUnreadMessage));
+}
 
 @override
 bool operator ==(Object other) {
@@ -235,7 +247,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,isLoading,messages,hasUnreadMessage);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'MessageState(status: $status, isLoading: $isLoading, messages: $messages, hasUnreadMessage: $hasUnreadMessage)';
 }
 

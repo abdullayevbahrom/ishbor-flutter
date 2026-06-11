@@ -33,6 +33,34 @@ WebSocket client avval `Authorization: Bearer <token>` va `X-Device-Token` heade
 Agar socket handshake yoki stream yopilsa, user status oqimi HTTP `heartbeat` + `checkUserStatus` fallbackiga o'tadi.
 Ulanish urinishlari exponential backoff bilan qayta sinab ko‘riladi; token log qilinmaydi.
 
+## Manual QA Checklist
+
+Quyidagi oqimlar `flutter run` yoki staging build’da qo'lda tekshiriladi:
+
+- Auth: request code, verify code, register, refresh, logout.
+- Feed va detail: vacancies, services, tasks ro'yxat, detail va similar bloklari.
+- Create/edit: vacancy, service, task create/update/status/favorite/lift-up.
+- Upload/remove: avatar, verification doc, portfolio, vacancy/service/task image upload va remove.
+- Messaging: messages list, chat open, send, attachment upload, read ack, websocket fallback.
+- Payment: top balance, transaction create/read/check, provider link, balance payment.
+- Notifications: list, detail, deep-link navigation.
+- Offline/retry: 401 refresh, transient network retry, device token bootstrap/persist.
+
+## Smoke Commands
+
+Local tekshiruvlar uchun root `Makefile` targetlaridan foydalaning:
+
+- `make flutter-pub-get`
+- `make flutter-analyze`
+- `make flutter-test`
+- `make flutter-format`
+- `make flutter-smoke`
+- `make flutter-contract-guard`
+- `make flutter-check`
+- `make flutter-doctor`
+
+Verbose logging faqat kerakli muhitda yoqiladi; secret, token va signature matnlari loglarga to'liq chiqarilmaydi.
+
 # Getting Started
 
 This project is a starting point for a Flutter application.

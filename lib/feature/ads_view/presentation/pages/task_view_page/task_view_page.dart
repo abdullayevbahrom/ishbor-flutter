@@ -37,7 +37,7 @@ import '../../widgets/w_ads_location_view.dart';
 class WTaskViewPage extends StatefulWidget {
   WTaskViewPage({super.key, required this.taskId});
 
-  final dynamic taskId;
+  final String taskId;
 
   @override
   State<WTaskViewPage> createState() => _WTaskViewPageState();

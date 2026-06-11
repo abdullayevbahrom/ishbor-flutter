@@ -21,7 +21,7 @@ import 'package:top_jobs/feature/profile/presentation/pages/payment_page/widgets
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key, this.transactionId});
 
-  final int? transactionId;
+  final String? transactionId;
 
   @override
   State<PaymentPage> createState() => _PaymentPageState();
@@ -38,7 +38,9 @@ class _PaymentPageState extends State<PaymentPage> {
         return;
       }
       _pollingStarted = true;
-      context.read<PaymentCubit>().startTransactionPolling(widget.transactionId!);
+      context.read<PaymentCubit>().startTransactionPolling(
+        widget.transactionId!,
+      );
     });
   }
 

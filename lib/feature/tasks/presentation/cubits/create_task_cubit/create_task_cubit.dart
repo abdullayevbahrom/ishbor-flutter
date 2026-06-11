@@ -178,7 +178,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     );
   }
 
-  Future<void> editTask({required dynamic taskId}) async {
+  Future<void> editTask({required String taskId}) async {
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _taskRepository.editTask(

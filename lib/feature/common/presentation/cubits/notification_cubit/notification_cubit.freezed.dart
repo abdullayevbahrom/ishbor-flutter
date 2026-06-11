@@ -12,7 +12,7 @@ part of 'notification_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$NotificationState {
+mixin _$NotificationState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; NotificationListResponse? get listNotification; String? get errorText; bool get hasNewNotification;
 /// Create a copy of NotificationState
@@ -22,6 +22,12 @@ mixin _$NotificationState {
 $NotificationStateCopyWith<NotificationState> get copyWith => _$NotificationStateCopyWithImpl<NotificationState>(this as NotificationState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'NotificationState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('listNotification', listNotification))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('hasNewNotification', hasNewNotification));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,listNotification,errorText,hasNewNotification);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'NotificationState(status: $status, listNotification: $listNotification, errorText: $errorText, hasNewNotification: $hasNewNotification)';
 }
 
@@ -208,7 +214,7 @@ return $default(_that.status,_that.listNotification,_that.errorText,_that.hasNew
 /// @nodoc
 
 
-class _NotificationState implements NotificationState {
+class _NotificationState with DiagnosticableTreeMixin implements NotificationState {
   const _NotificationState({this.status = RequestStatus.initial, this.listNotification = null, this.errorText = null, this.hasNewNotification = false});
   
 
@@ -224,6 +230,12 @@ class _NotificationState implements NotificationState {
 _$NotificationStateCopyWith<_NotificationState> get copyWith => __$NotificationStateCopyWithImpl<_NotificationState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'NotificationState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('listNotification', listNotification))..add(DiagnosticsProperty('errorText', errorText))..add(DiagnosticsProperty('hasNewNotification', hasNewNotification));
+}
 
 @override
 bool operator ==(Object other) {
@@ -235,7 +247,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,listNotification,errorText,hasNewNotification);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'NotificationState(status: $status, listNotification: $listNotification, errorText: $errorText, hasNewNotification: $hasNewNotification)';
 }
 

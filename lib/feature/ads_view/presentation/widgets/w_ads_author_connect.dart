@@ -34,9 +34,9 @@ class WAdsAuthorConnect extends StatefulWidget {
 
   final List<String?> phoneNumbers;
   final String customerId;
-  final dynamic vacancyId;
-  final dynamic serviceId;
-  final dynamic taskId;
+  final String? vacancyId;
+  final String? serviceId;
+  final String? taskId;
   final VoidCallback? onPressedApply;
   final bool? hasUserRequest;
 
@@ -71,11 +71,10 @@ class _WAdsAuthorConnectState extends State<WAdsAuthorConnect> {
                       listener: (context, state) {
                         showPhoneNumber() {
                           WAuthorPhoneNumbers(
-                            id:
-                                widget.vacancyId ??
-                                widget.serviceId ??
-                                widget.taskId ??
-                                1,
+                                id: widget.vacancyId ??
+                                    widget.serviceId ??
+                                    widget.taskId ??
+                                    '',
                             type:
                                 widget.vacancyId != null
                                     ? "vacancy"

@@ -89,7 +89,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     );
   }
 
-  Future<void> liftUpTaskById(dynamic taskId) async {
+  Future<void> liftUpTaskById(String taskId) async {
     emit(state.copyWith(liftUpTaskSt: RequestStatus.loading));
     final response = await _taskRepository.liftUpTaskById(taskId: taskId);
     response.fold(
@@ -105,7 +105,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     );
   }
 
-  Future<void> deactivateTaskById(dynamic taskId, int index) async {
+  Future<void> deactivateTaskById(String taskId, int index) async {
     emit(state.copyWith(deactivateTaskSt: RequestStatus.loading));
     final response = await _myTasksRepository.changeStatusById(
       taskId: taskId,
@@ -137,7 +137,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     );
   }
 
-  Future<void> activateTaskById(dynamic taskId, int index) async {
+  Future<void> activateTaskById(String taskId, int index) async {
     emit(state.copyWith(deactivateTaskSt: RequestStatus.loading));
     final response = await _myTasksRepository.changeStatusById(
       taskId: taskId,
@@ -169,7 +169,7 @@ class MyTasksCubit extends Cubit<MyTasksState> {
     );
   }
 
-  Future<void> deleteTaskById(dynamic taskId, int index) async {
+  Future<void> deleteTaskById(String taskId, int index) async {
     emit(state.copyWith(deleteTaskSt: RequestStatus.loading));
 
     final response = await _taskRepository.deleteTaskById(taskId: taskId);

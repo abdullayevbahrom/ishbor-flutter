@@ -11,7 +11,7 @@ class WebsocketClient {
   static const int _maxAttempts = 3;
   static const Duration _baseBackoff = Duration(milliseconds: 300);
 
-  static Future<IOWebSocketChannel?> initChat(Object messageId) async {
+  static Future<IOWebSocketChannel?> initChat(String messageId) async {
     final path = '/messages/$messageId';
     return _connectWithFallback(label: 'messages', path: path);
   }

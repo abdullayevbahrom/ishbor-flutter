@@ -146,7 +146,10 @@ class NotificationItem extends StatelessWidget {
           }
 
           if (notification.operation.contains('message')) {
-            context.push(Routes.chat, extra: notification.operationId);
+            context.push(
+              Routes.chat,
+              extra: notification.operationId.toString(),
+            );
           }
         },
         borderRadius: BorderRadius.circular(8.r),

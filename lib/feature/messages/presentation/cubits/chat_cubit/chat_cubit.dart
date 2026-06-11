@@ -86,8 +86,8 @@ class ChatCubit extends Cubit<ChatState> {
     pageNumber += 1;
   }
 
-  Future<void> fetchData(Object messageId) async {
-    _messageId = messageId.toString();
+  Future<void> fetchData(String messageId) async {
+    _messageId = messageId;
     debugPrint(
       '[DEBUG][messages] chat fetchData messageId=${_messageId ?? ''}',
     );
@@ -96,7 +96,7 @@ class ChatCubit extends Cubit<ChatState> {
     initChat(messageId);
   }
 
-  Future<void> fetchRecordsByChatId(Object messageId) async {
+  Future<void> fetchRecordsByChatId(String messageId) async {
     debugPrint(
       '[DEBUG][messages] chat fetch records messageId=${messageId.toString()} page=$pageNumber size=$pageSize',
     );
@@ -177,7 +177,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> makeMessageRead(Object messageId) async {
+  Future<void> makeMessageRead(String messageId) async {
     debugPrint(
       '[DEBUG][messages] chat make message read messageId=${messageId.toString()}',
     );
@@ -185,7 +185,7 @@ class ChatCubit extends Cubit<ChatState> {
     response.fold((l) {}, (r) {});
   }
 
-  Future<void> initChat(Object messageId) async {
+  Future<void> initChat(String messageId) async {
     _channel = await WebsocketClient.initChat(messageId);
     if (_channel == null) {
       debugPrint(
@@ -283,7 +283,7 @@ class ChatCubit extends Cubit<ChatState> {
     scrollToEnd();
   }
 
-  Future<void> pickFile(Object messageId) async {
+  Future<void> pickFile(String messageId) async {
     try {
       final result = await FilePicker.platform.pickFiles();
       if (result == null || result.files.single.path == null) {
@@ -340,7 +340,7 @@ class ChatCubit extends Cubit<ChatState> {
     return super.close();
   }
 
-  Future<void> fetchMessageById(Object id) async {
+  Future<void> fetchMessageById(String id) async {
     debugPrint(
       '[DEBUG][messages] chat fetch message header id=${id.toString()}',
     );
@@ -356,7 +356,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> fetchMessageReports(Object messageId) {
+  Future<void> fetchMessageReports(String messageId) {
     return fetchRecordsByChatId(messageId);
   }
 

@@ -51,9 +51,9 @@ import '../../models/vacancy.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
-dynamic _tryParseId(GoRouterState state) {
+String? _tryParseId(GoRouterState state) {
   final rawId = state.uri.queryParameters['id'];
-  return rawId == null ? null : (int.tryParse(rawId) ?? rawId);
+  return rawId;
 }
 
 DateTime? _tryParseExpiresAt(Uri uri) {
@@ -137,8 +137,9 @@ class AppRoutes {
       GoRoute(
         path: Routes.chat,
         pageBuilder:
-            (context, state) =>
-                CupertinoPage(child: ChatPage(messageId: state.extra ?? '')),
+            (context, state) => CupertinoPage(
+              child: ChatPage(messageId: state.extra?.toString() ?? ''),
+            ),
       ),
       GoRoute(
         path: Routes.filterForm,
@@ -290,12 +291,10 @@ class AppRoutes {
         path: Routes.payment,
         pageBuilder: (context, state) {
           final transactionId = state.uri.queryParameters['transaction_id'];
-          final parsedTransactionId =
-              transactionId != null ? int.tryParse(transactionId) : null;
           return CupertinoPage(
             child: BlocProvider(
               create: (context) => sl<PaymentCubit>(),
-              child: PaymentPage(transactionId: parsedTransactionId),
+              child: PaymentPage(transactionId: transactionId),
             ),
           );
         },

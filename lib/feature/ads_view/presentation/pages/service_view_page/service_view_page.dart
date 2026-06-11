@@ -31,7 +31,7 @@ import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 class WServiceViewPage extends StatefulWidget {
   WServiceViewPage({super.key, required this.serviceId});
 
-  final dynamic serviceId;
+  final String serviceId;
 
   @override
   State<WServiceViewPage> createState() => _WServiceViewPageState();

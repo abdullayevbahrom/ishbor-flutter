@@ -10,7 +10,7 @@ abstract class VacancyViewState with _$VacancyViewState {
     @Default(false) bool isLoadingMore,
     @Default(null) VacancyPaginationResponse? listSimilarVacancy,
     @Default(null) Vacancy? vacancy,
-    @Default(null) dynamic vacancyId,
+    @Default(null) String? vacancyId,
     @Default(null) VacancyRequest? ownRequest,
   }) = _VacancyViewState;
 }

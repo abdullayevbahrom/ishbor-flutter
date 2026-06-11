@@ -43,6 +43,29 @@ void main() {
       );
     },
   );
+
+  test('router source keeps deep-link guard branches and payment query contract', () {
+    final routerSource = File('lib/core/router/app_routes.dart').readAsStringSync();
+
+    expect(
+      routerSource,
+      contains(r'''if (url.contains("/main") && uri.queryParameters['token'] != null)'''),
+    );
+    expect(
+      routerSource,
+      contains(
+        r'''"/splash/${jsonEncode({'token': uri.queryParameters['token'], 'expires_at': uri.queryParameters['expires_at']})}"''',
+      ),
+    );
+    expect(routerSource, contains(r'''if (url.contains("/payment") &&'''));
+    expect(routerSource, contains(r'''uri.queryParameters['transaction_id']'''));
+    expect(
+      routerSource,
+      contains(
+        r'''"/payment?transaction_id=${uri.queryParameters['transaction_id']}"''',
+      ),
+    );
+  });
 }
 
 List<String> _findOffendingPaths() {

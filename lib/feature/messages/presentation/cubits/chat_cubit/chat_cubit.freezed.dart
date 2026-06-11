@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatState {
 
- int? get messageId; RequestStatus get messageSt; RequestStatus get fetchSt; RequestStatus get sendSt; PaginatedMessageRecordResponse? get messageRecords; Message? get message; String? get errorText; bool get needToDownload; bool get isDownloading; bool get isLoadingMore; bool get enableDownIcon; List<dynamic> get sendingMessages;
+ String? get messageId; RequestStatus get messageSt; RequestStatus get fetchSt; RequestStatus get sendSt; PaginatedMessageRecordResponse? get messageRecords; Message? get message; String? get errorText; bool get needToDownload; bool get isDownloading; bool get isLoadingMore; bool get enableDownIcon; List<dynamic> get sendingMessages;
 /// Create a copy of ChatState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $ChatStateCopyWith<$Res>  {
   factory $ChatStateCopyWith(ChatState value, $Res Function(ChatState) _then) = _$ChatStateCopyWithImpl;
 @useResult
 $Res call({
- int? messageId, RequestStatus messageSt, RequestStatus fetchSt, RequestStatus sendSt, PaginatedMessageRecordResponse? messageRecords, Message? message, String? errorText, bool needToDownload, bool isDownloading, bool isLoadingMore, bool enableDownIcon, List<dynamic> sendingMessages
+ String? messageId, RequestStatus messageSt, RequestStatus fetchSt, RequestStatus sendSt, PaginatedMessageRecordResponse? messageRecords, Message? message, String? errorText, bool needToDownload, bool isDownloading, bool isLoadingMore, bool enableDownIcon, List<dynamic> sendingMessages
 });
 
 
@@ -65,7 +65,7 @@ class _$ChatStateCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') @override $Res call({Object? messageId = freezed,Object? messageSt = null,Object? fetchSt = null,Object? sendSt = null,Object? messageRecords = freezed,Object? message = freezed,Object? errorText = freezed,Object? needToDownload = null,Object? isDownloading = null,Object? isLoadingMore = null,Object? enableDownIcon = null,Object? sendingMessages = null,}) {
   return _then(_self.copyWith(
 messageId: freezed == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
-as int?,messageSt: null == messageSt ? _self.messageSt : messageSt // ignore: cast_nullable_to_non_nullable
+as String?,messageSt: null == messageSt ? _self.messageSt : messageSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,fetchSt: null == fetchSt ? _self.fetchSt : fetchSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,sendSt: null == sendSt ? _self.sendSt : sendSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,messageRecords: freezed == messageRecords ? _self.messageRecords : messageRecords // ignore: cast_nullable_to_non_nullable
@@ -161,7 +161,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( int? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatState() when $default != null:
 return $default(_that.messageId,_that.messageSt,_that.fetchSt,_that.sendSt,_that.messageRecords,_that.message,_that.errorText,_that.needToDownload,_that.isDownloading,_that.isLoadingMore,_that.enableDownIcon,_that.sendingMessages);case _:
@@ -182,7 +182,7 @@ return $default(_that.messageId,_that.messageSt,_that.fetchSt,_that.sendSt,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( int? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)  $default,) {final _that = this;
 switch (_that) {
 case _ChatState():
 return $default(_that.messageId,_that.messageSt,_that.fetchSt,_that.sendSt,_that.messageRecords,_that.message,_that.errorText,_that.needToDownload,_that.isDownloading,_that.isLoadingMore,_that.enableDownIcon,_that.sendingMessages);case _:
@@ -202,7 +202,7 @@ return $default(_that.messageId,_that.messageSt,_that.fetchSt,_that.sendSt,_that
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( int? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? messageId,  RequestStatus messageSt,  RequestStatus fetchSt,  RequestStatus sendSt,  PaginatedMessageRecordResponse? messageRecords,  Message? message,  String? errorText,  bool needToDownload,  bool isDownloading,  bool isLoadingMore,  bool enableDownIcon,  List<dynamic> sendingMessages)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatState() when $default != null:
 return $default(_that.messageId,_that.messageSt,_that.fetchSt,_that.sendSt,_that.messageRecords,_that.message,_that.errorText,_that.needToDownload,_that.isDownloading,_that.isLoadingMore,_that.enableDownIcon,_that.sendingMessages);case _:
@@ -220,7 +220,7 @@ class _ChatState implements ChatState {
   const _ChatState({this.messageId = null, this.messageSt = RequestStatus.initial, this.fetchSt = RequestStatus.initial, this.sendSt = RequestStatus.initial, this.messageRecords = null, this.message = null, this.errorText = null, this.needToDownload = false, this.isDownloading = false, this.isLoadingMore = false, this.enableDownIcon = false, final  List<dynamic> sendingMessages = const []}): _sendingMessages = sendingMessages;
   
 
-@override@JsonKey() final  int? messageId;
+@override@JsonKey() final  String? messageId;
 @override@JsonKey() final  RequestStatus messageSt;
 @override@JsonKey() final  RequestStatus fetchSt;
 @override@JsonKey() final  RequestStatus sendSt;
@@ -269,7 +269,7 @@ abstract mixin class _$ChatStateCopyWith<$Res> implements $ChatStateCopyWith<$Re
   factory _$ChatStateCopyWith(_ChatState value, $Res Function(_ChatState) _then) = __$ChatStateCopyWithImpl;
 @override @useResult
 $Res call({
- int? messageId, RequestStatus messageSt, RequestStatus fetchSt, RequestStatus sendSt, PaginatedMessageRecordResponse? messageRecords, Message? message, String? errorText, bool needToDownload, bool isDownloading, bool isLoadingMore, bool enableDownIcon, List<dynamic> sendingMessages
+ String? messageId, RequestStatus messageSt, RequestStatus fetchSt, RequestStatus sendSt, PaginatedMessageRecordResponse? messageRecords, Message? message, String? errorText, bool needToDownload, bool isDownloading, bool isLoadingMore, bool enableDownIcon, List<dynamic> sendingMessages
 });
 
 
@@ -289,7 +289,7 @@ class __$ChatStateCopyWithImpl<$Res>
 @override @pragma('vm:prefer-inline') $Res call({Object? messageId = freezed,Object? messageSt = null,Object? fetchSt = null,Object? sendSt = null,Object? messageRecords = freezed,Object? message = freezed,Object? errorText = freezed,Object? needToDownload = null,Object? isDownloading = null,Object? isLoadingMore = null,Object? enableDownIcon = null,Object? sendingMessages = null,}) {
   return _then(_ChatState(
 messageId: freezed == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
-as int?,messageSt: null == messageSt ? _self.messageSt : messageSt // ignore: cast_nullable_to_non_nullable
+as String?,messageSt: null == messageSt ? _self.messageSt : messageSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,fetchSt: null == fetchSt ? _self.fetchSt : fetchSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,sendSt: null == sendSt ? _self.sendSt : sendSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,messageRecords: freezed == messageRecords ? _self.messageRecords : messageRecords // ignore: cast_nullable_to_non_nullable

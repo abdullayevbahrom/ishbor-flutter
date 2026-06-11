@@ -335,7 +335,7 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     );
   }
 
-  Future<void> editVacancy(dynamic vacancyId) async {
+  Future<void> editVacancy(String vacancyId) async {
     emit(state.copyWith(createVacSt: RequestStatus.loading));
 
     final response = await _vacancyRepository.editVacancy(
