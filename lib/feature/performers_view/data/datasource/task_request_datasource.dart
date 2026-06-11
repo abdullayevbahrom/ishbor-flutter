@@ -13,7 +13,9 @@ abstract class TaskRequestDataSource {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({
+    required Object taskId,
+  });
 
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
     required Object taskId,
@@ -28,7 +30,9 @@ abstract class TaskRequestDataSource {
     String? status,
   });
 
-  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId});
+  Future<Either<Failure, TaskRequest>> getRequestDetail({
+    required Object requestId,
+  });
 
   Future<Either<Failure, void>> acceptRequest({required Object requestId});
 
@@ -68,7 +72,9 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          TaskRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -81,7 +87,9 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId}) async {
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({
+    required Object taskId,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchOwnTaskRequest(taskId));
       if (response.statusCode == 200) {
@@ -158,11 +166,15 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId}) async {
+  Future<Either<Failure, TaskRequest>> getRequestDetail({
+    required Object requestId,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchTaskRequest(requestId));
       if (response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          TaskRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -175,9 +187,13 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> acceptRequest({required Object requestId}) async {
+  Future<Either<Failure, void>> acceptRequest({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.acceptTaskRequest(requestId));
+      final response = await _dio.post(
+        ApiConstants.acceptTaskRequest(requestId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -192,9 +208,13 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> cancelRequestByCustomer({required Object requestId}) async {
+  Future<Either<Failure, void>> cancelRequestByCustomer({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.cancelTaskRequestByCustomer(requestId));
+      final response = await _dio.post(
+        ApiConstants.cancelTaskRequestByCustomer(requestId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -209,11 +229,17 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({required Object requestId}) async {
+  Future<Either<Failure, TaskRequest>> cancelRequestByPerformer({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.cancelTaskRequestByPerformer(requestId));
+      final response = await _dio.post(
+        ApiConstants.cancelTaskRequestByPerformer(requestId),
+      );
       if (response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          TaskRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -226,9 +252,13 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> finishRequestByCustomer({required Object requestId}) async {
+  Future<Either<Failure, void>> finishRequestByCustomer({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.finishTaskRequestByCustomer(requestId));
+      final response = await _dio.post(
+        ApiConstants.finishTaskRequestByCustomer(requestId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -253,7 +283,9 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
         data: {'status': status},
       );
       if (response.statusCode == 200) {
-        return Right(TaskRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          TaskRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -266,9 +298,13 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteRequest({required Object requestId}) async {
+  Future<Either<Failure, void>> deleteRequest({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.delete(ApiConstants.deleteTaskRequest(requestId));
+      final response = await _dio.delete(
+        ApiConstants.deleteTaskRequest(requestId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {

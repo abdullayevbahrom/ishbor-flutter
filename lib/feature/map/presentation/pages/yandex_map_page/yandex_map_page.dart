@@ -396,5 +396,3 @@ class WMapDecoratedBox extends StatelessWidget {
     );
   }
 }
-
-

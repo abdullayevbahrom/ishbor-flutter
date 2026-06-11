@@ -9,7 +9,9 @@ abstract class VacancyRequestsRepository {
     required String message,
   });
 
-  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({required Object vacancyId});
+  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({
+    required Object vacancyId,
+  });
 
   Future<Either<Failure, PaginatedVacancyRequestList>> listRequestsByVacancy({
     required Object vacancyId,
@@ -24,7 +26,9 @@ abstract class VacancyRequestsRepository {
     String? status,
   });
 
-  Future<Either<Failure, VacancyRequest>> getRequestDetail({required Object requestId});
+  Future<Either<Failure, VacancyRequest>> getRequestDetail({
+    required Object requestId,
+  });
 
   Future<Either<Failure, VacancyRequest>> changeStatus({
     required Object requestId,

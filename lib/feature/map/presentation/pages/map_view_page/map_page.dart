@@ -230,7 +230,11 @@ class MapPage extends StatelessWidget {
                                   state.selectedTasks.first.createdAt,
                                 ),
                                 imageUrl:
-                                    state.selectedTasks.first.images.isNotEmpty &&
+                                    state
+                                                .selectedTasks
+                                                .first
+                                                .images
+                                                .isNotEmpty &&
                                             state
                                                 .selectedTasks
                                                 .first

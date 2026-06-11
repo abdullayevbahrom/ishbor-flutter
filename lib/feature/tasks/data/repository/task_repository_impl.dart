@@ -64,7 +64,7 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Either<Failure,  PaginatedTaskResponse>> fetchMyTaskApplies({
+  Future<Either<Failure, PaginatedTaskResponse>> fetchMyTaskApplies({
     required CommonQueryParams queryParams,
   }) async {
     final response = await _taskDataSource.fetchMyTaskApplies(
@@ -157,7 +157,9 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Either<Failure, void>> deleteTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> deleteTaskById({
+    required dynamic taskId,
+  }) async {
     final response = await _taskDataSource.deleteTaskById(taskId: taskId);
     return response.fold(
       (l) {
@@ -170,7 +172,9 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> liftUpTaskById({
+    required dynamic taskId,
+  }) async {
     final response = await _taskDataSource.liftUpTaskById(taskId: taskId);
     return response.fold(
       (l) {
@@ -183,7 +187,9 @@ class TaskRepositoryImpl extends TaskRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> toggleTaskById({
+    required dynamic taskId,
+  }) async {
     final response = await _taskDataSource.toggleTaskById(taskId: taskId);
     return response.fold(
       (l) {

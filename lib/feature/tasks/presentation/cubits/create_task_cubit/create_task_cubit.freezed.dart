@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateTaskState {
 
- RequestStatus get status; TaskModel? get task; String? get errorText; String? get paymentMethod; List<File> get images; bool get isNegotiable; bool get isRemote; bool get isUSD; int? get categoryId; bool get isStartDateNow; String? get startDate; String? get expireDate; GeocodeResponse? get location;
+ RequestStatus get status; TaskModel? get task; String? get errorText; String? get paymentMethod; List<File> get images; bool get isNegotiable; bool get isRemote; bool get isUSD; String? get categoryId; bool get isStartDateNow; String? get startDate; String? get expireDate; GeocodeResponse? get location;
 /// Create a copy of CreateTaskState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CreateTaskStateCopyWith<$Res>  {
   factory $CreateTaskStateCopyWith(CreateTaskState value, $Res Function(CreateTaskState) _then) = _$CreateTaskStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, TaskModel? task, String? errorText, String? paymentMethod, List<File> images, bool isNegotiable, bool isRemote, bool isUSD, int? categoryId, bool isStartDateNow, String? startDate, String? expireDate, GeocodeResponse? location
+ RequestStatus status, TaskModel? task, String? errorText, String? paymentMethod, List<File> images, bool isNegotiable, bool isRemote, bool isUSD, String? categoryId, bool isStartDateNow, String? startDate, String? expireDate, GeocodeResponse? location
 });
 
 
@@ -73,7 +73,7 @@ as List<File>,isNegotiable: null == isNegotiable ? _self.isNegotiable : isNegoti
 as bool,isRemote: null == isRemote ? _self.isRemote : isRemote // ignore: cast_nullable_to_non_nullable
 as bool,isUSD: null == isUSD ? _self.isUSD : isUSD // ignore: cast_nullable_to_non_nullable
 as bool,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int?,isStartDateNow: null == isStartDateNow ? _self.isStartDateNow : isStartDateNow // ignore: cast_nullable_to_non_nullable
+as String?,isStartDateNow: null == isStartDateNow ? _self.isStartDateNow : isStartDateNow // ignore: cast_nullable_to_non_nullable
 as bool,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,expireDate: freezed == expireDate ? _self.expireDate : expireDate // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
@@ -162,7 +162,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  int? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  String? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateTaskState() when $default != null:
 return $default(_that.status,_that.task,_that.errorText,_that.paymentMethod,_that.images,_that.isNegotiable,_that.isRemote,_that.isUSD,_that.categoryId,_that.isStartDateNow,_that.startDate,_that.expireDate,_that.location);case _:
@@ -183,7 +183,7 @@ return $default(_that.status,_that.task,_that.errorText,_that.paymentMethod,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  int? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  String? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)  $default,) {final _that = this;
 switch (_that) {
 case _CreateTaskState():
 return $default(_that.status,_that.task,_that.errorText,_that.paymentMethod,_that.images,_that.isNegotiable,_that.isRemote,_that.isUSD,_that.categoryId,_that.isStartDateNow,_that.startDate,_that.expireDate,_that.location);case _:
@@ -203,7 +203,7 @@ return $default(_that.status,_that.task,_that.errorText,_that.paymentMethod,_tha
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  int? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  TaskModel? task,  String? errorText,  String? paymentMethod,  List<File> images,  bool isNegotiable,  bool isRemote,  bool isUSD,  String? categoryId,  bool isStartDateNow,  String? startDate,  String? expireDate,  GeocodeResponse? location)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateTaskState() when $default != null:
 return $default(_that.status,_that.task,_that.errorText,_that.paymentMethod,_that.images,_that.isNegotiable,_that.isRemote,_that.isUSD,_that.categoryId,_that.isStartDateNow,_that.startDate,_that.expireDate,_that.location);case _:
@@ -235,7 +235,7 @@ class _CreateTaskState implements CreateTaskState {
 @override@JsonKey() final  bool isNegotiable;
 @override@JsonKey() final  bool isRemote;
 @override@JsonKey() final  bool isUSD;
-@override@JsonKey() final  int? categoryId;
+@override@JsonKey() final  String? categoryId;
 @override@JsonKey() final  bool isStartDateNow;
 @override@JsonKey() final  String? startDate;
 @override@JsonKey() final  String? expireDate;
@@ -271,7 +271,7 @@ abstract mixin class _$CreateTaskStateCopyWith<$Res> implements $CreateTaskState
   factory _$CreateTaskStateCopyWith(_CreateTaskState value, $Res Function(_CreateTaskState) _then) = __$CreateTaskStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, TaskModel? task, String? errorText, String? paymentMethod, List<File> images, bool isNegotiable, bool isRemote, bool isUSD, int? categoryId, bool isStartDateNow, String? startDate, String? expireDate, GeocodeResponse? location
+ RequestStatus status, TaskModel? task, String? errorText, String? paymentMethod, List<File> images, bool isNegotiable, bool isRemote, bool isUSD, String? categoryId, bool isStartDateNow, String? startDate, String? expireDate, GeocodeResponse? location
 });
 
 
@@ -299,7 +299,7 @@ as List<File>,isNegotiable: null == isNegotiable ? _self.isNegotiable : isNegoti
 as bool,isRemote: null == isRemote ? _self.isRemote : isRemote // ignore: cast_nullable_to_non_nullable
 as bool,isUSD: null == isUSD ? _self.isUSD : isUSD // ignore: cast_nullable_to_non_nullable
 as bool,categoryId: freezed == categoryId ? _self.categoryId : categoryId // ignore: cast_nullable_to_non_nullable
-as int?,isStartDateNow: null == isStartDateNow ? _self.isStartDateNow : isStartDateNow // ignore: cast_nullable_to_non_nullable
+as String?,isStartDateNow: null == isStartDateNow ? _self.isStartDateNow : isStartDateNow // ignore: cast_nullable_to_non_nullable
 as bool,startDate: freezed == startDate ? _self.startDate : startDate // ignore: cast_nullable_to_non_nullable
 as String?,expireDate: freezed == expireDate ? _self.expireDate : expireDate // ignore: cast_nullable_to_non_nullable
 as String?,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable

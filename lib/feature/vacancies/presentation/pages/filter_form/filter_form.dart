@@ -45,7 +45,7 @@ class FilterForm extends StatefulWidget {
 }
 
 class _FilterFormState extends State<FilterForm> {
-  List<int> _chosenCategories = [];
+  List<String> _chosenCategories = [];
   List<String> _chosenEmploymentTypes = [];
   String _chosenCity = '';
 
@@ -58,7 +58,11 @@ class _FilterFormState extends State<FilterForm> {
     _chosenEmploymentTypes = widget.queryParams.employmentTypes ?? [];
     _chosenCity = widget.queryParams.city ?? '';
     salaryMinController.text =
-        widget.queryParams.priceMin != null ? Formatters.moneyFormat(widget.queryParams.priceMin!.toInt().toString()) : '';
+        widget.queryParams.priceMin != null
+            ? Formatters.moneyFormat(
+              widget.queryParams.priceMin!.toInt().toString(),
+            )
+            : '';
     currency = "USD";
 
     super.initState();
@@ -153,7 +157,7 @@ class _FilterFormState extends State<FilterForm> {
                 isEnable: _chosenCategories.isNotEmpty,
                 title: LocaleKeys.category.tr(),
                 onTap: () async {
-                  final List<int>? response = await context.push(
+                  final List<String>? response = await context.push(
                     Routes.categoriesPage,
                     extra: _chosenCategories,
                   );

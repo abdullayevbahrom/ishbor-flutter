@@ -20,14 +20,14 @@ class TaskRequest extends AdRequest {
 
   @override
   List<Object?> get props => [
-        id,
-        task,
-        performer,
-        status,
-        price,
-        message,
-        createdAt,
-      ];
+    id,
+    task,
+    performer,
+    status,
+    price,
+    message,
+    createdAt,
+  ];
 
   static TaskRequest fromMap(Map<String, dynamic> data) {
     return TaskRequest(

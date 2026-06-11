@@ -88,6 +88,9 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
     required VacancyParams vacancyParams,
   }) async {
     try {
+      debugPrint(
+        '[ADS-FORM][vacancy][create] POST ${ApiConstants.vacancies} categories=${vacancyParams.categories}',
+      );
       FormData data = FormData.fromMap(vacancyParams.toJson());
 
       if (vacancyParams.uploadedImages.isNotEmpty) {
@@ -96,7 +99,7 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
           final String type = image.path.split('.').last;
           data.files.add(
             MapEntry<String, MultipartFile>(
-              'uploadedImages[]',
+              'uploadedImages',
               MultipartFile.fromBytes(
                 image.readAsBytesSync(),
                 filename: fileName,
@@ -107,9 +110,15 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
         }
       }
       final response = await _dio.post(ApiConstants.vacancies, data: data);
-      if (response.statusCode == 200) {
-        return Right(Vacancy.fromMap(response.data));
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint(
+          '[ADS-FORM][vacancy][create] success status=${response.statusCode}',
+        );
+        return Right(Vacancy.fromMap(response.data['data'] ?? response.data));
       } else {
+        debugPrint(
+          '[ADS-FORM][vacancy][create][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -143,9 +152,9 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
         yield Left(Failure(message: "Response is empty"));
       }
 
-        await for (final chunk in utf8.decoder.bind(response.data!.stream)) {
-          yield Right(chunk);
-        }
+      await for (final chunk in utf8.decoder.bind(response.data!.stream)) {
+        yield Right(chunk);
+      }
     } catch (e) {
       yield Left(Failure(message: e.toString()));
     }

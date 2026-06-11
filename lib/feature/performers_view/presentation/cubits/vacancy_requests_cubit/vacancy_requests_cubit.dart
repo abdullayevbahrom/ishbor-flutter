@@ -13,7 +13,8 @@ part 'vacancy_requests_state.dart';
 part 'vacancy_requests_cubit.freezed.dart';
 
 class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
-  VacancyRequestsCubit(this._requestsRepository) : super(const VacancyRequestsState());
+  VacancyRequestsCubit(this._requestsRepository)
+    : super(const VacancyRequestsState());
   final VacancyRequestsRepository _requestsRepository;
 
   int page = 1;
@@ -38,13 +39,23 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
         showErrorToast(l.message);
       },
       (r) {
-        emit(state.copyWith(status: RequestStatus.loaded, listVacancyRequest: r));
+        emit(
+          state.copyWith(status: RequestStatus.loaded, listVacancyRequest: r),
+        );
       },
     );
   }
 
-  Future<void> changeStatus(VacancyRequest vacancyRequest, String status) async {
-    emit(state.copyWith(changeStatusSt: RequestStatus.loading, vacancyRequest: vacancyRequest));
+  Future<void> changeStatus(
+    VacancyRequest vacancyRequest,
+    String status,
+  ) async {
+    emit(
+      state.copyWith(
+        changeStatusSt: RequestStatus.loading,
+        vacancyRequest: vacancyRequest,
+      ),
+    );
 
     final response = await _requestsRepository.changeStatus(
       requestId: vacancyRequest.id,
@@ -57,7 +68,12 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
         showErrorToast(l.message);
       },
       (r) {
-        emit(state.copyWith(changeStatusSt: RequestStatus.loaded, vacancyRequest: r));
+        emit(
+          state.copyWith(
+            changeStatusSt: RequestStatus.loaded,
+            vacancyRequest: r,
+          ),
+        );
         showSuccessToast(LocaleKeys.statusChangedSuccessfully.tr());
       },
     );

@@ -51,7 +51,6 @@ class _WLocationMapViewState extends State<WLocationMapView> {
                   widget.point ??
                   Point(latitude: 41.311081, longitude: 69.240562),
               icon: PlacemarkIcon.single(
-
                 PlacemarkIconStyle(
                   scale: 2,
                   isVisible: true,

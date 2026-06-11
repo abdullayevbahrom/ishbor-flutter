@@ -47,7 +47,7 @@ class WAdsAddress extends StatelessWidget {
             enabled: true,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             validator: (value) {
-              if (address.isEmpty||city.isEmpty) {
+              if (address.isEmpty || city.isEmpty) {
                 return LocaleKeys.addressIsRequired.tr();
               }
               return null;

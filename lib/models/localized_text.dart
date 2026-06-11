@@ -4,12 +4,7 @@ class LocalizedText {
   final String? en;
   final Map<String, dynamic> raw;
 
-  const LocalizedText({
-    required this.raw,
-    this.uz,
-    this.ru,
-    this.en,
-  });
+  const LocalizedText({required this.raw, this.uz, this.ru, this.en});
 
   factory LocalizedText.fromJson(dynamic source) {
     if (source is String) {
@@ -55,6 +50,5 @@ class LocalizedText {
     return uz ?? ru ?? en;
   }
 
-  static String? _asString(dynamic value) =>
-      value?.toString();
+  static String? _asString(dynamic value) => value?.toString();
 }

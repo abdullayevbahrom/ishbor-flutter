@@ -18,5 +18,4 @@ sealed class AppPng {
   static const imgDefaultMarker = "$baseUrl/img_default_marker.png";
   static const imgLocationView = "$baseUrl/img_location_view.png";
   static const imgNewSplash = "$baseUrl/img_new_splash.jpg";
-
 }

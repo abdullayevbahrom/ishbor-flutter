@@ -2,7 +2,7 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class  LocaleKeys {
+abstract class LocaleKeys {
   static const everyJobIsGood = 'everyJobIsGood';
   static const Vacancies = 'Vacancies';
   static const services = 'services';
@@ -40,7 +40,8 @@ abstract class  LocaleKeys {
   static const categories = 'categories';
   static const jobExamples = 'jobExamples';
   static const verification = 'verification';
-  static const verificationHasBeenPassedSuccessfully = 'verificationHasBeenPassedSuccessfully';
+  static const verificationHasBeenPassedSuccessfully =
+      'verificationHasBeenPassedSuccessfully';
   static const verificationHasNotBeenPassed = 'verificationHasNotBeenPassed';
   static const changeProfile = 'changeProfile';
   static const ad = 'ad';
@@ -70,7 +71,8 @@ abstract class  LocaleKeys {
   static const searching = 'searching';
   static const typeToSearch = 'typeToSearch';
   static const hide = 'hide';
-  static const becomePerformerAndStartEarning = 'becomePerformerAndStartEarning';
+  static const becomePerformerAndStartEarning =
+      'becomePerformerAndStartEarning';
   static const popularVacanciesAt = 'popularVacanciesAt';
   static const seeAllCategories = 'seeAllCategories';
   static const doYouWantToAddYourService = 'doYouWantToAddYourService';
@@ -83,7 +85,8 @@ abstract class  LocaleKeys {
   static const map = 'map';
   static const choosePhoto = 'choosePhoto';
   static const photosAdded = 'photosAdded';
-  static const validationErrorMax6FilesCanBeChosen = 'validationErrorMax6FilesCanBeChosen';
+  static const validationErrorMax6FilesCanBeChosen =
+      'validationErrorMax6FilesCanBeChosen';
   static const vacancy = 'vacancy';
   static const service = 'service';
   static const task = 'task';
@@ -142,7 +145,8 @@ abstract class  LocaleKeys {
   static const companyShortDescription = 'companyShortDescription';
   static const enterDescription = 'enterDescription';
   static const enterOnlyInAnonymousVacancies = 'enterOnlyInAnonymousVacancies';
-  static const applicantWithoutACompleteResume = 'applicantWithoutACompleteResume';
+  static const applicantWithoutACompleteResume =
+      'applicantWithoutACompleteResume';
   static const temporaryEmploymentIsPossible = 'temporaryEmploymentIsPossible';
   static const employmentType = 'employmentType';
   static const fullEmployment = 'fullEmployment';
@@ -192,7 +196,8 @@ abstract class  LocaleKeys {
   static const frequentlyAskedQuestion = 'frequentlyAskedQuestion';
   static const searchByCategory = 'searchByCategory';
   static const noSimilarServices = 'noSimilarServices';
-  static const messageHasBeenSentSuccessfully = 'messageHasBeenSentSuccessfully';
+  static const messageHasBeenSentSuccessfully =
+      'messageHasBeenSentSuccessfully';
   static const views = 'views';
   static const created = 'created';
   static const serviceDescription = 'serviceDescription';
@@ -201,10 +206,12 @@ abstract class  LocaleKeys {
   static const write = 'write';
   static const similarServices = 'similarServices';
   static const wantToFindAReliableAssistant = 'wantToFindAReliableAssistant';
-  static const topJobHelpsYouQuicklySolveAnyHouseholdAndBusinessProblems = 'topJobHelpsYouQuicklySolveAnyHouseholdAndBusinessProblems';
+  static const topJobHelpsYouQuicklySolveAnyHouseholdAndBusinessProblems =
+      'topJobHelpsYouQuicklySolveAnyHouseholdAndBusinessProblems';
   static const answer = 'answer';
   static const commentWhyYou = 'commentWhyYou';
-  static const iAgreeToTheAmountSpecifiedInTheAd = 'iAgreeToTheAmountSpecifiedInTheAd';
+  static const iAgreeToTheAmountSpecifiedInTheAd =
+      'iAgreeToTheAmountSpecifiedInTheAd';
   static const enterYourPrice = 'enterYourPrice';
   static const applyingForJob = 'applyingForJob';
   static const askAQuestionAboutTheTask = 'askAQuestionAboutTheTask';
@@ -212,7 +219,8 @@ abstract class  LocaleKeys {
   static const openService = 'openService';
   static const openTask = 'openTask';
   static const noRequestFound = 'noRequestFound';
-  static const messageHasBeenSendSuccessfully = 'messageHasBeenSendSuccessfully';
+  static const messageHasBeenSendSuccessfully =
+      'messageHasBeenSendSuccessfully';
   static const online = 'online';
   static const wasOnlineAt = 'wasOnlineAt';
   static const offline = 'offline';
@@ -220,12 +228,14 @@ abstract class  LocaleKeys {
   static const performerHasBeenChosen = 'performerHasBeenChosen';
   static const choosePerformer = 'choosePerformer';
   static const noSimilarTasks = 'noSimilarTasks';
-  static const taskHasBeenAppliedSuccessfully = 'taskHasBeenAppliedSuccessfully';
+  static const taskHasBeenAppliedSuccessfully =
+      'taskHasBeenAppliedSuccessfully';
   static const taskDescription = 'taskDescription';
   static const requestHasBeenSent = 'requestHasBeenSent';
   static const applyTask = 'applyTask';
   static const similarTasks = 'similarTasks';
-  static const haveYouWorkedWithThisPerformerLeaveAFeedbackAboutHisWork = 'haveYouWorkedWithThisPerformerLeaveAFeedbackAboutHisWork';
+  static const haveYouWorkedWithThisPerformerLeaveAFeedbackAboutHisWork =
+      'haveYouWorkedWithThisPerformerLeaveAFeedbackAboutHisWork';
   static const writeFeedback = 'writeFeedback';
   static const city = 'city';
   static const ready = 'ready';
@@ -233,7 +243,8 @@ abstract class  LocaleKeys {
   static const salaryFrom = 'salaryFrom';
   static const openVacancy = 'openVacancy';
   static const noSimilarVacancies = 'noSimilarVacancies';
-  static const vacancyHasBeenAppliedSuccessfully = 'vacancyHasBeenAppliedSuccessfully';
+  static const vacancyHasBeenAppliedSuccessfully =
+      'vacancyHasBeenAppliedSuccessfully';
   static const applies = 'applies';
   static const applyVacancy = 'applyVacancy';
   static const similarVacancies = 'similarVacancies';
@@ -316,8 +327,10 @@ abstract class  LocaleKeys {
   static const find = 'find';
   static const profileUpdatedSuccessfully = 'profileUpdatedSuccessfully';
   static const taskEditedSuccessfully = 'taskEditedSuccessfully';
-  static const serviceHasBeenEditedSuccessfully = 'serviceHasBeenEditedSuccessfully';
-  static const vacancyHasBeenEditedSuccessfully = 'vacancyHasBeenEditedSuccessfully';
+  static const serviceHasBeenEditedSuccessfully =
+      'serviceHasBeenEditedSuccessfully';
+  static const vacancyHasBeenEditedSuccessfully =
+      'vacancyHasBeenEditedSuccessfully';
   static const howToBecomeAPerformer = 'howToBecomeAPerformer';
   static const faq = 'faq';
   static const carrier = 'carrier';
@@ -339,7 +352,8 @@ abstract class  LocaleKeys {
   static const expired = 'expired';
   static const deactivated = 'deactivated';
   static const deleted = 'deleted';
-  static const theDocumentHasBeenSubmittedForVerification = 'theDocumentHasBeenSubmittedForVerification';
+  static const theDocumentHasBeenSubmittedForVerification =
+      'theDocumentHasBeenSubmittedForVerification';
   static const liftUp = 'liftUp';
   static const chooseOption = 'chooseOption';
   static const workOnlyOnSaturdaysAndSundays = 'workOnlyOnSaturdaysAndSundays';
@@ -355,19 +369,29 @@ abstract class  LocaleKeys {
   static const myFeedbacks = 'myFeedbacks';
   static const support = 'support';
   static const logInCreateOrAccountOnTheSite = 'logInCreateOrAccountOnTheSite';
-  static const clickTheCreateOrderButtonSelectAVacancy = 'clickTheCreateOrderButtonSelectAVacancy';
-  static const fillInTheVacancyWithTheRequiredData = 'fillInTheVacancyWithTheRequiredData';
-  static const waitForFeedbackFromOtherPlatformUsers = 'waitForFeedbackFromOtherPlatformUsers';
-  static const clickTheCreateOrderButtonSelectServices = 'clickTheCreateOrderButtonSelectServices';
-  static const fillInTheServiceWithTheRequiredData = 'fillInTheServiceWithTheRequiredData';
-  static const waitForMessagesAndCallsFromOtherPlatformUsers = 'waitForMessagesAndCallsFromOtherPlatformUsers';
-  static const clickTheCreateOrderButtonSelectTasks = 'clickTheCreateOrderButtonSelectTasks';
-  static const describeYourTaskInDetailAndFillInTheRequiredFields = 'describeYourTaskInDetailAndFillInTheRequiredFields';
+  static const clickTheCreateOrderButtonSelectAVacancy =
+      'clickTheCreateOrderButtonSelectAVacancy';
+  static const fillInTheVacancyWithTheRequiredData =
+      'fillInTheVacancyWithTheRequiredData';
+  static const waitForFeedbackFromOtherPlatformUsers =
+      'waitForFeedbackFromOtherPlatformUsers';
+  static const clickTheCreateOrderButtonSelectServices =
+      'clickTheCreateOrderButtonSelectServices';
+  static const fillInTheServiceWithTheRequiredData =
+      'fillInTheServiceWithTheRequiredData';
+  static const waitForMessagesAndCallsFromOtherPlatformUsers =
+      'waitForMessagesAndCallsFromOtherPlatformUsers';
+  static const clickTheCreateOrderButtonSelectTasks =
+      'clickTheCreateOrderButtonSelectTasks';
+  static const describeYourTaskInDetailAndFillInTheRequiredFields =
+      'describeYourTaskInDetailAndFillInTheRequiredFields';
   static const smsSent = 'smsSent';
   static const error = 'error';
   static const downloadMobileApp = 'downloadMobileApp';
-  static const theApplicationIsDesignedForACategoryOfTasks = 'theApplicationIsDesignedForACategoryOfTasks';
-  static const aFullFledgedApplicationOfTheTopJobuzPlatformWillAppearSoon = 'aFullFledgedApplicationOfTheTopJobuzPlatformWillAppearSoon';
+  static const theApplicationIsDesignedForACategoryOfTasks =
+      'theApplicationIsDesignedForACategoryOfTasks';
+  static const aFullFledgedApplicationOfTheTopJobuzPlatformWillAppearSoon =
+      'aFullFledgedApplicationOfTheTopJobuzPlatformWillAppearSoon';
   static const confidentiality = 'confidentiality';
   static const pending = 'pending';
   static const chooseAddress = 'chooseAddress';
@@ -385,7 +409,8 @@ abstract class  LocaleKeys {
   static const firstname = 'firstname';
   static const Lastname = 'Lastname';
   static const hasBeenUploaded = 'hasBeenUploaded';
-  static const youNeedToProvideYourUserInfoBeforeCreatingAnAd = 'youNeedToProvideYourUserInfoBeforeCreatingAnAd';
+  static const youNeedToProvideYourUserInfoBeforeCreatingAnAd =
+      'youNeedToProvideYourUserInfoBeforeCreatingAnAd';
   static const requiredWorkExperience = 'requiredWorkExperience';
   static const youWill = 'youWill';
   static const weExpect = 'weExpect';
@@ -403,7 +428,8 @@ abstract class  LocaleKeys {
   static const usePostingAnonymousVacancies = 'usePostingAnonymousVacancies';
   static const operatingMode = 'operatingMode';
   static const strCannotBeEmpty = 'strCannotBeEmpty';
-  static const strTheNumberWasEnteredIncorrectly = 'strTheNumberWasEnteredIncorrectly';
+  static const strTheNumberWasEnteredIncorrectly =
+      'strTheNumberWasEnteredIncorrectly';
   static const strPasswordShouldBeLastSix = 'strPasswordShouldBeLastSix';
   static const strEmailInCorrect = 'strEmailInCorrect';
   static const strPasswordsNotMatch = 'strPasswordsNotMatch';
@@ -433,7 +459,8 @@ abstract class  LocaleKeys {
   static const incorrectPhone = 'incorrectPhone';
   static const now = 'now';
   static const unExpectedError = 'unExpectedError';
-  static const yourInformationSuccessfullyUpdated = 'yourInformationSuccessfullyUpdated';
+  static const yourInformationSuccessfullyUpdated =
+      'yourInformationSuccessfullyUpdated';
   static const Male = 'Male';
   static const Female = 'Female';
   static const photoHaveBeenChosen = 'photoHaveBeenChosen';
@@ -475,8 +502,10 @@ abstract class  LocaleKeys {
   static const serviceDeletedSuccessfully = 'serviceDeletedSuccessfully';
   static const vacancyDeletedSuccessfully = 'vacancyDeletedSuccessfully';
   static const taskDeletedSuccessfully = 'taskDeletedSuccessfully';
-  static const serviceDeactivatedSuccessfully = 'serviceDeactivatedSuccessfully';
-  static const vacancyDeactivatedSuccessfully = 'vacancyDeactivatedSuccessfully';
+  static const serviceDeactivatedSuccessfully =
+      'serviceDeactivatedSuccessfully';
+  static const vacancyDeactivatedSuccessfully =
+      'vacancyDeactivatedSuccessfully';
   static const taskDeactivatedSuccessfully = 'taskDeactivatedSuccessfully';
   static const serviceLiftedUpSuccessfully = 'serviceLiftedUpSuccessfully';
   static const vacancyLiftedUpSuccessfully = 'vacancyLiftedUpSuccessfully';
@@ -540,19 +569,23 @@ abstract class  LocaleKeys {
   static const pay = 'pay';
   static const enterAmount = 'enterAmount';
   static const paymentMethodUnavailable = 'paymentMethodUnavailable';
-  static const thisUnavailableTechnicalMaintance = 'thisUnavailableTechnicalMaintance';
+  static const thisUnavailableTechnicalMaintance =
+      'thisUnavailableTechnicalMaintance';
   static const plsSelectPaymentType = 'plsSelectPaymentType';
   static const applyRequest = 'applyRequest';
   static const newPrice = 'newPrice';
-  static const whyDoYouThinkIShouldConsiderYou = 'whyDoYouThinkIShouldConsiderYou';
+  static const whyDoYouThinkIShouldConsiderYou =
+      'whyDoYouThinkIShouldConsiderYou';
   static const yourApplicationSenToEmployer = 'yourApplicationSenToEmployer';
   static const applicationsForJob = 'applicationsForJob';
   static const lastSeen = 'lastSeen';
   static const respondAgo = 'respondAgo';
   static const askQuestionAboutApplication = 'askQuestionAboutApplication';
   static const taskSuccessfullyCompleted = 'taskSuccessfullyCompleted';
-  static const taskPerformerSuccessfullyRemoved = 'taskPerformerSuccessfullyRemoved';
-  static const taskCompletedSuccessfullyCompletedByThisUser = 'taskCompletedSuccessfullyCompletedByThisUser';
+  static const taskPerformerSuccessfullyRemoved =
+      'taskPerformerSuccessfullyRemoved';
+  static const taskCompletedSuccessfullyCompletedByThisUser =
+      'taskCompletedSuccessfullyCompletedByThisUser';
   static const seeAllApplies = 'seeAllApplies';
   static const yourRequest = 'yourRequest';
   static const editAvatar = 'editAvatar';
@@ -620,5 +653,4 @@ abstract class  LocaleKeys {
   static const selectYourCity = 'selectYourCity';
   static const enterInformationAboutYourself = 'enterInformationAboutYourself';
   static const iDonNotHaveEmail = 'iDonNotHaveEmail';
-
 }

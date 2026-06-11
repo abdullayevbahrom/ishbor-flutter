@@ -17,12 +17,8 @@ class AppCheckBox extends StatelessWidget {
         onChanged(value ?? false);
       },
       splashRadius: 0,
-      visualDensity: VisualDensity(
-        vertical: -4,
-        horizontal: -4
-
-      ),
-      materialTapTargetSize:  MaterialTapTargetSize.shrinkWrap,
+      visualDensity: VisualDensity(vertical: -4, horizontal: -4),
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       side: BorderSide(color: AppColors.cE0E5EB),
       focusColor: AppColors.c1DBA6E,
       overlayColor: WidgetStatePropertyAll(AppColors.cFFFFFF),

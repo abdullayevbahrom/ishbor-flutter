@@ -85,23 +85,23 @@ class MyServicesBody extends StatelessWidget {
       onRefresh: onRefresh,
       child: LayoutBuilder(
         builder:
-            (context, constraints) =>
-            ConstrainedBox(
+            (context, constraints) => ConstrainedBox(
               constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: ListView.builder(
                 shrinkWrap: true,
                 controller: scrollController,
                 itemCount:
-                state.isLadingMore1
-                    ? (state.myServices?.items.length ?? 0) + 1
-                    : state.myServices?.items.length ?? 0,
+                    state.isLadingMore1
+                        ? (state.myServices?.items.length ?? 0) + 1
+                        : state.myServices?.items.length ?? 0,
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.only(top: 10.h),
                 physics: const AlwaysScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
                   if (state.isLadingMore1 &&
                       state.myServices?.items.length == index)
-                    return WLoadingLottie(); else {
+                    return WLoadingLottie();
+                  else {
                     final service = state.myServices?.items[index];
                     return ServiceItem(
                       onPressedFavorite: () {
@@ -113,7 +113,8 @@ class MyServicesBody extends StatelessWidget {
                       enableStatus: true,
                       onTapLiftUp: () {
                         context.read<MyServicesCubit>().liftUpServiceById(
-                            index);
+                          index,
+                        );
                       },
                       onTapDelete: () {
                         WDeleteCupertinoDialog(
@@ -127,7 +128,9 @@ class MyServicesBody extends StatelessWidget {
                       },
                       onTapActivate: () {
                         context.read<MyServicesCubit>().activateServiceById(
-                            service.id, index);
+                          service.id,
+                          index,
+                        );
                       },
                       onTapDeactivate: () {
                         context.read<MyServicesCubit>().deactivateServiceById(

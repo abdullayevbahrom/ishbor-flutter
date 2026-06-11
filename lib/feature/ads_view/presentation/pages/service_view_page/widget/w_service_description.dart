@@ -1,17 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
-import 'package:top_jobs/core/helpers/formatters.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
 import '../../../../../services/data/models/service.dart';
 
 class WServiceDescription extends StatelessWidget {
-  const WServiceDescription({
-    super.key,
-    required this.service,
-  });
+  const WServiceDescription({super.key, required this.service});
 
   final ServiceModel? service;
 
@@ -27,9 +24,10 @@ class WServiceDescription extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            Formatters.translateText(uzText: service?.descriptionUz,
-                ruText: service?.descriptionRu,
-                defaultText: service?.description),
+            service?.description
+                    ?.resolve(context.locale.languageCode)
+                    ?.replaceAll("**", "") ??
+                '',
             textAlign: TextAlign.start,
             style: AppTextStyles.size17Regular,
           ),

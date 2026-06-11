@@ -6,6 +6,6 @@ abstract class NotificationState with _$NotificationState {
     @Default(RequestStatus.initial) RequestStatus status,
     @Default(null) NotificationListResponse? listNotification,
     @Default(null) String? errorText,
-    @Default(false) bool hasNewNotification
+    @Default(false) bool hasNewNotification,
   }) = _NotificationState;
 }

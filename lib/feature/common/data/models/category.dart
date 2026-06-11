@@ -6,11 +6,7 @@ class CategoryTranslation extends Equatable {
   final String locale;
   final String? name;
 
-  CategoryTranslation({
-    required this.id,
-    required this.locale,
-    this.name,
-  });
+  CategoryTranslation({required this.id, required this.locale, this.name});
 
   @override
   List<Object?> get props => [id, locale, name];
@@ -60,8 +56,16 @@ class CategoryModel extends Equatable {
   });
 
   @override
-  List<Object?> get props =>
-      [id, path, level, parent, children, translations, createdAt, updatedAt];
+  List<Object?> get props => [
+    id,
+    path,
+    level,
+    parent,
+    children,
+    translations,
+    createdAt,
+    updatedAt,
+  ];
 
   factory CategoryModel.fromMap(Map<String, dynamic> data) {
     final childrenData = data['children'] as List<dynamic>? ?? [];
@@ -72,24 +76,35 @@ class CategoryModel extends Equatable {
       path: data['path'] as String? ?? '',
       level: data['level'] as int? ?? 0,
       parent: data['parent']?.toString(),
-      parentObj: data['parentObj'] != null
-          ? CategoryModel.fromMap(Map<String, dynamic>.from(data['parentObj']))
-          : null,
-      iconUrls: data['icon'] != null
-          ? data['icon'] is Map<String, dynamic>
-          ? Map<String, dynamic>.from(data['icon'])
-          : null
-          : null,
-      iconSmallUrls: data['icon_small'] != null
-          ? data['icon_small'] is Map<String, dynamic>
-          ? Map<String, dynamic>.from(data['icon_small'])
-          : null
-          : null,
+      parentObj:
+          data['parentObj'] != null
+              ? CategoryModel.fromMap(
+                Map<String, dynamic>.from(data['parentObj']),
+              )
+              : null,
+      iconUrls:
+          data['icon'] != null
+              ? data['icon'] is Map<String, dynamic>
+                  ? Map<String, dynamic>.from(data['icon'])
+                  : null
+              : null,
+      iconSmallUrls:
+          data['icon_small'] != null
+              ? data['icon_small'] is Map<String, dynamic>
+                  ? Map<String, dynamic>.from(data['icon_small'])
+                  : null
+              : null,
       children:
-      childrenData.map((c) => CategoryModel.fromMap(Map<String, dynamic>.from(c))).toList(),
-      translations: translationsData
-          .map((t) => CategoryTranslation.fromJson(Map<String, dynamic>.from(t)))
-          .toList(),
+          childrenData
+              .map((c) => CategoryModel.fromMap(Map<String, dynamic>.from(c)))
+              .toList(),
+      translations:
+          translationsData
+              .map(
+                (t) =>
+                    CategoryTranslation.fromJson(Map<String, dynamic>.from(t)),
+              )
+              .toList(),
       createdAt: parseNullableDateTime(data['created_at']),
       updatedAt: parseNullableDateTime(data['updated_at']),
       currentLocale: data['current_locale'] as String?,
@@ -210,14 +225,20 @@ class CategoryListResponse extends Equatable {
     return CategoryListResponse(
       currentPageNumber: map['current_page_number'] as int,
       numItemsPerPage: map['num_items_per_page'] as int,
-      items: (map['items'] as List<dynamic>)
-          .map((item) => CategoryModel.fromMap(Map<String, dynamic>.from(item)))
-          .toList(),
+      items:
+          (map['items'] as List<dynamic>)
+              .map(
+                (item) =>
+                    CategoryModel.fromMap(Map<String, dynamic>.from(item)),
+              )
+              .toList(),
       totalCount: map['total_count'] as int,
-      paginatorOptions:
-      PaginatorOptions.fromMap(Map<String, dynamic>.from(map['paginator_options'])),
-      customParameters:
-      CustomParameters.fromMap(Map<String, dynamic>.from(map['custom_parameters'])),
+      paginatorOptions: PaginatorOptions.fromMap(
+        Map<String, dynamic>.from(map['paginator_options']),
+      ),
+      customParameters: CustomParameters.fromMap(
+        Map<String, dynamic>.from(map['custom_parameters']),
+      ),
       route: map['route'] as String,
       params: map['params'],
       pageRange: map['page_range'] as int,

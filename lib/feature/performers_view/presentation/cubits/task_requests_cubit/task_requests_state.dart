@@ -9,6 +9,6 @@ abstract class TaskRequestsState with _$TaskRequestsState {
     @Default(RequestStatus.initial) RequestStatus finishTaskSt,
     @Default(null) PaginatedTaskRequestList? listTaskRequest,
     @Default(null) TaskModel? task,
-    @Default(null) TaskRequest? taskRequest
+    @Default(null) TaskRequest? taskRequest,
   }) = _TaskRequestsState;
 }

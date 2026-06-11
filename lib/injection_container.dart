@@ -143,13 +143,11 @@ void init() {
 
   ///Exception listener
   sl.registerLazySingleton(
-        () =>
-        ExceptionListener(
-
-          isDebug: kDebugMode,
-          chatIds: ["1990405913", "3095460", "211490240", "1147507400"],
-          botToken: "7423169472:AAFqBFAgc7mQpR4AHFgwBrOWXkCoWi6sANk",
-        ),
+    () => ExceptionListener(
+      isDebug: kDebugMode,
+      chatIds: ["1990405913", "3095460", "211490240", "1147507400"],
+      botToken: "7423169472:AAFqBFAgc7mQpR4AHFgwBrOWXkCoWi6sANk",
+    ),
   );
 
   ///Routes
@@ -157,7 +155,7 @@ void init() {
 
   ///Dio
   sl.registerLazySingleton<Dio>(
-        () => DioClient(storageService: sl()).provideDio(),
+    () => DioClient(storageService: sl()).provideDio(),
   );
 
   ///Storage
@@ -213,166 +211,158 @@ void initCubits() {
 
 void initRepositories() {
   sl.registerLazySingleton<VacancyRepository>(
-        () => VacancyRepositoryImpl(sl()),
+    () => VacancyRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<LocationInfoRepository>(
-        () => LocationInfoRepositoryImpl(locationInfoDataSource: sl()),
+    () => LocationInfoRepositoryImpl(locationInfoDataSource: sl()),
   );
 
   sl.registerLazySingleton<CategoryRepository>(
-        () => CategoryRepositoryImpl(sl()),
+    () => CategoryRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<CatalogRepository>(
-        () => CatalogRepositoryImpl(sl()),
+    () => CatalogRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<SearchRepository>(
-        () => SearchRepositoryImpl(sl()),
-  );
-  sl.registerLazySingleton<AiRepository>(
-        () => AiRepositoryImpl(sl()),
-  );
+  sl.registerLazySingleton<SearchRepository>(() => SearchRepositoryImpl(sl()));
+  sl.registerLazySingleton<AiRepository>(() => AiRepositoryImpl(sl()));
 
   sl.registerLazySingleton<ServiceRepository>(
-        () => ServiceRepositoryImpl(sl()),
+    () => ServiceRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(sl()));
   sl.registerLazySingleton<NotificationsRepository>(
-        () => NotificationsRepositoryImpl(sl()),
+    () => NotificationsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
   sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(sl()));
 
   sl.registerLazySingleton<FeedBackRepository>(
-        () => FeedBackRepositoryImpl(sl()),
+    () => FeedBackRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<CitiesRepository>(() => CitiesRepositoryImpl(sl()));
   sl.registerLazySingleton<MessagesRepository>(
-        () => MessagesRepositoryImpl(sl()),
+    () => MessagesRepositoryImpl(sl()),
   );
   sl.registerFactory<YandexRepository>(() => YandexRepositoryImpl(sl()));
   sl.registerLazySingleton<ContactClickRepository>(
-        () => ContactClickRepositoryImpl(sl()),
+    () => ContactClickRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<FavoritesRepository>(
-        () => FavoritesRepositoryImpl(sl()),
+    () => FavoritesRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<AdsViewRepository>(
-        () => AdsViewRepositoryImpl(sl()),
+    () => AdsViewRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<PaymentRepository>(
-        () => PaymentRepositoryImpl(sl()),
+    () => PaymentRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton<TaskRequestsRepository>(
-        () => TaskRequestsRepositoryImpl(sl()),
+    () => TaskRequestsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<VacancyRequestsRepository>(
-        () => VacancyRequestsRepositoryImpl(sl()),
+    () => VacancyRequestsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<VacancyFormRepository>(
-        () => VacancyFormRepositoryImpl(sl()),
+    () => VacancyFormRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<MyVacanciesRepository>(
-        () => MyVacanciesRepositoryImpl(sl()),
+    () => MyVacanciesRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton<MyServiceRepository>(
-        () => MyServicesRepositoryImpl(sl()),
+    () => MyServicesRepositoryImpl(sl()),
   );
 
   sl.registerLazySingleton<MyTasksRepository>(
-        () => MyTasksRepositoryImpl(sl()),
+    () => MyTasksRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<ReportsRepository>(
-        () => ReportsRepositoryImpl(sl()),
+    () => ReportsRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<AdsContactRepository>(
-        () => AdsContactRepositoryImpl(sl()),
+    () => AdsContactRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<RealtimeRepository>(
-        () => RealtimeRepositoryImpl(sl()),
+    () => RealtimeRepositoryImpl(sl()),
   );
 }
 
 void initDataSources() {
   sl.registerLazySingleton<VacancyDataSource>(
-        () => VacancyDataSourceImpl(sl()),
+    () => VacancyDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<LocationInfoDataSource>(
-        () => LocationInfoDataSourceImpl(dio: sl()),
+    () => LocationInfoDataSourceImpl(dio: sl()),
   );
   sl.registerLazySingleton<CategoryDataSource>(
-        () => CategoryDataSourceImpl(dio: sl()),
+    () => CategoryDataSourceImpl(dio: sl()),
   );
   sl.registerLazySingleton<CatalogDataSource>(
-        () => CatalogDataSourceImpl(sl()),
+    () => CatalogDataSourceImpl(sl()),
   );
-  sl.registerLazySingleton<SearchDataSource>(
-        () => SearchDataSourceImpl(sl()),
-  );
-  sl.registerLazySingleton<AiDataSource>(
-        () => AiDataSourceImpl(sl()),
-  );
+  sl.registerLazySingleton<SearchDataSource>(() => SearchDataSourceImpl(sl()));
+  sl.registerLazySingleton<AiDataSource>(() => AiDataSourceImpl(sl()));
 
   sl.registerLazySingleton<ServiceDataSource>(
-        () => ServiceDataSourceImpl(sl()),
+    () => ServiceDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<TaskDataSource>(() => TaskDataSourceImpl(sl()));
   sl.registerLazySingleton<NotificationsDataSource>(
-        () => NotificationsDataSourceImpl(sl()),
+    () => NotificationsDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<AuthDatasource>(() => AuthDataSourceImpl(sl()));
 
   sl.registerLazySingleton<UserDataSource>(() => UserDataSourceImpl(sl()));
   sl.registerLazySingleton<FeedBackDataSource>(
-        () => FeedBackDataSourceImpl(sl()),
+    () => FeedBackDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<CitiesDataSource>(() => CitiesDataSourceImpl(sl()));
   sl.registerLazySingleton<MessagesDataSource>(
-        () => MessagesDataSourceImpl(sl()),
+    () => MessagesDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<YandexDataSource>(() => YandexDataSourceImpl(sl()));
   sl.registerLazySingleton<ContactClickDatasource>(
-        () => ContactClickDataSourceImpl(sl()),
+    () => ContactClickDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<FavoritesDataSource>(
-        () => FavoritesDataSourceImpl(sl()),
+    () => FavoritesDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<AdsViewDataSource>(
-        () => AdsViewDataSourceImpl(sl()),
+    () => AdsViewDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<PaymentDataSource>(
-        () => PaymentDataSourceImpl(sl()),
+    () => PaymentDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<TaskRequestDataSource>(
-        () => TaskRequestDataSourceImpl(sl()),
+    () => TaskRequestDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<VacancyRequestDataSource>(
-        () => VacancyRequestDataSourceImpl(sl()),
+    () => VacancyRequestDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<VacancyFormDataSource>(
-        () => VacancyFormDataSourceImpl(sl()),
+    () => VacancyFormDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<MyVacanciesDataSource>(
-        () => MyVacanciesDataSourceImpl(sl()),
+    () => MyVacanciesDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<MyServicesDataSource>(
-        () => MyServicesDataSourceImpl(sl()),
+    () => MyServicesDataSourceImpl(sl()),
   );
 
   sl.registerLazySingleton<MyTasksDataSource>(
-        () => MyTasksDataSourceImpl(sl()),
+    () => MyTasksDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<ReportsDataSource>(
-        () => ReportsDataSourceImpl(sl()),
+    () => ReportsDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<AdsContactDataSource>(
-        () => AdsContactDataSourceImpl(sl()),
+    () => AdsContactDataSourceImpl(sl()),
   );
   sl.registerLazySingleton<RealtimeDataSource>(
-        () => RealtimeDataSourceImpl(sl()),
+    () => RealtimeDataSourceImpl(sl()),
   );
 }

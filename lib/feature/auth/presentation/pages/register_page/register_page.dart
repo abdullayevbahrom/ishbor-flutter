@@ -91,7 +91,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                               AppUtils.hSizedBox8,
-                              AppPhoneNumberTextFormField(phoneNumber: phoneController),
+                              AppPhoneNumberTextFormField(
+                                phoneNumber: phoneController,
+                              ),
                               AppUtils.hSizedBox16,
                               Text(
                                 LocaleKeys.name.tr(),
@@ -206,7 +208,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                 child: AppButton(
                                   onPressed: () {
                                     if (isChecked) {
-                                      if (_registerKey.currentState?.validate() ??
+                                      if (_registerKey.currentState
+                                              ?.validate() ??
                                           false) {
                                         // context.read<AuthCubit>().register(registerModel: RegisterModel(
                                         //   phoneNumber: "+998"+phoneController.text.trim().replaceAll(" ", ""),

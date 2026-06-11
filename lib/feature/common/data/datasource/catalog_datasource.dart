@@ -13,12 +13,11 @@ abstract class CatalogDataSource {
     int? size,
   });
 
-  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id});
-
-  Future<Either<Failure, List<TagModel>>> fetchTags({
-    int? page,
-    int? size,
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({
+    required Object id,
   });
+
+  Future<Either<Failure, List<TagModel>>> fetchTags({int? page, int? size});
 
   Future<Either<Failure, TagModel>> fetchTagById({required Object id});
 
@@ -60,11 +59,15 @@ class CatalogDataSourceImpl extends CatalogDataSource {
   }
 
   @override
-  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id}) async {
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({
+    required Object id,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchCategory(id));
       if (response.statusCode == 200) {
-        return Right(CategoryModel.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          CategoryModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -90,8 +93,13 @@ class CatalogDataSourceImpl extends CatalogDataSource {
         },
       );
       if (response.statusCode == 200) {
-        final List items = response.data['items'] ?? response.data['data'] ?? [];
-        return Right(items.map((e) => TagModel.fromMap(Map<String, dynamic>.from(e))).toList());
+        final List items =
+            response.data['items'] ?? response.data['data'] ?? [];
+        return Right(
+          items
+              .map((e) => TagModel.fromMap(Map<String, dynamic>.from(e)))
+              .toList(),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -108,7 +116,11 @@ class CatalogDataSourceImpl extends CatalogDataSource {
     try {
       final response = await _dio.get(ApiConstants.fetchTag(id));
       if (response.statusCode == 200) {
-        return Right(TagModel.fromMap(Map<String, dynamic>.from(response.data['data'] ?? response.data)));
+        return Right(
+          TagModel.fromMap(
+            Map<String, dynamic>.from(response.data['data'] ?? response.data),
+          ),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -134,8 +146,13 @@ class CatalogDataSourceImpl extends CatalogDataSource {
         },
       );
       if (response.statusCode == 200) {
-        final List items = response.data['items'] ?? response.data['data'] ?? [];
-        return Right(items.map((e) => ThirdPartyAd.fromMap(Map<String, dynamic>.from(e))).toList());
+        final List items =
+            response.data['items'] ?? response.data['data'] ?? [];
+        return Right(
+          items
+              .map((e) => ThirdPartyAd.fromMap(Map<String, dynamic>.from(e)))
+              .toList(),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

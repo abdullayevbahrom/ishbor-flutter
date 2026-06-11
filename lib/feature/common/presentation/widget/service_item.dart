@@ -195,7 +195,7 @@ class ServiceItem extends StatelessWidget {
                           service.city ?? '',
                           style: AppTextStyles.size13Regular.copyWith(
                             color: AppColors.c2E3A59,
-                            fontFamily: AppLocaleKeys.fontSFProRegular
+                            fontFamily: AppLocaleKeys.fontSFProRegular,
                           ),
                         ),
                       ],
@@ -254,7 +254,7 @@ class ServiceItem extends StatelessWidget {
                               ),
                             ];
                           },
-                          child:SvgPicture.asset(AppSvg.icFilterGrey),
+                          child: SvgPicture.asset(AppSvg.icFilterGrey),
                         ),
                         /*
                         WCountSeeCountClick(

@@ -9,7 +9,7 @@ abstract class CreateServiceState with _$CreateServiceState {
     @Default(false) bool isNegotiable,
     @Default(false) bool isUZS,
     @Default([]) List<File> images,
-    @Default(0) int category,
-    @Default(null) GeocodeResponse? location
+    @Default('') String category,
+    @Default(null) GeocodeResponse? location,
   }) = _CreateServiceState;
 }

@@ -51,8 +51,12 @@ class _VacancyFormSalaryFormState extends State<VacancyFormSalaryForm> {
   }
 
   void _removeListeners() {
-    widget.formControllers.minSalaryController.removeListener(_minSalaryListener);
-    widget.formControllers.maxSalaryController.removeListener(_maxSalaryListener);
+    widget.formControllers.minSalaryController.removeListener(
+      _minSalaryListener,
+    );
+    widget.formControllers.maxSalaryController.removeListener(
+      _maxSalaryListener,
+    );
   }
 
   void _salaryListener(TextEditingController controller) {

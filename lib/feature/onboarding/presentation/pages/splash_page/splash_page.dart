@@ -76,12 +76,11 @@ class _SplashPageState extends State<SplashPage> {
           animationType: CircleSplashAnimationType.bottomRight,
           circleColor: AppColors.cFF9914,
         ),
-        child: Image.asset(AppPng.imgNewSplash,height: 110.h,),
+        child: Image.asset(AppPng.imgNewSplash, height: 110.h),
       ),
     );
   }
 }
-
 
 /*
 Stack(

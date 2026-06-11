@@ -12,13 +12,13 @@ class WAnimatedAddFb extends StatelessWidget {
   static const _curve = Curves.easeInOut;
   @override
   Widget build(BuildContext context) {
-    return  Positioned(
+    return Positioned(
       right: 21,
       bottom: 24,
       child: IgnorePointer(
         ignoring: false,
         child: GestureDetector(
-          onTap:  onTapFb,
+          onTap: onTapFb,
           behavior: HitTestBehavior.translucent,
           child: AnimatedContainer(
             duration: _dur,
@@ -26,10 +26,7 @@ class WAnimatedAddFb extends StatelessWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color:
-              open
-                  ? AppColors.c2E3A59
-                  : AppColors.cFFFFFF,
+              color: open ? AppColors.c2E3A59 : AppColors.cFFFFFF,
               shape: BoxShape.circle,
               border: Border.all(
                 color: Colors.black.newWithOpacity(.06),
@@ -40,8 +37,7 @@ class WAnimatedAddFb extends StatelessWidget {
                   blurRadius: 40,
                   spreadRadius: 0,
                   offset: const Offset(0, 5),
-                  color: AppColors.c000000
-                      .newWithOpacity(.1),
+                  color: AppColors.c000000.newWithOpacity(.1),
                 ),
               ],
             ),
@@ -52,10 +48,7 @@ class WAnimatedAddFb extends StatelessWidget {
                   Icons.add,
                   key: ValueKey("add menu "),
                   size: 32,
-                  color:
-                  open
-                      ? AppColors.cFFFFFF
-                      : AppColors.c2E3A59,
+                  color: open ? AppColors.cFFFFFF : AppColors.c2E3A59,
                 ),
               ),
             ),

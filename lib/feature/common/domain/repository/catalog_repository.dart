@@ -4,10 +4,7 @@ import '../../../../models/tag.dart';
 import '../../../../models/third_party_ad.dart';
 
 abstract class CatalogRepository {
-  Future<Either<Failure, List<TagModel>>> fetchTags({
-    int? page,
-    int? size,
-  });
+  Future<Either<Failure, List<TagModel>>> fetchTags({int? page, int? size});
 
   Future<Either<Failure, TagModel>> fetchTagById({required Object id});
 

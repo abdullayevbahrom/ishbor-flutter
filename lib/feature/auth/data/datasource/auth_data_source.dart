@@ -26,9 +26,7 @@ abstract class AuthDatasource {
     required SmsRegistrationParams params,
   });
 
-  Future<Either<Failure, AuthSuccess>> refresh({
-    required String refreshToken,
-  });
+  Future<Either<Failure, AuthSuccess>> refresh({required String refreshToken});
 
   Future<Either<Failure, void>> logout({required String refreshToken});
 }
@@ -151,10 +149,7 @@ class AuthDataSourceImpl extends AuthDatasource {
     try {
       final response = await _dio.post(
         ApiConstants.authVerifyCode,
-        data: {
-          'phone_number': checkModel.name,
-          'code': checkModel.password,
-        },
+        data: {'phone_number': checkModel.name, 'code': checkModel.password},
       );
 
       if (response.statusCode == 200) {
@@ -233,12 +228,12 @@ class AuthDataSourceImpl extends AuthDatasource {
 
   String _messageFromResponse(dynamic responseData) {
     if (responseData is Map<String, dynamic>) {
-      final firstValue = responseData.values.isNotEmpty ? responseData.values.first : 'Unknown error';
-      return (
-        responseData['message'] ??
-        responseData['error'] ??
-        firstValue
-      ).toString();
+      final firstValue =
+          responseData.values.isNotEmpty
+              ? responseData.values.first
+              : 'Unknown error';
+      return (responseData['message'] ?? responseData['error'] ?? firstValue)
+          .toString();
     }
 
     return responseData?.toString() ?? 'Unknown error';

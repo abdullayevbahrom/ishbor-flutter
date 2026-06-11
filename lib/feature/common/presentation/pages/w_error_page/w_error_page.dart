@@ -59,7 +59,7 @@ class WErrorPage extends StatelessWidget {
                 color: AppColors.cFFFFFF,
               ),
               color: AppColors.c2E3A59,
-            ), 
+            ),
             9.verticalSpace,
             AppButton(
               onPressed: () {

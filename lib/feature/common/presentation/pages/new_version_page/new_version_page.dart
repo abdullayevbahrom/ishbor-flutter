@@ -24,7 +24,7 @@ class NewVersionPage extends StatelessWidget {
           Icon(CupertinoIcons.rocket_fill, color: AppColors.cFF9914, size: 180),
           50.verticalSpace,
           Text(
-           LocaleKeys.updateAvailableTitle.tr(),
+            LocaleKeys.updateAvailableTitle.tr(),
             style: AppTextStyles.size24Bold.copyWith(color: AppColors.c2E3A59),
           ),
           20.verticalSpace,

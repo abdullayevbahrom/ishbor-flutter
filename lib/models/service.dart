@@ -34,30 +34,46 @@ class Service extends AdPricable {
   });
 
   @override
-  List<Object?> get props => [
-        ...super.props,
-        address,
-      ];
+  List<Object?> get props => [...super.props, address];
 
   static Service fromMap(Map<String, dynamic> data) => Service(
-        id: data['id']?.toString() ?? '',
-        status: data['status']?.toString() ?? '',
-        title: LocalizedText.fromJson(data['title']),
-        createdAt: parseRequiredDateTime(data['created_at']),
-        description: data['description'] != null ? LocalizedText.fromJson(data['description']) : null,
-        shortDescription: data['short_description'] != null ? LocalizedText.fromJson(data['short_description']) : null,
-        customer: AdCustomer.fromJson(data['customer'] ?? data['user'] ?? data['owner']),
-        phoneNumber: data['phone_number']?.toString(),
-        performer: data['performer'] != null ? User.fromMap(data['performer']) : null,
-        viewCount: data['view_count'] is num ? (data['view_count'] as num).toInt() : null,
-        city: data['city']?.toString(),
-        moderatorNote: data['moderator_note']?.toString(),
-        categories: (data['categories'] as List?)?.map((cat) => CategoryModel.fromMap(cat)).toList() ?? [],
-        address: data['address'] != null ? AddressModel.fromJson(data['address']) : null,
-        images: (data['images'] as List?)?.map((img) => AppImage.fromMap(Map.from(img))).toList() ?? [],
-        negotiable: data['negotiable'] == true,
-        price: (data['price'] as num?)?.toDouble(),
-        isFavorite: data['is_favorite'] == true,
-        hasUserRequest: data['has_user_request'] == true,
-      );
+    id: data['id']?.toString() ?? '',
+    status: data['status']?.toString() ?? '',
+    title: LocalizedText.fromJson(data['title']),
+    createdAt: parseRequiredDateTime(data['created_at']),
+    description:
+        data['description'] != null
+            ? LocalizedText.fromJson(data['description'])
+            : null,
+    shortDescription:
+        data['short_description'] != null
+            ? LocalizedText.fromJson(data['short_description'])
+            : null,
+    customer: AdCustomer.fromJson(
+      data['customer'] ?? data['user'] ?? data['owner'],
+    ),
+    phoneNumber: data['phone_number']?.toString(),
+    performer:
+        data['performer'] != null ? User.fromMap(data['performer']) : null,
+    viewCount:
+        data['view_count'] is num ? (data['view_count'] as num).toInt() : null,
+    city: data['city']?.toString(),
+    moderatorNote: data['moderator_note']?.toString(),
+    categories:
+        (data['categories'] as List?)
+            ?.map((cat) => CategoryModel.fromMap(cat))
+            .toList() ??
+        [],
+    address:
+        data['address'] != null ? AddressModel.fromJson(data['address']) : null,
+    images:
+        (data['images'] as List?)
+            ?.map((img) => AppImage.fromMap(Map.from(img)))
+            .toList() ??
+        [],
+    negotiable: data['negotiable'] == true,
+    price: (data['price'] as num?)?.toDouble(),
+    isFavorite: data['is_favorite'] == true,
+    hasUserRequest: data['has_user_request'] == true,
+  );
 }

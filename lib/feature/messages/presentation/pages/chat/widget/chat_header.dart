@@ -40,10 +40,10 @@ class ChatHeader extends StatelessWidget {
               children: [
                 sender?.avatar?.urls['original'] != null
                     ? AppCachedNetworkImage(
-                  height: 50.r,
-                  radius: 25.sp,
-                  imageUrl: sender?.avatar?.urls['original'],
-                )
+                      height: 50.r,
+                      radius: 25.sp,
+                      imageUrl: sender?.avatar?.urls['original'],
+                    )
                     : WDefaultUserAvatar(height: 50.r),
                 AppUtils.wSizedBox16,
                 Flexible(
@@ -121,10 +121,7 @@ class ChatHeader extends StatelessWidget {
                           color: AppColors.cE0E5EB,
                           borderRadius: BorderRadius.circular(6.r),
                         ),
-                        child: Icon(
-                          Icons.more_vert,
-                          color: AppColors.cBDC0C6,
-                        ),
+                        child: Icon(Icons.more_vert, color: AppColors.cBDC0C6),
                       ),
                     ),
                   ),
@@ -132,11 +129,7 @@ class ChatHeader extends StatelessWidget {
               ],
             ).paddingSymmetric(horizontal: 16.w, vertical: 14.h),
           ),
-          AppDivider(
-            width: 100.sw,
-            height: 2.h,
-            color: AppColors.cE0E5EB,
-          ),
+          AppDivider(width: 100.sw, height: 2.h, color: AppColors.cE0E5EB),
         ],
       ),
     ).paddingOnly(bottom: 10.h);

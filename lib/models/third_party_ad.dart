@@ -6,12 +6,7 @@ class ThirdPartyAd extends Equatable {
   final String? url;
   final String? imageUrl;
 
-  const ThirdPartyAd({
-    required this.id,
-    this.title,
-    this.url,
-    this.imageUrl,
-  });
+  const ThirdPartyAd({required this.id, this.title, this.url, this.imageUrl});
 
   @override
   List<Object?> get props => [id, title, url, imageUrl];

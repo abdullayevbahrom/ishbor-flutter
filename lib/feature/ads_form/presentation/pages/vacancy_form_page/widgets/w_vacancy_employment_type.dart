@@ -121,16 +121,15 @@ class _WVacancyEmploymentTypeState extends State<WVacancyEmploymentType> {
                   ),
                   Expanded(
                     child: AppTextFormField(
-
                       hintText: LocaleKeys.to.tr(),
                       controller: widget.endTime,
                       keyBoardType: TextInputType.none,
-                      onTap: () async{
+                      onTap: () async {
                         final result = await WCupertinoTimePicker(
                           initialTime:
-                          widget.endTime.text.isEmpty
-                              ? "18:00"
-                              : widget.endTime.text,
+                              widget.endTime.text.isEmpty
+                                  ? "18:00"
+                                  : widget.endTime.text,
                         ).show(context);
 
                         if (result != null) {

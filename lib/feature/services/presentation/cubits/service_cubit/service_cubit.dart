@@ -30,7 +30,6 @@ class ServiceCubit extends Cubit<ServiceState> {
   void resetFilter() {
     _filters = QueryParams.empty();
     reset();
-
   }
 
   void updateFilter(QueryParams queryParams) {
@@ -41,7 +40,6 @@ class ServiceCubit extends Cubit<ServiceState> {
 
   void reset() {
     pageNumber = 1;
-
   }
 
   void initialize() {
@@ -59,7 +57,10 @@ class ServiceCubit extends Cubit<ServiceState> {
       navigatorKey.currentContext?.read<MainCubit>().updateOpen(false);
     }
 
-    if (navigatorKey.currentContext?.read<MainCubit>().state.isNotificationMenuOpen ??
+    if (navigatorKey.currentContext
+            ?.read<MainCubit>()
+            .state
+            .isNotificationMenuOpen ??
         false) {
       navigatorKey.currentContext?.read<MainCubit>().updateNtfMenu(false);
     }
@@ -156,9 +157,6 @@ class ServiceCubit extends Cubit<ServiceState> {
       serviceId: state.listService!.items[index].id,
     );
 
-    response.fold(
-      (l) {},
-      (r) {},
-    );
+    response.fold((l) {}, (r) {});
   }
 }

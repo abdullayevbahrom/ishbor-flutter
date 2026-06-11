@@ -95,7 +95,7 @@ class BottomMenu extends StatelessWidget {
           ).paddingOnly(top: 8.h, bottom: 16.h),
           AppButton(
             onPressed: () {
-              AppLauncher().launchTelegram("ishboruz_elon",);
+              AppLauncher().launchTelegram("ishboruz_elon");
             },
             text: LocaleKeys.contactSupport.tr(),
             color: AppColors.cF7F9FC,

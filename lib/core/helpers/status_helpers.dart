@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 sealed class StatusHelpers {
- static Color getColor(String status) {
+  static Color getColor(String status) {
     switch (status) {
       case 'pending':
         return Color(0xff595f54);

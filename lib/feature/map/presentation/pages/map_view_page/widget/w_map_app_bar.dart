@@ -120,7 +120,6 @@ class WCommonCategoriesList extends StatefulWidget {
       backgroundColor: AppColors.cFFFFFF,
       isScrollControlled: true,
 
-
       builder: (context) => this,
     );
   }
@@ -159,11 +158,13 @@ class _WCommonCategoriesListState extends State<WCommonCategoriesList> {
                       shrinkWrap: true,
                       scrollDirection: Axis.vertical,
                       padding: EdgeInsets.symmetric(vertical: 16.h),
-                      controller:scrollController,
+                      controller: scrollController,
                       itemBuilder: (context, index) {
                         return state.isLoadingMore &&
                                 index == state.categories?.items.length
-                            ? Center(child: CircularProgressIndicator.adaptive())
+                            ? Center(
+                              child: CircularProgressIndicator.adaptive(),
+                            )
                             : WCheckedBoxListTile(
                               value: categories.contains(
                                 context

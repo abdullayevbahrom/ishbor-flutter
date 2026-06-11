@@ -1,17 +1,10 @@
-
 class TransactionStatus {
   final bool success;
   final Status status;
 
-  const TransactionStatus({
-    required this.success,
-    required this.status,
-  });
+  const TransactionStatus({required this.success, required this.status});
 
-  TransactionStatus copyWith({
-    bool? success,
-    Status? status,
-  }) {
+  TransactionStatus copyWith({bool? success, Status? status}) {
     return TransactionStatus(
       success: success ?? this.success,
       status: status ?? this.status,
@@ -36,10 +29,10 @@ class TransactionStatus {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-          other is TransactionStatus &&
-              runtimeType == other.runtimeType &&
-              success == other.success &&
-              status == other.status;
+      other is TransactionStatus &&
+          runtimeType == other.runtimeType &&
+          success == other.success &&
+          status == other.status;
 
   @override
   int get hashCode => Object.hash(success, status);

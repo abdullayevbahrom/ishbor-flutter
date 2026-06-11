@@ -28,7 +28,9 @@ abstract class MessagesRepository {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, MessageRecord>> getRecordDetail({required Object recordId});
+  Future<Either<Failure, MessageRecord>> getRecordDetail({
+    required Object recordId,
+  });
 
   Future<Either<Failure, MessageRecord>> sendMessage({
     required String receiverId,

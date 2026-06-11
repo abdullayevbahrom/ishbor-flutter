@@ -116,7 +116,7 @@ class TaskModel {
     required this.description,
     required this.shortDescription,
     required this.customer,
-     this.phoneNumber,
+    this.phoneNumber,
     this.performer,
     required this.viewCount,
     this.city,
@@ -278,7 +278,7 @@ class TaskModel {
       isNeedLiftUp: json['is_need_lift_up'],
       countClick: json['click_count'],
       isFavorite: json['is_favorite'],
-      hasUserRequest: json['has_user_request']
+      hasUserRequest: json['has_user_request'],
     );
   }
 

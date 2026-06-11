@@ -9,15 +9,19 @@ part 'notification_state.dart';
 part 'notification_cubit.freezed.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
-  NotificationCubit(this._notificationsRepository) : super(const NotificationState());
+  NotificationCubit(this._notificationsRepository)
+    : super(const NotificationState());
   final NotificationsRepository _notificationsRepository;
 
   Future<void> fetchNotifications({String? content}) async {
     emit(state.copyWith(status: RequestStatus.loading));
 
-    final response = content != null
-        ? await _notificationsRepository.fetchNotificationsByContent(content: content)
-        : await _notificationsRepository.fetchNotifications();
+    final response =
+        content != null
+            ? await _notificationsRepository.fetchNotificationsByContent(
+              content: content,
+            )
+            : await _notificationsRepository.fetchNotifications();
 
     response.fold(
       (l) {
@@ -31,7 +35,9 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> makeNotificationRead(int index) async {
-    if (state.listNotification == null || index < 0 || index >= state.listNotification!.items.length) {
+    if (state.listNotification == null ||
+        index < 0 ||
+        index >= state.listNotification!.items.length) {
       return;
     }
     final response = await _notificationsRepository.makeNotificationRead(
@@ -53,12 +59,14 @@ class NotificationCubit extends Cubit<NotificationState> {
   }
 
   Future<void> makeNotificationReadByContent(String content) async {
-    final response = await _notificationsRepository.makeNotificationReadByContent(
-      content: content,
-    );
+    final response = await _notificationsRepository
+        .makeNotificationReadByContent(content: content);
     response.fold((l) {}, (r) {
-      final List<AppNotification> oldItems = state.listNotification?.items.map((e) {
-            return e.copyWith(read: true); // This is approximate if filter is not clear
+      final List<AppNotification> oldItems =
+          state.listNotification?.items.map((e) {
+            return e.copyWith(
+              read: true,
+            ); // This is approximate if filter is not clear
           }).toList() ??
           [];
 

@@ -49,35 +49,60 @@ class Task extends AdPricable {
 
   @override
   List<Object?> get props => [
-        ...super.props,
-        startsAt,
-        expiresAt,
-        addresses,
-        paymentMethods,
-        remote,
-        secureDeal,
-        compensation,
-      ];
+    ...super.props,
+    startsAt,
+    expiresAt,
+    addresses,
+    paymentMethods,
+    remote,
+    secureDeal,
+    compensation,
+  ];
 
   static Task fromMap(Map<String, dynamic> data) {
     return Task(
       id: data['id']?.toString() ?? '',
       status: data['status']?.toString() ?? '',
       title: LocalizedText.fromJson(data['title']),
-      description: data['description'] != null ? LocalizedText.fromJson(data['description']) : null,
-      shortDescription: data['short_description'] != null ? LocalizedText.fromJson(data['short_description']) : null,
-      categories: (data['categories'] as List?)?.map((cat) => CategoryModel.fromMap(cat)).toList() ?? [],
+      description:
+          data['description'] != null
+              ? LocalizedText.fromJson(data['description'])
+              : null,
+      shortDescription:
+          data['short_description'] != null
+              ? LocalizedText.fromJson(data['short_description'])
+              : null,
+      categories:
+          (data['categories'] as List?)
+              ?.map((cat) => CategoryModel.fromMap(cat))
+              .toList() ??
+          [],
       startsAt: parseNullableDateTime(data['starts_at']),
       expiresAt: parseNullableDateTime(data['expires_at']),
-      addresses: (data['addresses'] as List?)?.map((address) => AddressModel.fromJson(address)).toList() ?? [],
-      customer: AdCustomer.fromJson(data['customer'] ?? data['user'] ?? data['owner']),
+      addresses:
+          (data['addresses'] as List?)
+              ?.map((address) => AddressModel.fromJson(address))
+              .toList() ??
+          [],
+      customer: AdCustomer.fromJson(
+        data['customer'] ?? data['user'] ?? data['owner'],
+      ),
       phoneNumber: data['phone_number']?.toString(),
-      performer: data['performer'] != null ? User.fromMap(data['performer']) : null,
+      performer:
+          data['performer'] != null ? User.fromMap(data['performer']) : null,
       price: (data['price'] as num?)?.toDouble(),
-      viewCount: data['view_count'] is num ? (data['view_count'] as num).toInt() : null,
+      viewCount:
+          data['view_count'] is num
+              ? (data['view_count'] as num).toInt()
+              : null,
       city: data['city']?.toString(),
-      images: (data['images'] as List?)?.map((img) => AppImage.fromMap(Map.from(img))).toList() ?? [],
-      paymentMethods: (data['payment_methods'] as List?)?.map((e) => e.toString()).toList(),
+      images:
+          (data['images'] as List?)
+              ?.map((img) => AppImage.fromMap(Map.from(img)))
+              .toList() ??
+          [],
+      paymentMethods:
+          (data['payment_methods'] as List?)?.map((e) => e.toString()).toList(),
       negotiable: data['negotiable'] == true,
       remote: data['remote'] == true,
       secureDeal: data['secure_deal'] == true,

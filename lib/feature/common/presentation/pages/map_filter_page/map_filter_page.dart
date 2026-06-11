@@ -185,21 +185,22 @@ class _MapFilterPageState extends State<MapFilterPage> {
                                       lng: city?.coords.lng ?? 69.240562,
                                       distance: distance,
                                       categories:
-                                      categories
-                                          .map((category) => category.id)
-                                          .toList(),
+                                          categories
+                                              .map((category) => category.id)
+                                              .toList(),
                                     ),
                                   );
-                                }if (widget.type == 'task') {
+                                }
+                                if (widget.type == 'task') {
                                   cubit.fetchTaskGeo(
                                     LocationFilterModel(
                                       lat: city?.coords.lat ?? 41.311081,
                                       lng: city?.coords.lng ?? 69.240562,
                                       distance: distance,
                                       categories:
-                                      categories
-                                          .map((category) => category.id)
-                                          .toList(),
+                                          categories
+                                              .map((category) => category.id)
+                                              .toList(),
                                     ),
                                   );
                                 }
@@ -218,17 +219,13 @@ class _MapFilterPageState extends State<MapFilterPage> {
                             Image.asset(AppPng.map),
                           ],
                         ).paddingSymmetric(horizontal: 16.w),
-                       const Spacer(),
+                        const Spacer(),
                         SizedBox(
                           width: MediaQuery.of(context).size.width,
                           child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              color: AppColors.cFF9914,
-                            ),
+                            decoration: BoxDecoration(color: AppColors.cFF9914),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                  vertical: 32.h
-                              ),
+                              padding: EdgeInsets.symmetric(vertical: 32.h),
                               child: Center(
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(8.r),

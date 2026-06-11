@@ -65,7 +65,7 @@ class WPaymentTypes extends StatelessWidget {
                       showErrorDialog(
                         title: LocaleKeys.paymentMethodUnavailable.tr(),
                         body: LocaleKeys.thisUnavailableTechnicalMaintance.tr(),
-                        lottiePath: AppLottie.warning
+                        lottiePath: AppLottie.warning,
                       );
                     }
                   },
@@ -76,9 +76,9 @@ class WPaymentTypes extends StatelessWidget {
             ),
             if (field.hasError)
               Text(
-               LocaleKeys.selectPaymentType.tr(),
+                LocaleKeys.selectPaymentType.tr(),
                 style: Theme.of(context).inputDecorationTheme.errorStyle,
-              ).paddingOnly(top: 5.h, left:16.w),
+              ).paddingOnly(top: 5.h, left: 16.w),
           ],
         ).paddingSymmetric(horizontal: 16.w);
       },
@@ -106,7 +106,10 @@ class WPaymentTypeItem extends StatelessWidget {
       child: Ink(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16.r),
-          color: isActive ? AppColors.cFF9914.newWithOpacity(.3) : AppColors.cF7F9FC,
+          color:
+              isActive
+                  ? AppColors.cFF9914.newWithOpacity(.3)
+                  : AppColors.cF7F9FC,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

@@ -19,7 +19,10 @@ class VacancySuggestedSalary extends StatelessWidget {
     required this.salaryInInterview,
     required this.onTapSalary,
     required this.onPressedSuffixIcon,
-    required this.currencyValue, this.salaryMinKey, this.salaryMaxKey, this.skillsKey,
+    required this.currencyValue,
+    this.salaryMinKey,
+    this.salaryMaxKey,
+    this.skillsKey,
   });
 
   final TextEditingController maxSalaryController;
@@ -33,7 +36,6 @@ class VacancySuggestedSalary extends StatelessWidget {
   final Key? salaryMinKey;
   final Key? salaryMaxKey;
   final Key? skillsKey;
-
 
   @override
   Widget build(BuildContext context) {
@@ -71,11 +73,8 @@ class VacancySuggestedSalary extends StatelessWidget {
                     controller: minSalaryController,
                     keyBoardType: TextInputType.number,
                     onChanged: (value) {
-                      minSalaryController.text = Formatters.moneyFormat(
-                        value,
-                      );
+                      minSalaryController.text = Formatters.moneyFormat(value);
                       onPressedSuffixIcon();
-
                     },
                     formatters: [FilteringTextInputFormatter.digitsOnly],
                     suffixIcon: SalarySuffixIcon(
@@ -83,9 +82,7 @@ class VacancySuggestedSalary extends StatelessWidget {
                       currencyValue: currencyValue,
                     ),
                     validator: (value) {
-                      return ValidatorHelpers.validateField(
-                        value: value!,
-                      );
+                      return ValidatorHelpers.validateField(value: value!);
                     },
                   ),
                   AppUtils.hSizedBox4,
@@ -103,16 +100,11 @@ class VacancySuggestedSalary extends StatelessWidget {
                       currencyValue: currencyValue,
                     ),
                     onChanged: (value) {
-                      maxSalaryController.text = Formatters.moneyFormat(
-                        value,
-                      );
+                      maxSalaryController.text = Formatters.moneyFormat(value);
                       onPressedSuffixIcon();
-
                     },
                     validator: (value) {
-                      return ValidatorHelpers.validateField(
-                        value: value!,
-                      );
+                      return ValidatorHelpers.validateField(value: value!);
                     },
                   ),
                 ],
@@ -127,7 +119,6 @@ class VacancySuggestedSalary extends StatelessWidget {
             keyBoardType: TextInputType.text,
             title: LocaleKeys.keySkills.tr(),
             hintText: LocaleKeys.enterSkills.tr(),
-
           ),
           AppUtils.hSizedBox8,
           Text(

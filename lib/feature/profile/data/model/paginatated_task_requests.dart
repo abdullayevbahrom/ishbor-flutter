@@ -1,4 +1,3 @@
-
 import 'package:top_jobs/models/task_request.dart';
 
 class PaginatedTaskResponse {

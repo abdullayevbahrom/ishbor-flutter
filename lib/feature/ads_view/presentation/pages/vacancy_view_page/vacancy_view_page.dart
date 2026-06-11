@@ -123,9 +123,12 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
               WAdsViewTitle(
                 vacancy: vacancy,
                 title: Formatters.translateText(
-                  uzText: vacancy?.title,
-                  ruText: vacancy?.titleUz,
-                  defaultText: vacancy?.title,
+                  uzText: vacancy == null ? null : vacancy.title.uz,
+                  ruText: vacancy == null ? null : vacancy.title.ru,
+                  defaultText:
+                      vacancy == null
+                          ? null
+                          : vacancy.title.resolve(context.locale.languageCode),
                 ),
                 createdAt: vacancy?.createdAt ?? DateTime.now(),
                 categories: vacancy?.categories,

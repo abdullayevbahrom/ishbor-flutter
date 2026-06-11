@@ -54,10 +54,10 @@ class AppliedVacanciesBody extends StatelessWidget {
         itemBuilder: (context, index) {
           final vacancy = state.myAppliedVacancies?.items[index];
           return VacancyItem(
-              onPressedFavorite: () {
-
-              },
-              isFilterAvailable: true, vacancy: vacancy!);
+            onPressedFavorite: () {},
+            isFilterAvailable: true,
+            vacancy: vacancy!,
+          );
         },
       ),
     );

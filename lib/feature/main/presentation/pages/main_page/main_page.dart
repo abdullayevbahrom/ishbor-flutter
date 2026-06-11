@@ -126,7 +126,7 @@ class _MainPageState extends State<MainPage>
                     return Container(
                       color: AppColors.cFFFFFF,
                       child: SafeArea(
-                        bottom:false,
+                        bottom: false,
                         child: Stack(
                           children: [
                             Scaffold(
@@ -286,7 +286,7 @@ class _MainPageState extends State<MainPage>
                                     BottomNavigationBarItem(
                                       icon: Badge(
                                         isLabelVisible:
-                                        messageState.hasUnreadMessage,
+                                            messageState.hasUnreadMessage,
                                         child: SvgPicture.asset(
                                           AppIcons.icMessage,
                                           height: 23.r,
@@ -294,7 +294,7 @@ class _MainPageState extends State<MainPage>
                                       ).paddingOnly(top: 7.h),
                                       activeIcon: Badge(
                                         isLabelVisible:
-                                        messageState.hasUnreadMessage,
+                                            messageState.hasUnreadMessage,
                                         padding: EdgeInsetsGeometry.only(
                                           bottom: 5,
                                           left: 5,
@@ -387,8 +387,8 @@ class _WNotificationsListState extends State<WNotificationsList> {
                 // ),
                 16.verticalSpace,
 
-                if (state.status.isError())Center(
-                  child: Text(state.errorText ?? ''),),
+                if (state.status.isError())
+                  Center(child: Text(state.errorText ?? '')),
                 if (state.status.isLoading())
                   Expanded(
                     child: Skeletonizer(
@@ -400,7 +400,7 @@ class _WNotificationsListState extends State<WNotificationsList> {
                         scrollDirection: Axis.vertical,
                         physics: const AlwaysScrollableScrollPhysics(),
                         keyboardDismissBehavior:
-                        ScrollViewKeyboardDismissBehavior.onDrag,
+                            ScrollViewKeyboardDismissBehavior.onDrag,
                         itemBuilder: (context, index) {
                           return Container(
                             height: 50,
@@ -420,7 +420,7 @@ class _WNotificationsListState extends State<WNotificationsList> {
                       scrollDirection: Axis.vertical,
                       physics: const AlwaysScrollableScrollPhysics(),
                       keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
+                          ScrollViewKeyboardDismissBehavior.onDrag,
                       itemBuilder: (context, index) {
                         return NotificationItem(
                           makeRead: () {

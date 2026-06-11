@@ -30,7 +30,7 @@ class UserCubit extends Cubit<UserState> {
     final token = await sl<StorageService>().fetchToken();
     final expireDate = await sl<StorageService>().getExpireDate();
 
-    if (token != null && expireDate!=null) {
+    if (token != null && expireDate != null) {
       final difference = expireDate.difference(
         DateTime.now().add(const Duration(hours: 5)),
       );

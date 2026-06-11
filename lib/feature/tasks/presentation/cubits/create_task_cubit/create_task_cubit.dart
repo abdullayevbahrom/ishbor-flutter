@@ -60,7 +60,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     emit(state.copyWith(isStartDateNow: !state.isStartDateNow));
   }
 
-  void updateCategory({required String valueStr, required int valueInt}) {
+  void updateCategory({required String valueStr, required String valueInt}) {
     categoryController.text = valueStr;
     emit(state.copyWith(categoryId: valueInt));
   }
@@ -128,7 +128,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
                 : "",
         paymentMethod: state.paymentMethod ?? '',
         title: taskNameController.text.trim(),
-        categoryIds: [state.categoryId ?? 0],
+        categoryIds: state.categoryId != null ? [state.categoryId!] : null,
         description: taskDescriptionController.text.trim(),
         price:
             !state.isNegotiable
@@ -203,7 +203,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
                 : "",
         paymentMethod: state.paymentMethod ?? '',
         title: taskNameController.text.trim(),
-        categoryIds: [state.categoryId ?? 0],
+        categoryIds: state.categoryId != null ? [state.categoryId!] : null,
         description: taskDescriptionController.text.trim(),
         price:
             !state.isNegotiable

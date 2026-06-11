@@ -6,9 +6,9 @@ import '../../../../../../core/helpers/formatters.dart';
 import '../../../../../../export.dart';
 
 void showBirthdatePicker(
-    BuildContext context,
-    TextEditingController birthdayController,
-    ) {
+  BuildContext context,
+  TextEditingController birthdayController,
+) {
   DatePicker.showDatePicker(
     context,
     onCancel: () {
@@ -19,8 +19,8 @@ void showBirthdatePicker(
     },
     maxTime: DateTime.now(),
     currentTime:
-    birthdayController.text.trim().isNotEmpty
-        ? DateFormat('yyyy/MM/dd').parse(birthdayController.text.trim())
-        : DateTime(2000),
+        birthdayController.text.trim().isNotEmpty
+            ? DateFormat('yyyy/MM/dd').parse(birthdayController.text.trim())
+            : DateTime(2000),
   );
 }

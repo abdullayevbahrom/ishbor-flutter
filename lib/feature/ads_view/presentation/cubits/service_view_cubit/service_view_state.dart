@@ -8,7 +8,6 @@ abstract class ServiceViewState with _$ServiceViewState {
     @Default(false) bool isLoadingMore,
     @Default(null) ServiceModel? service,
     @Default(null) PaginatedServiceResponse? listService,
-    @Default(null) dynamic serviceId
-
-}) = _ServiceViewState;
+    @Default(null) dynamic serviceId,
+  }) = _ServiceViewState;
 }

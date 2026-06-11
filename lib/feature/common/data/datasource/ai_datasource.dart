@@ -5,7 +5,9 @@ import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 
 abstract class AiDataSource {
-  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({required String prompt});
+  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({
+    required String prompt,
+  });
   Stream<String> streamDescription({required String prompt});
 }
 
@@ -15,14 +17,18 @@ class AiDataSourceImpl extends AiDataSource {
   AiDataSourceImpl(this._dio);
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({required String prompt}) async {
+  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({
+    required String prompt,
+  }) async {
     try {
       final response = await _dio.get(
         ApiConstants.chatGpt,
         queryParameters: {'prompt': prompt},
       );
       if (response.statusCode == 200) {
-        return Right(Map<String, dynamic>.from(response.data['data'] ?? response.data));
+        return Right(
+          Map<String, dynamic>.from(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

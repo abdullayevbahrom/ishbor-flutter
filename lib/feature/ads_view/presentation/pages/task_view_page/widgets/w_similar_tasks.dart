@@ -63,9 +63,7 @@ class WSimilarTasks extends StatelessWidget {
                         task!.categories,
                         context,
                       ),
-                      dateTime: Formatters.timeAgo(
-                        task.createdAt,
-                      ),
+                      dateTime: Formatters.timeAgo(task.createdAt),
                       title: Formatters.translateText(
                         uzText: task.titleUz,
                         ruText: task.titleRu,

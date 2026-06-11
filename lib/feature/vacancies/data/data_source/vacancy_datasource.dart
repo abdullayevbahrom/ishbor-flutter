@@ -111,13 +111,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required QueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][list] GET ${ApiConstants.vacancies} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.vacancies,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][list] loaded status=${response.statusCode}');
         return Right(VacancyPaginationResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][list][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -140,6 +147,9 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][similar] GET ${ApiConstants.fetchSimilarVacancy(queryParams.id!)} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.fetchSimilarVacancy(queryParams.id!),
         queryParameters: {
@@ -149,8 +159,12 @@ class VacancyDataSourceImpl extends VacancyDataSource {
       );
 
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][similar] loaded status=${response.statusCode}');
         return Right(VacancyPaginationResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][similar][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -171,44 +185,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required VacancyRequest vacancy,
   }) async {
     try {
-      FormData data = FormData.fromMap({
-        'title': vacancy.title,
-        'categories': vacancy.categories,
-        'city': vacancy.city,
-        'description': vacancy.description,
-        'address': {
-          if (vacancy.address?.addressLine != null)
-            'addressLine': vacancy.address?.addressLine,
-          if (vacancy.address?.latitude != null)
-            'latitude': vacancy.address?.latitude,
-          if (vacancy.address?.longitude != null)
-            'longitude': vacancy.address?.longitude,
-        },
+      debugPrint(
+        '[VACANCY][create] POST ${ApiConstants.vacancies} categories=${vacancy.categories} city=${vacancy.city}',
+      );
+      final payload = Map<String, dynamic>.from(vacancy.toJson());
+      final images = List<File>.from(vacancy.images);
+      final data = FormData.fromMap(payload);
 
-        'salary_min': vacancy.salaryMin,
-        'salary_max': vacancy.salaryMax,
-        //'skills': vacancy.skills,
-        'short_description': vacancy.shortDescription,
-        //'whoCanRespond': vacancy.whoCanRespond,
-        'employment_type': vacancy.employmentType,
-        // 'jobModes':  ["flexible"],
-        'partial_job_opportunity': vacancy.partialJobOpportunity,
-        "phone_number": vacancy.phoneNumber,
-        if ((vacancy.phoneNumber1 ?? '').isNotEmpty)
-          "phone_number1": vacancy.phoneNumber1,
-        if ((vacancy.phoneNumber2 ?? '').isNotEmpty)
-          "phone_number2": vacancy.phoneNumber2,
-        if ((vacancy.phoneNumber3 ?? '').isNotEmpty)
-          "phone_number3": vacancy.phoneNumber3,
-      });
-
-      if (vacancy.images.isNotEmpty) {
-        for (File file in vacancy.images) {
+      if (images.isNotEmpty) {
+        for (File file in images) {
           final String fileName = file.path.split('/').last;
           final String type = file.path.split('.').last;
           data.files.add(
             MapEntry<String, MultipartFile>(
-              'uploadedImages[]',
+              'uploadedImages',
               MultipartFile.fromBytes(
                 file.readAsBytesSync(),
                 filename: fileName,
@@ -220,9 +210,13 @@ class VacancyDataSourceImpl extends VacancyDataSource {
       }
 
       final response = await _dio.post(ApiConstants.vacancies, data: data);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('[VACANCY][create] success status=${response.statusCode}');
         return Right(Vacancy.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][create][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -243,13 +237,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][applies] GET ${ApiConstants.myVacancyApplies} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.myVacancyApplies,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][applies] loaded status=${response.statusCode}');
         return Right(VacancyPaginationResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][applies][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -272,13 +273,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required CommonQueryParams queryParams,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][mine] GET ${ApiConstants.myVacancies} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
         ApiConstants.myVacancies,
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][mine] loaded status=${response.statusCode}');
         return Right(VacancyPaginationResponse.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][mine][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -297,12 +305,19 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }
 
   @override
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id}) async {
+  Future<Either<Failure, Vacancy>> fetchVacancyById({
+    required String id,
+  }) async {
     try {
+      debugPrint('[VACANCY][read] GET ${ApiConstants.fetchVacancy(id)}');
       final response = await _dio.get(ApiConstants.fetchVacancy(id));
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][read] loaded status=${response.statusCode}');
         return Right(Vacancy.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][read][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -325,16 +340,36 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required LocationFilterModel queryParams,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][geo] GET ${ApiConstants.vacanciesGeo} query=${queryParams.toJson()}',
+      );
       final response = await _dio.get(
         ApiConstants.vacanciesGeo,
         queryParameters: queryParams.toJson(),
       );
 
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][geo] loaded status=${response.statusCode}');
+        final payload = response.data;
+        final items =
+            payload is List
+                ? payload
+                : payload is Map<String, dynamic>
+                ? (payload['items'] as List? ??
+                    (payload['data'] is Map<String, dynamic>
+                        ? payload['data']['items'] as List?
+                        : null) ??
+                    const [])
+                : const [];
         return Right(
-          (response.data as List).map((e) => Vacancy.fromMap(e)).toList(),
+          items
+              .map((e) => Vacancy.fromMap(Map<String, dynamic>.from(e)))
+              .toList(),
         );
       } else {
+        debugPrint(
+          '[VACANCY][geo][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -357,44 +392,22 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required VacancyRequest vacancy,
   }) async {
     try {
-      Map<String, dynamic> data = {
-        'title': vacancy.title,
-        // 'categories': jsonEncode(vacancy.categories),
-        'city': vacancy.city,
-        'description': vacancy.description,
-        'address': {
-          if (vacancy.address?.addressLine != null)
-            'addressLine': vacancy.address?.addressLine,
-          if (vacancy.address?.latitude != null)
-            'latitude': vacancy.address?.latitude,
-          if (vacancy.address?.longitude != null)
-            'longitude': vacancy.address?.longitude,
-        },
-        'salary_min': vacancy.salaryMin ?? 0,
-        'salary_max': vacancy.salaryMax ?? 0,
-        'skills': vacancy.skills,
-        if (vacancy.shortDescription.isNotEmpty)
-          'short_description': vacancy.shortDescription,
-        'who_can_respond': vacancy.whoCanRespond,
-        'employment_type': vacancy.employmentType,
-        if (vacancy.partialJobOpportunity != null)
-          'partial_job_opportunity': vacancy.partialJobOpportunity,
-        "phone_number": vacancy.phoneNumber,
-        if ((vacancy.phoneNumber1 ?? '').isNotEmpty)
-          "phone_number1": vacancy.phoneNumber1,
-        if ((vacancy.phoneNumber2 ?? '').isNotEmpty)
-          "phone_number2": vacancy.phoneNumber2,
-        if ((vacancy.phoneNumber3 ?? '').isNotEmpty)
-          "phone_number3": vacancy.phoneNumber3,
-      };
+      debugPrint(
+        '[VACANCY][update] PATCH ${ApiConstants.updateVacancy(vacancy.vacancyId!)} id=${vacancy.vacancyId}',
+      );
+      final data = FormData.fromMap(vacancy.toJson());
       final response = await _dio.patch(
         ApiConstants.updateVacancy(vacancy.vacancyId!),
         data: data,
       );
 
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][update] success status=${response.statusCode}');
         return Right(Vacancy.fromMap(response.data));
       } else {
+        debugPrint(
+          '[VACANCY][update][warn] status=${response.statusCode} payload=${response.data}',
+        );
         //     response.data,
         // "stractree",
         // response.requestOptions.uri,
@@ -425,14 +438,21 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required VacancyRequest vacancy,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][status] PATCH ${ApiConstants.changeVacancyStatusById(vacancy.vacancyId!)} id=${vacancy.vacancyId} status=deactivated',
+      );
       final response = await _dio.patch(
         ApiConstants.changeVacancyStatusById(vacancy.vacancyId!),
         data: {"status": "deactivated"},
       );
 
       if (response.statusCode == 200) {
+        debugPrint('[VACANCY][status] success status=${response.statusCode}');
         return const Right(null);
       } else {
+        debugPrint(
+          '[VACANCY][status][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -453,13 +473,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required dynamic vacancyId,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][delete] DELETE ${ApiConstants.deleteVacancyById(vacancyId)}',
+      );
       final response = await _dio.delete(
         ApiConstants.deleteVacancyById(vacancyId),
       );
 
       if (response.statusCode == 204) {
+        debugPrint('[VACANCY][delete] success status=${response.statusCode}');
         return const Right(null);
       } else {
+        debugPrint(
+          '[VACANCY][delete][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -480,13 +507,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
     required dynamic vacancyId,
   }) async {
     try {
+      debugPrint(
+        '[VACANCY][lift-up] POST ${ApiConstants.liftUpVacancyById(vacancyId)}',
+      );
       final response = await _dio.post(
         ApiConstants.liftUpVacancyById(vacancyId),
       );
 
       if (response.statusCode == 204) {
+        debugPrint('[VACANCY][lift-up] success status=${response.statusCode}');
         return const Right(null);
       } else {
+        debugPrint(
+          '[VACANCY][lift-up][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -503,15 +537,24 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId}) async {
+  Future<Either<Failure, void>> toggleFavorite({
+    required dynamic vacancyId,
+  }) async {
     try {
+      debugPrint(
+        '[VACANCY][favorite] POST ${ApiConstants.toggleVacancyFavorite(vacancyId)}',
+      );
       final response = await _dio.post(
         ApiConstants.toggleVacancyFavorite(vacancyId),
       );
 
       if (response.statusCode == 204) {
+        debugPrint('[VACANCY][favorite] success status=${response.statusCode}');
         return const Right(null);
       } else {
+        debugPrint(
+          '[VACANCY][favorite][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {

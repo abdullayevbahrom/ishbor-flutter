@@ -8,6 +8,6 @@ abstract class ServiceState with _$ServiceState {
     @Default(null) String? errorText,
     @Default(null) PaginatedServiceResponse? listService,
     @Default(null) PaginatedServiceResponse? listSimilarService,
-    @Default(false) bool isLoadingMore
+    @Default(false) bool isLoadingMore,
   }) = _ServiceState;
 }

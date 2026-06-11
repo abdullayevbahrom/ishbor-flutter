@@ -15,18 +15,18 @@ import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 class WCategoriesPage extends StatefulWidget {
   const WCategoriesPage({super.key, required this.categories});
 
-  final List<int> categories;
+  final List<String> categories;
 
   @override
   State<WCategoriesPage> createState() => _WCategoriesPageState();
 }
 
 class _WCategoriesPageState extends State<WCategoriesPage> {
-  List<int> selectedCategories = [];
+  List<String> selectedCategories = [];
 
   @override
   void initState() {
-    selectedCategories = widget.categories;
+    selectedCategories = List.from(widget.categories);
 
     super.initState();
   }

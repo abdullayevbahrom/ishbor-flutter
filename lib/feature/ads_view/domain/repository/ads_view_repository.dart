@@ -5,11 +5,14 @@ import '../../../../models/vacancy.dart';
 import '../../../services/data/models/service.dart';
 import '../../../tasks/data/models/task_model.dart';
 
-abstract class AdsViewRepository{
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required dynamic vacancyId});
+abstract class AdsViewRepository {
+  Future<Either<Failure, Vacancy>> fetchVacancyById({
+    required dynamic vacancyId,
+  });
 
-  Future<Either<Failure, ServiceModel>> fetchServiceById(
-      {required dynamic serviceId});
+  Future<Either<Failure, ServiceModel>> fetchServiceById({
+    required dynamic serviceId,
+  });
 
   Future<Either<Failure, TaskModel>> fetchTaskById({required dynamic taskId});
 }

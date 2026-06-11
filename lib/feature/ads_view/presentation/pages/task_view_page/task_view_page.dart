@@ -266,7 +266,9 @@ class _WTaskViewPageState extends State<WTaskViewPage> {
               color: AppColors.c15CF74,
             ).paddingSymmetric(horizontal: 16.w),
           22.verticalSpace,
-          WShareAdsLink(link: "${ApiConstants.baseUrl}/task-view?id=${task?.id}"),
+          WShareAdsLink(
+            link: "${ApiConstants.baseUrl}/task-view?id=${task?.id}",
+          ),
           WAdsAuthorPreView(
             onPressedAuthorAds: () {
               if (user == task?.customer) {

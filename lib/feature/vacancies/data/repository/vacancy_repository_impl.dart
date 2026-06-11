@@ -123,7 +123,9 @@ class VacancyRepositoryImpl extends VacancyRepository {
   }
 
   @override
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required String id}) async {
+  Future<Either<Failure, Vacancy>> fetchVacancyById({
+    required String id,
+  }) async {
     final response = await _vacancyDataSource.fetchVacancyById(id: id);
 
     return response.fold(
@@ -222,7 +224,9 @@ class VacancyRepositoryImpl extends VacancyRepository {
   }
 
   @override
-  Future<Either<Failure, void>> toggleFavorite({required dynamic vacancyId}) async {
+  Future<Either<Failure, void>> toggleFavorite({
+    required dynamic vacancyId,
+  }) async {
     final response = await _vacancyDataSource.toggleFavorite(
       vacancyId: vacancyId,
     );

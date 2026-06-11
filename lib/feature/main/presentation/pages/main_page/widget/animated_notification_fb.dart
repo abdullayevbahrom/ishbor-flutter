@@ -54,7 +54,7 @@ class WAnimatedNotificationFb extends StatelessWidget {
                     height: 27.r,
                     width: 27.r,
                     child: Badge(
-                      isLabelVisible:state.hasNewNotification,
+                      isLabelVisible: state.hasNewNotification,
                       child: SvgPicture.asset(
                         open ? AppSvg.icBellLight : AppSvg.icBell,
                         fit: BoxFit.contain,

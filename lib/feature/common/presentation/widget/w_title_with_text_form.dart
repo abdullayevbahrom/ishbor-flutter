@@ -28,7 +28,7 @@ class WTitleWithTextForm extends StatelessWidget {
     this.richText,
     this.formatters,
     this.fieldKey,
-    this.bgColor
+    this.bgColor,
   });
 
   final TextEditingController textEditingController;
@@ -78,13 +78,12 @@ class WTitleWithTextForm extends StatelessWidget {
           children: [
             Expanded(
               child: AppTextFormField(
-
                 fieldKey: fieldKey,
                 onChanged: onChanged,
                 keyBoardType: keyBoardType,
                 validator: validator,
                 onTap: onTap,
-                fillColor: bgColor??AppColors.cFBFBFD,
+                fillColor: bgColor ?? AppColors.cFBFBFD,
                 prefixIcon: prefixIcon,
                 minLines: minLines,
                 maxLines: maxLines ?? 1,

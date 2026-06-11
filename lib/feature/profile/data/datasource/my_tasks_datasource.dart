@@ -21,7 +21,7 @@ class MyTasksDataSourceImpl implements MyTasksDataSource {
   Future<Either<Failure, void>> changeStatusById({
     required dynamic taskId,
     required String status,
-  }) async{
+  }) async {
     try {
       final response = await _dio.patch(
         ApiConstants.deactivateTaskById(taskId),

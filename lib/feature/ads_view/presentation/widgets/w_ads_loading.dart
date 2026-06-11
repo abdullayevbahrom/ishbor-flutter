@@ -99,8 +99,7 @@ class WAdsViewLoading extends StatelessWidget {
               text: "",
               color: AppColors.cFFFFFF,
             ),
-          )
-
+          ),
         ],
       ),
     );

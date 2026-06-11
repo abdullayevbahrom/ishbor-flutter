@@ -47,8 +47,7 @@ class WSimilarVacancies extends StatelessWidget {
             shrinkWrap: true,
             itemCount: vacancies?.length ?? 0,
             scrollDirection: Axis.vertical,
-            keyboardDismissBehavior:
-            ScrollViewKeyboardDismissBehavior.onDrag,
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (context, index) => 8.verticalSpace,
             itemBuilder: (context, index) {
@@ -63,20 +62,19 @@ class WSimilarVacancies extends StatelessWidget {
                     vacancy.categories,
                     context,
                   ),
-                  dateTime: Formatters.timeAgo(
-                   vacancy.createdAt,
-                  ),
+                  dateTime: Formatters.timeAgo(vacancy.createdAt),
                   title: Formatters.translateText(
-                    uzText: vacancy.titleUz,
-                    ruText: vacancy.titleRu,
-                    defaultText: vacancy.title,
+                    uzText: vacancy.title.uz,
+                    ruText: vacancy.title.ru,
+                    defaultText: vacancy.title.resolve(context.locale.languageCode),
                   ),
                   salaryMin: vacancy.salaryMin,
                   salaryMax: vacancy.salaryMax,
-                  imageUrl: (vacancy.images ?? []).isNotEmpty &&
-                      vacancy.images?.first.urls != null
-                      ? vacancy.images?.first.urls['original']
-                      : null,
+                  imageUrl:
+                      (vacancy.images ?? []).isNotEmpty &&
+                              vacancy.images?.first.urls != null
+                          ? vacancy.images?.first.urls['original']
+                          : null,
                   bgColor: AppColors.cF7F9FC,
                 ),
               );

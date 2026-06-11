@@ -72,17 +72,17 @@ Future<void> main() async {
       FlutterNativeSplash.remove();
 
       runApp(
-          EasyLocalization(
-            saveLocale: true,
-            fallbackLocale: EasyLocale.all.first,
-            startLocale: EasyLocale.all.last,
-            path: AppLocaleKeys.localePath,
-            supportedLocales: EasyLocale.all,
-            child: BlocProvider(
-              create: (context) => sl<LocaleCubit>(),
-              child: const MyApp(),
-            ),
-          )
+        EasyLocalization(
+          saveLocale: true,
+          fallbackLocale: EasyLocale.all.first,
+          startLocale: EasyLocale.all.last,
+          path: AppLocaleKeys.localePath,
+          supportedLocales: EasyLocale.all,
+          child: BlocProvider(
+            create: (context) => sl<LocaleCubit>(),
+            child: const MyApp(),
+          ),
+        ),
       );
     },
     (error, stack) {

@@ -151,11 +151,11 @@ class MyServicesCubit extends Cubit<MyServicesState> {
       status: "moderation",
     );
     response.fold(
-          (l) {
+      (l) {
         emit(state.copyWith(deactivateSt: RequestStatus.error));
         showErrorToast(l.message);
       },
-          (r) {
+      (r) {
         emit(state.copyWith(deactivateSt: RequestStatus.loaded));
 
         final currentList = state.myServices?.items ?? [];
@@ -178,7 +178,6 @@ class MyServicesCubit extends Cubit<MyServicesState> {
       },
     );
   }
-
 
   Future<void> deleteServiceById(int index) async {
     emit(state.copyWith(deleteSt: RequestStatus.loading));

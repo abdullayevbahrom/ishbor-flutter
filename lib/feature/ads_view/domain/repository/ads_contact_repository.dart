@@ -3,7 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/exceptions/failure.dart';
 import '../../data/models/ads_contact_model.dart';
 
-abstract class AdsContactRepository{
+abstract class AdsContactRepository {
   Future<Either<Failure, AdsContactModel>> fetchVacancyContact({
     required dynamic vacancyId,
   });

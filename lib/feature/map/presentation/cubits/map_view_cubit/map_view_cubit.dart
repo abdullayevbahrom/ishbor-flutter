@@ -328,7 +328,6 @@ class MapViewCubit extends Cubit<MapViewState> {
               CameraPosition(target: self.placemarks.first.point, zoom: 13),
             ),
           );
-
         },
         radius: 60,
         minZoom: 12,

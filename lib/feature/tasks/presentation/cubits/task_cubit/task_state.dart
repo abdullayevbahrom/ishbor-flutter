@@ -8,6 +8,6 @@ abstract class TaskState with _$TaskState {
     @Default(null) String? errorText,
     @Default(null) PaginatedTaskListResponse? listTask,
     @Default(null) PaginatedTaskListResponse? listSimilarTask,
-    @Default(false) bool isLoadingMore
+    @Default(false) bool isLoadingMore,
   }) = _TaskState;
 }

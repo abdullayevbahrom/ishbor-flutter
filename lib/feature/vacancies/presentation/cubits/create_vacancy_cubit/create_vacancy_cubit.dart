@@ -50,7 +50,7 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
   final TextEditingController phoneNumberController2 = TextEditingController();
   final TextEditingController phoneNumberController3 = TextEditingController();
 
-  int categories = 59;
+  List<String> categories = const [];
 
   void updateLocation(GeocodeResponse response) {
     emit(state.copyWith(location: response));
@@ -107,7 +107,6 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
 
   Future<void> generateVacancyDesc() async {
     emit(state.copyWith(generateVacancyDes: RequestStatus.loading));
-
 
     // response.fold(
     //   (l) {
@@ -277,12 +276,19 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
 
   void initVacancy(Vacancy vacancy) {
     emit(state.copyWith(isEnable: true));
-    vacancyNameController.text = vacancy.title;
+    vacancyNameController.text = vacancy.title.resolve(
+          navigatorKey.currentContext?.locale.languageCode,
+        ) ??
+        '';
     cityController.text = vacancy.city ?? '';
     locationController.text = vacancy.address?.addressLine ?? '';
     // latController.text=double.tryParse(vacancy.address.latitude??0);
     //  descriptionController.text=vacancy.description??'';
-    generatedDesController.text = vacancy.description ?? '';
+    generatedDesController.text =
+        vacancy.description?.resolve(
+              navigatorKey.currentContext?.locale.languageCode,
+            ) ??
+        '';
     skillsController.text = vacancy.skills!
         .map((e) {
           return e;
@@ -308,16 +314,20 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
       ),
     );
 
+    categories = vacancy.categories.map((e) => e.id).toList();
     categoryController.text = vacancy.categories
-        .map((e) {
-          categories = e.id;
-          return e
-              .translations[navigatorKey.currentContext?.locale.languageCode ==
-                      'ru'
-                  ? 0
-                  : 1]
-              .name;
-        })
+        .map(
+          (e) =>
+              e
+                  .translations[navigatorKey
+                              .currentContext
+                              ?.locale
+                              .languageCode ==
+                          'ru'
+                      ? 0
+                      : 1]
+                  .name,
+        )
         .join('');
   }
 }

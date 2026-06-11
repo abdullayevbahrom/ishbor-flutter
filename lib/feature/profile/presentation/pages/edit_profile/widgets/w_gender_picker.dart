@@ -57,7 +57,7 @@ class _WGenderPickerState extends State<WGenderPicker> {
                   value:
                       widget.genderController.text.trim() ==
                       LocaleKeys.Male.tr(),
-                  onTap: () { 
+                  onTap: () {
                     setState(() {
                       widget.genderController.text = LocaleKeys.Male.tr();
                     });

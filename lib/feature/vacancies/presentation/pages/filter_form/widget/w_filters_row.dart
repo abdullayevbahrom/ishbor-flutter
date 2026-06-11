@@ -30,15 +30,15 @@ class WCategoryRow extends StatelessWidget {
               color: AppColors.c333333,
             ),
           ),
-           Badge(
+          Badge(
             isLabelVisible: isEnable,
-                backgroundColor: AppColors.cFF9914,
-                child: Icon(
-                  Icons.keyboard_arrow_right_rounded,
-                  color: AppColors.cC1C1C1,
-                  size: 24.h,
-                ),
-              )
+            backgroundColor: AppColors.cFF9914,
+            child: Icon(
+              Icons.keyboard_arrow_right_rounded,
+              color: AppColors.cC1C1C1,
+              size: 24.h,
+            ),
+          ),
         ],
       ).paddingSymmetric(horizontal: 40.w, vertical: 16.h),
     );

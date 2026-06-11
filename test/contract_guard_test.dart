@@ -31,14 +31,17 @@ void main() {
     }
   });
 
-  test('datasource sources do not contain legacy or prefixless ishbor paths', () {
-    final offenders = _findOffendingPaths();
-    expect(
-      offenders,
-      isEmpty,
-      reason: offenders.isEmpty ? null : offenders.join('\n'),
-    );
-  });
+  test(
+    'datasource sources do not contain legacy or prefixless ishbor paths',
+    () {
+      final offenders = _findOffendingPaths();
+      expect(
+        offenders,
+        isEmpty,
+        reason: offenders.isEmpty ? null : offenders.join('\n'),
+      );
+    },
+  );
 }
 
 List<String> _findOffendingPaths() {

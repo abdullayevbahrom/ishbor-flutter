@@ -23,7 +23,7 @@ class LocationInfoCubit extends Cubit<LocationInfoState> {
   final MapController mapController = MapController();
   LatLng defaultCenter = LatLng(41.311081, 69.230562);
 
-  void initializeStatus(){
+  void initializeStatus() {
     emit(state.copyWith(suggestionStatus: RequestStatus.initial));
   }
 

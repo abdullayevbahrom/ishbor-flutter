@@ -45,24 +45,31 @@ abstract class Ad extends Equatable {
     this.hasUserRequest,
   });
 
+  String? get titleUz => title.uz;
+  String? get titleRu => title.ru;
+  String? get descriptionUz => description?.uz;
+  String? get descriptionRu => description?.ru;
+  String? get shortDescriptionUz => shortDescription?.uz;
+  String? get shortDescriptionRu => shortDescription?.ru;
+
   @override
   List<Object?> get props => [
-        id,
-        status,
-        title,
-        createdAt,
-        description,
-        shortDescription,
-        customer,
-        phoneNumber,
-        performer,
-        viewCount,
-        city,
-        moderatorNote,
-        categories,
-        negotiable,
-        images,
-        isFavorite,
-        hasUserRequest,
-      ];
+    id,
+    status,
+    title,
+    createdAt,
+    description,
+    shortDescription,
+    customer,
+    phoneNumber,
+    performer,
+    viewCount,
+    city,
+    moderatorNote,
+    categories,
+    negotiable,
+    images,
+    isFavorite,
+    hasUserRequest,
+  ];
 }

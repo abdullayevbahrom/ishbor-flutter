@@ -800,5 +800,5 @@ class SizesCons {
   static const double size_398 = 398.0;
 
   static const double size_399 = 399.0;
-/**/
+  /**/
 }

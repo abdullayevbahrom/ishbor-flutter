@@ -34,7 +34,7 @@ class AppTextFormField extends StatefulWidget {
     this.prefix,
     this.onSaved,
     this.onSubmitted,
-    this.textAlign=TextAlign.start
+    this.textAlign = TextAlign.start,
   });
 
   final String hintText;

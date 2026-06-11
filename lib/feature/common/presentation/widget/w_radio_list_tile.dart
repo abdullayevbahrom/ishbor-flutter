@@ -6,7 +6,12 @@ import '../../../../core/theme/app_text_styles.dart';
 import 'app_radio_box.dart';
 
 class WRadioListTile extends StatelessWidget {
-  const WRadioListTile({super.key, required this.title, required this.value, required this.onTap});
+  const WRadioListTile({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.onTap,
+  });
 
   final String title;
   final bool value;

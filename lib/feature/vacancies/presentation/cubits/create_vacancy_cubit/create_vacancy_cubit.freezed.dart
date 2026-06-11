@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateVacancyState {
 
- RequestStatus get status; RequestStatus get createVacSt; RequestStatus get generateVacancyDes; String? get errorText; Set get operatingMode; int get employmentType; bool get withOutResume; bool get temporaryEmployee; bool get buttonEnable; bool get salaryInInterview; bool get uzsCurrency; Vacancy? get vacancy; bool get isEnable; GeocodeResponse? get location; List<File> get images; int? get category;
+ RequestStatus get status; RequestStatus get createVacSt; RequestStatus get generateVacancyDes; String? get errorText; Set get operatingMode; int get employmentType; bool get withOutResume; bool get temporaryEmployee; bool get buttonEnable; bool get salaryInInterview; bool get uzsCurrency; Vacancy? get vacancy; bool get isEnable; GeocodeResponse? get location; List<File> get images; String? get category;
 /// Create a copy of CreateVacancyState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CreateVacancyStateCopyWith<$Res>  {
   factory $CreateVacancyStateCopyWith(CreateVacancyState value, $Res Function(CreateVacancyState) _then) = _$CreateVacancyStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus createVacSt, RequestStatus generateVacancyDes, String? errorText, Set operatingMode, int employmentType, bool withOutResume, bool temporaryEmployee, bool buttonEnable, bool salaryInInterview, bool uzsCurrency, Vacancy? vacancy, bool isEnable, GeocodeResponse? location, List<File> images, int? category
+ RequestStatus status, RequestStatus createVacSt, RequestStatus generateVacancyDes, String? errorText, Set operatingMode, int employmentType, bool withOutResume, bool temporaryEmployee, bool buttonEnable, bool salaryInInterview, bool uzsCurrency, Vacancy? vacancy, bool isEnable, GeocodeResponse? location, List<File> images, String? category
 });
 
 
@@ -80,7 +80,7 @@ as Vacancy?,isEnable: null == isEnable ? _self.isEnable : isEnable // ignore: ca
 as bool,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as GeocodeResponse?,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<File>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,
   ));
 }
 
@@ -165,7 +165,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  int? category)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  String? category)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateVacancyState() when $default != null:
 return $default(_that.status,_that.createVacSt,_that.generateVacancyDes,_that.errorText,_that.operatingMode,_that.employmentType,_that.withOutResume,_that.temporaryEmployee,_that.buttonEnable,_that.salaryInInterview,_that.uzsCurrency,_that.vacancy,_that.isEnable,_that.location,_that.images,_that.category);case _:
@@ -186,7 +186,7 @@ return $default(_that.status,_that.createVacSt,_that.generateVacancyDes,_that.er
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  int? category)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  String? category)  $default,) {final _that = this;
 switch (_that) {
 case _CreateVacancyState():
 return $default(_that.status,_that.createVacSt,_that.generateVacancyDes,_that.errorText,_that.operatingMode,_that.employmentType,_that.withOutResume,_that.temporaryEmployee,_that.buttonEnable,_that.salaryInInterview,_that.uzsCurrency,_that.vacancy,_that.isEnable,_that.location,_that.images,_that.category);case _:
@@ -206,7 +206,7 @@ return $default(_that.status,_that.createVacSt,_that.generateVacancyDes,_that.er
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  int? category)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus createVacSt,  RequestStatus generateVacancyDes,  String? errorText,  Set operatingMode,  int employmentType,  bool withOutResume,  bool temporaryEmployee,  bool buttonEnable,  bool salaryInInterview,  bool uzsCurrency,  Vacancy? vacancy,  bool isEnable,  GeocodeResponse? location,  List<File> images,  String? category)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateVacancyState() when $default != null:
 return $default(_that.status,_that.createVacSt,_that.generateVacancyDes,_that.errorText,_that.operatingMode,_that.employmentType,_that.withOutResume,_that.temporaryEmployee,_that.buttonEnable,_that.salaryInInterview,_that.uzsCurrency,_that.vacancy,_that.isEnable,_that.location,_that.images,_that.category);case _:
@@ -251,7 +251,7 @@ class _CreateVacancyState implements CreateVacancyState {
   return EqualUnmodifiableListView(_images);
 }
 
-@override@JsonKey() final  int? category;
+@override@JsonKey() final  String? category;
 
 /// Create a copy of CreateVacancyState
 /// with the given fields replaced by the non-null parameter values.
@@ -283,7 +283,7 @@ abstract mixin class _$CreateVacancyStateCopyWith<$Res> implements $CreateVacanc
   factory _$CreateVacancyStateCopyWith(_CreateVacancyState value, $Res Function(_CreateVacancyState) _then) = __$CreateVacancyStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus createVacSt, RequestStatus generateVacancyDes, String? errorText, Set operatingMode, int employmentType, bool withOutResume, bool temporaryEmployee, bool buttonEnable, bool salaryInInterview, bool uzsCurrency, Vacancy? vacancy, bool isEnable, GeocodeResponse? location, List<File> images, int? category
+ RequestStatus status, RequestStatus createVacSt, RequestStatus generateVacancyDes, String? errorText, Set operatingMode, int employmentType, bool withOutResume, bool temporaryEmployee, bool buttonEnable, bool salaryInInterview, bool uzsCurrency, Vacancy? vacancy, bool isEnable, GeocodeResponse? location, List<File> images, String? category
 });
 
 
@@ -318,7 +318,7 @@ as Vacancy?,isEnable: null == isEnable ? _self.isEnable : isEnable // ignore: ca
 as bool,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as GeocodeResponse?,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<File>,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int?,
+as String?,
   ));
 }
 

@@ -16,13 +16,16 @@ class AuthSuccess {
   String? get token => accessToken;
 
   factory AuthSuccess.fromJson(Map<String, dynamic> json) {
-    final payload = json['data'] is Map<String, dynamic>
-        ? Map<String, dynamic>.from(json['data'] as Map<String, dynamic>)
-        : json;
-    final expiresIn = payload['expires_in'] is int
-        ? payload['expires_in'] as int
-        : int.tryParse('${payload['expires_in'] ?? ''}');
-    final expiresAt = parseNullableDateTime(payload['expires_at']) ??
+    final payload =
+        json['data'] is Map<String, dynamic>
+            ? Map<String, dynamic>.from(json['data'] as Map<String, dynamic>)
+            : json;
+    final expiresIn =
+        payload['expires_in'] is int
+            ? payload['expires_in'] as int
+            : int.tryParse('${payload['expires_in'] ?? ''}');
+    final expiresAt =
+        parseNullableDateTime(payload['expires_at']) ??
         (expiresIn != null
             ? DateTime.now().add(Duration(seconds: expiresIn))
             : null);

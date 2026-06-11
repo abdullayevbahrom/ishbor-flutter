@@ -4,9 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class WModalSheetDecoratedContainer extends StatelessWidget {
-  const WModalSheetDecoratedContainer({
-    super.key,
-  });
+  const WModalSheetDecoratedContainer({super.key});
 
   @override
   Widget build(BuildContext context) {

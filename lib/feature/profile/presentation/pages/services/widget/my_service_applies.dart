@@ -13,7 +13,6 @@ import '../../../cubits/my_services_cubit/my_services_cubit.dart';
 class MyServiceApplies extends StatelessWidget {
   const MyServiceApplies({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MyServicesCubit, MyServicesState>(
@@ -40,7 +39,8 @@ class MyServicesBody extends StatelessWidget {
     if (state.myServicesAppliesSt.isError())
       return WErrorWidget(errorText: state.errorText);
     if (state.myServicesAppliesSt.isLoaded())
-      if (state.myServicesApplies == null || state.myServicesApplies?.items.length == 0)
+      if (state.myServicesApplies == null ||
+          state.myServicesApplies?.items.length == 0)
         return WErrorWidget(errorText: LocaleKeys.noServices.tr());
     return WRefreshIndicator(
       onRefresh: onRefresh,
@@ -53,10 +53,10 @@ class MyServicesBody extends StatelessWidget {
         itemBuilder: (context, index) {
           final service = state.myServicesApplies?.items[index];
           return ServiceItem(
-              onPressedFavorite: () {
-
-              },
-              isPopButtonAvailable: true, service: service!);
+            onPressedFavorite: () {},
+            isPopButtonAvailable: true,
+            service: service!,
+          );
         },
       ),
     );

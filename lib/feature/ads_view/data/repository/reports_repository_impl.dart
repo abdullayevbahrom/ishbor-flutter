@@ -10,15 +10,16 @@ class ReportsRepositoryImpl implements ReportsRepository {
   ReportsRepositoryImpl(this._reportsDataSource);
 
   @override
-  Future<Either<Failure, void>> reportAd({
-    required ReportsParam params,
-  }) async {
-    final response= await _reportsDataSource.reportAd(params: params);
+  Future<Either<Failure, void>> reportAd({required ReportsParam params}) async {
+    final response = await _reportsDataSource.reportAd(params: params);
 
-    return response.fold((l) {
-      return Left(Failure(message: l.message));
-    }, (r) {
-      return Right(r);
-    },);
+    return response.fold(
+      (l) {
+        return Left(Failure(message: l.message));
+      },
+      (r) {
+        return Right(r);
+      },
+    );
   }
 }

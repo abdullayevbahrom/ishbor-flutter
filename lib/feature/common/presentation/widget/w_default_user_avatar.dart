@@ -19,7 +19,7 @@ class WDefaultUserAvatar extends StatelessWidget {
         width: height,
         child: DecoratedBox(
           decoration: BoxDecoration(color: AppColors.cE0E5EB),
-          child: SvgPicture.asset(AppSvg.icUser).paddingAll(height/3.3),
+          child: SvgPicture.asset(AppSvg.icUser).paddingAll(height / 3.3),
         ),
       ),
     );

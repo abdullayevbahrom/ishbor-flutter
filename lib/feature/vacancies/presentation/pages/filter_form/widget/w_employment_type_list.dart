@@ -1,4 +1,3 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ import 'package:top_jobs/feature/common/presentation/widget/app_divider.dart';
 import '../../../../../common/presentation/widget/w_check_box_list_tile.dart';
 import '../../../../../common/presentation/widget/w_dialog_action_button.dart';
 import '../filter_form.dart';
-
 
 class WEmploymentTypeList extends StatefulWidget {
   final List<String> employeeTypes;

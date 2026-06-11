@@ -17,14 +17,14 @@ class PaginatedTaskRequestList {
     return PaginatedTaskRequestList(
       currentPageNumber: json['current_page_number'] ?? 0,
       numItemsPerPage: json['num_items_per_page'] ?? 0,
-      items: (json['items'] as List<dynamic>?)
-          ?.map((e) => TaskRequest.fromMap(e)) 
-          .toList() ??
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((e) => TaskRequest.fromMap(e))
+              .toList() ??
           [],
       totalCount: json['total_count'] ?? 0,
     );
   }
-  
 
   PaginatedTaskRequestList copyWith({
     int? currentPageNumber,

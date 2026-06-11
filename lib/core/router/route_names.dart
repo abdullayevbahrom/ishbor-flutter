@@ -37,7 +37,6 @@ abstract class Routes {
   static const String edit_profile = "/edit-profile";
   static const String messages = "/messages";
   static const String categoriesPage = '/categories-page';
-  static const String newVersion='/new-version';
-  static const String wGenerateVacancy='/generate_vacancy';
-
+  static const String newVersion = '/new-version';
+  static const String wGenerateVacancy = '/generate_vacancy';
 }

@@ -45,7 +45,9 @@ class StorageService {
     return _box.get(_StorageKeys.tokenExpireDate, defaultValue: null);
   }
 
-  Future<bool> hasFreshToken({Duration skew = const Duration(minutes: 1)}) async {
+  Future<bool> hasFreshToken({
+    Duration skew = const Duration(minutes: 1),
+  }) async {
     final token = await fetchToken();
     if (token == null || token.isEmpty) {
       return false;

@@ -13,10 +13,11 @@ abstract class UserRepository {
     required UserProfileUpdateRequest userProfile,
   });
 
-  Future<Either<Failure, User>> uploadPortfolios({required List<File> portfolios});
+  Future<Either<Failure, User>> uploadPortfolios({
+    required List<File> portfolios,
+  });
 
   Future<Either<Failure, User>> uploadVerificationDoc({required File file});
   Future<Either<Failure, void>> updateLocale({required String locale});
   Future<Either<Failure, User>> uploadAvatar({required File file});
-
 }

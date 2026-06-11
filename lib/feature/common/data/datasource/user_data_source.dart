@@ -47,9 +47,10 @@ class UserDataSourceImpl extends UserDataSource {
 
   String _messageFromResponse(dynamic responseData) {
     if (responseData is Map<String, dynamic>) {
-      final fallback = responseData.values.isNotEmpty
-          ? responseData.values.first
-          : 'Unknown error';
+      final fallback =
+          responseData.values.isNotEmpty
+              ? responseData.values.first
+              : 'Unknown error';
       return (responseData['message'] ?? responseData['error'] ?? fallback)
           .toString();
     }

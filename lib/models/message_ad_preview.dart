@@ -22,14 +22,14 @@ class MessageAdPreview extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        type,
-        title,
-        imageUrl,
-        price,
-        salaryMin,
-        salaryCurrency,
-      ];
+    id,
+    type,
+    title,
+    imageUrl,
+    price,
+    salaryMin,
+    salaryCurrency,
+  ];
 
   factory MessageAdPreview.fromMap(Map<String, dynamic> data) {
     return MessageAdPreview(

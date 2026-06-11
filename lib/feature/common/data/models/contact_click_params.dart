@@ -10,10 +10,6 @@ class ContactClickParams {
   });
 
   Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'type': type,
-      'contact': contact,
-    };
+    return {'id': id, 'type': type, 'contact': contact};
   }
 }

@@ -108,8 +108,7 @@ class DioInterceptors extends Interceptor {
 
     final headers = Map<String, dynamic>.from(options.headers);
     headers['Accept'] ??= 'application/json';
-    headers['X-Device-Type'] ??=
-        Platform.isAndroid ? 'android' : 'ios';
+    headers['X-Device-Type'] ??= Platform.isAndroid ? 'android' : 'ios';
 
     final deviceToken = await _ensureDeviceToken();
     if (deviceToken != null && deviceToken.isNotEmpty) {
@@ -339,10 +338,7 @@ class DioInterceptors extends Interceptor {
       contentType: requestOptions.contentType,
       sendTimeout: requestOptions.sendTimeout,
       receiveTimeout: requestOptions.receiveTimeout,
-      extra: {
-        ...requestOptions.extra,
-        'retry_attempt': attempt,
-      },
+      extra: {...requestOptions.extra, 'retry_attempt': attempt},
     );
 
     return _dio.requestUri<dynamic>(
@@ -382,17 +378,20 @@ class DioInterceptors extends Interceptor {
         ),
       );
 
-      final payload = response.data is Map<String, dynamic>
-          ? (response.data['data'] is Map<String, dynamic>
-              ? Map<String, dynamic>.from(response.data['data'])
-              : Map<String, dynamic>.from(response.data))
-          : <String, dynamic>{};
+      final payload =
+          response.data is Map<String, dynamic>
+              ? (response.data['data'] is Map<String, dynamic>
+                  ? Map<String, dynamic>.from(response.data['data'])
+                  : Map<String, dynamic>.from(response.data))
+              : <String, dynamic>{};
 
       final accessToken = payload['access_token'] as String?;
-      final newRefreshToken = payload['refresh_token'] as String? ?? refreshToken;
-      final expiresIn = payload['expires_in'] is int
-          ? payload['expires_in'] as int
-          : int.tryParse('${payload['expires_in'] ?? ''}');
+      final newRefreshToken =
+          payload['refresh_token'] as String? ?? refreshToken;
+      final expiresIn =
+          payload['expires_in'] is int
+              ? payload['expires_in'] as int
+              : int.tryParse('${payload['expires_in'] ?? ''}');
 
       if (accessToken == null || accessToken.isEmpty) {
         throw StateError('Refresh response missing access_token.');

@@ -11,7 +11,7 @@ abstract class MyTasksState with _$MyTasksState {
     @Default(false) bool isLoadingMore1,
     @Default(false) bool isLoadingMore2,
     @Default(null) PaginatedTaskListResponse? myTasks,
-    @Default(null)  PaginatedTaskResponse? myTaskApplies,
+    @Default(null) PaginatedTaskResponse? myTaskApplies,
     @Default(null) String? errorText,
   }) = _MyTasksState;
 }

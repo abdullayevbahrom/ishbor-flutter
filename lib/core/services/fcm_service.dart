@@ -288,8 +288,8 @@ class FcmNotificationService {
 
     await _localNotifications
         .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin
-    >()
+          AndroidFlutterLocalNotificationsPlugin
+        >()
         ?.createNotificationChannel(channel);
 
     const initializationSettingsAndroid = AndroidInitializationSettings(
@@ -354,16 +354,14 @@ class FcmNotificationService {
     FirebaseMessaging.onMessage.listen((message) {
       _logger.i('Foreground message received: ${message.data}');
       navigatorKey.currentContext
-          ?.read<NotificationCubit>().fetchNotifications();
+          ?.read<NotificationCubit>()
+          .fetchNotifications();
       if (message.data['content'].toString().contains("message")) {
-      navigatorKey.currentContext?.read<MessageCubit>()
-      ?..reset()
-      ..fetchMessages();
+        navigatorKey.currentContext?.read<MessageCubit>()
+          ?..reset()
+          ..fetchMessages();
       }
-      showNotification
-      (
-      message
-      );
+      showNotification(message);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((message) {
@@ -437,31 +435,23 @@ class FcmNotificationService {
               data['content'].toString().contains("service") ||
               data['content'].toString().contains("task")) &&
           contentId != null) {
-        GoRouter.of(
-          context,
-        ).push(Routes.chat, extra: contentId);
+        GoRouter.of(context).push(Routes.chat, extra: contentId);
       }
 
       if (data['content'].toString().contains("vacancy") &&
           !data['content'].toString().contains("message") &&
           contentId != null) {
-        GoRouter.of(
-          context,
-        ).push("/vacancy-view?id=$contentId");
+        GoRouter.of(context).push("/vacancy-view?id=$contentId");
       }
       if (data['content'].toString().contains("service") &&
           !data['content'].toString().contains("message") &&
           contentId != null) {
-        GoRouter.of(
-          context,
-        ).push("/service-view?id=$contentId");
+        GoRouter.of(context).push("/service-view?id=$contentId");
       }
       if (data['content'].toString().contains("task") &&
           !data['content'].toString().contains("message") &&
           contentId != null) {
-        GoRouter.of(
-          context,
-        ).push("/task-view?id=$contentId");
+        GoRouter.of(context).push("/task-view?id=$contentId");
       }
 
       // if (route != null) {
@@ -520,10 +510,10 @@ class FcmNotificationService {
   Future<bool> areNotificationsEnabled() async {
     if (Platform.isAndroid) {
       return await _localNotifications
-          .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin
-      >()
-          ?.areNotificationsEnabled() ??
+              .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin
+              >()
+              ?.areNotificationsEnabled() ??
           false;
     }
     return true; // iOS handles permissions differently

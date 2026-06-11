@@ -61,11 +61,9 @@ class WSimilarServices extends StatelessWidget {
                         context,
                       ),
                       dateTime: Formatters.timeAgo(service.createdAt),
-                      title: Formatters.translateText(
-                        uzText: service.title,
-                        ruText: service.titleRu,
-                        defaultText: service.titleUz,
-                      ),
+                      title:
+                          service.title.resolve(context.locale.languageCode) ??
+                          '',
                       salaryMin: service.price,
                       imageUrl:
                           (service.images ?? []).isNotEmpty &&

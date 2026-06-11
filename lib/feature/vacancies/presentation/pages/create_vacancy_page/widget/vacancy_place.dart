@@ -68,7 +68,6 @@ class VacancyPlace extends StatelessWidget {
                           onTap: () async {
                             GeocodeResponse? response = await context.push(
                               Routes.yandexMap,
-                              
                             );
                             if (response != null) {
                               onLocationSelected(response);

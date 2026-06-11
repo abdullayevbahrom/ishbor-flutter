@@ -102,12 +102,9 @@ class _WAdsDescriptionState extends State<WAdsDescription> {
                     style: AppTextStyles.size17Regular,
                     controller: widget._descriptionController,
                     keyboardType: TextInputType.text,
-                    inputFormatters: [
-                      LengthLimitingTextInputFormatter(900)
-                    ],
+                    inputFormatters: [LengthLimitingTextInputFormatter(900)],
                     onChanged: (value) {
-                      setState(() {
-                      });
+                      setState(() {});
                     },
                     decoration: InputDecoration(
                       filled: true,
@@ -152,9 +149,11 @@ class _WAdsDescriptionState extends State<WAdsDescription> {
                       alignment: AlignmentGeometry.centerRight,
                       child: AppButton(
                         onPressed: () {
-                          context.read<VacancyFormCubit>().generateVacancyDescription(
-                            widget._descriptionController.text.trim(),
-                          );
+                          context
+                              .read<VacancyFormCubit>()
+                              .generateVacancyDescription(
+                                widget._descriptionController.text.trim(),
+                              );
                         },
                         leftIcon: SvgPicture.asset(
                           AppSvg.icStarts,

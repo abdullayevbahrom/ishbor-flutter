@@ -17,7 +17,9 @@ abstract class CategoryDataSource {
     int? size,
   });
 
-  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id});
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({
+    required Object id,
+  });
 }
 
 class CategoryDataSourceImpl extends CategoryDataSource {
@@ -32,9 +34,7 @@ class CategoryDataSourceImpl extends CategoryDataSource {
     try {
       final response = await _dio.get(
         ApiConstants.categories,
-        queryParameters: {
-          'page': queryParams.page,
-        },
+        queryParameters: {'page': queryParams.page},
       );
       if (response.statusCode == 200) {
         return Right(CategoryListResponse.fromMap(response.data));
@@ -76,11 +76,15 @@ class CategoryDataSourceImpl extends CategoryDataSource {
   }
 
   @override
-  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id}) async {
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({
+    required Object id,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchCategory(id));
       if (response.statusCode == 200) {
-        return Right(CategoryModel.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          CategoryModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

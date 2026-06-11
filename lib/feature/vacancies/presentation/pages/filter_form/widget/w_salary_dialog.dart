@@ -14,7 +14,6 @@ import 'package:top_jobs/feature/common/presentation/widget/app_text_form_field.
 
 import '../../../../../common/presentation/widget/w_dialog_action_button.dart';
 
-
 class WSalaryFilterDialog extends StatefulWidget {
   final TextEditingController salaryMinController;
   final TextEditingController salaryMaxController;

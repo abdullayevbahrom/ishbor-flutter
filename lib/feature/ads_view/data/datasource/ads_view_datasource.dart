@@ -9,15 +9,15 @@ import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import '../../../../models/vacancy.dart';
 
 abstract class AdsViewDataSource {
-  Future<Either<Failure, Vacancy>> fetchVacancyById({required dynamic vacancyId});
+  Future<Either<Failure, Vacancy>> fetchVacancyById({
+    required dynamic vacancyId,
+  });
 
   Future<Either<Failure, ServiceModel>> fetchServiceById({
     required dynamic serviceId,
   });
 
   Future<Either<Failure, TaskModel>> fetchTaskById({required dynamic taskId});
-
-
 }
 
 class AdsViewDataSourceImpl extends AdsViewDataSource {
@@ -30,10 +30,18 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
     required dynamic serviceId,
   }) async {
     try {
+      debugPrint(
+        '[ADS][service][read] GET ${ApiConstants.fetchService(serviceId)}',
+      );
       final response = await _dio.get(ApiConstants.fetchService(serviceId));
       if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data));
+        return Right(
+          ServiceModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
+        debugPrint(
+          '[ADS][service][read][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -54,10 +62,16 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
     required dynamic taskId,
   }) async {
     try {
+      debugPrint('[ADS][task][read] GET ${ApiConstants.fetchTask(taskId)}');
       final response = await _dio.get(ApiConstants.fetchTask(taskId));
       if (response.statusCode == 200) {
-        return Right(TaskModel.fromJson(response.data));
+        return Right(
+          TaskModel.fromJson(response.data['data'] ?? response.data),
+        );
       } else {
+        debugPrint(
+          '[ADS][task][read][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {
@@ -78,10 +92,16 @@ class AdsViewDataSourceImpl extends AdsViewDataSource {
     required dynamic vacancyId,
   }) async {
     try {
+      debugPrint(
+        '[ADS][vacancy][read] GET ${ApiConstants.fetchVacancy(vacancyId)}',
+      );
       final response = await _dio.get(ApiConstants.fetchVacancy(vacancyId));
       if (response.statusCode == 200) {
-        return Right(Vacancy.fromMap(response.data));
+        return Right(Vacancy.fromMap(response.data['data'] ?? response.data));
       } else {
+        debugPrint(
+          '[ADS][vacancy][read][warn] status=${response.statusCode} payload=${response.data}',
+        );
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
         } else {

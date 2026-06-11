@@ -9,5 +9,5 @@ abstract class NotificationDetailsState with _$NotificationDetailsState {
     @Default(null) ServiceModel? service,
     @Default(null) TaskModel? task,
     @Default(null) Message? message,
-}) = _NotificationDetailsState;
+  }) = _NotificationDetailsState;
 }

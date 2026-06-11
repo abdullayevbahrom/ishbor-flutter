@@ -13,7 +13,9 @@ abstract class PaymentDataSource {
     String? provider,
   });
 
-  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({required Object id});
+  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({
+    required Object id,
+  });
 
   Future<Either<Failure, TransactionStatus>> checkTransactionStatus({
     required Object transactionId,
@@ -53,14 +55,13 @@ class PaymentDataSourceImpl extends PaymentDataSource {
     try {
       final response = await _dio.post(
         ApiConstants.paymentTransactions,
-        data: {
-          'amount': amount,
-          if (provider != null) 'provider': provider,
-        },
+        data: {'amount': amount, if (provider != null) 'provider': provider},
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return Right(Map<String, dynamic>.from(response.data['data'] ?? response.data));
+        return Right(
+          Map<String, dynamic>.from(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -73,11 +74,15 @@ class PaymentDataSourceImpl extends PaymentDataSource {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({required Object id}) async {
+  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({
+    required Object id,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchPaymentTransaction(id));
       if (response.statusCode == 200) {
-        return Right(Map<String, dynamic>.from(response.data['data'] ?? response.data));
+        return Right(
+          Map<String, dynamic>.from(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -94,9 +99,13 @@ class PaymentDataSourceImpl extends PaymentDataSource {
     required Object transactionId,
   }) async {
     try {
-      final response = await _dio.get(ApiConstants.checkPaymentTransaction(transactionId));
+      final response = await _dio.get(
+        ApiConstants.checkPaymentTransaction(transactionId),
+      );
       if (response.statusCode == 200) {
-        return Right(TransactionStatus.fromJson(response.data['data'] ?? response.data));
+        return Right(
+          TransactionStatus.fromJson(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -115,7 +124,9 @@ class PaymentDataSourceImpl extends PaymentDataSource {
     required String top,
   }) async {
     try {
-      final response = await _dio.post(ApiConstants.payFromBalance(content, contentId, top));
+      final response = await _dio.post(
+        ApiConstants.payFromBalance(content, contentId, top),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -137,9 +148,15 @@ class PaymentDataSourceImpl extends PaymentDataSource {
     required String provider,
   }) async {
     try {
-      final response = await _dio.post(ApiConstants.payByProvider(content, contentId, top, provider));
+      final response = await _dio.post(
+        ApiConstants.payByProvider(content, contentId, top, provider),
+      );
       if (response.statusCode == 200) {
-        return Right(response.data['data']?['url'] ?? response.data['url']?.toString() ?? '');
+        return Right(
+          response.data['data']?['url'] ??
+              response.data['url']?.toString() ??
+              '',
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -152,7 +169,9 @@ class PaymentDataSourceImpl extends PaymentDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> postPayFromBalance({required Object postId}) async {
+  Future<Either<Failure, void>> postPayFromBalance({
+    required Object postId,
+  }) async {
     try {
       final response = await _dio.post(ApiConstants.postPayFromBalance(postId));
       if (response.statusCode == 204 || response.statusCode == 200) {
@@ -174,9 +193,15 @@ class PaymentDataSourceImpl extends PaymentDataSource {
     required String provider,
   }) async {
     try {
-      final response = await _dio.post(ApiConstants.postPayByProvider(postId, provider));
+      final response = await _dio.post(
+        ApiConstants.postPayByProvider(postId, provider),
+      );
       if (response.statusCode == 200) {
-        return Right(response.data['data']?['url'] ?? response.data['url']?.toString() ?? '');
+        return Right(
+          response.data['data']?['url'] ??
+              response.data['url']?.toString() ??
+              '',
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

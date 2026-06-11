@@ -3,7 +3,7 @@ import 'dart:io';
 class TaskRequestModel {
   final dynamic taskId;
   final String title;
-  final List<int>? categoryIds;
+  final List<String>? categoryIds;
   final String city;
   final String description;
   final String price;

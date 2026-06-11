@@ -1,4 +1,3 @@
-
 import '../../../../models/feedback.dart';
 import '../../../services/data/models/service.dart';
 
@@ -34,16 +33,21 @@ class PaginatedFeedbackResponse {
   });
 
   factory PaginatedFeedbackResponse.fromJson(Map<String, dynamic> json) {
-    final payload = json['data'] is Map<String, dynamic>
-        ? Map<String, dynamic>.from(json['data'] as Map<String, dynamic>)
-        : json;
+    final payload =
+        json['data'] is Map<String, dynamic>
+            ? Map<String, dynamic>.from(json['data'] as Map<String, dynamic>)
+            : json;
     final rawItems = payload['items'] as List<dynamic>? ?? const [];
     return PaginatedFeedbackResponse(
       currentPageNumber: payload['current_page_number'] ?? 1,
       numItemsPerPage: payload['num_items_per_page'] ?? rawItems.length,
-      items: rawItems
-          .map((item) => FeedbackModel.fromMap(Map<String, dynamic>.from(item)))
-          .toList(),
+      items:
+          rawItems
+              .map(
+                (item) =>
+                    FeedbackModel.fromMap(Map<String, dynamic>.from(item)),
+              )
+              .toList(),
       totalCount: payload['total_count'] ?? rawItems.length,
       paginatorOptions: PaginatorOptions.fromMap(
         payload['paginator_options'] ?? const {},
@@ -92,6 +96,4 @@ class PaginatedFeedbackResponse {
       filtrationTemplate: filtrationTemplate ?? this.filtrationTemplate,
     );
   }
-
 }
-

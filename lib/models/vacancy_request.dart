@@ -17,13 +17,13 @@ class VacancyRequest extends AdRequest {
 
   @override
   List<Object?> get props => [
-        id,
-        vacancy,
-        performer,
-        status,
-        message,
-        createdAt,
-      ];
+    id,
+    vacancy,
+    performer,
+    status,
+    message,
+    createdAt,
+  ];
 
   static VacancyRequest fromMap(Map<String, dynamic> data) {
     return VacancyRequest(

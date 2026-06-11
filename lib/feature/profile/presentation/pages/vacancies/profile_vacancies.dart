@@ -58,8 +58,7 @@ class _ProfileVacanciesState extends State<ProfileVacancies> {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          MyVacancies(
-                          ),
+                          MyVacancies(),
                           SimilarVacancies(
                             myVacanciesCubit: context.read<MyVacanciesCubit>(),
                           ),

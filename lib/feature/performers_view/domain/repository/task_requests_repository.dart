@@ -10,7 +10,9 @@ abstract class TaskRequestsRepository {
     required TaskRequestParams params,
   });
 
-  Future<Either<Failure, TaskRequest>> ownRequestsTask({required Object taskId});
+  Future<Either<Failure, TaskRequest>> ownRequestsTask({
+    required Object taskId,
+  });
 
   Future<Either<Failure, PaginatedTaskRequestList>> listRequestsByTask({
     required Object taskId,
@@ -25,7 +27,9 @@ abstract class TaskRequestsRepository {
     String? status,
   });
 
-  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId});
+  Future<Either<Failure, TaskRequest>> getRequestDetail({
+    required Object requestId,
+  });
 
   Future<Either<Failure, void>> acceptRequest({required Object requestId});
 

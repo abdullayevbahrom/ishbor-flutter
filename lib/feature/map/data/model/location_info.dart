@@ -49,7 +49,10 @@ class LocationInfo {
       name: map['name'],
       displayName: map['display_name'],
       address: map['address'] != null ? Address.fromMap(map['address']) : null,
-      boundingBox: map['boundingbox'] != null ? List<String>.from(map['boundingbox']) : null,
+      boundingBox:
+          map['boundingbox'] != null
+              ? List<String>.from(map['boundingbox'])
+              : null,
     );
   }
 }

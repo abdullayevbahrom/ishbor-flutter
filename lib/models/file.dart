@@ -19,7 +19,14 @@ class File extends Equatable {
   });
 
   @override
-  List<Object> get props => [id, url, createdAt, originalName, extension, mimeType];
+  List<Object> get props => [
+    id,
+    url,
+    createdAt,
+    originalName,
+    extension,
+    mimeType,
+  ];
 
   static File fromMap(Map<String, dynamic> data) {
     return File(

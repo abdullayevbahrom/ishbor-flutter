@@ -1,5 +1,3 @@
-
-
 // class AppleLogin {
 //   final signInWithApple = SignInWithApple();
 //

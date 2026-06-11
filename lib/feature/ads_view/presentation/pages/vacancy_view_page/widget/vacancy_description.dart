@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/export.dart';
 
@@ -20,11 +21,10 @@ class WVacancyDescription extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            Formatters.translateText(
-              uzText: vacancy?.descriptionUz?.replaceAll("**", ""),
-              ruText: vacancy?.descriptionRu?.replaceAll("**", ""),
-              defaultText: vacancy?.description?.replaceAll("**", ""),
-            ),
+            vacancy?.description
+                    ?.resolve(context.locale.languageCode)
+                    ?.replaceAll("**", "") ??
+                '',
             style: AppTextStyles.size17Regular,
           ),
 

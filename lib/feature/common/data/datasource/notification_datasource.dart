@@ -10,7 +10,8 @@ abstract class NotificationsDataSource {
     Map<String, dynamic>? queryParams,
   );
 
-  Future<Either<Failure, NotificationListResponse>> fetchNotificationsByContent({
+  Future<Either<Failure, NotificationListResponse>>
+  fetchNotificationsByContent({
     required String content,
     Map<String, dynamic>? queryParams,
   });
@@ -53,7 +54,8 @@ class NotificationsDataSourceImpl extends NotificationsDataSource {
   }
 
   @override
-  Future<Either<Failure, NotificationListResponse>> fetchNotificationsByContent({
+  Future<Either<Failure, NotificationListResponse>>
+  fetchNotificationsByContent({
     required String content,
     Map<String, dynamic>? queryParams,
   }) async {

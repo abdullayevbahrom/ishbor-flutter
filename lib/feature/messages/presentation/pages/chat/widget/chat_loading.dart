@@ -23,9 +23,9 @@ class WChatLoading extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18.r),
               color:
-              isLeft
-                  ? AppColors.cFFFFFF.newWithOpacity(.5)
-                  : AppColors.cFFFFFF,
+                  isLeft
+                      ? AppColors.cFFFFFF.newWithOpacity(.5)
+                      : AppColors.cFFFFFF,
             ),
             child: Text(
               index % 3 == 1

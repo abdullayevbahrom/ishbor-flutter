@@ -37,7 +37,7 @@ abstract class TaskDataSource {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure,  PaginatedTaskResponse>> fetchMyTaskApplies({
+  Future<Either<Failure, PaginatedTaskResponse>> fetchMyTaskApplies({
     required CommonQueryParams queryParams,
   });
 
@@ -181,7 +181,7 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure,  PaginatedTaskResponse>> fetchMyTaskApplies({
+  Future<Either<Failure, PaginatedTaskResponse>> fetchMyTaskApplies({
     required CommonQueryParams queryParams,
   }) async {
     try {
@@ -190,7 +190,7 @@ class TaskDataSourceImpl extends TaskDataSource {
         queryParameters: queryParams.toMap(),
       );
       if (response.statusCode == 200) {
-        return Right( PaginatedTaskResponse.fromJson(response.data));
+        return Right(PaginatedTaskResponse.fromJson(response.data));
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
@@ -333,7 +333,9 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> liftUpTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> liftUpTaskById({
+    required dynamic taskId,
+  }) async {
     try {
       final response = await _dio.post(ApiConstants.liftUpTaskById(taskId));
       if (response.statusCode == 204) {
@@ -382,7 +384,9 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> deleteTaskById({
+    required dynamic taskId,
+  }) async {
     try {
       final response = await _dio.delete(ApiConstants.deleteTaskById(taskId));
       if (response.statusCode == 204) {
@@ -404,7 +408,9 @@ class TaskDataSourceImpl extends TaskDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> toggleTaskById({required dynamic taskId}) async {
+  Future<Either<Failure, void>> toggleTaskById({
+    required dynamic taskId,
+  }) async {
     try {
       final response = await _dio.post(ApiConstants.toggleTaskFavorite(taskId));
       if (response.statusCode == 204) {

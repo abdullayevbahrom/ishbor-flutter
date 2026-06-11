@@ -14,6 +14,10 @@ class SearchRepositoryImpl extends SearchRepository {
     String? type,
     int? limit,
   }) {
-    return _searchDataSource.globalSearch(query: query, type: type, limit: limit);
+    return _searchDataSource.globalSearch(
+      query: query,
+      type: type,
+      limit: limit,
+    );
   }
 }

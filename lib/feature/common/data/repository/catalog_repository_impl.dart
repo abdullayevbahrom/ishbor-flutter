@@ -11,10 +11,7 @@ class CatalogRepositoryImpl extends CatalogRepository {
   CatalogRepositoryImpl(this._catalogDataSource);
 
   @override
-  Future<Either<Failure, List<TagModel>>> fetchTags({
-    int? page,
-    int? size,
-  }) {
+  Future<Either<Failure, List<TagModel>>> fetchTags({int? page, int? size}) {
     return _catalogDataSource.fetchTags(page: page, size: size);
   }
 

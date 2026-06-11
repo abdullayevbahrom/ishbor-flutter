@@ -12,7 +12,9 @@ abstract class VacancyRequestDataSource {
     required String message,
   });
 
-  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({required Object vacancyId});
+  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({
+    required Object vacancyId,
+  });
 
   Future<Either<Failure, PaginatedVacancyRequestList>> listRequestsByVacancy({
     required Object vacancyId,
@@ -27,7 +29,9 @@ abstract class VacancyRequestDataSource {
     String? status,
   });
 
-  Future<Either<Failure, VacancyRequest>> getRequestDetail({required Object requestId});
+  Future<Either<Failure, VacancyRequest>> getRequestDetail({
+    required Object requestId,
+  });
 
   Future<Either<Failure, VacancyRequest>> changeStatus({
     required Object requestId,
@@ -54,7 +58,9 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return Right(VacancyRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          VacancyRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -67,9 +73,13 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({required Object vacancyId}) async {
+  Future<Either<Failure, VacancyRequest>> ownRequestsVacancy({
+    required Object vacancyId,
+  }) async {
     try {
-      final response = await _dio.get(ApiConstants.fetchOwnVacancyRequest(vacancyId));
+      final response = await _dio.get(
+        ApiConstants.fetchOwnVacancyRequest(vacancyId),
+      );
       if (response.statusCode == 200) {
         if (response.data['data'] == null) {
           return Left(Failure(message: "Not found"));
@@ -144,11 +154,17 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, VacancyRequest>> getRequestDetail({required Object requestId}) async {
+  Future<Either<Failure, VacancyRequest>> getRequestDetail({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.get(ApiConstants.fetchVacancyRequest(requestId));
+      final response = await _dio.get(
+        ApiConstants.fetchVacancyRequest(requestId),
+      );
       if (response.statusCode == 200) {
-        return Right(VacancyRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          VacancyRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -171,7 +187,9 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
         data: {'status': status},
       );
       if (response.statusCode == 200) {
-        return Right(VacancyRequest.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          VacancyRequest.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -184,9 +202,13 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteRequest({required Object requestId}) async {
+  Future<Either<Failure, void>> deleteRequest({
+    required Object requestId,
+  }) async {
     try {
-      final response = await _dio.delete(ApiConstants.deleteVacancyRequest(requestId));
+      final response = await _dio.delete(
+        ApiConstants.deleteVacancyRequest(requestId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {

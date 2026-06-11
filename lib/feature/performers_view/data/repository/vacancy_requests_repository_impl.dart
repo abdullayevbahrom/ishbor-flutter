@@ -16,7 +16,10 @@ class VacancyRequestsRepositoryImpl extends VacancyRequestsRepository {
     required Object vacancyId,
     required String message,
   }) {
-    return _requestDataSource.applyRequestVacancy(vacancyId: vacancyId, message: message);
+    return _requestDataSource.applyRequestVacancy(
+      vacancyId: vacancyId,
+      message: message,
+    );
   }
 
   @override
@@ -24,7 +27,10 @@ class VacancyRequestsRepositoryImpl extends VacancyRequestsRepository {
     required Object requestId,
     required String status,
   }) {
-    return _requestDataSource.changeStatus(requestId: requestId, status: status);
+    return _requestDataSource.changeStatus(
+      requestId: requestId,
+      status: status,
+    );
   }
 
   @override
@@ -33,7 +39,9 @@ class VacancyRequestsRepositoryImpl extends VacancyRequestsRepository {
   }
 
   @override
-  Future<Either<Failure, VacancyRequest>> getRequestDetail({required Object requestId}) {
+  Future<Either<Failure, VacancyRequest>> getRequestDetail({
+    required Object requestId,
+  }) {
     return _requestDataSource.getRequestDetail(requestId: requestId);
   }
 
@@ -43,7 +51,11 @@ class VacancyRequestsRepositoryImpl extends VacancyRequestsRepository {
     int? size,
     String? status,
   }) {
-    return _requestDataSource.listAllRequests(page: page, size: size, status: status);
+    return _requestDataSource.listAllRequests(
+      page: page,
+      size: size,
+      status: status,
+    );
   }
 
   @override

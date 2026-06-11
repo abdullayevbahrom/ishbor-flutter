@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
-class ScrollControllerHelpers{
+class ScrollControllerHelpers {
   void scrollToKey(GlobalKey key) {
     final context = key.currentContext;
     if (context != null) {
@@ -21,6 +21,4 @@ class ScrollControllerHelpers{
       }
     }
   }
-
-
 }

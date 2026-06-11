@@ -11,20 +11,20 @@ class ContactClickRepositoryImpl extends ContactClickRepository {
   ContactClickRepositoryImpl(this._clickDatasource);
 
   @override
-  Future<Either<Failure, void>> addContactClick({required ContactClickParams contactClickParams}) async{
+  Future<Either<Failure, void>> addContactClick({
+    required ContactClickParams contactClickParams,
+  }) async {
     final response = await _clickDatasource.addContactClick(
       contactClickParams: contactClickParams,
     );
 
     return response.fold(
-          (l) {
+      (l) {
         return Left(Failure(message: l.message));
       },
-          (r) {
+      (r) {
         return Right(r);
       },
     );
   }
-
-
 }

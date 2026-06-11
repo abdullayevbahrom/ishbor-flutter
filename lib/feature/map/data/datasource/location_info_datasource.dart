@@ -30,7 +30,9 @@ class LocationInfoDataSourceImpl extends LocationInfoDataSource {
       final response = await _dio.get(
         ApiConstants.reverseLocation,
         options: Options(
-          headers: {'User-Agent': 'IshBor/1.0 (jahongireshonqulov17@gmail.com)'},
+          headers: {
+            'User-Agent': 'IshBor/1.0 (jahongireshonqulov17@gmail.com)',
+          },
         ),
         queryParameters: {
           "format": "jsonv2",

@@ -105,7 +105,9 @@ class ChatCubit extends Cubit<ChatState> {
 
     response.fold(
       (l) {
-        emit(state.copyWith(fetchSt: RequestStatus.error, errorText: l.message));
+        emit(
+          state.copyWith(fetchSt: RequestStatus.error, errorText: l.message),
+        );
       },
       (r) {
         emit(state.copyWith(fetchSt: RequestStatus.loaded, messageRecords: r));
@@ -177,10 +179,11 @@ class ChatCubit extends Cubit<ChatState> {
       (event) {
         final decoded = jsonDecode(event);
         if (decoded is List) {
-          final messages = decoded.map<MessageRecord>((e) {
-            final parsed = e is String ? jsonDecode(e) : e;
-            return MessageRecord.fromMap(parsed);
-          }).toList();
+          final messages =
+              decoded.map<MessageRecord>((e) {
+                final parsed = e is String ? jsonDecode(e) : e;
+                return MessageRecord.fromMap(parsed);
+              }).toList();
           onIncomingMessage(messages);
         } else {
           final single = MessageRecord.fromMap(decoded);
@@ -277,16 +280,15 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> deleteRecords(List<Object> ids) async {
     final response = await _messagesRepository.deleteRecords(ids: ids);
-    response.fold(
-      (l) {},
-      (r) {
-        final currentItems = state.messageRecords?.items ?? [];
-        final newItems = currentItems.where((e) => !ids.contains(e.id)).toList();
-        emit(state.copyWith(
+    response.fold((l) {}, (r) {
+      final currentItems = state.messageRecords?.items ?? [];
+      final newItems = currentItems.where((e) => !ids.contains(e.id)).toList();
+      emit(
+        state.copyWith(
           messageRecords: state.messageRecords?.copyWith(items: newItems),
-        ));
-      },
-    );
+        ),
+      );
+    });
   }
 
   Future<void> closeConnection() async {

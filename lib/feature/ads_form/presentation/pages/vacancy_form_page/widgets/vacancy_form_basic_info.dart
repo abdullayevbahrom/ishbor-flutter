@@ -24,8 +24,6 @@ class VacancyFormBasicInfo extends StatefulWidget {
 }
 
 class _VacancyFormBasicInfoState extends State<VacancyFormBasicInfo> {
-
-
   Future<void> _updateCategories() async {
     final categories = await WCategoryPicker(
       categories: widget.formCustomState.categories,

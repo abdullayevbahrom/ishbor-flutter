@@ -29,7 +29,8 @@ class MessageCubit extends Cubit<MessageState> {
   }
 
   void checkLoadMoreData() {
-    if (state.messages?.totalCount != state.messages?.items.length && !state.isLoading) {
+    if (state.messages?.totalCount != state.messages?.items.length &&
+        !state.isLoading) {
       increasePage();
       fetchMoreMessages();
     }

@@ -29,24 +29,24 @@ class WActionButtons extends StatelessWidget {
         children: [
           enableCurrentLoc
               ? MaterialButton(
-            onPressed: onTapCurrentLoc,
-            height: 30.r,
-            padding: EdgeInsets.zero,
-            color: AppColors.cFFFFFF,
-            minWidth: 30.r,
-            shape: OutlineInputBorder(
-              borderSide: BorderSide.none,
-              borderRadius: BorderRadius.circular(30.r),
-            ),
-            child: Icon(CupertinoIcons.location).paddingAll(12.r),
-          )
+                onPressed: onTapCurrentLoc,
+                height: 30.r,
+                padding: EdgeInsets.zero,
+                color: AppColors.cFFFFFF,
+                minWidth: 30.r,
+                shape: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(30.r),
+                ),
+                child: Icon(CupertinoIcons.location).paddingAll(12.r),
+              )
               : DecoratedBox(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30.r),
-              color: AppColors.cFFFFFF,
-            ),
-            child: Icon(CupertinoIcons.location_slash).paddingAll(12.r),
-          ),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30.r),
+                  color: AppColors.cFFFFFF,
+                ),
+                child: Icon(CupertinoIcons.location_slash).paddingAll(12.r),
+              ),
           SizedBox(height: 10.h),
           MaterialButton(
             onPressed: onTapAddBtn,
@@ -71,7 +71,6 @@ class WActionButtons extends StatelessWidget {
             minWidth: 30.r,
 
             shape: OutlineInputBorder(
-
               borderSide: BorderSide.none,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(12.r),

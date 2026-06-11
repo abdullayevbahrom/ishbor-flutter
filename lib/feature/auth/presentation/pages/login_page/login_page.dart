@@ -16,8 +16,6 @@ import '../../../../common/presentation/widget/app_phone_form_field.dart';
 import '../../cubit/auth_cubit/auth_cubit.dart';
 
 class LoginPage extends StatelessWidget {
-
-
   LoginPage({super.key});
 
   final _formKey = GlobalKey<FormState>();
@@ -118,10 +116,7 @@ class LoginPage extends StatelessWidget {
                           if (_formKey.currentState?.validate() ?? false) {
                             context.read<AuthCubit>().verifyPhoneNumber(
                               phoneNumber:
-                                  "+998${_phoneNumberController.text.trim().replaceAll(
-                                    " ",
-                                    '',
-                                  )}",
+                                  "+998${_phoneNumberController.text.trim().replaceAll(" ", '')}",
                             );
                           }
                         },
@@ -177,8 +172,6 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-
-
 
 /*
 class LoginPage extends StatefulWidget {

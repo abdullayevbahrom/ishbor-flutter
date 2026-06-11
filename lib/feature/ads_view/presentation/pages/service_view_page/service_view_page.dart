@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -122,9 +123,12 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
             children: [
               WAdsViewTitle(
                 title: Formatters.translateText(
-                  uzText: service?.titleUz,
-                  ruText: service?.titleRu,
-                  defaultText: service?.title,
+                  uzText: service == null ? null : service.title.uz,
+                  ruText: service == null ? null : service.title.ru,
+                  defaultText:
+                      service == null
+                          ? null
+                          : service.title.resolve(context.locale.languageCode),
                 ),
                 createdAt: service?.createdAt ?? DateTime.now(),
                 city: service?.city,

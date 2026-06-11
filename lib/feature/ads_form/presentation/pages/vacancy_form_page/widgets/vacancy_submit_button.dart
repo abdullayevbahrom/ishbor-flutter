@@ -95,7 +95,7 @@ class VacancyFormSubmitButton extends StatelessWidget {
             child: AppButton(
               isLoading: state.formSt.isLoading(),
               onPressed: () {
-                if (formKeys.form.currentState?.validate()??false) {
+                if (formKeys.form.currentState?.validate() ?? false) {
                   if ((userState.user?.balance ?? 0) >= 5000 ||
                       (userState.user?.contentCount ?? 0) <
                           (userState.user?.contentLimit ?? 0)) {

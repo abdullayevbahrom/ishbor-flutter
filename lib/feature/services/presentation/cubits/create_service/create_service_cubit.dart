@@ -56,9 +56,9 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
     emit(state.copyWith(isUZS: isUZS ?? !state.isUZS));
   }
 
-  void updateCategory({int? categoryId, String? categoryName}) {
+  void updateCategory({String? categoryId, String? categoryName}) {
     categoryController.text = categoryName ?? '';
-    emit(state.copyWith(category: categoryId ?? 0));
+    emit(state.copyWith(category: categoryId ?? ''));
   }
 
   void updateCheckBox() {
@@ -114,7 +114,7 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
                 ? "+998" + phoneNumberController3.text.trim()
                 : "",
         title: serviceNameController.text.trim(),
-        categoryIds: [state.category],
+        categoryIds: state.category.isNotEmpty ? [state.category] : null,
         description: serviceDescriptionController.text.trim(),
         price:
             !state.isNegotiable
@@ -168,21 +168,25 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
     final response = await _serviceRepository.editService(
       service: ServiceCreateRequest(
         serviceId: serviceId,
-        phoneNumber: "+998" + phoneNumberController.text.trim().replaceAll(" ",''),
+        phoneNumber:
+            "+998" + phoneNumberController.text.trim().replaceAll(" ", ''),
         phoneNumber1:
-        phoneNumberController1.text.trim().isNotEmpty
-            ? "+998" + phoneNumberController1.text.trim().replaceAll(" ",'')
-            : "",
+            phoneNumberController1.text.trim().isNotEmpty
+                ? "+998" +
+                    phoneNumberController1.text.trim().replaceAll(" ", '')
+                : "",
         phoneNumber2:
-        phoneNumberController2.text.trim().isNotEmpty
-            ? "+998" + phoneNumberController2.text.trim().replaceAll(" ",'')
-            : "",
+            phoneNumberController2.text.trim().isNotEmpty
+                ? "+998" +
+                    phoneNumberController2.text.trim().replaceAll(" ", '')
+                : "",
         phoneNumber3:
-        phoneNumberController3.text.trim().isNotEmpty
-            ? "+998" + phoneNumberController3.text.trim().replaceAll(" ",'')
-            : "",
+            phoneNumberController3.text.trim().isNotEmpty
+                ? "+998" +
+                    phoneNumberController3.text.trim().replaceAll(" ", '')
+                : "",
         title: serviceNameController.text.trim(),
-        categoryIds: [state.category],
+        categoryIds: state.category.isNotEmpty ? [state.category] : null,
         description: serviceDescriptionController.text.trim(),
         price:
             !state.isNegotiable
@@ -228,8 +232,10 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
   }
 
   void initService(ServiceModel service) {
-    serviceNameController.text = service.title;
-    serviceDescriptionController.text = service.description ?? "";
+    final locale = navigatorKey.currentContext?.locale.languageCode;
+    serviceNameController.text = service.title.resolve(locale) ?? '';
+    serviceDescriptionController.text =
+        service.description?.resolve(locale) ?? '';
     minSalaryController.text = (service.price?.toInt() ?? 0).toString();
     cityController.text = service.city ?? "";
     serviceLocationController.text = service.address?.addressLine ?? '';

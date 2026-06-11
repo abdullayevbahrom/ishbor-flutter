@@ -3,13 +3,16 @@ class SnakeCaseMapper {
 
   static dynamic normalizeValue(dynamic value) {
     if (value is Map) {
-      final entries = value.entries.map(
-        (entry) => MapEntry(
-          normalizeKey(entry.key.toString()),
-          normalizeValue(entry.value),
-        ),
-      ).toList()
-        ..sort((left, right) => left.key.compareTo(right.key));
+      final entries =
+          value.entries
+              .map(
+                (entry) => MapEntry(
+                  normalizeKey(entry.key.toString()),
+                  normalizeValue(entry.value),
+                ),
+              )
+              .toList()
+            ..sort((left, right) => left.key.compareTo(right.key));
 
       return Map<String, dynamic>.fromEntries(entries);
     }
@@ -35,8 +38,8 @@ class SnakeCaseMapper {
 
     for (var index = 0; index < value.length; index++) {
       final char = value[index];
-      final isUpperCase = char.toUpperCase() == char &&
-          char.toLowerCase() != char;
+      final isUpperCase =
+          char.toUpperCase() == char && char.toLowerCase() != char;
 
       if (isUpperCase && index > 0) {
         buffer.write('_');
@@ -54,6 +57,7 @@ class SnakeCaseMapper {
   static Map<String, dynamic> normalizeBody(Map<dynamic, dynamic> value) =>
       normalizeMap(value);
 
-  static Map<String, dynamic> normalizeFormFields(Map<dynamic, dynamic> value) =>
-      normalizeMap(value);
+  static Map<String, dynamic> normalizeFormFields(
+    Map<dynamic, dynamic> value,
+  ) => normalizeMap(value);
 }

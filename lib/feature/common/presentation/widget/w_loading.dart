@@ -4,7 +4,7 @@ import 'package:lottie/lottie.dart';
 import 'package:top_jobs/core/theme/app_lottie.dart';
 
 class WLoadingLottie extends StatelessWidget {
-  const WLoadingLottie({super.key,  this.height,  this.width});
+  const WLoadingLottie({super.key, this.height, this.width});
 
   final double? height;
   final double? width;
@@ -15,8 +15,8 @@ class WLoadingLottie extends StatelessWidget {
       child: Lottie.asset(
         AppLottie.wLoading,
         fit: BoxFit.contain,
-        height: height??30.r,
-        width: width??30.r,
+        height: height ?? 30.r,
+        width: width ?? 30.r,
       ),
     );
   }

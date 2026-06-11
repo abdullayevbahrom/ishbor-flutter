@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-
 class NetworkStatusManager {
   final Connectivity _connectivity = Connectivity();
   StreamSubscription<List<ConnectivityResult>>? _connectivitySubscription;
@@ -10,7 +9,7 @@ class NetworkStatusManager {
   NetworkStatusManager._internal();
 
   static final NetworkStatusManager _instance =
-  NetworkStatusManager._internal();
+      NetworkStatusManager._internal();
 
   factory NetworkStatusManager() => _instance;
 
@@ -20,13 +19,15 @@ class NetworkStatusManager {
   Future<List<ConnectivityResult>> get currentConnectivity =>
       _connectivity.checkConnectivity();
 
-  void startListening(void Function(List<ConnectivityResult>) onConnectivityChanged) {
-    _connectivitySubscription =
-        _connectivity.onConnectivityChanged.listen(onConnectivityChanged);
+  void startListening(
+    void Function(List<ConnectivityResult>) onConnectivityChanged,
+  ) {
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+      onConnectivityChanged,
+    );
   }
 
   void stopListening() {
     _connectivitySubscription?.cancel();
   }
 }
-

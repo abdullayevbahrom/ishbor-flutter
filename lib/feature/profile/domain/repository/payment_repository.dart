@@ -9,7 +9,9 @@ abstract class PaymentRepository {
     String? provider,
   });
 
-  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({required Object id});
+  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({
+    required Object id,
+  });
 
   Future<Either<Failure, TransactionStatus>> checkTransactionStatus({
     required Object transactionId,

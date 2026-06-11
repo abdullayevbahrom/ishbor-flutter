@@ -39,7 +39,7 @@ class WReviewMood extends StatelessWidget {
               text,
               style: AppTextStyles.size15Medium.copyWith(
                 color:
-                isActive ?? false ? AppColors.cFFFFFF : AppColors.c333333,
+                    isActive ?? false ? AppColors.cFFFFFF : AppColors.c333333,
               ),
             ),
           ],

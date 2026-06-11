@@ -36,7 +36,6 @@ class _WAdsLocationViewState extends State<WAdsLocationView> {
   bool isActive = false;
   YandexMapController? _controller;
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -142,15 +141,21 @@ class _WAdsLocationViewState extends State<WAdsLocationView> {
                             widget.vacancy != null
                                 ? widget.vacancy?.address?.addressLine ?? ''
                                 : widget.serviceModel != null
-                                ? widget.serviceModel?.address?.addressLine ?? ""
-                                : widget.taskModel?.addresses.first.addressLine ?? '',
+                                ? widget.serviceModel?.address?.addressLine ??
+                                    ""
+                                : widget
+                                        .taskModel
+                                        ?.addresses
+                                        .first
+                                        .addressLine ??
+                                    '',
                             textAlign: TextAlign.center,
                             style: AppTextStyles.size12Medium.copyWith(
                               color: AppColors.c2E3A59,
                               fontWeight: FontWeight.w700,
                             ),
                           ),
-                        ).paddingSymmetric(horizontal: 10,vertical: 6),
+                        ).paddingSymmetric(horizontal: 10, vertical: 6),
                       ),
                     ).paddingSymmetric(horizontal: 10.w),
                   ),

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import '../../../../models/address.dart';
@@ -42,9 +41,9 @@ import '../../../../models/address.dart';
 // }
 
 class VacancyRequest {
-  final dynamic vacancyId;
+  final String? vacancyId;
   final String title;
-  final int? categories;
+  final List<String> categories;
   final String city;
   final String description;
   final AddressModel? address;
@@ -65,7 +64,7 @@ class VacancyRequest {
   VacancyRequest({
     this.vacancyId,
     required this.title,
-    this.categories,
+    this.categories = const [],
     required this.city,
     required this.description,
     required this.address,
@@ -86,47 +85,61 @@ class VacancyRequest {
 
   factory VacancyRequest.fromJson(Map<String, dynamic> json) {
     return VacancyRequest(
-      phoneNumber: json['phoneNumber'],
-      images: json['images'],
+      phoneNumber: json['phone_number'],
+      images: List<File>.from(json['images'] ?? const []),
       title: json['title'],
       categories:
-          json['categories'] != null ? (jsonDecode(json['categories'])) : null,
+          (json['category_ids'] as List? ??
+                  json['categories'] as List? ??
+                  const [])
+              .map((value) => value.toString())
+              .toList(),
       city: json['city'],
       description: json['description'],
-      address: AddressModel.fromJson(json['address']),
-      salaryMin: json['salaryMin'],
-      salaryMax: json['salaryMax'],
+      address:
+          json['address'] != null
+              ? AddressModel.fromJson(json['address'])
+              : null,
+      salaryMin: json['salary_min'],
+      salaryMax: json['salary_max'],
       skills: List<String>.from(json['skills']),
-      shortDescription: json['shortDescription'],
-      whoCanRespond: json['whoCanRespond'],
-      employmentType: json['employmentType'],
-      jobModes: List<String>.from(json['jobModes']),
-      partialJobOpportunity: json['partialJobOpportunity'],
+      shortDescription: json['short_description'],
+      whoCanRespond: List<String>.from(json['who_can_respond'] ?? const []),
+      employmentType: json['employment_type'],
+      jobModes: List<String>.from(json['job_modes'] ?? const []),
+      partialJobOpportunity: json['partial_job_opportunity'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'title': title,
-      if (categories != null) 'categories': jsonEncode(categories),
+      if (categories.isNotEmpty) 'category_ids': categories,
       'city': city,
       'description': description,
-      if (address != null) 'address': address!,
-      'salaryMin': salaryMin.toString(),
-      'salaryMax': salaryMax.toString(),
-      'skills': skills,
-      'shortDescription': shortDescription,
-      'whoCanRespond': whoCanRespond,
-      'employmentType': employmentType,
-      'jobModes': jobModes,
+      if (address != null) 'address': address!.toJson(),
+      if (salaryMin != null) 'salary_min': salaryMin,
+      if (salaryMax != null) 'salary_max': salaryMax,
+      if (skills.isNotEmpty) 'skills': skills,
+      if (shortDescription.isNotEmpty) 'short_description': shortDescription,
+      if (whoCanRespond.isNotEmpty) 'who_can_respond': whoCanRespond,
+      if (employmentType.isNotEmpty) 'employment_type': employmentType,
+      if (jobModes.isNotEmpty) 'job_modes': jobModes,
       if (partialJobOpportunity != null)
-        'partialJobOpportunity': partialJobOpportunity,
+        'partial_job_opportunity': partialJobOpportunity,
+      'phone_number': _normalizePhone(phoneNumber),
+      if ((phoneNumber1 ?? '').isNotEmpty)
+        'phone_number1': _normalizePhone(phoneNumber1),
+      if ((phoneNumber2 ?? '').isNotEmpty)
+        'phone_number2': _normalizePhone(phoneNumber2),
+      if ((phoneNumber3 ?? '').isNotEmpty)
+        'phone_number3': _normalizePhone(phoneNumber3),
     };
   }
 
   VacancyRequest copyWith({
     String? title,
-    int? categories,
+    List<String>? categories,
     String? city,
     String? description,
     AddressModel? address,
@@ -143,7 +156,6 @@ class VacancyRequest {
     String? phoneNumber1,
     String? phoneNumber2,
     String? phoneNumber3,
-
   }) {
     return VacancyRequest(
       images: images ?? this.images,
@@ -162,12 +174,25 @@ class VacancyRequest {
       partialJobOpportunity:
           partialJobOpportunity ?? this.partialJobOpportunity,
       phoneNumber: phoneNumber ?? this.phoneNumber,
-      phoneNumber1: phoneNumber1??this.phoneNumber1,
-      phoneNumber2: phoneNumber1??this.phoneNumber2,
-      phoneNumber3: phoneNumber1??this.phoneNumber3,
-
+      phoneNumber1: phoneNumber1 ?? this.phoneNumber1,
+      phoneNumber2: phoneNumber2 ?? this.phoneNumber2,
+      phoneNumber3: phoneNumber3 ?? this.phoneNumber3,
     );
   }
+}
+
+String _normalizePhone(String? value) {
+  final digits = (value ?? '').replaceAll(RegExp(r'[^0-9+]'), '').trim();
+  if (digits.isEmpty) {
+    return '';
+  }
+  if (digits.startsWith('+998')) {
+    return digits;
+  }
+  if (digits.startsWith('998')) {
+    return '+$digits';
+  }
+  return '+998$digits';
 }
 
 // class Address {

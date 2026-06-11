@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 /// Job posting model built from numeric-keyed JSON.
 class ChatGptResponse {
   /// 1: "Savdo agenti, haydovchi va sklad mudiri"
@@ -54,7 +55,10 @@ class ChatGptResponse {
     List<String> parseDistricts(dynamic v) {
       if (v == null) return const [];
       if (v is List) {
-        return v.map((e) => e?.toString().trim() ?? '').where((e) => e.isNotEmpty).toList();
+        return v
+            .map((e) => e?.toString().trim() ?? '')
+            .where((e) => e.isNotEmpty)
+            .toList();
       }
       if (v is String) {
         return v
@@ -68,20 +72,38 @@ class ChatGptResponse {
 
     List<String> parseStringList(dynamic v) {
       if (v is List) {
-        return v.map((e) => e?.toString() ?? '').where((e) => e.isNotEmpty).toList();
+        return v
+            .map((e) => e?.toString() ?? '')
+            .where((e) => e.isNotEmpty)
+            .toList();
       }
       return const [];
     }
 
     return ChatGptResponse(
       title: json['1']?.toString() ?? '',
-      experienceYears: (json['2'] is num) ? (json['2'] as num).toInt() : int.tryParse(json['2']?.toString() ?? ''),
-      salaryFrom: (json['3'] is num) ? (json['3'] as num).toInt() : int.tryParse(json['3']?.toString() ?? ''),
-      salaryTo: (json['4'] is num) ? (json['4'] as num).toInt() : int.tryParse(json['4']?.toString() ?? ''),
+      experienceYears:
+          (json['2'] is num)
+              ? (json['2'] as num).toInt()
+              : int.tryParse(json['2']?.toString() ?? ''),
+      salaryFrom:
+          (json['3'] is num)
+              ? (json['3'] as num).toInt()
+              : int.tryParse(json['3']?.toString() ?? ''),
+      salaryTo:
+          (json['4'] is num)
+              ? (json['4'] as num).toInt()
+              : int.tryParse(json['4']?.toString() ?? ''),
       skills: parseStringList(json['5']),
       companyDescription: json['6']?.toString(),
-      flag7: (json['7'] is num) ? (json['7'] as num).toInt() : int.tryParse(json['7']?.toString() ?? ''),
-      flag8: (json['8'] is num) ? (json['8'] as num).toInt() : int.tryParse(json['8']?.toString() ?? ''),
+      flag7:
+          (json['7'] is num)
+              ? (json['7'] as num).toInt()
+              : int.tryParse(json['7']?.toString() ?? ''),
+      flag8:
+          (json['8'] is num)
+              ? (json['8'] as num).toInt()
+              : int.tryParse(json['8']?.toString() ?? ''),
       benefits: parseStringList(json['9']),
       region: json['10']?.toString(),
       districts: parseDistricts(json['11']),
@@ -178,31 +200,18 @@ class ChatGptResponse {
   }
 }
 
-
 class NewChatGptResponse {
   final bool ok;
   final Result result;
 
-  NewChatGptResponse({
-    required this.ok,
-    required this.result,
-  });
+  NewChatGptResponse({required this.ok, required this.result});
 
-  NewChatGptResponse copyWith({
-    bool? ok,
-    Result? result,
-  }) {
-    return NewChatGptResponse(
-      ok: ok ?? this.ok,
-      result: result ?? this.result,
-    );
+  NewChatGptResponse copyWith({bool? ok, Result? result}) {
+    return NewChatGptResponse(ok: ok ?? this.ok, result: result ?? this.result);
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'ok': ok,
-      'result': result.toMap(),
-    };
+    return {'ok': ok, 'result': result.toMap()};
   }
 
   factory NewChatGptResponse.fromMap(Map<String, dynamic> map) {
@@ -223,7 +232,9 @@ class NewChatGptResponse {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is NewChatGptResponse && other.ok == ok && other.result == result;
+    return other is NewChatGptResponse &&
+        other.ok == ok &&
+        other.result == result;
   }
 
   @override
@@ -232,7 +243,7 @@ class NewChatGptResponse {
 
 class Result {
   final String? title;
-  final Category?  category;
+  final Category? category;
   final int? salaryMin;
   final int? salaryMax;
   final List<String?> phoneNumbers;
@@ -277,9 +288,10 @@ class Result {
       category: Category.fromMap(map['category'] as Map<String, dynamic>),
       salaryMin: (map['salaryMin'] as num?)?.toInt(),
       salaryMax: (map['salaryMax'] as num?)?.toInt(),
-      phoneNumbers: map['phone_numbers'] == null
-          ? <String>[]
-          : List<String?>.from(map['phone_numbers'] as List),
+      phoneNumbers:
+          map['phone_numbers'] == null
+              ? <String>[]
+              : List<String?>.from(map['phone_numbers'] as List),
     );
   }
 

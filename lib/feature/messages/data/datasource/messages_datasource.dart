@@ -34,7 +34,9 @@ abstract class MessagesDataSource {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure, MessageRecord>> getRecordDetail({required Object recordId});
+  Future<Either<Failure, MessageRecord>> getRecordDetail({
+    required Object recordId,
+  });
 
   Future<Either<Failure, MessageRecord>> sendMessage({
     required String receiverId,
@@ -118,7 +120,10 @@ class MessagesDataSourceImpl extends MessagesDataSource {
     String? type,
   }) async {
     try {
-      final url = type != null ? ApiConstants.listMessages(type) : ApiConstants.messages;
+      final url =
+          type != null
+              ? ApiConstants.listMessages(type)
+              : ApiConstants.messages;
       final response = await _dio.get(
         url,
         queryParameters: queryParams.toMap(),
@@ -162,11 +167,17 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   }
 
   @override
-  Future<Either<Failure, MessageRecord>> getRecordDetail({required Object recordId}) async {
+  Future<Either<Failure, MessageRecord>> getRecordDetail({
+    required Object recordId,
+  }) async {
     try {
-      final response = await _dio.get(ApiConstants.fetchMessageRecord(recordId));
+      final response = await _dio.get(
+        ApiConstants.fetchMessageRecord(recordId),
+      );
       if (response.statusCode == 200) {
-        return Right(MessageRecord.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          MessageRecord.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -199,7 +210,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return Right(MessageRecord.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          MessageRecord.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -232,7 +245,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return Right(MessageRecord.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          MessageRecord.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -255,7 +270,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
         "file": await MultipartFile.fromFile(
           path,
           filename: path.split('/').last,
-          contentType: DioMediaType.parse(mimeTypes ?? 'application/octet-stream'),
+          contentType: DioMediaType.parse(
+            mimeTypes ?? 'application/octet-stream',
+          ),
         ),
       });
 
@@ -295,7 +312,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteRecords({required List<Object> ids}) async {
+  Future<Either<Failure, void>> deleteRecords({
+    required List<Object> ids,
+  }) async {
     try {
       final response = await _dio.delete(
         ApiConstants.deleteMessageRecords,

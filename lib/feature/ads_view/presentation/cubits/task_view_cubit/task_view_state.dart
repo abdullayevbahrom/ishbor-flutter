@@ -9,8 +9,8 @@ abstract class TaskViewState with _$TaskViewState {
     @Default(RequestStatus.initial) RequestStatus ownTaskRequestSt,
     @Default(false) bool isLoadingMore,
     @Default(null) TaskModel? task,
-    @Default(null)  PaginatedTaskListResponse? listTasks,
+    @Default(null) PaginatedTaskListResponse? listTasks,
     @Default(null) TaskRequest? myRequest,
-    @Default(null) dynamic taskId
+    @Default(null) dynamic taskId,
   }) = _TaskViewState;
 }

@@ -1,4 +1,3 @@
-
 class AddressModel {
   final int? id;
   final String? addressLine;
@@ -6,7 +5,6 @@ class AddressModel {
   final double? longitude;
 
   AddressModel({this.id, this.addressLine, this.latitude, this.longitude});
-
 
   static AddressModel fromJson(Map<String, dynamic> data) {
     return AddressModel(
@@ -19,7 +17,7 @@ class AddressModel {
 
   Map<String, dynamic> toJson() {
     return {
-      if (addressLine != null) 'addressLine': addressLine,
+      if (addressLine != null) 'address_line': addressLine,
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
     };

@@ -27,9 +27,7 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> acceptRequest({
-    required Object requestId,
-  }) {
+  Future<Either<Failure, void>> acceptRequest({required Object requestId}) {
     return _requestDataSource.acceptRequest(requestId: requestId);
   }
 
@@ -74,7 +72,10 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
     required Object requestId,
     required String status,
   }) {
-    return _requestDataSource.changeStatus(requestId: requestId, status: status);
+    return _requestDataSource.changeStatus(
+      requestId: requestId,
+      status: status,
+    );
   }
 
   @override
@@ -83,7 +84,9 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
   }
 
   @override
-  Future<Either<Failure, TaskRequest>> getRequestDetail({required Object requestId}) {
+  Future<Either<Failure, TaskRequest>> getRequestDetail({
+    required Object requestId,
+  }) {
     return _requestDataSource.getRequestDetail(requestId: requestId);
   }
 
@@ -93,6 +96,10 @@ class TaskRequestsRepositoryImpl extends TaskRequestsRepository {
     int? size,
     String? status,
   }) {
-    return _requestDataSource.listAllRequests(page: page, size: size, status: status);
+    return _requestDataSource.listAllRequests(
+      page: page,
+      size: size,
+      status: status,
+    );
   }
 }

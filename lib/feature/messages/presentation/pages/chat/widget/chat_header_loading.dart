@@ -26,12 +26,11 @@ class WChatHeaderLoading extends StatelessWidget {
           children: [
             5.verticalSpace,
             InkWell(
-              onTap: () {
-              },
+              onTap: () {},
               child: Row(
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                   WDefaultUserAvatar(height: 50.r),
+                  WDefaultUserAvatar(height: 50.r),
                   AppUtils.wSizedBox16,
                   Flexible(
                     child: Column(
@@ -48,16 +47,11 @@ class WChatHeaderLoading extends StatelessWidget {
                               ),
                             ),
                             AppUtils.wSizedBox4,
-
                           ],
                         ),
                         Text(
                           LocaleKeys.lastSeenAgo.tr(
-                            args: [
-                              Formatters.timeAgo(
-                                DateTime.now(),
-                              ),
-                            ],
+                            args: [Formatters.timeAgo(DateTime.now())],
                           ),
                           style: AppTextStyles.size15Regular.copyWith(
                             color: AppColors.c888888,
@@ -76,8 +70,7 @@ class WChatHeaderLoading extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       onSelected: (value) {
-                        if (value == "profile") {
-                        }
+                        if (value == "profile") {}
                       },
                       itemBuilder: (context) {
                         return [
@@ -113,11 +106,7 @@ class WChatHeaderLoading extends StatelessWidget {
                 ],
               ).paddingSymmetric(horizontal: 16.w, vertical: 14.h),
             ),
-            AppDivider(
-              width: 100.sw,
-              height: 2.h,
-              color: AppColors.cE0E5EB,
-            ),
+            AppDivider(width: 100.sw, height: 2.h, color: AppColors.cE0E5EB),
           ],
         ),
       ).paddingOnly(bottom: 10.h),

@@ -10,6 +10,7 @@ abstract class LocationInfoRepository {
     required LatLng point,
   });
 
-  Future<Either<Failure, List<SuggestedLocation>>> fetchSuggestionsFromQuery(String query);
-
+  Future<Either<Failure, List<SuggestedLocation>>> fetchSuggestionsFromQuery(
+    String query,
+  );
 }

@@ -164,12 +164,6 @@ class ServiceModel extends AdPricable {
     images,
     price,
     negotiable,
-    titleUz,
-    titleRu,
-    descriptionUz,
-    descriptionRu,
-    shortDescriptionUz,
-    shortDescriptionRu,
     this.address,
     this.isNeedLiftUp,
     this.isFavorite,
@@ -191,12 +185,6 @@ class ServiceModel extends AdPricable {
          performer: performer,
          shortDescription: shortDescription,
          price: price,
-         titleUz: titleUz,
-         titleRu: titleRu,
-         descriptionUz: descriptionUz,
-         descriptionRu: descriptionRu,
-         shortDescriptionRu: shortDescriptionRu,
-         shortDescriptionUz: shortDescriptionUz,
        );
 
   @override
@@ -216,7 +204,7 @@ class ServiceModel extends AdPricable {
     categories,
     images,
     address,
-    isFavorite
+    isFavorite,
   ];
 
   static ServiceModel fromMap(Map<String, dynamic> data) => ServiceModel(
@@ -251,17 +239,11 @@ class ServiceModel extends AdPricable {
     negotiable: data['negotiable'],
     price: data['price'],
     isNeedLiftUp: data['is_need_lift_up'],
-    titleUz: data['title_uz'],
-    titleRu: data['title_ru'],
-    descriptionRu: data['description_ru'],
-    descriptionUz: data['description_uz'],
-    shortDescriptionUz: data['short_description_uz'],
-    shortDescriptionRu: data['short_description_ru'],
     phoneNumber1: data['phone_number1'],
     phoneNumber2: data['phone_number2'],
     phoneNumber3: data['phone_number3'],
     clickCount: data['click_count'],
-    isFavorite: data['is_favorite']
+    isFavorite: data['is_favorite'],
   );
 
   ServiceModel copyWith({
@@ -286,12 +268,6 @@ class ServiceModel extends AdPricable {
     num? price,
     AddressModel? address,
     bool? isNeedLiftUp,
-    String? titleUz,
-    String? titleRu,
-    String? descriptionUz,
-    String? descriptionRu,
-    String? shortDescriptionUz,
-    String? shortDescriptionRu,
     bool? isFavorite,
     int? clickCount,
   }) {
@@ -314,17 +290,11 @@ class ServiceModel extends AdPricable {
       price: price ?? this.price,
       address: address ?? this.address,
       isNeedLiftUp: isNeedLiftUp ?? this.isNeedLiftUp,
-      titleUz: titleUz ?? this.titleUz,
-      titleRu: titleRu ?? this.titleRu,
-      descriptionUz: descriptionUz ?? this.descriptionUz,
-      descriptionRu: descriptionRu ?? this.descriptionRu,
-      shortDescriptionUz: shortDescriptionUz ?? this.shortDescriptionUz,
-      shortDescriptionRu: shortDescriptionRu ?? this.shortDescriptionRu,
       phoneNumber1: phoneNumber1 ?? this.phoneNumber1,
       phoneNumber2: phoneNumber2 ?? this.phoneNumber2,
       phoneNumber3: phoneNumber3 ?? this.phoneNumber3,
-      isFavorite: isFavorite??this.isFavorite,
-      clickCount: clickCount??this.clickCount
+      isFavorite: isFavorite ?? this.isFavorite,
+      clickCount: clickCount ?? this.clickCount,
     );
   }
 }

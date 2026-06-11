@@ -31,9 +31,7 @@ class UserProfileUpdateRequest {
       if (firstName != null) 'first_name': firstName,
       if (lastName != null) 'last_name': lastName,
       if (parsedBirthDay != null)
-        'birth_day': DateFormat(
-          'yyyy/MM/dd',
-        ).format(parsedBirthDay),
+        'birth_day': DateFormat('yyyy/MM/dd').format(parsedBirthDay),
       if (email != null && (email ?? '').isNotEmpty) 'email': email,
       if (city != null && (city ?? '').isNotEmpty) 'city': city ?? '',
       if (gender != null && (gender ?? '').isNotEmpty) 'gender': gender,

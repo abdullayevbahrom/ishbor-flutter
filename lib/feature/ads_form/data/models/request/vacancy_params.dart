@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import '../../../../../models/address.dart';
@@ -22,10 +21,10 @@ class VacancyParams {
   final String? whoCanRespond;
   final bool? partialJobOpportunity;
   final bool? salaryIsNegotiable;
-  final String? employmentType; // faqat bitta string yuboriladi
+  final String? employmentType;
   final List<String> jobModes;
   final List<File> uploadedImages;
-  final List<int> categories; // server string "[1,2,3]"
+  final List<String> categories;
 
   VacancyParams({
     this.title,
@@ -73,7 +72,7 @@ class VacancyParams {
     String? employmentType,
     List<String>? jobModes,
     List<File>? uploadedImages,
-    List<int>? categories,
+    List<String>? categories,
   }) {
     return VacancyParams(
       title: title ?? this.title,
@@ -105,36 +104,36 @@ class VacancyParams {
   Map<String, dynamic> toJson() {
     return {
       'title': title,
-      if (workTime != null) 'workTime': workTime,
+      if (workTime != null) 'work_time': workTime,
       if (tags.isNotEmpty) 'tags': tags.map((e) => e.toJson()).toList(),
       'city': city,
       'address': address?.toJson(),
       'description': description,
-      'phoneNumber': "+998${phoneNumber!}",
+      if (phoneNumber != null) 'phone_number': _normalizePhone(phoneNumber),
       if ((phoneNumber1 ?? '').isNotEmpty)
-        'phoneNumber1': "+998${phoneNumber1!}",
+        'phone_number1': _normalizePhone(phoneNumber1),
       if ((phoneNumber2 ?? '').isNotEmpty)
-        'phoneNumber2': "+998${phoneNumber2!}",
+        'phone_number2': _normalizePhone(phoneNumber2),
       if ((phoneNumber3 ?? '').isNotEmpty)
-        'phoneNumber3': "+998${phoneNumber3!}",
+        'phone_number3': _normalizePhone(phoneNumber3),
       if (telegram != null) 'telegram': telegram,
-      if (!(salaryIsNegotiable ?? false)) 'salaryMin': salaryMin,
-      if (!(salaryIsNegotiable ?? false)) 'salaryMax': salaryMax,
-      if ((skills ?? '').isNotEmpty) 'skills[]': skills!.split(','),
-      if (shortDescription != null) 'shortDescription': shortDescription,
-      if ((whoCanRespond ?? '').isNotEmpty) 'whoCanRespond[]': whoCanRespond,
+      if (!(salaryIsNegotiable ?? false)) 'salary_min': salaryMin,
+      if (!(salaryIsNegotiable ?? false)) 'salary_max': salaryMax,
+      if ((skills ?? '').isNotEmpty) 'skills': skills!.split(','),
+      if (shortDescription != null) 'short_description': shortDescription,
+      if ((whoCanRespond ?? '').isNotEmpty) 'who_can_respond': whoCanRespond,
       if (partialJobOpportunity ?? false)
-        'partialJobOpportunity': partialJobOpportunity,
-      if (employmentType != null) 'employmentType': employmentType,
-      if (jobModes.isNotEmpty) 'jobModes': jobModes,
-      'categories': jsonEncode(categories),
+        'partial_job_opportunity': partialJobOpportunity,
+      if (employmentType != null) 'employment_type': employmentType,
+      if (jobModes.isNotEmpty) 'job_modes': jobModes,
+      if (categories.isNotEmpty) 'category_ids': categories,
     };
   }
 
   factory VacancyParams.fromJson(Map<String, dynamic> json) {
     return VacancyParams(
       title: json['title'] as String?,
-      workTime: json['workTime'] as String?,
+      workTime: json['work_time'] as String?,
       tags:
           (json['tags'] as List? ?? [])
               .map((e) => TagModel.fromJson(e as Map<String, dynamic>))
@@ -145,27 +144,38 @@ class VacancyParams {
               ? AddressModel.fromJson(json['address'] as Map<String, dynamic>)
               : null,
       description: json['description'] as String?,
-      phoneNumber: (json['phoneNumber'] as String?)?.replaceFirst('+998', ''),
-      phoneNumber1: (json['phoneNumber1'] as String?)?.replaceFirst('+998', ''),
-      phoneNumber2: (json['phoneNumber2'] as String?)?.replaceFirst('+998', ''),
-      phoneNumber3: (json['phoneNumber3'] as String?)?.replaceFirst('+998', ''),
+      phoneNumber: (json['phone_number'] as String?)?.replaceFirst('+998', ''),
+      phoneNumber1: (json['phone_number1'] as String?)?.replaceFirst(
+        '+998',
+        '',
+      ),
+      phoneNumber2: (json['phone_number2'] as String?)?.replaceFirst(
+        '+998',
+        '',
+      ),
+      phoneNumber3: (json['phone_number3'] as String?)?.replaceFirst(
+        '+998',
+        '',
+      ),
       telegram: json['telegram'] as String?,
-      salaryMin: json['salaryMin'] as String?,
-      salaryMax: json['salaryMax'] as String?,
-      skills: (json['skills[]'] as List?)?.join(',') ?? '',
-      shortDescription: json['shortDescription'] as String?,
+      salaryMin: json['salary_min'] as String?,
+      salaryMax: json['salary_max'] as String?,
+      skills: (json['skills'] as List?)?.join(',') ?? '',
+      shortDescription: json['short_description'] as String?,
       whoCanRespond:
-          (json['whoCanRespond[]'] is List)
-              ? (json['whoCanRespond[]'] as List).join(',')
-              : (json['whoCanRespond[]'] as String?),
-      partialJobOpportunity: json['partialJobOpportunity'] as bool?,
-      employmentType: json['employmentType'] as String?,
-      jobModes: List<String>.from(json['jobModes'] ?? []),
-      salaryIsNegotiable: json['salaryNegotaible'] as bool?,
-      categories: (json['categories'] != null && (json['categories'] as String).isNotEmpty)
-          ? List<int>.from(jsonDecode(json['categories']) as List)
-          : [],
-
+          (json['who_can_respond'] is List)
+              ? (json['who_can_respond'] as List).join(',')
+              : (json['who_can_respond'] as String?),
+      partialJobOpportunity: json['partial_job_opportunity'] as bool?,
+      employmentType: json['employment_type'] as String?,
+      jobModes: List<String>.from(json['job_modes'] ?? const []),
+      salaryIsNegotiable: json['salary_is_negotiable'] as bool?,
+      categories:
+          (json['category_ids'] as List? ??
+                  json['categories'] as List? ??
+                  const [])
+              .map((value) => value.toString())
+              .toList(),
     );
   }
 }
@@ -187,4 +197,18 @@ class TagModel {
   Map<String, dynamic> toJson() {
     return {'id': id, 'name': name};
   }
+}
+
+String _normalizePhone(String? value) {
+  final digits = (value ?? '').replaceAll(RegExp(r'[^0-9+]'), '').trim();
+  if (digits.isEmpty) {
+    return '';
+  }
+  if (digits.startsWith('+998')) {
+    return digits;
+  }
+  if (digits.startsWith('998')) {
+    return '+$digits';
+  }
+  return '+998$digits';
 }

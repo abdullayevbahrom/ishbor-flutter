@@ -72,25 +72,25 @@ class WAuthorPhoneNumbers extends StatelessWidget {
             children: List.generate(phoneNumbers.length, (index) {
               return ValidatorHelpers.validatePhoneNumber(phoneNumbers[index])
                   ? ListTile(
-                enabled: true,
-                contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
-                onTap: () {
-                  context.read<AskQuestionCubit>().addContactClick(
-                    params: ContactClickParams(
-                      id: id.toString(),
-                      type: type,
-                      contact: "${phoneNumbers[index]}",
+                    enabled: true,
+                    contentPadding: EdgeInsets.symmetric(horizontal: 20.w),
+                    onTap: () {
+                      context.read<AskQuestionCubit>().addContactClick(
+                        params: ContactClickParams(
+                          id: id.toString(),
+                          type: type,
+                          contact: "${phoneNumbers[index]}",
+                        ),
+                      );
+                      AppLauncher().launchPhoneNumber(
+                        Formatters.formatAuthorPhone(phoneNumbers[index] ?? ''),
+                      );
+                    },
+                    leading: SvgPicture.asset(AppSvg.icPhone),
+                    title: Text(
+                      Formatters.formatAuthorPhone(phoneNumbers[index] ?? ''),
                     ),
-                  );
-                  AppLauncher().launchPhoneNumber(
-                    Formatters.formatAuthorPhone(phoneNumbers[index] ?? ''),
-                  );
-                },
-                leading: SvgPicture.asset(AppSvg.icPhone),
-                title: Text(
-                  Formatters.formatAuthorPhone(phoneNumbers[index] ?? ''),
-                ),
-              )
+                  )
                   : SizedBox.shrink();
             }),
           ),

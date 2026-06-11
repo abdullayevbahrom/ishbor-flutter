@@ -18,7 +18,9 @@ class PaymentRepositoryImpl extends PaymentRepository {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({required Object id}) {
+  Future<Either<Failure, Map<String, dynamic>>> fetchTransaction({
+    required Object id,
+  }) {
     return _dataSource.fetchTransaction(id: id);
   }
 
@@ -35,7 +37,11 @@ class PaymentRepositoryImpl extends PaymentRepository {
     required Object contentId,
     required String top,
   }) {
-    return _dataSource.payFromBalance(content: content, contentId: contentId, top: top);
+    return _dataSource.payFromBalance(
+      content: content,
+      contentId: contentId,
+      top: top,
+    );
   }
 
   @override

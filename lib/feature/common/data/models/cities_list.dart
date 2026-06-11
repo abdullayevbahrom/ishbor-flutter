@@ -23,16 +23,10 @@ class City {
   City({required this.name, required this.coords});
 
   factory City.fromMap(Map<String, dynamic> map) {
-    return City(
-      name: map['name'],
-      coords: Coordinates.fromMap(map['coords']),
-    );
+    return City(name: map['name'], coords: Coordinates.fromMap(map['coords']));
   }
 
-  Map<String, dynamic> toMap() => {
-    'name': name,
-    'coords': coords.toMap(),
-  };
+  Map<String, dynamic> toMap() => {'name': name, 'coords': coords.toMap()};
 }
 
 class Coordinates {
@@ -48,8 +42,5 @@ class Coordinates {
     );
   }
 
-  Map<String, dynamic> toMap() => {
-    'lat': lat,
-    'lng': lng,
-  };
+  Map<String, dynamic> toMap() => {'lat': lat, 'lng': lng};
 }

@@ -11,13 +11,7 @@ import '../../../../models/vacancy.dart';
 
 /// This widget used to service, task or vacancy view page to view of location
 class WLocationView extends StatelessWidget {
-  WLocationView({
-    super.key,
-
-    this.vacancy,
-    this.serviceModel,
-    this.taskModel,
-  });
+  WLocationView({super.key, this.vacancy, this.serviceModel, this.taskModel});
 
   final Vacancy? vacancy;
   final ServiceModel? serviceModel;
@@ -35,7 +29,7 @@ class WLocationView extends StatelessWidget {
             child: SizedBox(
               height: 140.h,
               width: 100.sw,
-              child: Image.asset(AppPng.map,fit: BoxFit.cover,),
+              child: Image.asset(AppPng.map, fit: BoxFit.cover),
             ),
           ),
 

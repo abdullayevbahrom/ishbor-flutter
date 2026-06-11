@@ -39,14 +39,40 @@ class AdCustomer extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        fullName,
-        phoneNumber,
-        city,
-        locale,
-        avatar,
-        title,
-      ];
+    id,
+    fullName,
+    phoneNumber,
+    city,
+    locale,
+    avatar,
+    title,
+  ];
+
+  int get likesCount => _intFromRaw('likes_count');
+  int get dislikesCount => _intFromRaw('dislikes_count');
+  bool? get documentVerified => _boolFromRaw('document_verified');
+
+  int _intFromRaw(String key) {
+    final value = raw[key];
+    if (value is num) {
+      return value.toInt();
+    }
+    return int.tryParse(value?.toString() ?? '') ?? 0;
+  }
+
+  bool? _boolFromRaw(String key) {
+    final value = raw[key];
+    if (value is bool) {
+      return value;
+    }
+    if (value is num) {
+      return value != 0;
+    }
+    if (value is String) {
+      return value == 'true';
+    }
+    return null;
+  }
 }
 
 Map<String, dynamic> _asMap(dynamic source) {
@@ -65,8 +91,7 @@ Map<String, dynamic> _asMap(dynamic source) {
   return <String, dynamic>{};
 }
 
-String? _asString(dynamic value) =>
-    value?.toString();
+String? _asString(dynamic value) => value?.toString();
 
 AppImage? _asAppImage(dynamic value) {
   if (value is String || value is Map) {

@@ -332,7 +332,7 @@ class AppRoutes {
         path: Routes.categoriesPage,
         pageBuilder: (context, state) {
           return CupertinoPage(
-            child: WCategoriesPage(categories: state.extra as List<int>),
+            child: WCategoriesPage(categories: state.extra as List<String>),
           );
         },
       ),

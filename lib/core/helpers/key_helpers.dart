@@ -7,5 +7,3 @@ GlobalKey<FormState> vacancyKey = GlobalKey();
 GlobalKey<FormState> serviceKey = GlobalKey();
 GlobalKey<FormState> taskKey = GlobalKey();
 GlobalKey<FormState> editMeKey = GlobalKey();
-
-

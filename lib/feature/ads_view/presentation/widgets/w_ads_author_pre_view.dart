@@ -92,7 +92,7 @@ class WAdsAuthorPreView extends StatelessWidget {
                             ),
                         ],
                       ),
-                      if (city.isNotEmpty )
+                      if (city.isNotEmpty)
                         Text(
                           city,
                           style: AppTextStyles.size14Regular.copyWith(

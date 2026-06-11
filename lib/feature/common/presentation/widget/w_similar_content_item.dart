@@ -92,8 +92,7 @@ class WSimilarContentViewItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                )
-
+                ),
               ],
             ),
           ),

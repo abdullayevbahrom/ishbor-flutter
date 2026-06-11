@@ -111,7 +111,8 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       FormData data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null) 'categories': jsonEncode(service.categoryIds ?? []),
+        if (service.categoryIds != null)
+          'categories': jsonEncode(service.categoryIds ?? []),
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -135,7 +136,9 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       final response = await _dio.post(ApiConstants.services, data: data);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          ServiceModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -154,7 +157,8 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       FormData data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null) 'categories': jsonEncode(service.categoryIds ?? []),
+        if (service.categoryIds != null)
+          'categories': jsonEncode(service.categoryIds ?? []),
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -181,7 +185,9 @@ class ServiceDataSourceImpl extends ServiceDataSource {
       );
 
       if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          ServiceModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -194,11 +200,15 @@ class ServiceDataSourceImpl extends ServiceDataSource {
   }
 
   @override
-  Future<Either<Failure, ServiceModel>> fetchServiceById({required Object id}) async {
+  Future<Either<Failure, ServiceModel>> fetchServiceById({
+    required Object id,
+  }) async {
     try {
       final response = await _dio.get(ApiConstants.fetchService(id));
       if (response.statusCode == 200) {
-        return Right(ServiceModel.fromMap(response.data['data'] ?? response.data));
+        return Right(
+          ServiceModel.fromMap(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -220,7 +230,8 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         queryParameters: query.toMap(),
       );
       if (response.statusCode == 200) {
-        final List items = response.data['items'] ?? response.data['data'] ?? [];
+        final List items =
+            response.data['items'] ?? response.data['data'] ?? [];
         return Right(items.map((e) => ServiceModel.fromMap(e)).toList());
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
@@ -234,9 +245,13 @@ class ServiceDataSourceImpl extends ServiceDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> liftUpServiceById({required Object serviceId}) async {
+  Future<Either<Failure, void>> liftUpServiceById({
+    required Object serviceId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.liftUpServiceById(serviceId));
+      final response = await _dio.post(
+        ApiConstants.liftUpServiceById(serviceId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -273,9 +288,13 @@ class ServiceDataSourceImpl extends ServiceDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> deleteServiceById({required Object serviceId}) async {
+  Future<Either<Failure, void>> deleteServiceById({
+    required Object serviceId,
+  }) async {
     try {
-      final response = await _dio.delete(ApiConstants.deleteServiceById(serviceId));
+      final response = await _dio.delete(
+        ApiConstants.deleteServiceById(serviceId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {
@@ -290,9 +309,13 @@ class ServiceDataSourceImpl extends ServiceDataSource {
   }
 
   @override
-  Future<Either<Failure, void>> toggleServiceById({required Object serviceId}) async {
+  Future<Either<Failure, void>> toggleServiceById({
+    required Object serviceId,
+  }) async {
     try {
-      final response = await _dio.post(ApiConstants.toggleServiceFavorite(serviceId));
+      final response = await _dio.post(
+        ApiConstants.toggleServiceFavorite(serviceId),
+      );
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);
       } else {

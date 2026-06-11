@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 class QueryParams {
   final String? title;
   final bool? categoryAsText;
-  final List<int>? categories;
+  final List<String>? categories;
   final bool? jobModesAsText;
   final List<String>? jobModes;
   final bool? employmentTypesAsText;
@@ -47,14 +45,13 @@ class QueryParams {
   Map<String, dynamic> toMap() {
     return {
       if (title != null && (title ?? '').isNotEmpty) 'title': title,
-      if ((categories ?? []).isNotEmpty)
-        'categories': jsonEncode(categories ?? []),
+      if ((categories ?? []).isNotEmpty) 'category_ids': categories,
       if ((employmentTypes ?? []).isNotEmpty)
-        'employmentTypes': jsonEncode(employmentTypes ?? []),
+        'employment_types': employmentTypes,
       'size': size,
       'page': page,
       if (city != null && (city ?? '').isNotEmpty) "city": city,
-      if (priceMin != null) "priceMin": priceMin,
+      if (priceMin != null) "price_min": priceMin,
       if (customer != null) "customer": customer,
     };
   }

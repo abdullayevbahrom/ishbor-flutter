@@ -32,11 +32,15 @@ class RealtimeDataSourceImpl extends RealtimeDataSource {
   }
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> checkUserStatus(Object userId) async {
+  Future<Either<Failure, Map<String, dynamic>>> checkUserStatus(
+    Object userId,
+  ) async {
     try {
       final response = await _dio.get(ApiConstants.userStatus(userId));
       if (response.statusCode == 200) {
-        return Right(Map<String, dynamic>.from(response.data['data'] ?? response.data));
+        return Right(
+          Map<String, dynamic>.from(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

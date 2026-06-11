@@ -53,7 +53,7 @@ class _WCityPickerState extends State<WCityPicker> {
                 22.verticalSpace,
                 WSheetTitle(title: LocaleKeys.chooseCity.tr()),
                 SizedBox(
-                  height: MediaQuery.sizeOf(context).height*.5,
+                  height: MediaQuery.sizeOf(context).height * .5,
                   child: ListView.builder(
                     shrinkWrap: true,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),

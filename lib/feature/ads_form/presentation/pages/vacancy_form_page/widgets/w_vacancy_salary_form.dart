@@ -66,7 +66,10 @@ class WVacancySalaryForm extends StatelessWidget {
                     FilteringTextInputFormatter.digitsOnly,
                     MoneyInputFormatter(),
                   ],
-                  suffixIcon: SalarySuffixIcon(onTapCurrency: onTapCurrency, currency: currency),
+                  suffixIcon: SalarySuffixIcon(
+                    onTapCurrency: onTapCurrency,
+                    currency: currency,
+                  ),
                   validator: (value) {
                     return ValidatorHelpers.validateField(value: value!);
                   },
@@ -82,7 +85,10 @@ class WVacancySalaryForm extends StatelessWidget {
                     FilteringTextInputFormatter.digitsOnly,
                     MoneyInputFormatter(),
                   ],
-                  suffixIcon: SalarySuffixIcon(onTapCurrency: onTapCurrency, currency: currency),
+                  suffixIcon: SalarySuffixIcon(
+                    onTapCurrency: onTapCurrency,
+                    currency: currency,
+                  ),
                   validator: (value) {
                     return ValidatorHelpers.validateField(value: value!);
                   },
@@ -125,9 +131,7 @@ class SalarySuffixIcon extends StatelessWidget {
       onPressed: onTapCurrency,
       child: Text(
         currency,
-        style: AppTextStyles.size17Medium.copyWith(
-          color: AppColors.cFF9914,
-        ),
+        style: AppTextStyles.size17Medium.copyWith(color: AppColors.cFF9914),
       ),
     );
   }

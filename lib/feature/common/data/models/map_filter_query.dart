@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 class LocationFilterModel {
   final double lat;
   final double lng;
   final double distance;
-  final List<int> categories;
+  final List<String> categories;
 
   LocationFilterModel({
     required this.lat,
@@ -18,7 +16,10 @@ class LocationFilterModel {
       lat: (json['lat'] as num).toDouble(),
       lng: (json['lng'] as num).toDouble(),
       distance: (json['distance'] as num).toDouble(),
-      categories: List<int>.from(json['categories']),
+      categories:
+          (json['category_ids'] as List? ?? json['categories'] as List? ?? [])
+              .map((value) => value.toString())
+              .toList(),
     );
   }
 
@@ -26,8 +27,8 @@ class LocationFilterModel {
     return {
       'lat': lat,
       'lng': lng,
-      'distance': distance,
-      if (categories.isNotEmpty) 'categories': jsonEncode(categories),
+      'distance_km': distance,
+      if (categories.isNotEmpty) 'category_ids': categories,
     };
   }
 
@@ -35,7 +36,7 @@ class LocationFilterModel {
     double? lat,
     double? lng,
     double? distance,
-    List<int>? categories,
+    List<String>? categories,
   }) {
     return LocationFilterModel(
       lat: lat ?? this.lat,

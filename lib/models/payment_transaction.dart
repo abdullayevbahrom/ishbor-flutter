@@ -1,5 +1,3 @@
-
-
 class PaymentTransaction {
   final int id;
   final String status;

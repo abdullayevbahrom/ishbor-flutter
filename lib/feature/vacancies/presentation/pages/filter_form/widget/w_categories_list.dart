@@ -14,7 +14,7 @@ import '../../../../../common/presentation/widget/w_check_box_list_tile.dart';
 import '../../../../../common/presentation/widget/w_dialog_action_button.dart';
 
 class WCategoriesFilterList extends StatefulWidget {
-  final List<int> listCategories;
+  final List<String> listCategories;
 
   WCategoriesFilterList({super.key, required this.listCategories});
 
@@ -34,7 +34,7 @@ class WCategoriesFilterList extends StatefulWidget {
 }
 
 class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
-  late List ids;
+  late List<String> ids;
 
   @override
   void initState() {
@@ -107,7 +107,8 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                                     .state
                                     .categories
                                     ?.items[index]
-                                    .id,
+                                    .id ??
+                                    '',
                               )) {
                                 ids.remove(
                                   context
@@ -115,7 +116,8 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                                       .state
                                       .categories
                                       ?.items[index]
-                                      .id,
+                                      .id ??
+                                      '',
                                 );
                               } else {
                                 ids.add(
@@ -124,7 +126,8 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                                       .state
                                       .categories
                                       ?.items[index]
-                                      .id,
+                                      .id ??
+                                      '',
                                 );
                               }
                               setState(() {});

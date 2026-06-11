@@ -117,7 +117,7 @@ class UserTypePage extends StatelessWidget {
                   child: AppButton(
                     width: 100.sw,
                     textStyle: AppTextStyles.size17Medium.copyWith(
-                        color: AppColors.cFFFFFF
+                      color: AppColors.cFFFFFF,
                     ),
                     isLoading: false,
                     onPressed: () {

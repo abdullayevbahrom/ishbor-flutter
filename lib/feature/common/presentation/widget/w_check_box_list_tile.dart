@@ -13,7 +13,8 @@ class WCheckedBoxListTile extends StatelessWidget {
     super.key,
     required this.value,
     required this.title,
-    required this.onTap, this.textStyle,
+    required this.onTap,
+    this.textStyle,
   });
 
   @override
@@ -36,7 +37,11 @@ class WCheckedBoxListTile extends StatelessWidget {
             child: Text(
               title,
               maxLines: 10,
-              style:textStyle?? AppTextStyles.size15Regular.copyWith(color: AppColors.c222222),
+              style:
+                  textStyle ??
+                  AppTextStyles.size15Regular.copyWith(
+                    color: AppColors.c222222,
+                  ),
             ),
           ),
         ],

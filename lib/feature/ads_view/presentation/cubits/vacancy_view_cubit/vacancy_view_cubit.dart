@@ -133,12 +133,7 @@ class VacancyViewCubit extends Cubit<VacancyViewState> {
         emit(state.copyWith(ownRequestSt: RequestStatus.error));
       },
       (r) {
-        emit(
-          state.copyWith(
-            ownRequestSt: RequestStatus.loaded,
-            ownRequest: r,
-          ),
-        );
+        emit(state.copyWith(ownRequestSt: RequestStatus.loaded, ownRequest: r));
       },
     );
   }

@@ -110,7 +110,10 @@ class _MyVacanciesState extends State<MyVacancies> {
                 ).show(context);
               },
               onTapActivate: () {
-                context.read<MyVacanciesCubit>().activateVacancyById(vacancy.id, index);
+                context.read<MyVacanciesCubit>().activateVacancyById(
+                  vacancy.id,
+                  index,
+                );
               },
               onTapDeactivate: () {
                 context.read<MyVacanciesCubit>().deactivateVacancyById(

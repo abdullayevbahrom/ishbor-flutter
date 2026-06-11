@@ -71,36 +71,35 @@ class YandexMapCubit extends Cubit<YandexMapState> {
       },
       (r) {
         mapController?.moveCamera(
-          animation: MapAnimation(type: MapAnimationType.smooth,duration: 0.8),
+          animation: MapAnimation(type: MapAnimationType.smooth, duration: 0.8),
           CameraUpdate.newCameraPosition(
             CameraPosition(
               target: Point(
                 latitude:
-                r
-                    .response
-                    ?.geoObjectCollection
-                    ?.featureMember
-                    ?.first
-                    .geoObject
-                    ?.point
-                    ?.latitude ??
+                    r
+                        .response
+                        ?.geoObjectCollection
+                        ?.featureMember
+                        ?.first
+                        .geoObject
+                        ?.point
+                        ?.latitude ??
                     0,
                 longitude:
-                r
-                    .response
-                    ?.geoObjectCollection
-                    ?.featureMember
-                    ?.first
-                    .geoObject
-                    ?.point
-                    ?.longitude ??
+                    r
+                        .response
+                        ?.geoObjectCollection
+                        ?.featureMember
+                        ?.first
+                        .geoObject
+                        ?.point
+                        ?.longitude ??
                     0,
               ),
             ),
           ),
         );
         emit(state.copyWith(status: RequestStatus.loading, response: r));
-
       },
     );
   }

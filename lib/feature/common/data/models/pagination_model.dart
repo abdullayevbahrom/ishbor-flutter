@@ -76,19 +76,18 @@ class PaginationResponse<T> {
   }
 
   factory PaginationResponse.fromJson(
-      Map<String, dynamic> json,
-      T Function(Map<String, dynamic> itemJson) itemFromJson,
-      ) {
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic> itemJson) itemFromJson,
+  ) {
     return PaginationResponse<T>(
       currentPageNumber: _asInt(json['current_page_number']),
       numItemsPerPage: _asInt(json['num_items_per_page']),
-      items: _asListMap(json['items'])
-          ?.map((e) => itemFromJson(e))
-          .toList(),
+      items: _asListMap(json['items'])?.map((e) => itemFromJson(e)).toList(),
       totalCount: _asInt(json['total_count']),
-      paginatorOptions: json['paginator_options'] is Map<String, dynamic>
-          ? PaginatorOptions.fromJson(json['paginator_options'])
-          : null,
+      paginatorOptions:
+          json['paginator_options'] is Map<String, dynamic>
+              ? PaginatorOptions.fromJson(json['paginator_options'])
+              : null,
       customParameters: _asMap(json['custom_parameters']),
       route: _asString(json['route']),
       params: _asMap(json['params']),
@@ -101,8 +100,8 @@ class PaginationResponse<T> {
   }
 
   Map<String, dynamic> toJson(
-      Map<String, dynamic> Function(T item) itemToJson,
-      ) {
+    Map<String, dynamic> Function(T item) itemToJson,
+  ) {
     return {
       'current_page_number': currentPageNumber,
       'num_items_per_page': numItemsPerPage,
@@ -137,7 +136,8 @@ class PaginationResponse<T> {
   }
 
   // ------- helpers -------
-  static Map<String, dynamic>? _asMap(dynamic v) => v is Map<String, dynamic> ? v : null;
+  static Map<String, dynamic>? _asMap(dynamic v) =>
+      v is Map<String, dynamic> ? v : null;
 
   static List<Map<String, dynamic>>? _asListMap(dynamic v) {
     if (v is List) {
@@ -195,13 +195,14 @@ class PaginatorOptions {
   }) {
     return PaginatorOptions(
       pageParameterName: pageParameterName ?? this.pageParameterName,
-      sortFieldParameterName: sortFieldParameterName ?? this.sortFieldParameterName,
+      sortFieldParameterName:
+          sortFieldParameterName ?? this.sortFieldParameterName,
       sortDirectionParameterName:
-      sortDirectionParameterName ?? this.sortDirectionParameterName,
+          sortDirectionParameterName ?? this.sortDirectionParameterName,
       filterFieldParameterName:
-      filterFieldParameterName ?? this.filterFieldParameterName,
+          filterFieldParameterName ?? this.filterFieldParameterName,
       filterValueParameterName:
-      filterValueParameterName ?? this.filterValueParameterName,
+          filterValueParameterName ?? this.filterValueParameterName,
       distinct: distinct ?? this.distinct,
       pageOutOfRange: pageOutOfRange ?? this.pageOutOfRange,
       defaultLimit: defaultLimit ?? this.defaultLimit,

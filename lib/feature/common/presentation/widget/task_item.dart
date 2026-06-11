@@ -181,9 +181,9 @@ class TaskItem extends StatelessWidget {
                 ),
                 SmartText(
                   text: Formatters.translateText(
-                    uzText: task.descriptionUz?.replaceAll("**",""),
-                    ruText: task.descriptionRu?.replaceAll("**",""),
-                    defaultText: task.description?.replaceAll("**",""),
+                    uzText: task.descriptionUz?.replaceAll("**", ""),
+                    ruText: task.descriptionRu?.replaceAll("**", ""),
+                    defaultText: task.description?.replaceAll("**", ""),
                   ),
                 ).paddingOnly(top: 20.h),
                 task.city != null
@@ -253,7 +253,7 @@ class TaskItem extends StatelessWidget {
                           child: SvgPicture.asset(AppSvg.icFilterGrey),
                         ),
 
-                       /*
+                        /*
                         WCountSeeCountClick(
                           countContactClick: task.countClick,
                           countSee: task.viewCount,

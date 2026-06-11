@@ -11,11 +11,10 @@ abstract class CreateTaskState with _$CreateTaskState {
     @Default(false) bool isNegotiable,
     @Default(false) bool isRemote,
     @Default(false) bool isUSD,
-    @Default(null) int? categoryId,
+    @Default(null) String? categoryId,
     @Default(true) bool isStartDateNow,
     @Default(null) String? startDate,
     @Default(null) String? expireDate,
-    @Default(null) GeocodeResponse? location
-
+    @Default(null) GeocodeResponse? location,
   }) = _CreateTaskState;
 }

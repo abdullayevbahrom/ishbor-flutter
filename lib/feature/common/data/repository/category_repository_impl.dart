@@ -27,7 +27,9 @@ class CategoryRepositoryImpl extends CategoryRepository {
   }
 
   @override
-  Future<Either<Failure, CategoryModel>> fetchCategoryById({required Object id}) {
+  Future<Either<Failure, CategoryModel>> fetchCategoryById({
+    required Object id,
+  }) {
     return _categoryDataSource.fetchCategoryById(id: id);
   }
 }

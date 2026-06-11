@@ -3,7 +3,7 @@ import 'package:yandex_geocoder/yandex_geocoder.dart';
 
 import '../../../../core/network/api_http.dart';
 
-abstract class YandexRepository{
+abstract class YandexRepository {
   Future<Either<Failure, GeocodeResponse>> fetchAddressFromPosition({
     required String geocodeApiKey,
     required double lat,
@@ -20,5 +20,4 @@ abstract class YandexRepository{
     required String search,
     required String language,
   });
-
 }

@@ -6,6 +6,6 @@ abstract class CategoryState with _$CategoryState {
     @Default(RequestStatus.initial) RequestStatus status,
     @Default(null) CategoryListResponse? categories,
     @Default(null) String? errorText,
-    @Default(false) bool isLoadingMore
+    @Default(false) bool isLoadingMore,
   }) = _CategoryState;
 }

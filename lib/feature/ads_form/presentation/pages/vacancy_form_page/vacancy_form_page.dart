@@ -146,17 +146,17 @@ class _VacancyFormPageState extends State<VacancyFormPage>
           }
           _formCustomState.enablePartTime =
               state.params?.partialJobOpportunity ?? false;
-         _formCustomState.employmentType = state.params?.employmentType;
+          _formCustomState.employmentType = state.params?.employmentType;
           if ((state.params?.workTime ?? '').isNotEmpty) {
             _formControllers.startTimeController.text =
                 state.params?.workTime!.split('-').first ?? '';
           }
           if ((state.params?.workTime ?? '').isNotEmpty) {
-          _formControllers.endTimeController.text =
+            _formControllers.endTimeController.text =
                 state.params?.workTime!.split('-').last ?? '';
           }
           if ((state.params?.phoneNumber ?? "").isNotEmpty) {
-           _formControllers
+            _formControllers
                 .phoneNumberController
                 .text = Formatters.formatUzbekPhone(state.params!.phoneNumber!);
           }
@@ -170,8 +170,7 @@ class _VacancyFormPageState extends State<VacancyFormPage>
               }
             },
           );
-          _formControllers.categoriesController.text =
-              _formCustomState
+          _formControllers.categoriesController.text = _formCustomState
               .categories
               .map(
                 (e) =>

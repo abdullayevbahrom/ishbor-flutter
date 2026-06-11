@@ -122,7 +122,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                 onChanged: ({value, valueStr}) {
                                   cubit.updateCategory(
                                     valueStr: valueStr ?? "",
-                                    valueInt: value ?? 0,
+                                    valueInt: value ?? "",
                                   );
                                 },
                                 basicTitle: LocaleKeys.mainInformation.tr(),
@@ -418,9 +418,15 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                               taskId: widget.task!.id,
                                             );
                                           } else {
-                                            if ((userState.user?.balance ?? 0) >= 5000 ||
-                                                (userState.user?.contentCount ?? 0) <
-                                                    (userState.user?.contentLimit ?? 0)) {
+                                            if ((userState.user?.balance ??
+                                                        0) >=
+                                                    5000 ||
+                                                (userState.user?.contentCount ??
+                                                        0) <
+                                                    (userState
+                                                            .user
+                                                            ?.contentLimit ??
+                                                        0)) {
                                               cubit.createTask();
                                             } else {
                                               showPaymentErrorDialog();

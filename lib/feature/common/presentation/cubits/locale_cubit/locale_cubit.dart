@@ -1,4 +1,3 @@
-
 import 'package:bloc/bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,10 +8,8 @@ part 'locale_cubit.freezed.dart';
 
 class LocaleCubit extends Cubit<LocaleState> {
   LocaleCubit() : super(const LocaleState());
-  void changeLocale(Locale locale, BuildContext context)async{
+  void changeLocale(Locale locale, BuildContext context) async {
     await context.setLocale(locale);
     emit(state.copyWith(locale: locale));
   }
-
-
 }

@@ -3,7 +3,7 @@
 // Includes: fromJson / toJson / copyWith
 
 class NewVacancyModel {
-  final int? id;
+  final String? id;
   final String? title;
   final String? titleUz;
   final String? titleRu;
@@ -40,7 +40,7 @@ class NewVacancyModel {
   });
 
   NewVacancyModel copyWith({
-    int? id,
+    String? id,
     String? title,
     String? titleUz,
     String? titleRu,
@@ -79,7 +79,7 @@ class NewVacancyModel {
 
   factory NewVacancyModel.fromJson(Map<String, dynamic> json) {
     return NewVacancyModel(
-      id: _asInt(json['id']),
+      id: _asString(json['id']),
       title: _asString(json['title']),
       titleUz: _asString(json['title_uz']),
       titleRu: _asString(json['title_ru']),
@@ -129,14 +129,6 @@ class NewVacancyModel {
     return v.toString();
   }
 
-  static int? _asInt(dynamic v) {
-    if (v == null) return null;
-    if (v is int) return v;
-    if (v is num) return v.toInt();
-    if (v is String) return int.tryParse(v);
-    return null;
-  }
-
   static double? _asDouble(dynamic v) {
     if (v == null) return null;
     if (v is double) return v;
@@ -167,7 +159,7 @@ class NewVacancyModel {
 }
 
 class VacancyCustomer {
-  final int? id;
+  final String? id;
   final String? fullName;
   final bool? documentVerified;
   final String? imageUrl;
@@ -180,7 +172,7 @@ class VacancyCustomer {
   });
 
   VacancyCustomer copyWith({
-    int? id,
+    String? id,
     String? fullName,
     bool? documentVerified,
     String? imageUrl,
@@ -195,7 +187,7 @@ class VacancyCustomer {
 
   factory VacancyCustomer.fromJson(Map<String, dynamic> json) {
     return VacancyCustomer(
-      id: NewVacancyModel._asInt(json['id']),
+      id: NewVacancyModel._asString(json['id']),
       fullName: NewVacancyModel._asString(json['full_name']),
       documentVerified: NewVacancyModel._asBool(json['document_verified']),
       imageUrl: NewVacancyModel._asString(json['image_url']),

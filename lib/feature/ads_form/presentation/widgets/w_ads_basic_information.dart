@@ -31,7 +31,6 @@ class WAdsBasicInformation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return WDecoratedBox(
       bgColor: AppColors.cFBFBFD,
       radius: 16.r,
@@ -95,6 +94,7 @@ class WAdsBasicInformation extends StatelessWidget {
     ).paddingSymmetric(horizontal: 16.w);
   }
 }
+
 /*
  categoriesController.text = categories
         .map((e) {

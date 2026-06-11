@@ -39,7 +39,6 @@ class TaskCubit extends Cubit<TaskState> {
 
   void reset() {
     pageNumber = 1;
- 
   }
 
   void initialize() {
@@ -57,7 +56,10 @@ class TaskCubit extends Cubit<TaskState> {
       navigatorKey.currentContext?.read<MainCubit>().updateOpen(false);
     }
 
-    if (navigatorKey.currentContext?.read<MainCubit>().state.isNotificationMenuOpen ??
+    if (navigatorKey.currentContext
+            ?.read<MainCubit>()
+            .state
+            .isNotificationMenuOpen ??
         false) {
       navigatorKey.currentContext?.read<MainCubit>().updateNtfMenu(false);
     }
@@ -149,9 +151,6 @@ class TaskCubit extends Cubit<TaskState> {
       taskId: state.listTask!.items[index].id,
     );
 
-    response.fold(
-      (l) {},
-      (r) {},
-    );
+    response.fold((l) {}, (r) {});
   }
 }

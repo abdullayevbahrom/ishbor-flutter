@@ -3,7 +3,7 @@ part of 'chat_cubit.dart';
 @freezed
 abstract class ChatState with _$ChatState {
   const factory ChatState({
-    @Default(null)int? messageId,
+    @Default(null) int? messageId,
     @Default(RequestStatus.initial) RequestStatus messageSt,
     @Default(RequestStatus.initial) RequestStatus fetchSt,
     @Default(RequestStatus.initial) RequestStatus sendSt,
@@ -14,6 +14,6 @@ abstract class ChatState with _$ChatState {
     @Default(false) bool isDownloading,
     @Default(false) bool isLoadingMore,
     @Default(false) bool enableDownIcon,
-    @Default([]) List<dynamic> sendingMessages
+    @Default([]) List<dynamic> sendingMessages,
   }) = _ChatState;
 }

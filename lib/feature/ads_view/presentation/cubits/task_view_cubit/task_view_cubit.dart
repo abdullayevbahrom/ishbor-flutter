@@ -106,7 +106,7 @@ class TaskViewCubit extends Cubit<TaskViewState> {
           state.copyWith(
             requestTasksSt: RequestStatus.loaded,
             task: state.task?.copyWith(hasUserRequest: true),
-            myRequest: r
+            myRequest: r,
           ),
         );
         navigatorKey.currentContext?.pop();

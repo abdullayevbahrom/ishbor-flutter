@@ -27,7 +27,9 @@ class DioClient {
     );
 
     if (kDebugMode) {
-      debugPrint('[DIO][env] appEnvironment=$appEnvironment baseUrl=$apiBaseUrl');
+      debugPrint(
+        '[DIO][env] appEnvironment=$appEnvironment baseUrl=$apiBaseUrl',
+      );
     }
 
     if (Platform.isAndroid) {

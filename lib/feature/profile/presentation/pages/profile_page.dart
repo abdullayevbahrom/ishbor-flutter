@@ -45,344 +45,365 @@ class _ProfilePageState extends State<ProfilePage> {
           },
           builder: (context, state) {
             return BlocBuilder<LocaleCubit, LocaleState>(
-  builder: (context, state) {
-    return BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
-                return Scaffold(
-                  backgroundColor: AppColors.cFFFFFF,
-                  body: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AppHeader(
-                        popUpMenu: PopupMenuButton(
-                          color: AppColors.cFFFFFF,
-                          offset: Offset(-25, 30),
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12.r),
-                          ),
-                          itemBuilder: (context) {
-                            return [
-                              PopupMenuItem(
-                                value: 'ru',
-                                child: Row(
-                                  spacing: 40.w,
-                                  children: [
-                                    SizedBox(
-                                      width: 65,
-                                      child: Text(
-                                        "Русский",
-                                        style: AppTextStyles.size13Medium
-                                            .copyWith(color: AppColors.c222222),
-                                      ),
-                                    ),
-                                    if (context.locale.languageCode == 'ru')
-                                      Icon(
-                                        Icons.check,
-                                        color: AppColors.cFF9914,
-                                      ),
-                                  ],
-                                ),
-                                onTap: () async {
-                                  await context.setLocale(EasyLocale.all.first);
-                                  context.read<UserCubit>().updateLocale(
-                                    EasyLocale.all.first.languageCode,
-                                  );
-                                  context.read<LocaleCubit>().changeLocale(
-                                    EasyLocale.all.first,
-                                    context,
-                                  );
-                                  setState(() {});
-                                },
+                return BlocBuilder<UserCubit, UserState>(
+                  builder: (context, state) {
+                    return Scaffold(
+                      backgroundColor: AppColors.cFFFFFF,
+                      body: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppHeader(
+                            popUpMenu: PopupMenuButton(
+                              color: AppColors.cFFFFFF,
+                              offset: Offset(-25, 30),
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.r),
                               ),
-                              PopupMenuItem(
-                                value: 'uz',
-                                child: Row(
-                                  spacing: 40.w,
-                                  children: [
-                                    SizedBox(
-                                      width: 65,
-                                      child: Text(
-                                        "O‘zbekcha",
-                                        style: AppTextStyles.size13Medium
-                                            .copyWith(color: AppColors.c222222),
-                                      ),
-                                    ),
-                                    if (context.locale.languageCode == 'uz')
-                                      Icon(
-                                        Icons.check,
-                                        color: AppColors.cFF9914,
-                                      ),
-                                  ],
-                                ),
-                                onTap: () async {
-                                  await context.setLocale(EasyLocale.all.last);
-                                  context.read<UserCubit>().updateLocale(
-                                    EasyLocale.all.last.languageCode,
-                                  );
-                                  context.read<LocaleCubit>().changeLocale(
-                                    EasyLocale.all.last,
-                                    context,
-                                  );
-                                  setState(() {});
-                                },
-                              ),
-                            ];
-                          },
-                          child: Row(
-                            spacing: 4.w,
-                            children: [
-                              SvgPicture.asset(AppSvg.icLang),
-                              Text(
-                                context.locale.languageCode == "ru"
-                                    ? "Рус"
-                                    : "O‘zb",
-                                style: AppTextStyles.size13Medium.copyWith(
-                                  color: AppColors.c2E3A59,
-                                ),
-                              ),
-                              Icon(
-                                Icons.keyboard_arrow_down,
-                                color: AppColors.cFF9914,
-                              ),
-                            ],
-                          ),
-                        ).paddingOnly(right: 16.w),
-                      ),
-                      Expanded(
-                        child: SingleChildScrollView(
-                          padding: EdgeInsets.symmetric(horizontal: 16.w),
-                          scrollDirection: Axis.vertical,
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                LocaleKeys.myProfile.tr(),
-                                style: AppTextStyles.size28Bold.copyWith(
-                                  color: AppColors.c2E3A59,
-                                ),
-                              ).paddingSymmetric(vertical: 24.h),
-
-                              Column(
-                                spacing: 8.h,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  BlocBuilder<UserCubit, UserState>(
-                                    builder: (context, state) {
-                                      final user = state.user;
-                                      return WDecoratedBox(
-                                        radius: 18.r,
-                                        bgColor: AppColors.cF7F9FC,
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              spacing: 24.w,
-                                              children: [
-                                                user?.avatar == null
-                                                    ? WDefaultUserAvatar(
-                                                      height: 82.h,
-                                                    )
-                                                    :
-                                                    //ToDo if avatar url null we use default avatar
-                                                    AppCachedNetworkImage(
-                                                      height: 82.h,
-                                                      radius: 41.sp,
-                                                      imageUrl:
-                                                          user
-                                                              ?.avatar
-                                                              ?.urls['original'],
-                                                    ),
-                                                Expanded(
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    spacing: 4.h,
-                                                    children: [
-                                                      Text(
-                                                        "${user?.fullName ?? ""}",
-                                                        style:
-                                                            AppTextStyles
-                                                                .size17Medium,
-                                                      ),
-                                                      Text(
-                                                        "${user?.balance == 0 ? 0 : user?.balance} ${LocaleKeys.sum.tr()}",
-                                                        style: AppTextStyles
-                                                            .size18Bold
-                                                            .copyWith(
-                                                              color:
-                                                                  AppColors
-                                                                      .cFF9914,
-                                                            ),
-                                                      ),
-                                                    ],
-                                                  ),
+                              itemBuilder: (context) {
+                                return [
+                                  PopupMenuItem(
+                                    value: 'ru',
+                                    child: Row(
+                                      spacing: 40.w,
+                                      children: [
+                                        SizedBox(
+                                          width: 65,
+                                          child: Text(
+                                            "Русский",
+                                            style: AppTextStyles.size13Medium
+                                                .copyWith(
+                                                  color: AppColors.c222222,
                                                 ),
-                                              ],
-                                            ),
-                                            AppUtils.hSizedBox16,
-                                            InkWell(
-                                              onTap: () {
-                                                context.push(
-                                                  Routes.payment,
-                                                  extra: user?.balance,
-                                                );
-                                              },
-                                              child: DecoratedBox(
-                                                decoration: BoxDecoration(
-                                                  color: AppColors.c15CF74,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        12.r,
+                                          ),
+                                        ),
+                                        if (context.locale.languageCode == 'ru')
+                                          Icon(
+                                            Icons.check,
+                                            color: AppColors.cFF9914,
+                                          ),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      await context.setLocale(
+                                        EasyLocale.all.first,
+                                      );
+                                      context.read<UserCubit>().updateLocale(
+                                        EasyLocale.all.first.languageCode,
+                                      );
+                                      context.read<LocaleCubit>().changeLocale(
+                                        EasyLocale.all.first,
+                                        context,
+                                      );
+                                      setState(() {});
+                                    },
+                                  ),
+                                  PopupMenuItem(
+                                    value: 'uz',
+                                    child: Row(
+                                      spacing: 40.w,
+                                      children: [
+                                        SizedBox(
+                                          width: 65,
+                                          child: Text(
+                                            "O‘zbekcha",
+                                            style: AppTextStyles.size13Medium
+                                                .copyWith(
+                                                  color: AppColors.c222222,
+                                                ),
+                                          ),
+                                        ),
+                                        if (context.locale.languageCode == 'uz')
+                                          Icon(
+                                            Icons.check,
+                                            color: AppColors.cFF9914,
+                                          ),
+                                      ],
+                                    ),
+                                    onTap: () async {
+                                      await context.setLocale(
+                                        EasyLocale.all.last,
+                                      );
+                                      context.read<UserCubit>().updateLocale(
+                                        EasyLocale.all.last.languageCode,
+                                      );
+                                      context.read<LocaleCubit>().changeLocale(
+                                        EasyLocale.all.last,
+                                        context,
+                                      );
+                                      setState(() {});
+                                    },
+                                  ),
+                                ];
+                              },
+                              child: Row(
+                                spacing: 4.w,
+                                children: [
+                                  SvgPicture.asset(AppSvg.icLang),
+                                  Text(
+                                    context.locale.languageCode == "ru"
+                                        ? "Рус"
+                                        : "O‘zb",
+                                    style: AppTextStyles.size13Medium.copyWith(
+                                      color: AppColors.c2E3A59,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: AppColors.cFF9914,
+                                  ),
+                                ],
+                              ),
+                            ).paddingOnly(right: 16.w),
+                          ),
+                          Expanded(
+                            child: SingleChildScrollView(
+                              padding: EdgeInsets.symmetric(horizontal: 16.w),
+                              scrollDirection: Axis.vertical,
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    LocaleKeys.myProfile.tr(),
+                                    style: AppTextStyles.size28Bold.copyWith(
+                                      color: AppColors.c2E3A59,
+                                    ),
+                                  ).paddingSymmetric(vertical: 24.h),
+
+                                  Column(
+                                    spacing: 8.h,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      BlocBuilder<UserCubit, UserState>(
+                                        builder: (context, state) {
+                                          final user = state.user;
+                                          return WDecoratedBox(
+                                            radius: 18.r,
+                                            bgColor: AppColors.cF7F9FC,
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  spacing: 24.w,
+                                                  children: [
+                                                    user?.avatar == null
+                                                        ? WDefaultUserAvatar(
+                                                          height: 82.h,
+                                                        )
+                                                        :
+                                                        //ToDo if avatar url null we use default avatar
+                                                        AppCachedNetworkImage(
+                                                          height: 82.h,
+                                                          radius: 41.sp,
+                                                          imageUrl:
+                                                              user
+                                                                  ?.avatar
+                                                                  ?.urls['original'],
+                                                        ),
+                                                    Expanded(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        spacing: 4.h,
+                                                        children: [
+                                                          Text(
+                                                            "${user?.fullName ?? ""}",
+                                                            style:
+                                                                AppTextStyles
+                                                                    .size17Medium,
+                                                          ),
+                                                          Text(
+                                                            "${user?.balance == 0 ? 0 : user?.balance} ${LocaleKeys.sum.tr()}",
+                                                            style: AppTextStyles
+                                                                .size18Bold
+                                                                .copyWith(
+                                                                  color:
+                                                                      AppColors
+                                                                          .cFF9914,
+                                                                ),
+                                                          ),
+                                                        ],
                                                       ),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: AppColors.c15CF74
-                                                          .newWithOpacity(.4),
-                                                      blurRadius: 15.r,
-                                                      offset: Offset(0, 4),
                                                     ),
                                                   ],
                                                 ),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    SvgPicture.asset(
-                                                      AppSvg.icPayment,
+                                                AppUtils.hSizedBox16,
+                                                InkWell(
+                                                  onTap: () {
+                                                    context.push(
+                                                      Routes.payment,
+                                                      extra: user?.balance,
+                                                    );
+                                                  },
+                                                  child: DecoratedBox(
+                                                    decoration: BoxDecoration(
+                                                      color: AppColors.c15CF74,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12.r,
+                                                          ),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: AppColors
+                                                              .c15CF74
+                                                              .newWithOpacity(
+                                                                .4,
+                                                              ),
+                                                          blurRadius: 15.r,
+                                                          offset: Offset(0, 4),
+                                                        ),
+                                                      ],
                                                     ),
-                                                    Text(
-                                                      LocaleKeys.fillUpBalance
-                                                          .tr(),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          AppSvg.icPayment,
+                                                        ),
+                                                        Text(
+                                                          LocaleKeys
+                                                              .fillUpBalance
+                                                              .tr(),
+                                                          style: AppTextStyles
+                                                              .size15Medium
+                                                              .copyWith(
+                                                                color:
+                                                                    AppColors
+                                                                        .cFFFFFF,
+                                                              ),
+                                                        ).paddingSymmetric(
+                                                          vertical: 12.h,
+                                                          horizontal: 16.w,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                AppUtils.hSizedBox16,
+                                              ],
+                                            ).paddingAll(16.r),
+                                          );
+                                        },
+                                      ),
+
+                                      ProfileItem(
+                                        onTap: () {
+                                          context.push(Routes.profileInfo);
+                                          (context as Element).markNeedsBuild();
+                                        },
+                                        title: LocaleKeys.myInfo.tr(),
+                                      ),
+                                      ProfileItem(
+                                        onTap: () {
+                                          context.push(Routes.profileVacancies);
+                                        },
+                                        title: LocaleKeys.myVacancies.tr(),
+                                      ),
+                                      ProfileItem(
+                                        onTap: () {
+                                          context.push(Routes.profileServices);
+                                        },
+                                        title: LocaleKeys.myServices.tr(),
+                                      ),
+                                      ProfileItem(
+                                        onTap: () {
+                                          context.push(Routes.profileTasks);
+                                        },
+                                        title: LocaleKeys.myTasks.tr(),
+                                      ),
+                                      ProfileItem(
+                                        onTap: () {
+                                          context.push(Routes.myFavorites);
+                                        },
+                                        title: LocaleKeys.favorites.tr(),
+                                      ),
+                                      ProfileItem(
+                                        onTap: () {
+                                          showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return CupertinoAlertDialog(
+                                                title: Text(
+                                                  LocaleKeys.logOut.tr(),
+                                                  style: AppTextStyles
+                                                      .size20Bold
+                                                      .copyWith(
+                                                        color: AppColors.cRed,
+                                                      ),
+                                                ),
+                                                content: Text(
+                                                  LocaleKeys.areYouSureLogOut
+                                                      .tr(),
+                                                  style:
+                                                      AppTextStyles
+                                                          .size18Medium,
+                                                ),
+                                                actions: [
+                                                  CupertinoDialogAction(
+                                                    onPressed: () async {
+                                                      context
+                                                          .read<AuthCubit>()
+                                                          .logOut();
+                                                      context.pop();
+                                                    },
+                                                    child: Text(
+                                                      LocaleKeys.yes.tr(),
+                                                      style: AppTextStyles
+                                                          .size15Medium
+                                                          .copyWith(
+                                                            color:
+                                                                AppColors.cRed,
+                                                          ),
+                                                    ),
+                                                  ),
+                                                  CupertinoDialogAction(
+                                                    isDestructiveAction: true,
+                                                    isDefaultAction: false,
+
+                                                    onPressed: () {
+                                                      context.pop();
+                                                    },
+
+                                                    child: Text(
+                                                      LocaleKeys.no.tr(),
                                                       style: AppTextStyles
                                                           .size15Medium
                                                           .copyWith(
                                                             color:
                                                                 AppColors
-                                                                    .cFFFFFF,
+                                                                    .cGreen,
                                                           ),
-                                                    ).paddingSymmetric(
-                                                      vertical: 12.h,
-                                                      horizontal: 16.w,
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                            AppUtils.hSizedBox16,
-                                          ],
-                                        ).paddingAll(16.r),
-                                      );
-                                    },
-                                  ),
-
-                                  ProfileItem(
-                                    onTap: () {
-                                      context.push(Routes.profileInfo);
-                                      (context as Element).markNeedsBuild();
-                                    },
-                                    title: LocaleKeys.myInfo.tr(),
-                                  ),
-                                  ProfileItem(
-                                    onTap: () {
-                                      context.push(Routes.profileVacancies);
-                                    },
-                                    title: LocaleKeys.myVacancies.tr(),
-                                  ),
-                                  ProfileItem(
-                                    onTap: () {
-                                      context.push(Routes.profileServices);
-                                    },
-                                    title: LocaleKeys.myServices.tr(),
-                                  ),
-                                  ProfileItem(
-                                    onTap: () {
-                                      context.push(Routes.profileTasks);
-                                    },
-                                    title: LocaleKeys.myTasks.tr(),
-                                  ),
-                                  ProfileItem(
-                                    onTap: () {
-                                      context.push(Routes.myFavorites);
-                                    },
-                                    title: LocaleKeys.favorites.tr(),
-                                  ),
-                                  ProfileItem(
-                                    onTap: () {
-                                      showCupertinoDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return CupertinoAlertDialog(
-                                            title: Text(
-                                              LocaleKeys.logOut.tr(),
-                                              style: AppTextStyles.size20Bold
-                                                  .copyWith(
-                                                    color: AppColors.cRed,
                                                   ),
-                                            ),
-                                            content: Text(
-                                              LocaleKeys.areYouSureLogOut.tr(),
-                                              style: AppTextStyles.size18Medium,
-                                            ),
-                                            actions: [
-                                              CupertinoDialogAction(
-                                                onPressed: () async {
-                                                  context
-                                                      .read<AuthCubit>()
-                                                      .logOut();
-                                                  context.pop();
-                                                },
-                                                child: Text(
-                                                  LocaleKeys.yes.tr(),
-                                                  style: AppTextStyles
-                                                      .size15Medium
-                                                      .copyWith(
-                                                        color: AppColors.cRed,
-                                                      ),
-                                                ),
-                                              ),
-                                              CupertinoDialogAction(
-                                                isDestructiveAction: true,
-                                                isDefaultAction: false,
-
-                                                onPressed: () {
-                                                  context.pop();
-                                                },
-
-                                                child: Text(
-                                                  LocaleKeys.no.tr(),
-                                                  style: AppTextStyles
-                                                      .size15Medium
-                                                      .copyWith(
-                                                        color: AppColors.cGreen,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
+                                                ],
+                                              );
+                                            },
                                           );
                                         },
-                                      );
-                                    },
-                                    title: LocaleKeys.logout.tr(),
-                                    textColor: AppColors.cRed,
+                                        title: LocaleKeys.logout.tr(),
+                                        textColor: AppColors.cRed,
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
+                    );
+                  },
                 );
               },
             );
-  },
-);
           },
         );
       },

@@ -9,7 +9,9 @@ class AiRepositoryImpl extends AiRepository {
   AiRepositoryImpl(this._aiDataSource);
 
   @override
-  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({required String prompt}) {
+  Future<Either<Failure, Map<String, dynamic>>> analyzeAdDraft({
+    required String prompt,
+  }) {
     return _aiDataSource.analyzeAdDraft(prompt: prompt);
   }
 

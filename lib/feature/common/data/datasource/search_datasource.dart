@@ -33,7 +33,9 @@ class SearchDataSourceImpl extends SearchDataSource {
         },
       );
       if (response.statusCode == 200) {
-        return Right(Map<String, dynamic>.from(response.data['data'] ?? response.data));
+        return Right(
+          Map<String, dynamic>.from(response.data['data'] ?? response.data),
+        );
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }

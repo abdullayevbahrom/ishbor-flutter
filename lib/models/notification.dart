@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:top_jobs/models/user.dart';
 
 class Notification extends Equatable {
-
   final int id;
   final String type;
   final String operation;
@@ -20,11 +19,20 @@ class Notification extends Equatable {
     required this.receiver,
     required this.read,
     required this.title,
-    required this.body
+    required this.body,
   });
 
   @override
-  List<Object> get props => [id, type, operation, operationId, receiver, read, title, body];
+  List<Object> get props => [
+    id,
+    type,
+    operation,
+    operationId,
+    receiver,
+    read,
+    title,
+    body,
+  ];
 
   static Notification fromMap(Map<String, dynamic> data) {
     return Notification(

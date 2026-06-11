@@ -44,9 +44,8 @@ class WImagePicker extends StatelessWidget {
                   color: AppColors.c15CF74.withOpacity(.4),
                   blurRadius: 15.r,
                   offset: const Offset(0, 4),
-
-                )
-              ]
+                ),
+              ],
             ),
             child: SizedBox(
               height: 45.h,
@@ -57,7 +56,7 @@ class WImagePicker extends StatelessWidget {
                 minWidth: 100.sw,
                 shape: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12.r),
-                  borderSide: BorderSide.none
+                  borderSide: BorderSide.none,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -75,7 +74,7 @@ class WImagePicker extends StatelessWidget {
               ),
             ),
           ),
-         24.verticalSpace,
+          24.verticalSpace,
           SizedBox(
             height: 90.h,
             child: ListView.separated(

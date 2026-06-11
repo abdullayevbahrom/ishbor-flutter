@@ -8,4 +8,3 @@ abstract class ContactClickRepository {
     required ContactClickParams contactClickParams,
   });
 }
-

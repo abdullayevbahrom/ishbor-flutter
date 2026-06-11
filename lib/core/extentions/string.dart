@@ -5,7 +5,7 @@ extension StringExtension on String {
 
   String truncate(int cutoff, {String character = ''}) {
     return (this.length <= cutoff)
-      ? this
-      : '${this.substring(0, cutoff)}$character';
+        ? this
+        : '${this.substring(0, cutoff)}$character';
   }
 }

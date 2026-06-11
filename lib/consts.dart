@@ -34,4 +34,5 @@ const Map<String, String> paymentIcons = {
   'humo': 'assets/img/p_humo.jpg',
 };
 
-const String mapTemplateUrl = 'https://api.mapbox.com/styles/v1/aqvavin/ckatv9mok26w01ipsq1gcfygq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYXF2YXZpbiIsImEiOiJja2F0dWV0bjYxMnp5MndxZnpkOGFlazg2In0.395FAQrHko_tPkQ_NQx1xw';
+const String mapTemplateUrl =
+    'https://api.mapbox.com/styles/v1/aqvavin/ckatv9mok26w01ipsq1gcfygq/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiYXF2YXZpbiIsImEiOiJja2F0dWV0bjYxMnp5MndxZnpkOGFlazg2In0.395FAQrHko_tPkQ_NQx1xw';

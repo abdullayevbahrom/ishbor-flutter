@@ -8,8 +8,12 @@ import '../../../../core/utils/app_utils.dart';
 import 'app_cached_network_image.dart';
 
 class WSimilarItem extends StatelessWidget {
-  const WSimilarItem(
-      {super.key, this.imageUrl, required this.title, required this.subTitle});
+  const WSimilarItem({
+    super.key,
+    this.imageUrl,
+    required this.title,
+    required this.subTitle,
+  });
 
   final String? imageUrl;
   final String title;
@@ -28,10 +32,10 @@ class WSimilarItem extends StatelessWidget {
           imageUrl == null
               ? AppUtils.kSizedBoxShrink
               : AppCachedNetworkImage(
-            height: 63.h,
-            radius: 6.r,
-            imageUrl: imageUrl,
-          ).paddingOnly(right: 24.w),
+                height: 63.h,
+                radius: 6.r,
+                imageUrl: imageUrl,
+              ).paddingOnly(right: 24.w),
           Expanded(
             child: Column(
               spacing: 8.h,

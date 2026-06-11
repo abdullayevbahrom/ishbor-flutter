@@ -9,5 +9,4 @@ class VacancyFormKeys {
   final minSalaryKey = GlobalKey<FormFieldState>();
   final maxSalaryKey = GlobalKey<FormFieldState>();
   final employmentTypeKey = GlobalKey<FormFieldState>();
-
 }

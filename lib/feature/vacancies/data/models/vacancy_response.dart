@@ -57,24 +57,29 @@ class JobResult {
 
   factory JobResult.fromJson(Map<String, dynamic> json) => JobResult(
     title: json["title"],
-    category: json["category"] == null
-        ? null
-        : JobCategory.fromJson(json["category"]),
+    category:
+        json["category"] == null
+            ? null
+            : JobCategory.fromJson(json["category"]),
     description: json["description"],
     salaryMax: json["salaryMax"],
     salaryMin: json["salaryMin"],
     skills: json["skills"] == null ? [] : List.from(json["skills"]),
     shortDescription: json["shortDescription"],
-    whoCanRespond: json["whoCanRepond"] == null
-        ? null
-        : JobRespondOption.fromJson(json["whoCanRepond"]),
+    whoCanRespond:
+        json["whoCanRepond"] == null
+            ? null
+            : JobRespondOption.fromJson(json["whoCanRepond"]),
     employmentType: json["employmentType"],
     jobModes: json["jobModes"] == null ? [] : List.from(json["jobModes"]),
     partialJobOpportunity: json["partialJobOpportunity"],
     city: json["city"],
-    address: json["address"] == null
-        ? []
-        : List<JobAddress>.from(json["address"].map((x) => JobAddress.fromJson(x))),
+    address:
+        json["address"] == null
+            ? []
+            : List<JobAddress>.from(
+              json["address"].map((x) => JobAddress.fromJson(x)),
+            ),
   );
 
   Map<String, dynamic> toJson() => {
@@ -100,16 +105,12 @@ class JobRespondOption {
 
   JobRespondOption({this.id, this.name});
 
-  factory JobRespondOption.fromJson(Map<String, dynamic> json) => JobRespondOption(
-    id: json["id"],
-    name: json["name"],
-  );
+  factory JobRespondOption.fromJson(Map<String, dynamic> json) =>
+      JobRespondOption(id: json["id"], name: json["name"]);
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-  };
+  Map<String, dynamic> toJson() => {"id": id, "name": name};
 }
+
 class JobCategory {
   final int? id;
   final String? name;

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$CreateServiceState {
 
- RequestStatus get status; String? get errorText; ServiceModel? get service; bool get isNegotiable; bool get isUZS; List<File> get images; int get category; GeocodeResponse? get location;
+ RequestStatus get status; String? get errorText; ServiceModel? get service; bool get isNegotiable; bool get isUZS; List<File> get images; String get category; GeocodeResponse? get location;
 /// Create a copy of CreateServiceState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -45,7 +45,7 @@ abstract mixin class $CreateServiceStateCopyWith<$Res>  {
   factory $CreateServiceStateCopyWith(CreateServiceState value, $Res Function(CreateServiceState) _then) = _$CreateServiceStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, String? errorText, ServiceModel? service, bool isNegotiable, bool isUZS, List<File> images, int category, GeocodeResponse? location
+ RequestStatus status, String? errorText, ServiceModel? service, bool isNegotiable, bool isUZS, List<File> images, String category, GeocodeResponse? location
 });
 
 
@@ -71,7 +71,7 @@ as ServiceModel?,isNegotiable: null == isNegotiable ? _self.isNegotiable : isNeg
 as bool,isUZS: null == isUZS ? _self.isUZS : isUZS // ignore: cast_nullable_to_non_nullable
 as bool,images: null == images ? _self.images : images // ignore: cast_nullable_to_non_nullable
 as List<File>,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as GeocodeResponse?,
   ));
 }
@@ -157,7 +157,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  int category,  GeocodeResponse? location)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  String category,  GeocodeResponse? location)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CreateServiceState() when $default != null:
 return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_that.isUZS,_that.images,_that.category,_that.location);case _:
@@ -178,7 +178,7 @@ return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  int category,  GeocodeResponse? location)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  String category,  GeocodeResponse? location)  $default,) {final _that = this;
 switch (_that) {
 case _CreateServiceState():
 return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_that.isUZS,_that.images,_that.category,_that.location);case _:
@@ -198,7 +198,7 @@ return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  int category,  GeocodeResponse? location)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  String? errorText,  ServiceModel? service,  bool isNegotiable,  bool isUZS,  List<File> images,  String category,  GeocodeResponse? location)?  $default,) {final _that = this;
 switch (_that) {
 case _CreateServiceState() when $default != null:
 return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_that.isUZS,_that.images,_that.category,_that.location);case _:
@@ -213,7 +213,7 @@ return $default(_that.status,_that.errorText,_that.service,_that.isNegotiable,_t
 
 
 class _CreateServiceState implements CreateServiceState {
-  const _CreateServiceState({this.status = RequestStatus.initial, this.errorText = null, this.service = null, this.isNegotiable = false, this.isUZS = false, final  List<File> images = const [], this.category = 0, this.location = null}): _images = images;
+  const _CreateServiceState({this.status = RequestStatus.initial, this.errorText = null, this.service = null, this.isNegotiable = false, this.isUZS = false, final  List<File> images = const [], this.category = '', this.location = null}): _images = images;
   
 
 @override@JsonKey() final  RequestStatus status;
@@ -228,7 +228,7 @@ class _CreateServiceState implements CreateServiceState {
   return EqualUnmodifiableListView(_images);
 }
 
-@override@JsonKey() final  int category;
+@override@JsonKey() final  String category;
 @override@JsonKey() final  GeocodeResponse? location;
 
 /// Create a copy of CreateServiceState
@@ -261,7 +261,7 @@ abstract mixin class _$CreateServiceStateCopyWith<$Res> implements $CreateServic
   factory _$CreateServiceStateCopyWith(_CreateServiceState value, $Res Function(_CreateServiceState) _then) = __$CreateServiceStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, String? errorText, ServiceModel? service, bool isNegotiable, bool isUZS, List<File> images, int category, GeocodeResponse? location
+ RequestStatus status, String? errorText, ServiceModel? service, bool isNegotiable, bool isUZS, List<File> images, String category, GeocodeResponse? location
 });
 
 
@@ -287,7 +287,7 @@ as ServiceModel?,isNegotiable: null == isNegotiable ? _self.isNegotiable : isNeg
 as bool,isUZS: null == isUZS ? _self.isUZS : isUZS // ignore: cast_nullable_to_non_nullable
 as bool,images: null == images ? _self._images : images // ignore: cast_nullable_to_non_nullable
 as List<File>,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
-as int,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
+as String,location: freezed == location ? _self.location : location // ignore: cast_nullable_to_non_nullable
 as GeocodeResponse?,
   ));
 }

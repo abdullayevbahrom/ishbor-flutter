@@ -5,7 +5,7 @@ import '../../data/models/auth_success.dart';
 import '../../data/models/check_model.dart';
 import '../../data/models/request/params.dart';
 
-abstract class AuthRepository{
+abstract class AuthRepository {
   Future<Either<Failure, AuthSuccess>> checkAuth({
     required CheckModel checkModel,
   });
@@ -21,9 +21,7 @@ abstract class AuthRepository{
     required SmsRegistrationParams params,
   });
 
-  Future<Either<Failure, AuthSuccess>> refresh({
-    required String refreshToken,
-  });
+  Future<Either<Failure, AuthSuccess>> refresh({required String refreshToken});
 
   Future<Either<Failure, void>> logout({required String refreshToken});
 }

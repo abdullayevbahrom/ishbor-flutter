@@ -58,7 +58,7 @@ class CreateActionForm extends StatelessWidget {
           left: 19.w,
           top: index % 3 == 1 ? 16.h : 12.h,
           bottom: index % 3 == 0 ? 16.h : 12.h,
-          right: 30
+          right: 30,
         ),
       ),
     );

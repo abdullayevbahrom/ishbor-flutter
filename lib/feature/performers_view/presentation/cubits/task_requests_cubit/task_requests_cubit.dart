@@ -15,7 +15,8 @@ part 'task_requests_state.dart';
 part 'task_requests_cubit.freezed.dart';
 
 class TaskRequestsCubit extends Cubit<TaskRequestsState> {
-  TaskRequestsCubit(this._requestsRepository) : super(const TaskRequestsState());
+  TaskRequestsCubit(this._requestsRepository)
+    : super(const TaskRequestsState());
   final TaskRequestsRepository _requestsRepository;
 
   int page = 1;

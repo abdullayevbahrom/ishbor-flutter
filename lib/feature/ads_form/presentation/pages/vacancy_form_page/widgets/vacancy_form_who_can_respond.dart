@@ -24,11 +24,10 @@ class _VacancyFormWhoCanRespondFormState
     });
   }
 
-  void _updateEmploymentType(){
+  void _updateEmploymentType() {
     setState(() {
       widget.formCustomState.enablePartTime =
-      !widget.formCustomState.enablePartTime;
-
+          !widget.formCustomState.enablePartTime;
     });
   }
 
@@ -38,7 +37,7 @@ class _VacancyFormWhoCanRespondFormState
       withFullResume: widget.formCustomState.withOutFullResume,
       enablePartTime: widget.formCustomState.enablePartTime,
       onTappedResume: _updateResume,
-      onTappedEmpType:_updateEmploymentType,
+      onTappedEmpType: _updateEmploymentType,
     );
   }
 }

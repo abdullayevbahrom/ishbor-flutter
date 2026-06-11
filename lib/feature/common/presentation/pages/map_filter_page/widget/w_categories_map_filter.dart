@@ -9,8 +9,6 @@ import 'package:top_jobs/feature/common/presentation/widget/app_check_box.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_divider.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_dialog_action_button.dart';
 
-
-
 class WCategoriesMapFilter extends StatefulWidget {
   final List<CategoryModel> categories;
 
@@ -71,69 +69,69 @@ class _WCategoriesMapFilterState extends State<WCategoriesMapFilter> {
                     padding: EdgeInsets.symmetric(vertical: 10.h),
                     controller: context.read<CategoryCubit>().scrollController,
                     itemCount:
-                    state.isLoadingMore
-                        ? (context
-                        .read<CategoryCubit>()
-                        .state
-                        .categories
-                        ?.items
-                        .length ??
-                        0) +
-                        1
-                        : context
-                        .read<CategoryCubit>()
-                        .state
-                        .categories
-                        ?.items
-                        .length ??
-                        0,
+                        state.isLoadingMore
+                            ? (context
+                                        .read<CategoryCubit>()
+                                        .state
+                                        .categories
+                                        ?.items
+                                        .length ??
+                                    0) +
+                                1
+                            : context
+                                    .read<CategoryCubit>()
+                                    .state
+                                    .categories
+                                    ?.items
+                                    .length ??
+                                0,
                     itemBuilder:
                         (context, index) =>
-                    state.isLoadingMore &&
-                        state.categories?.items.length == index
-                        ? Center(
-                      child: CircularProgressIndicator.adaptive(),
-                    )
-                        : InkWell(
-                      onTap: () {
-                        updateCategories(index);
-                      },
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            context
-                                .read<CategoryCubit>()
-                                .state
-                                .categories
-                                ?.items[index]
-                                .translations[context.locale ==
-                                'ru'
-                                ? 0
-                                : 1]
-                                .name ??
-                                '',
-                            style: AppTextStyles.size18Medium,
-                          ),
-                          AppCheckBox(
-                            value: categories.contains(
-                              context
-                                  .read<CategoryCubit>()
-                                  .state
-                                  .categories
-                                  ?.items[index],
-                            ),
-                            onChanged: (value) {
-                              updateCategories(index);
-                            },
-                          ),
-                        ],
-                      ).paddingSymmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                    ),
+                            state.isLoadingMore &&
+                                    state.categories?.items.length == index
+                                ? Center(
+                                  child: CircularProgressIndicator.adaptive(),
+                                )
+                                : InkWell(
+                                  onTap: () {
+                                    updateCategories(index);
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        context
+                                                .read<CategoryCubit>()
+                                                .state
+                                                .categories
+                                                ?.items[index]
+                                                .translations[context.locale ==
+                                                        'ru'
+                                                    ? 0
+                                                    : 1]
+                                                .name ??
+                                            '',
+                                        style: AppTextStyles.size18Medium,
+                                      ),
+                                      AppCheckBox(
+                                        value: categories.contains(
+                                          context
+                                              .read<CategoryCubit>()
+                                              .state
+                                              .categories
+                                              ?.items[index],
+                                        ),
+                                        onChanged: (value) {
+                                          updateCategories(index);
+                                        },
+                                      ),
+                                    ],
+                                  ).paddingSymmetric(
+                                    horizontal: 16.w,
+                                    vertical: 8.h,
+                                  ),
+                                ),
                   ),
                 ),
                 AppDivider(width: 100.sw, height: 1.h),
@@ -164,4 +162,3 @@ class _WCategoriesMapFilterState extends State<WCategoriesMapFilter> {
     );
   }
 }
-

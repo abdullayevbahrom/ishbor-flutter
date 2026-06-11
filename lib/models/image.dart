@@ -30,14 +30,15 @@ class AppImage extends Equatable {
       );
     }
 
-    final data = source is Map<String, dynamic>
-        ? Map<String, dynamic>.from(source)
-        : source is Map
+    final data =
+        source is Map<String, dynamic>
+            ? Map<String, dynamic>.from(source)
+            : source is Map
             ? Map<String, dynamic>.fromEntries(
-                source.entries.map(
-                  (entry) => MapEntry(entry.key.toString(), entry.value),
-                ),
-              )
+              source.entries.map(
+                (entry) => MapEntry(entry.key.toString(), entry.value),
+              ),
+            )
             : <String, dynamic>{};
 
     final urls = data['urls'];
@@ -45,17 +46,18 @@ class AppImage extends Equatable {
       id: data['id']?.toString(),
       originalName: data['original_name']?.toString(),
       extension: data['extension']?.toString(),
-      urls: urls is Map<String, dynamic>
-          ? Map<String, dynamic>.from(urls)
-          : urls is Map
+      urls:
+          urls is Map<String, dynamic>
+              ? Map<String, dynamic>.from(urls)
+              : urls is Map
               ? Map<String, dynamic>.fromEntries(
-                  urls.entries.map(
-                    (entry) => MapEntry(entry.key.toString(), entry.value),
-                  ),
-                )
+                urls.entries.map(
+                  (entry) => MapEntry(entry.key.toString(), entry.value),
+                ),
+              )
               : data['url'] == null
-                  ? <String, dynamic>{}
-                  : {'original': data['url']},
+              ? <String, dynamic>{}
+              : {'original': data['url']},
     );
   }
 }

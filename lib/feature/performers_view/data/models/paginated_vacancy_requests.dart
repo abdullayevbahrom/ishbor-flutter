@@ -15,13 +15,21 @@ class PaginatedVacancyRequestList {
 
   factory PaginatedVacancyRequestList.fromMap(Map<String, dynamic> json) {
     return PaginatedVacancyRequestList(
-      currentPageNumber: json['current_page_number'] is num ? (json['current_page_number'] as num).toInt() : 0,
-      numItemsPerPage: json['num_items_per_page'] is num ? (json['num_items_per_page'] as num).toInt() : 0,
-      items: (json['items'] as List?)
+      currentPageNumber:
+          json['current_page_number'] is num
+              ? (json['current_page_number'] as num).toInt()
+              : 0,
+      numItemsPerPage:
+          json['num_items_per_page'] is num
+              ? (json['num_items_per_page'] as num).toInt()
+              : 0,
+      items:
+          (json['items'] as List?)
               ?.map((e) => VacancyRequest.fromMap(Map<String, dynamic>.from(e)))
               .toList() ??
           [],
-      totalCount: json['total_count'] is num ? (json['total_count'] as num).toInt() : 0,
+      totalCount:
+          json['total_count'] is num ? (json['total_count'] as num).toInt() : 0,
     );
   }
 

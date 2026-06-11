@@ -8,7 +8,6 @@ import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 import 'package:top_jobs/feature/services/data/models/service.dart';
 import 'package:top_jobs/models/vacancy.dart';
 
-
 class WExpandedViewPage extends StatelessWidget {
   const WExpandedViewPage({super.key, required this.list});
 

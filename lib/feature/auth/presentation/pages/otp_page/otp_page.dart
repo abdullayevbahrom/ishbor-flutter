@@ -230,7 +230,7 @@ class _OtpPageState extends State<OtpPage> {
                   height: 50.h,
                   child: AppButton(
                     textStyle: AppTextStyles.size17Medium.copyWith(
-                        color: AppColors.cFFFFFF
+                      color: AppColors.cFFFFFF,
                     ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();
@@ -266,7 +266,7 @@ class _OtpPageState extends State<OtpPage> {
                   height: 50.h,
                   child: AppButton(
                     textStyle: AppTextStyles.size17Medium.copyWith(
-                      color: AppColors.cFFFFFF
+                      color: AppColors.cFFFFFF,
                     ),
                     onPressed: () {
                       FocusScope.of(context).unfocus();

@@ -57,8 +57,7 @@ sealed class ApiConstants {
   static String fetchListVacancyRequests(Object id) =>
       '$vacancies/${_id(id)}/vacancy-requests';
   static String updateVacancy(Object id) => '$vacancies/${_id(id)}/update';
-  static String liftUpVacancyById(Object id) =>
-      '$vacancies/${_id(id)}/lift-up';
+  static String liftUpVacancyById(Object id) => '$vacancies/${_id(id)}/lift-up';
   static String changeVacancyStatusById(Object id) =>
       '$vacancies/${_id(id)}/change-status';
   static String toggleVacancyFavorite(Object id) =>
@@ -91,9 +90,11 @@ sealed class ApiConstants {
   /// === Tasks ===
   static String get tasks => _route('tasks');
   static String get tasksGeo => '$tasks/geo';
-  static String get myTasks => _route('me/tasks/customer');
-  static String get myTaskApplies => _route('me/tasks/performer');
-  static String get taskFavorite => _route('me/task/favorites');
+  static String tasksRecommended() => _route('tasks/recommended');
+  static String myTasksByType(String type) => _route('me/tasks/$type');
+  static String get myTasks => myTasksByType('customer');
+  static String get myTaskApplies => myTasksByType('performer');
+  static String get taskFavorite => _route('me/tasks/favorites');
 
   static String fetchTask(Object id) => '$tasks/${_id(id)}';
   static String fetchSimilarTask(Object id) => '$tasks/${_id(id)}/$similar';
@@ -103,8 +104,7 @@ sealed class ApiConstants {
   static String fetchListTaskRequests(Object id) =>
       '$tasks/${_id(id)}/task-requests';
   static String get taskRequests => _route('task-requests');
-  static String fetchTaskRequest(Object id) =>
-      '$taskRequests/${_id(id)}';
+  static String fetchTaskRequest(Object id) => '$taskRequests/${_id(id)}';
   static String cancelTaskRequestByCustomer(Object id) =>
       '$taskRequests/${_id(id)}/cancel-by-customer';
   static String cancelTaskRequestByPerformer(Object id) =>
@@ -115,12 +115,10 @@ sealed class ApiConstants {
       '$taskRequests/${_id(id)}/finish-by-customer';
   static String changeTaskRequestStatus(Object id) =>
       '$taskRequests/${_id(id)}/change-status';
-  static String deleteTaskRequest(Object id) =>
-      '$taskRequests/${_id(id)}';
+  static String deleteTaskRequest(Object id) => '$taskRequests/${_id(id)}';
 
   static String get vacancyRequests => _route('vacancy-requests');
-  static String fetchVacancyRequest(Object id) =>
-      '$vacancyRequests/${_id(id)}';
+  static String fetchVacancyRequest(Object id) => '$vacancyRequests/${_id(id)}';
   static String changeVacancyRequestStatus(Object id) =>
       '$vacancyRequests/${_id(id)}/change-status';
   static String deleteVacancyRequest(Object id) =>
@@ -131,8 +129,7 @@ sealed class ApiConstants {
   static String liftUpTaskById(Object id) => '$tasks/${_id(id)}/lift-up';
   static String deactivateTaskById(Object id) =>
       '$tasks/${_id(id)}/change-status';
-  static String toggleTaskFavorite(Object id) =>
-      '$tasks/${_id(id)}/favorite';
+  static String toggleTaskFavorite(Object id) => '$tasks/${_id(id)}/favorite';
   static String deleteTaskById(Object id) => '$tasks/${_id(id)}';
 
   static String vacancyContact(Object vacancyId) =>
@@ -162,8 +159,6 @@ sealed class ApiConstants {
   static String get cities => _route('cities');
 
   /// === Categories / Tags ===
-  static String get categories => _route('categories');
-  static String get popularCategories => _route('categories/popular');
   static String fetchCategory(Object id) => '$categories/${_id(id)}';
   static String get tags => _route('tags');
   static String fetchTag(Object id) => '$tags/${_id(id)}';
@@ -201,8 +196,7 @@ sealed class ApiConstants {
     Object contentId,
     String top,
     String provider,
-  ) =>
-      '$paymentTransactions/$content/${_id(contentId)}/top/$top/$provider';
+  ) => '$paymentTransactions/$content/${_id(contentId)}/top/$top/$provider';
   static String postPayFromBalance(Object postId) =>
       '$paymentTransactions/post/${_id(postId)}';
   static String postPayByProvider(Object postId, String provider) =>
@@ -218,10 +212,8 @@ sealed class ApiConstants {
 
   /// === Yandex / external ===
   static const String yandexApiKey = 'd5d11899-3666-4363-98c8-ffc2f4c11a1f';
-  static const String yandexGeocodeKey =
-      '773f30b3-80df-4c93-8f3f-99ff4833ca4b';
-  static const String yandexSuggestKey =
-      '6773b3db-3070-4fab-a39a-9f8b468106a8';
+  static const String yandexGeocodeKey = '773f30b3-80df-4c93-8f3f-99ff4833ca4b';
+  static const String yandexSuggestKey = '6773b3db-3070-4fab-a39a-9f8b468106a8';
 
   static String yandexGeoSuggest({
     required String search,

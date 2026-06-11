@@ -74,7 +74,6 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
         spacing: 20.h,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Text(
             LocaleKeys.inquiryPhoneNumber.tr(),
             style: AppTextStyles.size22Bold.copyWith(color: AppColors.c2E3A59),

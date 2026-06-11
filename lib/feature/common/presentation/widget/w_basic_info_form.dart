@@ -33,7 +33,7 @@ class WBasicInfoForm extends StatefulWidget {
   final TextEditingController serviceController;
   final TextEditingController categoriesController;
   final VoidCallback onTapCategories;
-  final Function({int? value, String? valueStr}) onChanged;
+  final Function({String? value, String? valueStr}) onChanged;
   final Key? titleKey;
   final Key? categoryKey;
 
@@ -62,7 +62,7 @@ class _WBasicInfoFormState extends State<WBasicInfoForm> {
                 ? Text(
                   widget.title!,
                   style: AppTextStyles.size28Bold.copyWith(
-                    color: AppColors.c2E3A59
+                    color: AppColors.c2E3A59,
                   ),
                 ).paddingSymmetric(vertical: 24.h, horizontal: 8.w)
                 : AppUtils.kSizedBoxShrink,
@@ -104,7 +104,7 @@ class _WBasicInfoFormState extends State<WBasicInfoForm> {
                     fieldKey: widget.categoryKey,
                     hintText: LocaleKeys.selectCategory.tr(),
                     controller: widget.categoriesController,
-                    fillColor:AppColors.cFBFBFD,
+                    fillColor: AppColors.cFBFBFD,
                     keyBoardType: TextInputType.none,
                     suffixIcon: Icon(
                       Icons.keyboard_arrow_right_rounded,

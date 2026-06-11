@@ -30,7 +30,7 @@ class AppPhoneNumberTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         filled: true,
         hintText: "-- --- -- --",
-       contentPadding: EdgeInsets.symmetric(vertical: 12.h,horizontal: 20.w),
+        contentPadding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 20.w),
         suffixIconConstraints: BoxConstraints(minHeight: 50.h, maxHeight: 50.h),
         prefixIconConstraints: BoxConstraints(
           minWidth: 0,
@@ -43,7 +43,6 @@ class AppPhoneNumberTextFormField extends StatelessWidget {
           children: [
             SvgPicture.asset(
               AppSvg.icPhone,
-
             ).paddingOnly(left: 3.w, right: 14.w),
             Text(
               "+998  ",

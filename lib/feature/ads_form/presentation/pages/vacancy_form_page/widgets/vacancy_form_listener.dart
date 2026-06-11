@@ -268,7 +268,7 @@ class _VacancyFormListenerState extends State<VacancyFormListener>
           );
         }
 
-        if (state.gptDesSt.isLoaded() &&!_previousState!.gptDesSt.isLoaded()) {
+        if (state.gptDesSt.isLoaded() && !_previousState!.gptDesSt.isLoaded()) {
           String description = state.vacancyDesc ?? ''.replaceAll("**", '');
           description = description.replaceAll("**", '');
           widget._formControllers.descriptionController.text = description;

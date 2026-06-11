@@ -170,7 +170,7 @@ File? _messageFileFromSource(dynamic source, {required DateTime createdAt}) {
   final extension = dotIndex > 0 ? fileName.substring(dotIndex + 1) : '';
 
   return File(
-    id: 0,
+    id: '0',
     url: url,
     createdAt: createdAt,
     originalName: originalName,

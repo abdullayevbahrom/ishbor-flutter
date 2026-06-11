@@ -26,7 +26,7 @@ class WSimilarAdsLoading extends StatelessWidget {
             onTap: () {},
             child: WSimilarContentViewItem(
               category: 'lorem',
-              dateTime:"time",
+              dateTime: "time",
               title: AppLocaleKeys.lorem,
               salaryMin: 1000,
               imageUrl: AppLocaleKeys.imageUrl,

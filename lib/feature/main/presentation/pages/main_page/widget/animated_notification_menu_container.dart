@@ -37,7 +37,7 @@ class WAnimatedNotificationMenuContainer extends StatelessWidget {
             child: Wrap(
               children: [
                 SizedBox(
-                  width: MediaQuery.sizeOf(context).width/5*3.9,
+                  width: MediaQuery.sizeOf(context).width / 5 * 3.9,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
                       color: AppColors.cFEFEFE,
@@ -88,8 +88,7 @@ class WAnimatedNotificationMenuContainer extends StatelessWidget {
                                 enabled: true,
                                 child: ListView.builder(
                                   shrinkWrap: true,
-                                  physics:
-                                  const NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: 15,
                                   itemBuilder: (context, index) {
                                     return Container(

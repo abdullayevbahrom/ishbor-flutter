@@ -1,4 +1,3 @@
-
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -31,31 +30,31 @@ class WCitiesMapFilter extends StatelessWidget {
           physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.symmetric(vertical: 10.h),
           itemCount:
-          context.read<CitiesCubit>().state.listCities?.cities.length ?? 0,
+              context.read<CitiesCubit>().state.listCities?.cities.length ?? 0,
           itemBuilder:
               (context, index) => InkWell(
-            onTap: () {
-              context.pop(
-                context.read<CitiesCubit>().state.listCities?.cities[index],
-              );
-            },
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  context
-                      .read<CitiesCubit>()
-                      .state
-                      .listCities
-                      ?.cities[index]
-                      .name ??
-                      '',
-                  style: AppTextStyles.size18Medium,
-                ),
-                // AppCheckBox(value: true, onChanged: (value) {}),
-              ],
-            ).paddingSymmetric(horizontal: 16.w, vertical: 8.h),
-          ),
+                onTap: () {
+                  context.pop(
+                    context.read<CitiesCubit>().state.listCities?.cities[index],
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      context
+                              .read<CitiesCubit>()
+                              .state
+                              .listCities
+                              ?.cities[index]
+                              .name ??
+                          '',
+                      style: AppTextStyles.size18Medium,
+                    ),
+                    // AppCheckBox(value: true, onChanged: (value) {}),
+                  ],
+                ).paddingSymmetric(horizontal: 16.w, vertical: 8.h),
+              ),
         ),
       ),
     );

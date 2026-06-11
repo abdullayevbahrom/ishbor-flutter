@@ -43,7 +43,7 @@ abstract class TaskRepository {
     required CommonQueryParams queryParams,
   });
 
-  Future<Either<Failure,  PaginatedTaskResponse>> fetchMyTaskApplies({
+  Future<Either<Failure, PaginatedTaskResponse>> fetchMyTaskApplies({
     required CommonQueryParams queryParams,
   });
 }

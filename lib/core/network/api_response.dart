@@ -5,11 +5,7 @@ class ApiDataResponse<T> {
   final String? message;
   final Map<String, dynamic> raw;
 
-  const ApiDataResponse({
-    required this.data,
-    required this.raw,
-    this.message,
-  });
+  const ApiDataResponse({required this.data, required this.raw, this.message});
 
   factory ApiDataResponse.fromJson(
     dynamic source,
@@ -68,9 +64,10 @@ class ApiListResponse<T> {
           .toList(growable: false),
       totalCount: _asInt(map['total_count']) ?? _asInt(map['totalCount']),
       page: _asInt(map['page']),
-      numItemsPerPage: _asInt(map['num_items_per_page']) ??
-          _asInt(map['numItemsPerPage']),
-      currentPageNumber: _asInt(map['current_page_number']) ??
+      numItemsPerPage:
+          _asInt(map['num_items_per_page']) ?? _asInt(map['numItemsPerPage']),
+      currentPageNumber:
+          _asInt(map['current_page_number']) ??
           _asInt(map['currentPageNumber']),
       raw: raw,
     );
@@ -145,6 +142,8 @@ String? _asString(dynamic source) {
 
 void _warnMalformed(String name, Map<String, dynamic> raw) {
   if (kDebugMode) {
-    debugPrint('[API][normalize][warn] $name malformed payload: ${raw.keys.toList()}');
+    debugPrint(
+      '[API][normalize][warn] $name malformed payload: ${raw.keys.toList()}',
+    );
   }
 }

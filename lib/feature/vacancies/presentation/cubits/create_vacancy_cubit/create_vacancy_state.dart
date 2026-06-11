@@ -18,6 +18,6 @@ abstract class CreateVacancyState with _$CreateVacancyState {
     @Default(false) bool isEnable,
     @Default(null) GeocodeResponse? location,
     @Default([]) List<File> images,
-    @Default(null) int? category
+    @Default(null) String? category,
   }) = _CreateVacancyState;
 }

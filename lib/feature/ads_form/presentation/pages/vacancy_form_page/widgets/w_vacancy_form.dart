@@ -47,9 +47,7 @@ class WVacancyForm extends StatelessWidget {
           16.verticalSpace,
           Text(
             LocaleKeys.createVacancy.tr(),
-            style: AppTextStyles.size28Bold.copyWith(
-              color: AppColors.c2E3A59,
-            ),
+            style: AppTextStyles.size28Bold.copyWith(color: AppColors.c2E3A59),
           ).paddingOnly(left: 24.w),
           VacancyFormBasicInfo(
             formControllers: formController,

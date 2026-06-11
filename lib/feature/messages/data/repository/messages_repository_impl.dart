@@ -19,7 +19,10 @@ class MessagesRepositoryImpl extends MessagesRepository {
     required CommonQueryParams queryParams,
     String? type,
   }) {
-    return _messagesDataSource.fetchMessages(queryParams: queryParams, type: type);
+    return _messagesDataSource.fetchMessages(
+      queryParams: queryParams,
+      type: type,
+    );
   }
 
   @override
@@ -58,10 +61,7 @@ class MessagesRepositoryImpl extends MessagesRepository {
     required Object messageId,
     required String path,
   }) {
-    return _messagesDataSource.uploadFile(
-      messageId: messageId,
-      path: path,
-    );
+    return _messagesDataSource.uploadFile(messageId: messageId, path: path);
   }
 
   @override
@@ -109,7 +109,9 @@ class MessagesRepositoryImpl extends MessagesRepository {
   }
 
   @override
-  Future<Either<Failure, MessageRecord>> getRecordDetail({required Object recordId}) {
+  Future<Either<Failure, MessageRecord>> getRecordDetail({
+    required Object recordId,
+  }) {
     return _messagesDataSource.getRecordDetail(recordId: recordId);
   }
 }

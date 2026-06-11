@@ -127,7 +127,11 @@ class _MessageBubbleState extends State<MessageBubble> {
               widget.task != null)
             InkWell(
               onTap: () {
-                final previewId = int.tryParse(widget.adPreview?.id ?? '') ?? (widget.adPreview?.id?.isNotEmpty == true ? widget.adPreview?.id : null);
+                final previewId =
+                    int.tryParse(widget.adPreview?.id ?? '') ??
+                    (widget.adPreview?.id?.isNotEmpty == true
+                        ? widget.adPreview?.id
+                        : null);
                 if (previewId != null && widget.adPreview?.type == 'vacancy') {
                   context.push("/vacancy-view?id=$previewId");
                 } else if (previewId != null &&

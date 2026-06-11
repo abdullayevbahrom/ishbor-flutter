@@ -111,7 +111,7 @@ class User extends Equatable {
     aboutMe,
     verificationDoc,
     contentCount,
-    contentLimit
+    contentLimit,
   ];
 
   static User fromMap(Map<String, dynamic> data) => User(

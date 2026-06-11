@@ -10,7 +10,6 @@ import 'package:top_jobs/core/theme/app_text_styles.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_cached_network_image.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_animated_button_wrapper.dart';
 
-
 class WMessagesLoading extends StatelessWidget {
   const WMessagesLoading({super.key});
 
@@ -23,10 +22,8 @@ class WMessagesLoading extends StatelessWidget {
         physics: const AlwaysScrollableScrollPhysics(),
         itemBuilder: (context, index) => WMessageLoadingItem(),
         separatorBuilder:
-            (context, index) => AppDivider(
-              height: 1.h,
-              width: 100.sw,
-            ).paddingOnly(left: 80.w),
+            (context, index) =>
+                AppDivider(height: 1.h, width: 100.sw).paddingOnly(left: 80.w),
         itemCount: 10,
       ),
     );

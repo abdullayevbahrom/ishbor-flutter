@@ -34,11 +34,11 @@ class _VacancyListState extends State<VacancyList> {
   bool enableCancel = false;
 
   void test() {
-  //   for (int i = 0; i <= 700; i++) {
-  //     if (i < 700) {
-  //       sl<Dio>().get('https://api.ishbor.uz/vacancies/2022');
-  //     }
-  //   }
+    //   for (int i = 0; i <= 700; i++) {
+    //     if (i < 700) {
+    //       sl<Dio>().get('https://api.ishbor.uz/vacancies/2022');
+    //     }
+    //   }
   }
 
   @override

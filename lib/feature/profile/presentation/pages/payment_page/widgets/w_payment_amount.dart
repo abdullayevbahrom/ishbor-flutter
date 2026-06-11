@@ -19,7 +19,7 @@ class WPaymentAmount extends StatelessWidget {
   final Function(String amount) onPressedAmount;
   final String currentValue;
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     return GridView.builder(
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -40,15 +40,14 @@ class WPaymentAmount extends StatelessWidget {
             onPressedAmount(Formatters.moneyFormat("${_amounts[index]}"));
           },
           textStyle: AppTextStyles.size15Medium.copyWith(
-            color:
-            AppColors.c2E3A59,
+            color: AppColors.c2E3A59,
           ),
           text: Formatters.moneyFormat("${_amounts[index]}"),
           verticalPadding: 0,
           color:
-          currentValue == Formatters.moneyFormat("${_amounts[index]}")
-              ? AppColors.cFF9914.newWithOpacity(.3)
-              : AppColors.c2E3A59.newWithOpacity(.05),
+              currentValue == Formatters.moneyFormat("${_amounts[index]}")
+                  ? AppColors.cFF9914.newWithOpacity(.3)
+                  : AppColors.c2E3A59.newWithOpacity(.05),
         );
       },
     );
