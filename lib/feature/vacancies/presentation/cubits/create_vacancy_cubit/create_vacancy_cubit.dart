@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
+import 'package:top_jobs/core/helpers/formatters.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_create_model.dart';
@@ -17,6 +18,8 @@ import '../../../../../core/helpers/string_helpers.dart';
 import '../../../../../models/address.dart';
 import '../../../../../models/vacancy.dart';
 import '../../../../ads_form/domain/repository/vacancy_form_repository.dart';
+import '../../../../ads_form/data/models/response/chatgpt_response.dart';
+import '../../../../common/presentation/cubits/category_cubit/category_cubit.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 
 part 'create_vacancy_state.dart';
@@ -64,7 +67,7 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     emit(state.copyWith(temporaryEmployee: !state.temporaryEmployee));
   }
 
-  validateEnability() {
+  void validateEnability() {
     if (descriptionController.text.trim().length >= 50) {
       emit(state.copyWith(buttonEnable: true));
     } else {
@@ -105,27 +108,156 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     emit(state.copyWith(employmentType: index));
   }
 
-  Future<void> generateVacancyDesc() async {
-    emit(state.copyWith(generateVacancyDes: RequestStatus.loading));
+  String _prompt() => descriptionController.text.trim();
 
-    // response.fold(
-    //   (l) {
-    //     generatedDesController.text = descriptionController.text.trim();
-    //     emit(state.copyWith(generateVacancyDes: RequestStatus.error));
-    //   },
-    //   (r) {
-    //     generatedDesController.text = r
-    //         .replaceAll("*", '')
-    //         .replaceAll('---', '');
-    //     emit(state.copyWith(generateVacancyDes: RequestStatus.loaded));
-    //   },
-    // );
+  void _applyGeneratedBody(NewChatGptResponse response) {
+    final draft = response.result;
+    vacancyNameController.text = draft.title ?? vacancyNameController.text;
+    if (draft.salaryMin != null) {
+      minSalaryController.text = Formatters.moneyFormat('${draft.salaryMin}');
+    }
+    if (draft.salaryMax != null) {
+      maxSalaryController.text = Formatters.moneyFormat('${draft.salaryMax}');
+    }
+
+    final context = navigatorKey.currentContext;
+    final categoryId = draft.category?.id.toString();
+    if (context != null && categoryId != null && categoryId.isNotEmpty) {
+      final matchedCategories =
+          context
+              .read<CategoryCubit>()
+              .state
+              .categories
+              ?.items
+              .where((e) => e.id == categoryId)
+              .toList();
+      if (matchedCategories != null && matchedCategories.isNotEmpty) {
+        final category = matchedCategories.first;
+        final localeIndex = context.locale.languageCode == 'ru' ? 0 : 1;
+        final translation =
+            category.translations.length > localeIndex
+                ? category.translations[localeIndex]
+                : category.translations.first;
+        categoryController.text = translation.name ?? '';
+        categories = matchedCategories.map((e) => e.id).toList();
+      }
+    }
   }
 
-  Future<void> generateVacancyBody() async {}
+  Future<void> _streamGeneratedDescription(String prompt) async {
+    generatedDesController.clear();
+    await for (final event in _vacancyFormRepository.generateVacancyDescription(
+      prompt: prompt,
+    )) {
+      event.fold(
+        (l) {
+          generatedDesController.text = prompt;
+          emit(
+            state.copyWith(
+              generateVacancyDes: RequestStatus.error,
+              errorText: l.message,
+            ),
+          );
+          showErrorToast(l.message ?? LocaleKeys.unExpectedError.tr());
+          return;
+        },
+        (r) {
+          generatedDesController.text = '${generatedDesController.text}$r';
+          generatedDesController.selection = TextSelection.collapsed(
+            offset: generatedDesController.text.length,
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> _generateVacancyBodyInternal(String prompt) async {
+    final response = await _vacancyFormRepository.generateVacancyBody(
+      prompt: prompt,
+    );
+
+    response.fold(
+      (l) {
+        emit(
+          state.copyWith(
+            status: RequestStatus.error,
+            generateVacancyDes: RequestStatus.error,
+            isEnable: true,
+            errorText: l.message,
+          ),
+        );
+        showErrorToast(l.message ?? LocaleKeys.unExpectedError.tr());
+      },
+      (r) {
+        _applyGeneratedBody(r);
+        emit(
+          state.copyWith(
+            status: RequestStatus.loaded,
+            generateVacancyDes: RequestStatus.loaded,
+            isEnable: true,
+            vacancy: state.vacancy,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> generateVacancyDesc() async {
+    final prompt = _prompt();
+    if (prompt.isEmpty) {
+      return;
+    }
+
+    debugPrint(
+      '[DEBUG][vacancy-create][ai-desc] promptLength=${prompt.length}',
+    );
+    emit(state.copyWith(generateVacancyDes: RequestStatus.loading));
+    try {
+      await _streamGeneratedDescription(prompt);
+      if (state.generateVacancyDes != RequestStatus.error) {
+        emit(state.copyWith(generateVacancyDes: RequestStatus.loaded));
+      }
+    } catch (e) {
+      generatedDesController.text = prompt;
+      emit(state.copyWith(generateVacancyDes: RequestStatus.error));
+      showErrorToast(e.toString());
+    }
+  }
+
+  Future<void> generateVacancyBody() async {
+    final prompt = _prompt();
+    if (prompt.isEmpty) {
+      showErrorToast(LocaleKeys.unExpectedError.tr());
+      return;
+    }
+
+    debugPrint(
+      '[DEBUG][vacancy-create][ai-body] promptLength=${prompt.length}',
+    );
+    emit(
+      state.copyWith(
+        status: RequestStatus.loading,
+        generateVacancyDes: RequestStatus.loading,
+      ),
+    );
+    await _generateVacancyBodyInternal(prompt);
+  }
 
   Future<void> generateVacancy() async {
-    Future.wait([generateVacancyBody(), generateVacancyDesc()]);
+    final prompt = _prompt();
+    if (prompt.isEmpty) {
+      showErrorToast(LocaleKeys.unExpectedError.tr());
+      return;
+    }
+
+    emit(
+      state.copyWith(
+        status: RequestStatus.loading,
+        generateVacancyDes: RequestStatus.loading,
+      ),
+    );
+    await _generateVacancyBodyInternal(prompt);
+    await generateVacancyDesc();
   }
 
   Future<void> createVacancy() async {
@@ -276,7 +408,8 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
 
   void initVacancy(Vacancy vacancy) {
     emit(state.copyWith(isEnable: true));
-    vacancyNameController.text = vacancy.title.resolve(
+    vacancyNameController.text =
+        vacancy.title.resolve(
           navigatorKey.currentContext?.locale.languageCode,
         ) ??
         '';
@@ -286,8 +419,8 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     //  descriptionController.text=vacancy.description??'';
     generatedDesController.text =
         vacancy.description?.resolve(
-              navigatorKey.currentContext?.locale.languageCode,
-            ) ??
+          navigatorKey.currentContext?.locale.languageCode,
+        ) ??
         '';
     skillsController.text = vacancy.skills!
         .map((e) {

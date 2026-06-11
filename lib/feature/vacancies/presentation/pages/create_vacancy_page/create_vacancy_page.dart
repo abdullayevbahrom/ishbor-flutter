@@ -107,20 +107,20 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
             setState(() {
               currentLength = cubit.generatedDesController.text.length;
 
-                  if (state.category != null) {
-                    context.read<CategoryCubit>().state.categories?.items.forEach((
-                      element,
-                    ) {
-                      if (element.id == state.category) {
+              if (state.category != null) {
+                context.read<CategoryCubit>().state.categories?.items.forEach((
+                  element,
+                ) {
+                  if (element.id == state.category) {
                     cubit.categoryController.text =
                         element
                             .translations[context.locale == 'ru' ? 0 : 1]
                             .name ??
                         '';
                     cubit.categories = [element.id];
-                      }
-                    });
                   }
+                });
+              }
             });
           }
 

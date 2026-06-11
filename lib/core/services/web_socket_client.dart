@@ -13,10 +13,7 @@ class WebsocketClient {
 
   static Future<IOWebSocketChannel?> initChat(Object messageId) async {
     final path = '/messages/$messageId';
-    return _connectWithFallback(
-      label: 'messages',
-      path: path,
-    );
+    return _connectWithFallback(label: 'messages', path: path);
   }
 
   Future<IOWebSocketChannel?> initUserStatus({
@@ -41,11 +38,7 @@ class WebsocketClient {
     final baseUri = Uri.parse('${ApiConstants.wsUrl}$path');
 
     final attempts = <_SocketAttempt>[
-      _SocketAttempt(
-        uri: baseUri,
-        headers: headers,
-        tag: 'header-auth',
-      ),
+      _SocketAttempt(uri: baseUri, headers: headers, tag: 'header-auth'),
       _SocketAttempt(
         uri: baseUri.replace(
           queryParameters: {

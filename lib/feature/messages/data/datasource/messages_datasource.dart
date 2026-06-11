@@ -335,7 +335,9 @@ class MessagesDataSourceImpl extends MessagesDataSource {
   @override
   Future<Either<Failure, void>> makeMessageRead(Object messageId) async {
     try {
-      debugPrint('[DEBUG][messages] make message read messageId=${messageId.toString()}');
+      debugPrint(
+        '[DEBUG][messages] make message read messageId=${messageId.toString()}',
+      );
       final response = await _dio.post(ApiConstants.makeMessageRead(messageId));
       if (response.statusCode == 204 || response.statusCode == 200) {
         return const Right(null);

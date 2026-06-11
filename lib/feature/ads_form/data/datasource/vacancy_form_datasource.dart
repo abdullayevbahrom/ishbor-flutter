@@ -31,17 +31,40 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
 
   VacancyFormDataSourceImpl(this._dio);
 
+  void _log429(String label, DioException error) {
+    if (error.response?.statusCode == 429) {
+      debugPrint('[WARN][ai][$label] rate limit hit status=429');
+    }
+  }
+
   @override
   Future<Either<Failure, NewChatGptResponse>> generateVacancyBody({
     required String prompt,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][ai][body] promptLength=${prompt.trim().length} endpoint=${ApiConstants.chatGpt}',
+      );
       final response = await _dio.get(
-        "chatgpt-new",
-        queryParameters: {"prompt": prompt},
+        ApiConstants.chatGpt,
+        queryParameters: {'prompt': prompt},
       );
       if (response.statusCode == 200) {
-        return Right(NewChatGptResponse.fromMap(response.data));
+        final raw = response.data;
+        final payload =
+            raw is Map<String, dynamic>
+                ? Map<String, dynamic>.from(raw['data'] ?? raw)
+                : null;
+        if (payload == null) {
+          return Left(
+            Failure(message: response.data?.toString() ?? 'Unknown error'),
+          );
+        }
+        final result = payload['result'];
+        final mappedTitle =
+            result is Map ? result['title']?.toString() ?? '' : '';
+        debugPrint('[DEBUG][ai][body] mapped title=$mappedTitle');
+        return Right(NewChatGptResponse.fromMap(payload));
       } else {
         if (response.data is Map<String, dynamic>) {
           return Left(Failure(message: response.data['message']));
@@ -50,6 +73,7 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
         }
       }
     } on DioException catch (e) {
+      _log429('body', e);
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
     } on Exception catch (e) {
@@ -63,19 +87,25 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
     required String prompt,
   }) async {
     try {
+      debugPrint(
+        '[DEBUG][ai][desc] promptLength=${prompt.trim().length} endpoint=${ApiConstants.chatGptDescription}',
+      );
       final response = await _dio.get(
-        'chatgpt-description-new',
+        ApiConstants.chatGptDescription,
         queryParameters: {'prompt': prompt},
       );
 
       if (response.statusCode == 200 && response.data != null) {
-        return Right(response.data);
+        final result = response.data.toString();
+        debugPrint('[DEBUG][ai][desc] resultLength=${result.length}');
+        return Right(result);
       } else {
         return Left(
           Failure(message: response.data?.toString() ?? 'Unknown error'),
         );
       }
     } on DioException catch (e) {
+      _log429('desc', e);
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));
     } on Exception catch (e) {
@@ -139,8 +169,11 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
     required String prompt,
   }) async* {
     try {
+      debugPrint(
+        '[DEBUG][ai][desc-stream] promptLength=${prompt.trim().length} endpoint=${ApiConstants.chatGptDescription}',
+      );
       final response = await _dio.get<ResponseBody>(
-        'chatgpt-description-new',
+        ApiConstants.chatGptDescription,
         queryParameters: {'prompt': prompt},
         options: Options(
           responseType: ResponseType.stream,
@@ -152,10 +185,17 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
         yield Left(Failure(message: "Response is empty"));
       }
 
+      var receivedLength = 0;
       await for (final chunk in utf8.decoder.bind(response.data!.stream)) {
+        receivedLength += chunk.length;
+        debugPrint('[DEBUG][ai][desc-stream] chunkLength=${chunk.length}');
         yield Right(chunk);
       }
+      debugPrint('[DEBUG][ai][desc-stream] resultLength=$receivedLength');
     } catch (e) {
+      if (e is DioException) {
+        _log429('desc-stream', e);
+      }
       yield Left(Failure(message: e.toString()));
     }
   }

@@ -29,13 +29,16 @@ class PaginatedTaskListResponse {
     final payload = asMap(unwrapData(json));
     final items = mappedList(payload['items'], TaskModel.fromJson);
     final currentPageNumber =
-        intValue(payload['current_page_number'] ?? payload['currentPageNumber']) ??
+        intValue(
+          payload['current_page_number'] ?? payload['currentPageNumber'],
+        ) ??
         1;
     final numItemsPerPage =
         intValue(payload['num_items_per_page'] ?? payload['numItemsPerPage']) ??
         items.length;
     final totalCount =
-        intValue(payload['total_count'] ?? payload['totalCount']) ?? items.length;
+        intValue(payload['total_count'] ?? payload['totalCount']) ??
+        items.length;
 
     if (kDebugMode &&
         (payload['paginator_options'] == null ||
@@ -394,30 +397,40 @@ class PaginatorOptions {
 
   factory PaginatorOptions.fromJson(Map<String, dynamic> json) {
     return PaginatorOptions(
-      pageParameterName: stringValue(
+      pageParameterName:
+          stringValue(
             json['pageParameterName'] ?? json['page_parameter_name'],
           ) ??
           'page',
-      sortFieldParameterName: stringValue(
+      sortFieldParameterName:
+          stringValue(
             json['sortFieldParameterName'] ?? json['sort_field_parameter_name'],
           ) ??
           '',
-      sortDirectionParameterName: stringValue(
+      sortDirectionParameterName:
+          stringValue(
             json['sortDirectionParameterName'] ??
                 json['sort_direction_parameter_name'],
           ) ??
           '',
-      filterFieldParameterName: stringValue(
-            json['filterFieldParameterName'] ?? json['filter_field_parameter_name'],
+      filterFieldParameterName:
+          stringValue(
+            json['filterFieldParameterName'] ??
+                json['filter_field_parameter_name'],
           ) ??
           '',
-      filterValueParameterName: stringValue(
-            json['filterValueParameterName'] ?? json['filter_value_parameter_name'],
+      filterValueParameterName:
+          stringValue(
+            json['filterValueParameterName'] ??
+                json['filter_value_parameter_name'],
           ) ??
           '',
       distinct: boolValue(json['distinct']) ?? false,
-      pageOutOfRange: stringValue(json['pageOutOfRange'] ?? json['page_out_of_range']) ?? '',
-      defaultLimit: intValue(json['defaultLimit'] ?? json['default_limit']) ?? 0,
+      pageOutOfRange:
+          stringValue(json['pageOutOfRange'] ?? json['page_out_of_range']) ??
+          '',
+      defaultLimit:
+          intValue(json['defaultLimit'] ?? json['default_limit']) ?? 0,
     );
   }
 

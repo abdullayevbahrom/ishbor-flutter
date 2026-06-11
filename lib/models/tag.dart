@@ -17,9 +17,27 @@ class TagModel extends Equatable {
     }
 
     final map = unwrapData(source);
-    return TagModel(
-      id: stringValue(map['id']) ?? '',
-      name: stringValue(map['name'] ?? map['title']) ?? '',
-    );
+    final name =
+        _localizedName(map['name'] ?? map['title']) ??
+        stringValue(map['name'] ?? map['title']) ??
+        '';
+    return TagModel(id: stringValue(map['id']) ?? '', name: name);
   }
+}
+
+String? _localizedName(dynamic source) {
+  final map = asMap(source);
+  if (map.isEmpty) {
+    return null;
+  }
+
+  for (final key in ['ru', 'uz', 'en']) {
+    final value = stringValue(map[key]);
+    if (value != null && value.trim().isNotEmpty) {
+      return value.trim();
+    }
+  }
+
+  final firstValue = map.values.isNotEmpty ? map.values.first : null;
+  return stringValue(firstValue)?.trim();
 }

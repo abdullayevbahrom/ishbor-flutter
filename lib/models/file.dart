@@ -88,14 +88,16 @@ File _fromJsonUnsafe(dynamic source) {
       stringValue(data['original_name'] ?? data['originalName']) ??
       _fileNameFromUrl(url);
   final dotIndex = fileName.lastIndexOf('.');
-  final originalName = dotIndex > 0 ? fileName.substring(0, dotIndex) : fileName;
+  final originalName =
+      dotIndex > 0 ? fileName.substring(0, dotIndex) : fileName;
 
   return File(
     id: stringValue(data['id']) ?? (url.isNotEmpty ? url : ''),
     createdAt: parseRequiredDateTime(data['created_at']),
     url: url,
     originalName: originalName,
-    extension: stringValue(data['extension']) ??
+    extension:
+        stringValue(data['extension']) ??
         (dotIndex > 0 ? fileName.substring(dotIndex + 1) : ''),
     mimeType: stringValue(data['mime_type']) ?? '',
   );

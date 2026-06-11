@@ -21,7 +21,9 @@ class MessageCubit extends Cubit<MessageState> {
 
   void fetchData({String? type}) {
     _currentType = type;
-    debugPrint('[DEBUG][messages] message list fetchData type=${type ?? 'all'}');
+    debugPrint(
+      '[DEBUG][messages] message list fetchData type=${type ?? 'all'}',
+    );
     reset();
     fetchMessages();
   }

@@ -148,9 +148,14 @@ class TaskDataSourceImpl extends TaskDataSource {
       );
       if (response.statusCode == 200) {
         _log('similar', 'loaded status=${response.statusCode}');
-        return Right(PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)));
+        return Right(
+          PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)),
+        );
       } else {
-        _log('similar', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'similar',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -174,9 +179,14 @@ class TaskDataSourceImpl extends TaskDataSource {
       );
       if (response.statusCode == 200) {
         _log('list', 'loaded status=${response.statusCode}');
-        return Right(PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)));
+        return Right(
+          PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)),
+        );
       } else {
-        _log('list', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'list',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -245,7 +255,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('create', 'success status=${response.statusCode}');
         return Right(TaskModel.fromJson(_unwrapMap(response.data)));
       } else {
-        _log('create', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'create',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -274,7 +287,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('applies', 'loaded status=${response.statusCode}');
         return Right(PaginatedTaskResponse.fromJson(_unwrapMap(response.data)));
       } else {
-        _log('applies', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'applies',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -298,9 +314,14 @@ class TaskDataSourceImpl extends TaskDataSource {
       );
       if (response.statusCode == 200) {
         _log('mine', 'loaded status=${response.statusCode}');
-        return Right(PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)));
+        return Right(
+          PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)),
+        );
       } else {
-        _log('mine', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'mine',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -321,7 +342,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('read', 'loaded status=${response.statusCode}');
         return Right(TaskModel.fromJson(_unwrapMap(response.data)));
       } else {
-        _log('read', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'read',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -351,7 +375,10 @@ class TaskDataSourceImpl extends TaskDataSource {
           }).toList(),
         );
       } else {
-        _log('geo', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'geo',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -400,7 +427,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('update', 'success status=${response.statusCode}');
         return Right(TaskModel.fromJson(_unwrapMap(response.data)));
       } else {
-        _log('update', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'update',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -423,7 +453,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('lift-up', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        _log('lift-up', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'lift-up',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -452,7 +485,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('status', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        _log('status', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'status',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -475,7 +511,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('delete', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        _log('delete', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'delete',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -498,7 +537,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('favorite', 'success status=${response.statusCode}');
         return const Right(null);
       } else {
-        _log('favorite', 'warn status=${response.statusCode} payload=${response.data}');
+        _log(
+          'favorite',
+          'warn status=${response.statusCode} payload=${response.data}',
+        );
         return Left(Failure(message: _message(response.data)));
       }
     } on DioException catch (e) {
@@ -558,7 +600,9 @@ class TaskDataSourceImpl extends TaskDataSource {
       );
       if (response.statusCode == 200) {
         _log('recommended', 'loaded status=${response.statusCode}');
-        return Right(PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)));
+        return Right(
+          PaginatedTaskListResponse.fromJson(_unwrapMap(response.data)),
+        );
       } else {
         _log(
           'recommended',

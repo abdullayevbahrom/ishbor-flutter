@@ -66,7 +66,9 @@ class WSimilarVacancies extends StatelessWidget {
                   title: Formatters.translateText(
                     uzText: vacancy.title.uz,
                     ruText: vacancy.title.ru,
-                    defaultText: vacancy.title.resolve(context.locale.languageCode),
+                    defaultText: vacancy.title.resolve(
+                      context.locale.languageCode,
+                    ),
                   ),
                   salaryMin: vacancy.salaryMin,
                   salaryMax: vacancy.salaryMax,

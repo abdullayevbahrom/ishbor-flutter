@@ -27,9 +27,7 @@ class AdCustomer extends Equatable {
 
   factory AdCustomer.fromJson(dynamic source) {
     final raw =
-        source is String
-            ? <String, dynamic>{'id': source}
-            : unwrapData(source);
+        source is String ? <String, dynamic>{'id': source} : unwrapData(source);
     return AdCustomer(
       raw: raw,
       id: stringValue(raw['id']),

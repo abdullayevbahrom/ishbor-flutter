@@ -88,7 +88,9 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> fetchData(Object messageId) async {
     _messageId = messageId.toString();
-    debugPrint('[DEBUG][messages] chat fetchData messageId=${_messageId ?? ''}');
+    debugPrint(
+      '[DEBUG][messages] chat fetchData messageId=${_messageId ?? ''}',
+    );
     reset();
     fetchRecordsByChatId(messageId);
     initChat(messageId);
@@ -176,7 +178,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> makeMessageRead(Object messageId) async {
-    debugPrint('[DEBUG][messages] chat make message read messageId=${messageId.toString()}');
+    debugPrint(
+      '[DEBUG][messages] chat make message read messageId=${messageId.toString()}',
+    );
     final response = await _messagesRepository.makeMessageRead(messageId);
     response.fold((l) {}, (r) {});
   }
@@ -337,7 +341,9 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> fetchMessageById(Object id) async {
-    debugPrint('[DEBUG][messages] chat fetch message header id=${id.toString()}');
+    debugPrint(
+      '[DEBUG][messages] chat fetch message header id=${id.toString()}',
+    );
     emit(state.copyWith(messageSt: RequestStatus.loading));
     final response = await _messagesRepository.fetchMessageById(messageId: id);
     response.fold(
@@ -367,7 +373,11 @@ class ChatCubit extends Cubit<ChatState> {
     final adType = message?.adType ?? messageData['ad_type']?.toString() ?? '';
     final adId = message?.adId ?? messageData['ad_id']?.toString() ?? '';
 
-    if (body.isEmpty || receiverId == null || receiverId.isEmpty || adType.isEmpty || adId.isEmpty) {
+    if (body.isEmpty ||
+        receiverId == null ||
+        receiverId.isEmpty ||
+        adType.isEmpty ||
+        adId.isEmpty) {
       debugPrint(
         '[WARN][messages] send message validation failed bodyEmpty=${body.isEmpty} receiverId=${receiverId ?? ''} adType=$adType adId=$adId',
       );

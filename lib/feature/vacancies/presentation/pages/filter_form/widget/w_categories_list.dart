@@ -103,30 +103,30 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                             onTap: () {
                               if (ids.contains(
                                 context
-                                    .read<CategoryCubit>()
-                                    .state
-                                    .categories
-                                    ?.items[index]
-                                    .id ??
+                                        .read<CategoryCubit>()
+                                        .state
+                                        .categories
+                                        ?.items[index]
+                                        .id ??
                                     '',
                               )) {
                                 ids.remove(
                                   context
-                                      .read<CategoryCubit>()
-                                      .state
-                                      .categories
-                                      ?.items[index]
-                                      .id ??
+                                          .read<CategoryCubit>()
+                                          .state
+                                          .categories
+                                          ?.items[index]
+                                          .id ??
                                       '',
                                 );
                               } else {
                                 ids.add(
                                   context
-                                      .read<CategoryCubit>()
-                                      .state
-                                      .categories
-                                      ?.items[index]
-                                      .id ??
+                                          .read<CategoryCubit>()
+                                          .state
+                                          .categories
+                                          ?.items[index]
+                                          .id ??
                                       '',
                                 );
                               }

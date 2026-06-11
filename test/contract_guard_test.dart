@@ -20,6 +20,7 @@ void main() {
       ApiConstants.reports,
       ApiConstants.search,
       ApiConstants.chatGpt,
+      ApiConstants.chatGptDescription,
     ];
 
     for (final route in guardedRoutes) {

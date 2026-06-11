@@ -15,23 +15,7 @@ class RealtimeCubit extends Cubit<RealtimeState> {
     _heartbeatTimer?.cancel();
     _heartbeatTimer = Timer.periodic(const Duration(minutes: 1), (timer) {
       debugPrint('[DEBUG][realtime] heartbeat tick=${timer.tick}');
-      _realtimeRepository.heartbeat().then(
-        (response) {
-          response.fold(
-            (failure) {
-              debugPrint(
-                '[WARN][realtime] heartbeat sync failed: ${failure.message}',
-              );
-            },
-            (_) {
-              debugPrint('[DEBUG][realtime] heartbeat synced');
-            },
-          );
-        },
-      );
-    });
-    _realtimeRepository.heartbeat().then(
-      (response) {
+      _realtimeRepository.heartbeat().then((response) {
         response.fold(
           (failure) {
             debugPrint(
@@ -42,8 +26,20 @@ class RealtimeCubit extends Cubit<RealtimeState> {
             debugPrint('[DEBUG][realtime] heartbeat synced');
           },
         );
-      },
-    );
+      });
+    });
+    _realtimeRepository.heartbeat().then((response) {
+      response.fold(
+        (failure) {
+          debugPrint(
+            '[WARN][realtime] heartbeat sync failed: ${failure.message}',
+          );
+        },
+        (_) {
+          debugPrint('[DEBUG][realtime] heartbeat synced');
+        },
+      );
+    });
   }
 
   void stopHeartbeat() {
@@ -52,7 +48,9 @@ class RealtimeCubit extends Cubit<RealtimeState> {
   }
 
   Future<void> checkUserStatus(Object userId) async {
-    debugPrint('[DEBUG][realtime] check user status userId=${userId.toString()}');
+    debugPrint(
+      '[DEBUG][realtime] check user status userId=${userId.toString()}',
+    );
     final response = await _realtimeRepository.checkUserStatus(userId);
     response.fold(
       (failure) {

@@ -83,7 +83,9 @@ class Task extends AdPricable {
       ),
       phoneNumber: stringValue(payload['phone_number']),
       performer:
-          payload['performer'] != null ? User.fromMap(payload['performer']) : null,
+          payload['performer'] != null
+              ? User.fromMap(payload['performer'])
+              : null,
       price: doubleValue(payload['price']),
       viewCount: intValue(payload['view_count']),
       city: stringValue(payload['city']),

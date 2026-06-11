@@ -239,7 +239,10 @@ class VacancyPaginationResponse {
       currentPageNumber: intValue(payload['current_page_number']) ?? 1,
       numItemsPerPage: intValue(payload['num_items_per_page']) ?? 10,
       totalCount: intValue(payload['total_count']) ?? 0,
-      items: mappedList(payload['items'], (item) => Vacancy.fromMap(asMap(item))),
+      items: mappedList(
+        payload['items'],
+        (item) => Vacancy.fromMap(asMap(item)),
+      ),
     );
   }
 

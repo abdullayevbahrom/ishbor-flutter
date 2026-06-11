@@ -50,9 +50,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> acceptRequest(TaskRequest taskRequest) async {
-    debugPrint(
-      '[DEBUG][TaskRequestsCubit] action=accept id=${taskRequest.id}',
-    );
+    debugPrint('[DEBUG][TaskRequestsCubit] action=accept id=${taskRequest.id}');
     emit(
       state.copyWith(
         choosePerformerSt: RequestStatus.loading,
@@ -137,9 +135,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> finishTask(TaskRequest taskRequest) async {
-    debugPrint(
-      '[DEBUG][TaskRequestsCubit] action=finish id=${taskRequest.id}',
-    );
+    debugPrint('[DEBUG][TaskRequestsCubit] action=finish id=${taskRequest.id}');
     emit(state.copyWith(finishTaskSt: RequestStatus.loading));
 
     final response = await _requestsRepository.finishRequestByCustomer(
@@ -187,9 +183,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
   }
 
   Future<void> deleteRequest(TaskRequest taskRequest) async {
-    debugPrint(
-      '[DEBUG][TaskRequestsCubit] action=delete id=${taskRequest.id}',
-    );
+    debugPrint('[DEBUG][TaskRequestsCubit] action=delete id=${taskRequest.id}');
     emit(state.copyWith(status: RequestStatus.loading));
 
     final response = await _requestsRepository.deleteRequest(

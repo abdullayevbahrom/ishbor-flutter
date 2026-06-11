@@ -131,14 +131,8 @@ class User extends Equatable {
       middleName: stringValue(data['middle_name'] ?? data['middleName']),
       birthDay: dateTimeValue(data['birth_day']),
       avatar: data['avatar'] != null ? AppImage.fromJson(data['avatar']) : null,
-      categories: mappedList(
-        data['categories'],
-        CategoryModel.fromMap,
-      ),
-      portfolios: mappedList(
-        data['portfolios'],
-        AppImage.fromJson,
-      ),
+      categories: mappedList(data['categories'], CategoryModel.fromMap),
+      portfolios: mappedList(data['portfolios'], AppImage.fromJson),
       uploadedPortfolios: mappedList(
         data['uploaded_portfolios'],
         AppImage.fromJson,

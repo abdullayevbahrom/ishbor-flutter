@@ -51,10 +51,7 @@ class DioInterceptors extends Interceptor {
   }
 
   @override
-  void onResponse(
-    Response response,
-    ResponseInterceptorHandler handler,
-  ) {
+  void onResponse(Response response, ResponseInterceptorHandler handler) {
     _persistDeviceTokenFromResponse(response);
     handler.next(response);
   }

@@ -26,7 +26,8 @@ class TaskPerformersPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<TaskRequestsCubit>()..fetchRequestsByTask(taskModel),
+      create:
+          (context) => sl<TaskRequestsCubit>()..fetchRequestsByTask(taskModel),
       child: BlocBuilder<TaskRequestsCubit, TaskRequestsState>(
         builder: (context, state) {
           return WLayout(

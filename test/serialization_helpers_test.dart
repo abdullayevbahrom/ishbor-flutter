@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
+import 'package:top_jobs/feature/common/data/models/cities_list.dart';
 import 'package:top_jobs/feature/common/data/models/category.dart';
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
 import 'package:top_jobs/feature/common/data/models/user_update_request.dart';
@@ -17,6 +18,8 @@ import 'package:top_jobs/models/file.dart';
 import 'package:top_jobs/models/image.dart';
 import 'package:top_jobs/models/localized_text.dart';
 import 'package:top_jobs/models/message_record.dart';
+import 'package:top_jobs/models/tag.dart';
+import 'package:top_jobs/models/third_party_ad.dart';
 import 'package:top_jobs/models/user.dart';
 
 void main() {
@@ -63,11 +66,26 @@ void main() {
   test('multipart upload constants stay aligned with the vNext contract', () {
     expect(ServiceCreateRequest.uploadedImagesField, 'uploadedImages');
     expect(TaskRequestModel.uploadedImagesField, 'uploadedImages');
-    expect(ApiConstants.uploadServiceImages('019e88b7-b706-7caa-bb84-dd2f0ebec201'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images');
-    expect(ApiConstants.uploadTaskImages('019e88b7-b706-7caa-bb84-dd2f0ebec202'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images');
-    expect(ApiConstants.deleteServiceImage('019e88b7-b706-7caa-bb84-dd2f0ebec201'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images');
-    expect(ApiConstants.deleteTaskImage('019e88b7-b706-7caa-bb84-dd2f0ebec202'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images');
-    expect(ApiConstants.deleteVacancyImage('019e88b7-b706-7caa-bb84-dd2f0ebec203'), '/api/v1/vacancies/019e88b7-b706-7caa-bb84-dd2f0ebec203/images');
+    expect(
+      ApiConstants.uploadServiceImages('019e88b7-b706-7caa-bb84-dd2f0ebec201'),
+      '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images',
+    );
+    expect(
+      ApiConstants.uploadTaskImages('019e88b7-b706-7caa-bb84-dd2f0ebec202'),
+      '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images',
+    );
+    expect(
+      ApiConstants.deleteServiceImage('019e88b7-b706-7caa-bb84-dd2f0ebec201'),
+      '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images',
+    );
+    expect(
+      ApiConstants.deleteTaskImage('019e88b7-b706-7caa-bb84-dd2f0ebec202'),
+      '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images',
+    );
+    expect(
+      ApiConstants.deleteVacancyImage('019e88b7-b706-7caa-bb84-dd2f0ebec203'),
+      '/api/v1/vacancies/019e88b7-b706-7caa-bb84-dd2f0ebec203/images',
+    );
   });
 
   test('localized text resolves locale fallbacks', () {
@@ -96,6 +114,51 @@ void main() {
       'https://cdn.example.com/avatar.png',
     );
     expect(customer.title?.resolve('uz'), 'Sarlavha');
+  });
+
+  test('cities list normalizes minimal payload and retains coordinates', () {
+    final response = CitiesList.fromMap({
+      'data': {
+        'items': [
+          {
+            'id': 'city-1',
+            'name': 'Toshkent',
+            'coords': {'lat': 41.2995, 'lng': 69.2401},
+          },
+        ],
+        'total_count': 1,
+      },
+    });
+
+    expect(response.currentPageNumber, 1);
+    expect(response.numItemsPerPage, 1);
+    expect(response.totalCount, 1);
+    expect(response.cities, hasLength(1));
+    expect(response.cities.single.id, 'city-1');
+    expect(response.cities.single.name, 'Toshkent');
+    expect(response.cities.single.coords.lat, 41.2995);
+    expect(response.cities.single.coords.lng, 69.2401);
+  });
+
+  test('tag and banner models normalize dynamic catalog payloads', () {
+    final tag = TagModel.fromMap({
+      'data': {
+        'id': 'tag-1',
+        'title': {'ru': 'Usta', 'uz': 'Usta'},
+      },
+    });
+    final banner = ThirdPartyAd.fromMap({
+      'id': 'banner-1',
+      'title': {'ru': 'Aksiya', 'uz': 'Aksiya'},
+      'url': 'https://example.com/banner',
+      'image': {'original': 'https://cdn.example.com/banner.png'},
+    });
+
+    expect(tag.id, 'tag-1');
+    expect(tag.name, 'Usta');
+    expect(banner.id, 'banner-1');
+    expect(banner.title, 'Aksiya');
+    expect(banner.imageUrl, 'https://cdn.example.com/banner.png');
   });
 
   test('category list response normalizes minimal list payload', () {
@@ -216,7 +279,10 @@ void main() {
     expect(file.url, 'https://cdn.example.com/docs/verification.pdf');
     expect(file.originalName, 'verification');
     expect(file.extension, 'pdf');
-    expect(user.verificationDoc?.url, 'https://cdn.example.com/docs/verification.pdf');
+    expect(
+      user.verificationDoc?.url,
+      'https://cdn.example.com/docs/verification.pdf',
+    );
     expect(user.verificationDoc?.originalName, 'verification');
     expect(user.verificationDoc?.extension, 'pdf');
   });

@@ -253,10 +253,7 @@ class FcmNotificationService {
     }
   }
 
-  Future<void> _syncDeviceToken(
-    String token, {
-    required String source,
-  }) async {
+  Future<void> _syncDeviceToken(String token, {required String source}) async {
     try {
       await StorageService.instance.putDeviceToken(token);
       _logger.d('[DEBUG][fcm] device token synced source=$source');
@@ -430,7 +427,9 @@ class FcmNotificationService {
       if (context != null) {
         _performNavigation(context, data);
       } else {
-        _logger.w('[WARN][fcm] context still null after waiting, storing for later');
+        _logger.w(
+          '[WARN][fcm] context still null after waiting, storing for later',
+        );
         _storePendingNavigation(data);
       }
     });
