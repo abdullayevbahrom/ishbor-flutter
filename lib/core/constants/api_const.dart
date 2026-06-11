@@ -63,8 +63,7 @@ sealed class ApiConstants {
   static String toggleVacancyFavorite(Object id) =>
       '$vacancies/${_id(id)}/favorite';
   static String deleteVacancyById(Object id) => '$vacancies/${_id(id)}';
-  static String deleteVacancyImage(Object id, Object imageId) =>
-      '$vacancies/${_id(id)}/images/${_id(imageId)}';
+  static String deleteVacancyImage(Object id) => '$vacancies/${_id(id)}/images';
 
   /// === Categories ===
   static String get categories => _route('categories');
@@ -82,8 +81,7 @@ sealed class ApiConstants {
       '$services/${_id(id)}/$similar';
   static String updateService(Object id) => '$services/${_id(id)}/update';
   static String uploadServiceImages(Object id) => '$services/${_id(id)}/images';
-  static String deleteServiceImage(Object id, Object imageId) =>
-      '$services/${_id(id)}/images/${_id(imageId)}';
+  static String deleteServiceImage(Object id) => '$services/${_id(id)}/images';
   static String liftUpServiceById(Object id) => '$services/${_id(id)}/lift-up';
   static String deactivateServiceById(Object id) =>
       '$services/${_id(id)}/change-status';
@@ -132,8 +130,7 @@ sealed class ApiConstants {
 
   static String updateTask(Object id) => '$tasks/${_id(id)}/update';
   static String uploadTaskImages(Object id) => '$tasks/${_id(id)}/images';
-  static String deleteTaskImage(Object id, Object imageId) =>
-      '$tasks/${_id(id)}/images/${_id(imageId)}';
+  static String deleteTaskImage(Object id) => '$tasks/${_id(id)}/images';
   static String liftUpTaskById(Object id) => '$tasks/${_id(id)}/lift-up';
   static String deactivateTaskById(Object id) =>
       '$tasks/${_id(id)}/change-status';

@@ -453,10 +453,11 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     try {
       _log(
         'image-delete',
-        '[FIX] DELETE ${ApiConstants.deleteServiceImage(serviceId, imageId)}',
+        '[FIX] DELETE ${ApiConstants.deleteServiceImage(serviceId)} image=$imageId',
       );
       final response = await _dio.delete(
-        ApiConstants.deleteServiceImage(serviceId, imageId),
+        ApiConstants.deleteServiceImage(serviceId),
+        data: {'image': imageId.toString()},
       );
       if (response.statusCode == 204 || response.statusCode == 200) {
         _log('image-delete', 'success status=${response.statusCode}');

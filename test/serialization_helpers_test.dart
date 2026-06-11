@@ -65,9 +65,9 @@ void main() {
     expect(TaskRequestModel.uploadedImagesField, 'uploadedImages');
     expect(ApiConstants.uploadServiceImages('019e88b7-b706-7caa-bb84-dd2f0ebec201'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images');
     expect(ApiConstants.uploadTaskImages('019e88b7-b706-7caa-bb84-dd2f0ebec202'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images');
-    expect(ApiConstants.deleteServiceImage('019e88b7-b706-7caa-bb84-dd2f0ebec201', '019e88b7-b706-7caa-bb84-dd2f0ebec301'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images/019e88b7-b706-7caa-bb84-dd2f0ebec301');
-    expect(ApiConstants.deleteTaskImage('019e88b7-b706-7caa-bb84-dd2f0ebec202', '019e88b7-b706-7caa-bb84-dd2f0ebec302'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images/019e88b7-b706-7caa-bb84-dd2f0ebec302');
-    expect(ApiConstants.deleteVacancyImage('019e88b7-b706-7caa-bb84-dd2f0ebec203', '019e88b7-b706-7caa-bb84-dd2f0ebec303'), '/api/v1/vacancies/019e88b7-b706-7caa-bb84-dd2f0ebec203/images/019e88b7-b706-7caa-bb84-dd2f0ebec303');
+    expect(ApiConstants.deleteServiceImage('019e88b7-b706-7caa-bb84-dd2f0ebec201'), '/api/v1/services/019e88b7-b706-7caa-bb84-dd2f0ebec201/images');
+    expect(ApiConstants.deleteTaskImage('019e88b7-b706-7caa-bb84-dd2f0ebec202'), '/api/v1/tasks/019e88b7-b706-7caa-bb84-dd2f0ebec202/images');
+    expect(ApiConstants.deleteVacancyImage('019e88b7-b706-7caa-bb84-dd2f0ebec203'), '/api/v1/vacancies/019e88b7-b706-7caa-bb84-dd2f0ebec203/images');
   });
 
   test('localized text resolves locale fallbacks', () {

@@ -518,10 +518,11 @@ class TaskDataSourceImpl extends TaskDataSource {
     try {
       _log(
         'image-delete',
-        '[FIX] DELETE ${ApiConstants.deleteTaskImage(taskId, imageId)}',
+        '[FIX] DELETE ${ApiConstants.deleteTaskImage(taskId)} image=$imageId',
       );
       final response = await _dio.delete(
-        ApiConstants.deleteTaskImage(taskId, imageId),
+        ApiConstants.deleteTaskImage(taskId),
+        data: {'image': imageId.toString()},
       );
       if (response.statusCode == 204 || response.statusCode == 200) {
         _log('image-delete', 'success status=${response.statusCode}');

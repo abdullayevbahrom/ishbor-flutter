@@ -582,10 +582,11 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }) async {
     try {
       debugPrint(
-        '[FIX][VACANCY][image-delete] DELETE ${ApiConstants.deleteVacancyImage(vacancyId, imageId)}',
+        '[FIX][VACANCY][image-delete] DELETE ${ApiConstants.deleteVacancyImage(vacancyId)} image=$imageId',
       );
       final response = await _dio.delete(
-        ApiConstants.deleteVacancyImage(vacancyId, imageId),
+        ApiConstants.deleteVacancyImage(vacancyId),
+        data: {'image': imageId.toString()},
       );
 
       if (response.statusCode == 204 || response.statusCode == 200) {
