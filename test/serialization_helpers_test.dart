@@ -1,10 +1,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/network/api_response.dart';
 import 'package:top_jobs/core/network/snake_case_mapper.dart';
+import 'package:top_jobs/feature/common/data/models/category.dart';
 import 'package:top_jobs/feature/common/data/models/feedback_model.dart';
 import 'package:top_jobs/feature/common/data/models/user_update_request.dart';
 import 'package:top_jobs/feature/messages/data/models/paginated_chat_message.dart';
 import 'package:top_jobs/feature/profile/data/model/ask_question_model.dart';
+import 'package:top_jobs/feature/services/data/models/service.dart';
+import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
 import 'package:top_jobs/models/file.dart';
@@ -80,6 +83,110 @@ void main() {
       'https://cdn.example.com/avatar.png',
     );
     expect(customer.title?.resolve('uz'), 'Sarlavha');
+  });
+
+  test('category list response normalizes minimal list payload', () {
+    final response = CategoryListResponse.fromMap({
+      'data': {
+        'items': [
+          {
+            'id': '019e88b7-b706-7caa-bb84-dd2f0ebec901',
+            'name': {'ru': 'Usta', 'uz': 'Usta'},
+            'parent_id': null,
+            'icon': 'https://cdn.example.com/category/icon.png',
+            'icon_small': 'https://cdn.example.com/category/icon-small.png',
+          },
+        ],
+        'total_count': 1,
+      },
+    });
+
+    expect(response.currentPageNumber, 1);
+    expect(response.numItemsPerPage, 1);
+    expect(response.totalCount, 1);
+    expect(response.items, hasLength(1));
+    expect(response.items.single.translations[0].name, 'Usta');
+    expect(response.items.single.translations[1].name, 'Usta');
+    expect(
+      response.items.single.iconUrls?['original'],
+      'https://cdn.example.com/category/icon.png',
+    );
+    expect(
+      response.items.single.iconSmallUrls?['original'],
+      'https://cdn.example.com/category/icon-small.png',
+    );
+  });
+
+  test('service list response normalizes minimal list payload', () {
+    final response = PaginatedServiceResponse.fromMap({
+      'data': {
+        'items': [
+          {
+            'id': '019e88b7-b706-7caa-bb84-dd2f0ebec902',
+            'status': 'published',
+            'title': {'uz': 'Xizmat', 'ru': 'Xizmat'},
+            'created_at': '2026-06-04T10:00:00+05:00',
+            'customer': {
+              'id': '019e88b7-b706-7caa-bb84-dd2f0ebec903',
+              'phone_number': '998901112233',
+            },
+            'categories': [],
+            'images': [],
+            'price': 150000,
+            'negotiable': false,
+          },
+        ],
+        'total_count': 1,
+      },
+    });
+
+    expect(response.currentPageNumber, 1);
+    expect(response.numItemsPerPage, 1);
+    expect(response.totalCount, 1);
+    expect(response.items, hasLength(1));
+    expect(response.items.single.id, '019e88b7-b706-7caa-bb84-dd2f0ebec902');
+    expect(
+      response.items.single.customer.id,
+      '019e88b7-b706-7caa-bb84-dd2f0ebec903',
+    );
+  });
+
+  test('task list response normalizes minimal list payload', () {
+    final response = PaginatedTaskListResponse.fromJson({
+      'data': {
+        'items': [
+          {
+            'id': '019e88b7-b706-7caa-bb84-dd2f0ebec904',
+            'status': 'published',
+            'title': {'uz': 'Vazifa', 'ru': 'Vazifa'},
+            'description': {'uz': 'Tavsif', 'ru': 'Tavsif'},
+            'short_description': {'uz': 'Qisqa', 'ru': 'Qisqa'},
+            'customer': {
+              'id': '019e88b7-b706-7caa-bb84-dd2f0ebec905',
+              'phone_number': '998901112244',
+            },
+            'lifted_up_at': '2026-06-04T10:00:00+05:00',
+            'created_at': '2026-06-04T10:00:00+05:00',
+            'updated_at': '2026-06-04T10:00:00+05:00',
+            'categories': [],
+            'addresses': [],
+            'payment_methods': ['cash'],
+            'images': [],
+          },
+        ],
+        'total_count': 1,
+      },
+    });
+
+    expect(response.currentPageNumber, 1);
+    expect(response.numItemsPerPage, 1);
+    expect(response.totalCount, 1);
+    expect(response.items, hasLength(1));
+    expect(response.items.single.id, '019e88b7-b706-7caa-bb84-dd2f0ebec904');
+    expect(
+      response.items.single.customer.id,
+      '019e88b7-b706-7caa-bb84-dd2f0ebec905',
+    );
   });
 
   test('file and user normalize verification doc string payloads', () {

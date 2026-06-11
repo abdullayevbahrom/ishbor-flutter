@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import '../../../../models/ad_pricable.dart';
+import '../../../../models/ad_customer.dart';
 import '../../../../models/address.dart';
 import '../../../../core/helpers/date_time_parser.dart';
 import '../../../../models/api_model_utils.dart';
@@ -39,22 +41,49 @@ class PaginatedServiceResponse {
   });
 
   factory PaginatedServiceResponse.fromMap(Map<String, dynamic> json) {
+    final payload = asMap(unwrapData(json));
+    final items = mappedList(payload['items'], ServiceModel.fromMap);
+    final currentPageNumber =
+        intValue(payload['current_page_number'] ?? payload['currentPageNumber']) ??
+        1;
+    final numItemsPerPage =
+        intValue(payload['num_items_per_page'] ?? payload['numItemsPerPage']) ??
+        items.length;
+    final totalCount =
+        intValue(payload['total_count'] ?? payload['totalCount']) ?? items.length;
+
+    if (kDebugMode &&
+        (payload['paginator_options'] == null ||
+            payload['custom_parameters'] == null)) {
+      debugPrint(
+        '[FIX] PaginatedServiceResponse.fromMap normalized minimal list payload: items=${items.length}, totalCount=$totalCount',
+      );
+    }
+
     return PaginatedServiceResponse(
-      currentPageNumber: json['current_page_number'],
-      numItemsPerPage: json['num_items_per_page'],
-      items: List<ServiceModel>.from(
-        json['items'].map((item) => ServiceModel.fromMap(item)),
-      ),
-      totalCount: json['total_count'],
-      paginatorOptions: PaginatorOptions.fromMap(json['paginator_options']),
-      customParameters: json['custom_parameters'],
-      route: json['route'],
-      params: json['params'],
-      pageRange: json['page_range'],
-      pageLimit: json['page_limit'],
-      template: json['template'],
-      sortableTemplate: json['sortable_template'],
-      filtrationTemplate: json['filtration_template'],
+      currentPageNumber: currentPageNumber,
+      numItemsPerPage: numItemsPerPage,
+      items: items,
+      totalCount: totalCount,
+      paginatorOptions:
+          payload['paginator_options'] != null
+              ? PaginatorOptions.fromMap(asMap(payload['paginator_options']))
+              : PaginatorOptions.empty(),
+      customParameters:
+          payload['custom_parameters'] != null
+              ? CustomParameters.fromMap(asMap(payload['custom_parameters']))
+              : CustomParameters.empty(),
+      route: stringValue(payload['route']) ?? '',
+      params: payload['params'],
+      pageRange: intValue(payload['page_range'] ?? payload['pageRange']) ?? 1,
+      pageLimit: intValue(payload['page_limit'] ?? payload['pageLimit']),
+      template: stringValue(payload['template']) ?? '',
+      sortableTemplate:
+          stringValue(payload['sortable_template'] ?? payload['sortableTemplate']) ??
+          '',
+      filtrationTemplate:
+          stringValue(payload['filtration_template'] ?? payload['filtrationTemplate']) ??
+          '',
     );
   }
 
@@ -115,14 +144,43 @@ class PaginatorOptions {
 
   factory PaginatorOptions.fromMap(Map<String, dynamic> json) {
     return PaginatorOptions(
-      pageParameterName: json['pageParameterName'],
-      sortFieldParameterName: json['sortFieldParameterName'],
-      sortDirectionParameterName: json['sortDirectionParameterName'],
-      filterFieldParameterName: json['filterFieldParameterName'],
-      filterValueParameterName: json['filterValueParameterName'],
-      distinct: json['distinct'],
-      pageOutOfRange: json['pageOutOfRange'],
-      defaultLimit: json['defaultLimit'],
+      pageParameterName: stringValue(
+            json['pageParameterName'] ?? json['page_parameter_name'],
+          ) ??
+          'page',
+      sortFieldParameterName: stringValue(
+            json['sortFieldParameterName'] ?? json['sort_field_parameter_name'],
+          ) ??
+          '',
+      sortDirectionParameterName: stringValue(
+            json['sortDirectionParameterName'] ??
+                json['sort_direction_parameter_name'],
+          ) ??
+          '',
+      filterFieldParameterName: stringValue(
+            json['filterFieldParameterName'] ?? json['filter_field_parameter_name'],
+          ) ??
+          '',
+      filterValueParameterName: stringValue(
+            json['filterValueParameterName'] ?? json['filter_value_parameter_name'],
+          ) ??
+          '',
+      distinct: boolValue(json['distinct']) ?? false,
+      pageOutOfRange: stringValue(json['pageOutOfRange'] ?? json['page_out_of_range']) ?? '',
+      defaultLimit: intValue(json['defaultLimit'] ?? json['default_limit']) ?? 0,
+    );
+  }
+
+  factory PaginatorOptions.empty() {
+    return PaginatorOptions(
+      pageParameterName: 'page',
+      sortFieldParameterName: '',
+      sortDirectionParameterName: '',
+      filterFieldParameterName: '',
+      filterValueParameterName: '',
+      distinct: false,
+      pageOutOfRange: '',
+      defaultLimit: 0,
     );
   }
 }
@@ -133,7 +191,11 @@ class CustomParameters {
   CustomParameters({required this.sorted});
 
   factory CustomParameters.fromMap(Map<String, dynamic> json) {
-    return CustomParameters(sorted: json['sorted']);
+    return CustomParameters(sorted: boolValue(json['sorted']) ?? false);
+  }
+
+  factory CustomParameters.empty() {
+    return CustomParameters(sorted: false);
   }
 }
 
@@ -227,10 +289,10 @@ class ServiceModel extends AdPricable {
               : null,
       customer:
           data['customer'] != null
-              ? User.fromMap(data['customer'])
+              ? AdCustomer.fromJson(data['customer'])
               : (data['user'] != null
-                  ? User.fromMap(data['user'])
-                  : User.fromMap(data['owner'] ?? {})),
+                  ? AdCustomer.fromJson(data['user'])
+                  : AdCustomer.fromJson(data['owner'] ?? {})),
       phoneNumber: stringValue(data['phone_number']),
       performer:
           data['performer'] != null ? User.fromMap(data['performer']) : null,
