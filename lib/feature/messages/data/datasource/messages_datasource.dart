@@ -143,7 +143,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       );
 
       if (response.statusCode == 200) {
-        return Right(PaginatedChatMessageResponse.fromMap(response.data));
+        return Right(PaginatedChatMessageResponse.fromJson(response.data));
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -170,7 +170,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
       );
 
       if (response.statusCode == 200) {
-        return Right(PaginatedMessageRecordResponse.fromMap(response.data));
+        return Right(PaginatedMessageRecordResponse.fromJson(response.data));
       } else {
         return Left(Failure(message: _extractMessage(response.data)));
       }
@@ -298,7 +298,7 @@ class MessagesDataSourceImpl extends MessagesDataSource {
         return Left(Failure(message: 'Attachment file not found'));
       }
 
-      final mimeTypes = lookupMimeType(path);
+      final mimeTypes = MimeTypeHelpers.getMimeParts(path);
       if (mimeTypes == null) {
         debugPrint(
           '[WARN][messages] attachment validation warning: mime type unresolved path=$path messageId=${messageId.toString()}',

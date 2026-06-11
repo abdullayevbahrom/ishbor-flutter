@@ -51,6 +51,7 @@ class ServiceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeCode = context.locale.languageCode;
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return AnimatedButtonWrapper(
@@ -156,11 +157,7 @@ class ServiceItem extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            Formatters.translateText(
-                              uzText: service.titleUz,
-                              ruText: service.titleRu,
-                              defaultText: service.title,
-                            ),
+                            service.title.resolve(localeCode) ?? '',
                             softWrap: true,
                             maxLines: 2,
                             style: AppTextStyles.size20Bold.copyWith(
@@ -183,7 +180,7 @@ class ServiceItem extends StatelessWidget {
                   text: Formatters.translateText(
                     uzText: service.descriptionUz,
                     ruText: service.descriptionRu,
-                    defaultText: service.description,
+                    defaultText: service.description?.resolve(localeCode),
                   ),
                 ).paddingOnly(top: 20.h),
                 service.city != null

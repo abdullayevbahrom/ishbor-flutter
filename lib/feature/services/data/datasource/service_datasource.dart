@@ -1,9 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
-
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
@@ -211,20 +208,22 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         'price': service.price,
         'city': service.city,
         'phone_number': service.phoneNumber,
-        if (service.telegram != null) 'telegram': service.telegram,
-        if (service.address != null) 'address': jsonEncode(service.address),
+        if (service.phoneNumber1 != null) 'phone_number1': service.phoneNumber1,
+        if (service.phoneNumber2 != null) 'phone_number2': service.phoneNumber2,
+        if (service.phoneNumber3 != null) 'phone_number3': service.phoneNumber3,
+        if (service.addressLine != null) 'address_line': service.addressLine,
+        if (service.latitude != null) 'latitude': service.latitude,
+        if (service.longitude != null) 'longitude': service.longitude,
         'negotiable': service.negotiable,
       });
 
-      if (service.uploadedImages != null) {
-        for (var image in service.uploadedImages!) {
-          data.files.add(
-            MapEntry(
-              ServiceCreateRequest.uploadedImagesField,
-              await MultipartFile.fromFile(image.path),
-            ),
-          );
-        }
+      for (var image in service.uploadedImages) {
+        data.files.add(
+          MapEntry(
+            ServiceCreateRequest.uploadedImagesField,
+            await MultipartFile.fromFile(image.path),
+          ),
+        );
       }
 
       final response = await _dio.post(ApiConstants.services, data: data);
@@ -264,8 +263,12 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         'price': service.price,
         'city': service.city,
         'phone_number': service.phoneNumber,
-        if (service.telegram != null) 'telegram': service.telegram,
-        if (service.address != null) 'address': jsonEncode(service.address),
+        if (service.phoneNumber1 != null) 'phone_number1': service.phoneNumber1,
+        if (service.phoneNumber2 != null) 'phone_number2': service.phoneNumber2,
+        if (service.phoneNumber3 != null) 'phone_number3': service.phoneNumber3,
+        if (service.addressLine != null) 'address_line': service.addressLine,
+        if (service.latitude != null) 'latitude': service.latitude,
+        if (service.longitude != null) 'longitude': service.longitude,
         'negotiable': service.negotiable,
       });
 

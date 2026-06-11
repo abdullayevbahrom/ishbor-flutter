@@ -168,7 +168,10 @@ class TaskApplyItem extends StatelessWidget {
                                       LocaleKeys.askQuestionAboutApplication
                                           .tr(),
                                   receiverId: taskRequest.performer.id,
-                                  taskId: 1,
+                                  taskId:
+                                      taskRequest.task?.id ??
+                                      state.task?.id ??
+                                      '',
                                 ).show(context);
                               },
                               // isAvailable: state.task?.status != "finished",

@@ -129,7 +129,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded));
-        showSuccessToast(LocaleKeys.applicationCancelledSuccessfully.tr());
+        showSuccessToast('Application cancelled successfully');
       },
     );
   }
@@ -177,7 +177,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded));
-        showSuccessToast(LocaleKeys.statusChangedSuccessfully.tr());
+        showSuccessToast('Status changed successfully');
       },
     );
   }
@@ -197,7 +197,7 @@ class TaskRequestsCubit extends Cubit<TaskRequestsState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded));
-        showSuccessToast(LocaleKeys.applicationDeletedSuccessfully.tr());
+        showSuccessToast('Application deleted successfully');
       },
     );
   }

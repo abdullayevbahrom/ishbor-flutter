@@ -25,19 +25,25 @@ class DioFailure implements Exception {
   factory DioFailure.fromDioError(DioException error) {
     final statusCode = error.response?.statusCode;
 
-    sl<ExceptionListener>().invoke(
-      stackTrace: error.stackTrace,
-      method: error.requestOptions.method,
-      requestUri: error.requestOptions.uri,
-      queryString:
-          error.requestOptions.queryParameters.isNotEmpty
-              ? error.requestOptions.queryParameters.toString()
-              : null,
-      requestBody: error.requestOptions.data?.toString(),
-      response: error.response,
-      requestHeaders: error.requestOptions.headers,
-      dioException: error,
-    );
+    if (sl.isRegistered<ExceptionListener>()) {
+      sl<ExceptionListener>().invoke(
+        stackTrace: error.stackTrace,
+        method: error.requestOptions.method,
+        requestUri: error.requestOptions.uri,
+        queryString:
+            error.requestOptions.queryParameters.isNotEmpty
+                ? error.requestOptions.queryParameters.toString()
+                : null,
+        requestBody: error.requestOptions.data?.toString(),
+        response: error.response,
+        requestHeaders: error.requestOptions.headers,
+        dioException: error,
+      );
+    } else if (kDebugMode) {
+      debugPrint(
+        '[FIX][DIO][exception-listener] not registered; skipping diagnostic hook',
+      );
+    }
 
     if (error.response == null) {
       return DioFailure(

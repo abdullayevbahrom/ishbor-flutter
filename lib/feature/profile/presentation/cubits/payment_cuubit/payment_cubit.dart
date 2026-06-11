@@ -110,7 +110,7 @@ class PaymentCubit extends Cubit<PaymentState> {
   }
 
   Future<TransactionStatus?> _pollTransactionStatus(
-    int transactionId, {
+    Object transactionId, {
     required bool showFeedback,
   }) async {
     emit(state.copyWith(status: RequestStatus.loading));

@@ -81,7 +81,7 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
             vacancyRequest: r,
           ),
         );
-        showSuccessToast(LocaleKeys.statusChangedSuccessfully.tr());
+        showSuccessToast('Status changed successfully');
       },
     );
   }
@@ -103,7 +103,7 @@ class VacancyRequestsCubit extends Cubit<VacancyRequestsState> {
       },
       (r) {
         emit(state.copyWith(status: RequestStatus.loaded));
-        showSuccessToast(LocaleKeys.applicationDeletedSuccessfully.tr());
+        showSuccessToast('Application deleted successfully');
       },
     );
   }

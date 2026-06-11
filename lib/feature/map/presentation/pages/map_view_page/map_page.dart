@@ -60,6 +60,7 @@ class MapPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeCode = context.locale.languageCode;
     return BlocProvider(
       create: (context) => sl<MapViewCubit>(),
       child: BlocBuilder<MapViewCubit, MapViewState>(
@@ -165,7 +166,10 @@ class MapPage extends StatelessWidget {
                                     state.selectedVacancies.first.salaryMin,
                                 salaryMax:
                                     state.selectedVacancies.first.salaryMax,
-                                title: state.selectedVacancies.first.title,
+                                title:
+                                    state.selectedVacancies.first.title
+                                        .resolve(localeCode) ??
+                                    '',
                               ),
                             ),
                           ),
@@ -206,7 +210,10 @@ class MapPage extends StatelessWidget {
                                             .urls['original']
                                         : null,
                                 salaryMin: state.selectedServices.first.price,
-                                title: state.selectedServices.first.title,
+                                title:
+                                    state.selectedServices.first.title
+                                        .resolve(localeCode) ??
+                                    '',
                               ),
                             ),
                           ),

@@ -97,6 +97,10 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   @override
   Widget build(BuildContext context) {
+    final localeCode = context.locale.languageCode;
+    final adPreviewTitle = widget.adPreview?.title;
+    final vacancyTitle = widget.vacancy?.title;
+    final serviceTitle = widget.service?.title;
     final imageUrl =
         widget.adPreview?.imageUrl ??
         (widget.vacancy?.images?.isNotEmpty == true
@@ -177,10 +181,9 @@ class _MessageBubbleState extends State<MessageBubble> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.adPreview?.titleUz ??
-                                widget.adPreview?.titleRu ??
-                                widget.vacancy?.title ??
-                                widget.service?.title ??
+                            adPreviewTitle?.resolve(localeCode) ??
+                                vacancyTitle?.resolve(localeCode) ??
+                                serviceTitle?.resolve(localeCode) ??
                                 widget.task?.title ??
                                 '',
                             maxLines: 1,

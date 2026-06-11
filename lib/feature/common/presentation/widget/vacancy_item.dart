@@ -52,6 +52,7 @@ class VacancyItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localeCode = context.locale.languageCode;
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return AnimatedButtonWrapper(
@@ -156,11 +157,10 @@ class VacancyItem extends StatelessWidget {
                         children: [
                           Text(
                             StringHelpers.capitalizeFirst(
-                              Formatters.translateText(
-                                uzText: vacancy.titleUz?.replaceAll("**", ""),
-                                ruText: vacancy.titleRu?.replaceAll("**", ""),
-                                defaultText: vacancy.title.replaceAll("**", ""),
-                              ),
+                              vacancy.title
+                                  .resolve(localeCode)
+                                  ?.replaceAll("**", "") ??
+                                  '',
                             ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -185,11 +185,11 @@ class VacancyItem extends StatelessWidget {
                 ),
                 if (vacancy.description != null)
                   SmartText(
-                    text: Formatters.translateText(
-                      uzText: vacancy.descriptionUz?.replaceAll("**", ""),
-                      ruText: vacancy.descriptionRu?.replaceAll("**", ""),
-                      defaultText: vacancy.description?.replaceAll("**", ""),
-                    ),
+                    text:
+                        vacancy.description
+                            ?.resolve(localeCode)
+                            ?.replaceAll("**", "") ??
+                        '',
                   ).paddingOnly(top: 15.h),
                 vacancy.city != null
                     ? Row(
