@@ -31,7 +31,10 @@ class ReportsDataSourceImpl extends ReportsDataSource {
   }
 
   String _reportTargetId(ReportsParam params) {
-    return (params.vacancyId ?? params.serviceId ?? params.taskId ?? params.userId)
+    return (params.vacancyId ??
+                params.serviceId ??
+                params.taskId ??
+                params.userId)
             ?.toString() ??
         '';
   }

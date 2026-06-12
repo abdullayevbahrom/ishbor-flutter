@@ -124,7 +124,9 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
                 title: Formatters.translateText(
                   uzText: vacancy?.title.uz,
                   ruText: vacancy?.title.ru,
-                  defaultText: vacancy?.title.resolve(context.locale.languageCode),
+                  defaultText: vacancy?.title.resolve(
+                    context.locale.languageCode,
+                  ),
                 ),
                 createdAt: vacancy?.createdAt ?? DateTime.now(),
                 categories: vacancy?.categories,

@@ -224,12 +224,10 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }) async {
     try {
       debugPrint(
-        '[VACANCY][create] POST ${ApiConstants.vacancies} categories=${vacancy.categories} city=${vacancy.city}',
+        '[FIX][VACANCY][create] POST ${ApiConstants.vacancies} categories=${vacancy.categories} city=${vacancy.city} workTime=${vacancy.workTime}',
       );
       final images = List<File>.from(vacancy.images);
-      final data = FormData.fromMap({
-        ...vacancy.toJson(),
-      });
+      final data = FormData.fromMap({...vacancy.toJson()});
 
       final response = await _dio.post(ApiConstants.vacancies, data: data);
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -420,7 +418,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   }) async {
     try {
       debugPrint(
-        '[VACANCY][update] PATCH ${ApiConstants.updateVacancy(vacancy.vacancyId!)} id=${vacancy.vacancyId}',
+        '[FIX][VACANCY][update] PATCH ${ApiConstants.updateVacancy(vacancy.vacancyId!)} id=${vacancy.vacancyId} workTime=${vacancy.workTime}',
       );
       final images = List<File>.from(vacancy.images);
       final data = FormData.fromMap(vacancy.toJson());

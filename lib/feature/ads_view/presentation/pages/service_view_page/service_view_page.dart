@@ -124,7 +124,9 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
                 title: Formatters.translateText(
                   uzText: service?.title.uz,
                   ruText: service?.title.ru,
-                  defaultText: service?.title.resolve(context.locale.languageCode),
+                  defaultText: service?.title.resolve(
+                    context.locale.languageCode,
+                  ),
                 ),
                 createdAt: service?.createdAt ?? DateTime.now(),
                 city: service?.city,

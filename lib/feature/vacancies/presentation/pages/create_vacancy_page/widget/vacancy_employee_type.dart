@@ -98,20 +98,10 @@ class VacancyEmployeeType extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppUtils.hSizedBox24,
-              RichText(
-                text: TextSpan(
-                  text: LocaleKeys.enterBusinessHour.tr(),
-                  style: AppTextStyles.size15Medium.copyWith(
-                    color: AppColors.c333333,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: " (${LocaleKeys.optional.tr()})",
-                      style: AppTextStyles.size15Medium.copyWith(
-                        color: AppColors.cBDC0C6,
-                      ),
-                    ),
-                  ],
+              Text(
+                LocaleKeys.enterBusinessHour.tr(),
+                style: AppTextStyles.size15Medium.copyWith(
+                  color: AppColors.c333333,
                 ),
               ),
 

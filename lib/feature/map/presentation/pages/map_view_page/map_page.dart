@@ -166,8 +166,9 @@ class MapPage extends StatelessWidget {
                                 salaryMax:
                                     state.selectedVacancies.first.salaryMax,
                                 title:
-                                    state.selectedVacancies.first.title
-                                        .resolve(localeCode) ??
+                                    state.selectedVacancies.first.title.resolve(
+                                      localeCode,
+                                    ) ??
                                     '',
                               ),
                             ),
@@ -210,8 +211,9 @@ class MapPage extends StatelessWidget {
                                         : null,
                                 salaryMin: state.selectedServices.first.price,
                                 title:
-                                    state.selectedServices.first.title
-                                        .resolve(localeCode) ??
+                                    state.selectedServices.first.title.resolve(
+                                      localeCode,
+                                    ) ??
                                     '',
                               ),
                             ),

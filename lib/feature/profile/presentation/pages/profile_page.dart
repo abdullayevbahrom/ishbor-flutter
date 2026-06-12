@@ -215,7 +215,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                                         spacing: 4.h,
                                                         children: [
                                                           Text(
-                                                            user?.fullName ?? "",
+                                                            user?.fullName ??
+                                                                "",
                                                             style:
                                                                 AppTextStyles
                                                                     .size17Medium,

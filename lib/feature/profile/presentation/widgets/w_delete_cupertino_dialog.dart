@@ -8,10 +8,8 @@ class WDeleteCupertinoDialog extends StatelessWidget {
 
   final VoidCallback onPressedYes;
 
-  Future<void> show(BuildContext context) => showCupertinoDialog(
-    context: context,
-    builder: (context) => this,
-  );
+  Future<void> show(BuildContext context) =>
+      showCupertinoDialog(context: context, builder: (context) => this);
 
   @override
   Widget build(BuildContext context) {

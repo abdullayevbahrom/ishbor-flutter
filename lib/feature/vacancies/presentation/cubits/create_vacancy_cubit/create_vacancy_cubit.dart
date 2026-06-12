@@ -144,6 +144,24 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     }
   }
 
+  String? _buildWorkTimePayload() {
+    final start = startTimeController.text.trim();
+    final end = endTimeController.text.trim();
+
+    if (start.isEmpty && end.isEmpty) {
+      return null;
+    }
+
+    if (start.isEmpty || end.isEmpty) {
+      debugPrint(
+        '[FIX][vacancy][work-time] incomplete start="$start" end="$end"',
+      );
+      return null;
+    }
+
+    return '$start - $end';
+  }
+
   Future<void> _streamGeneratedDescription(String prompt) async {
     generatedDesController.clear();
     await for (final event in _vacancyFormRepository.generateVacancyDescription(
@@ -263,9 +281,23 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
   Future<void> createVacancy() async {
     emit(state.copyWith(createVacSt: RequestStatus.loading));
 
+    final workTime = _buildWorkTimePayload();
+    if (workTime == null) {
+      emit(
+        state.copyWith(
+          createVacSt: RequestStatus.error,
+          errorText: LocaleKeys.enterBusinessHour.tr(),
+        ),
+      );
+      showErrorToast(LocaleKeys.enterBusinessHour.tr());
+      debugPrint('[FIX][vacancy][create] aborted: work_time is missing');
+      return;
+    }
+
     final response = await _vacancyRepository.createVacancy(
       vacancy: VacancyRequest(
         jobModes: [],
+        workTime: workTime,
         phoneNumber:
             '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
@@ -283,14 +315,30 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
         images: state.images,
         title: vacancyNameController.text.trim(),
         city: StringHelpers.extractCity(
-          state.location?.response?.geoObjectCollection?.featureMember?[0]
-              .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
+          state
+                  .location
+                  ?.response
+                  ?.geoObjectCollection
+                  ?.featureMember?[0]
+                  .geoObject
+                  ?.metaDataProperty
+                  ?.geocoderMetaData
+                  ?.text ??
+              '',
         ),
         description: generatedDesController.text.trim(),
         address: AddressModel(
           addressLine: StringHelpers.extractStreet(
-            state.location?.response?.geoObjectCollection?.featureMember?[0]
-                .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
+            state
+                    .location
+                    ?.response
+                    ?.geoObjectCollection
+                    ?.featureMember?[0]
+                    .geoObject
+                    ?.metaDataProperty
+                    ?.geocoderMetaData
+                    ?.text ??
+                '',
           ),
           latitude: double.parse(
             '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}',
@@ -337,9 +385,23 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
   Future<void> editVacancy(String vacancyId) async {
     emit(state.copyWith(createVacSt: RequestStatus.loading));
 
+    final workTime = _buildWorkTimePayload();
+    if (workTime == null) {
+      emit(
+        state.copyWith(
+          createVacSt: RequestStatus.error,
+          errorText: LocaleKeys.enterBusinessHour.tr(),
+        ),
+      );
+      showErrorToast(LocaleKeys.enterBusinessHour.tr());
+      debugPrint('[FIX][vacancy][update] aborted: work_time is missing');
+      return;
+    }
+
     final response = await _vacancyRepository.editVacancy(
       vacancy: VacancyRequest(
         jobModes: [],
+        workTime: workTime,
         phoneNumber:
             '+998${phoneNumberController.text.trim().replaceAll(" ", "")}',
         phoneNumber1:
@@ -361,8 +423,16 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
         description: generatedDesController.text.trim(),
         address: AddressModel(
           addressLine: StringHelpers.extractStreet(
-            state.location?.response?.geoObjectCollection?.featureMember?[0]
-                .geoObject?.metaDataProperty?.geocoderMetaData?.text ?? '',
+            state
+                    .location
+                    ?.response
+                    ?.geoObjectCollection
+                    ?.featureMember?[0]
+                    .geoObject
+                    ?.metaDataProperty
+                    ?.geocoderMetaData
+                    ?.text ??
+                '',
           ),
           latitude: double.parse(
             '${state.location?.response?.geoObjectCollection?.metaDataProperty?.geocoderResponseMetaData?.point?.latitude}',
@@ -436,6 +506,16 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
       emit(state.copyWith(withOutResume: false));
     } else {
       emit(state.copyWith(withOutResume: true));
+    }
+
+    if ((vacancy.workTime ?? '').isNotEmpty) {
+      final parts = vacancy.workTime!.split('-');
+      if (parts.isNotEmpty) {
+        startTimeController.text = parts.first.trim();
+      }
+      if (parts.length > 1) {
+        endTimeController.text = parts.last.trim();
+      }
     }
 
     emit(

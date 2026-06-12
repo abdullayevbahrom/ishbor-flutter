@@ -24,8 +24,7 @@ class WCategoriesFilterList extends StatefulWidget {
       useSafeArea: true,
       barrierDismissible: true,
       useRootNavigator: true,
-      builder:
-          (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
+      builder: (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
     );
   }
 
@@ -95,7 +94,8 @@ class _WCategoriesFilterListState extends State<WCategoriesFilterList> {
                                     .state
                                     .categories
                                     ?.items[index]
-                                    .translations[context.locale.languageCode == 'ru'
+                                    .translations[context.locale.languageCode ==
+                                            'ru'
                                         ? 0
                                         : 1]
                                     .name ??

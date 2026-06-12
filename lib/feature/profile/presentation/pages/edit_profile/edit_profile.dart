@@ -93,14 +93,7 @@ class _EditProfileState extends State<EditProfile> {
         navigatorKey.currentContext?.locale.languageCode ?? 'uz';
     _categoryController.text =
         user?.categories
-            ?.map(
-              (e) =>
-                  e
-                      .translations[languageCode == 'ru'
-                          ? 0
-                          : 1]
-                      .name,
-            )
+            ?.map((e) => e.translations[languageCode == 'ru' ? 0 : 1].name)
             .join(',') ??
         '';
   }
@@ -217,7 +210,9 @@ class _EditProfileState extends State<EditProfile> {
                                         _categoryController.text = categories
                                             .map((e) {
                                               return e
-                                                  .translations[context.locale.languageCode ==
+                                                  .translations[context
+                                                              .locale
+                                                              .languageCode ==
                                                           'ru'
                                                       ? 0
                                                       : 1]
@@ -339,15 +334,16 @@ class _EditProfileState extends State<EditProfile> {
                                                       () {
                                                         final verifyDocPath =
                                                             _verifyDoc?.path ??
-                                                                '';
+                                                            '';
                                                         final verifyDocName =
                                                             verifyDocPath
                                                                 .split('/')
                                                                 .last;
                                                         final verifyDocExt =
-                                                            verifyDocName.contains(
-                                                                  '.',
-                                                                )
+                                                            verifyDocName
+                                                                    .contains(
+                                                                      '.',
+                                                                    )
                                                                 ? '.${verifyDocName.split('.').last}'
                                                                 : '';
                                                         if (verifyDocName

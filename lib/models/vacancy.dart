@@ -15,6 +15,7 @@ class Vacancy extends Ad {
   final String? salaryCurrency;
   final String? companyName;
   final String? companyDescription;
+  final String? workTime;
   final AddressModel? address;
   final bool partialJobOpportunity;
   final String? employmentType;
@@ -53,6 +54,7 @@ class Vacancy extends Ad {
     this.salaryCurrency,
     this.companyName,
     this.companyDescription,
+    this.workTime,
     this.address,
     this.partialJobOpportunity = false,
     this.employmentType,
@@ -77,6 +79,7 @@ class Vacancy extends Ad {
     bool? negotiable,
     String? companyName,
     String? companyDescription,
+    String? workTime,
     AddressModel? address,
     bool? partialJobOpportunity,
     String? employmentType,
@@ -124,6 +127,7 @@ class Vacancy extends Ad {
       negotiable: negotiable ?? this.negotiable,
       companyName: companyName ?? this.companyName,
       companyDescription: companyDescription ?? this.companyDescription,
+      workTime: workTime ?? this.workTime,
       address: address ?? this.address,
       partialJobOpportunity:
           partialJobOpportunity ?? this.partialJobOpportunity,
@@ -148,6 +152,7 @@ class Vacancy extends Ad {
     negotiable,
     companyName,
     companyDescription,
+    workTime,
     address,
     partialJobOpportunity,
     employmentType,
@@ -204,6 +209,7 @@ class Vacancy extends Ad {
       negotiable: boolValue(payload['negotiable']),
       companyName: stringValue(payload['company_name']),
       companyDescription: stringValue(payload['company_description']),
+      workTime: stringValue(payload['work_time']),
       address:
           payload['address'] != null
               ? AddressModel.fromJson(payload['address'])

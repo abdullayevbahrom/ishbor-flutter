@@ -71,10 +71,11 @@ class _WAdsAuthorConnectState extends State<WAdsAuthorConnect> {
                       listener: (context, state) {
                         showPhoneNumber() {
                           WAuthorPhoneNumbers(
-                                id: widget.vacancyId ??
-                                    widget.serviceId ??
-                                    widget.taskId ??
-                                    '',
+                            id:
+                                widget.vacancyId ??
+                                widget.serviceId ??
+                                widget.taskId ??
+                                '',
                             type:
                                 widget.vacancyId != null
                                     ? "vacancy"

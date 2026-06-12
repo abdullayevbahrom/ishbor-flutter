@@ -393,5 +393,4 @@ class ChatCubit extends Cubit<ChatState> {
       body: body,
     );
   }
-
 }

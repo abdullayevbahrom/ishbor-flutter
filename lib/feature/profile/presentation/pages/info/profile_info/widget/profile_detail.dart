@@ -63,7 +63,10 @@ class ProfileDetails extends StatelessWidget {
                               ?.map(
                                 (e) =>
                                     e
-                                        .translations[context.locale.languageCode == 'ru'
+                                        .translations[context
+                                                    .locale
+                                                    .languageCode ==
+                                                'ru'
                                             ? 0
                                             : 1]
                                         .name,

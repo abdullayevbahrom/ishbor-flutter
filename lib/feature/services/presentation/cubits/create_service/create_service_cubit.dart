@@ -123,8 +123,15 @@ class CreateServiceCubit extends Cubit<CreateServiceState> {
         addressLine:
             state.location != null
                 ? StringHelpers.extractStreet(
-                  state.location?.response?.geoObjectCollection?.featureMember?[0]
-                      .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+                  state
+                          .location
+                          ?.response
+                          ?.geoObjectCollection
+                          ?.featureMember?[0]
+                          .geoObject
+                          ?.metaDataProperty
+                          ?.geocoderMetaData
+                          ?.text ??
                       '',
                 )
                 : null,

@@ -43,6 +43,7 @@ import '../../../../models/address.dart';
 class VacancyRequest {
   final String? vacancyId;
   final String title;
+  final String? workTime;
   final List<String> categories;
   final String city;
   final String description;
@@ -64,6 +65,7 @@ class VacancyRequest {
   VacancyRequest({
     this.vacancyId,
     required this.title,
+    this.workTime,
     this.categories = const [],
     required this.city,
     required this.description,
@@ -88,6 +90,7 @@ class VacancyRequest {
       phoneNumber: json['phone_number'],
       images: List<File>.from(json['images'] ?? const []),
       title: json['title'],
+      workTime: json['work_time'],
       categories:
           (json['category_ids'] as List? ??
                   json['categories'] as List? ??
@@ -114,6 +117,7 @@ class VacancyRequest {
   Map<String, dynamic> toJson() {
     return {
       'title': title,
+      if ((workTime ?? '').isNotEmpty) 'work_time': workTime,
       if (categories.isNotEmpty) 'category_ids': categories,
       'city': city,
       'description': description,
@@ -139,6 +143,7 @@ class VacancyRequest {
 
   VacancyRequest copyWith({
     String? title,
+    String? workTime,
     List<String>? categories,
     String? city,
     String? description,
@@ -160,6 +165,7 @@ class VacancyRequest {
     return VacancyRequest(
       images: images ?? this.images,
       title: title ?? this.title,
+      workTime: workTime ?? this.workTime,
       categories: categories ?? this.categories,
       city: city ?? this.city,
       description: description ?? this.description,

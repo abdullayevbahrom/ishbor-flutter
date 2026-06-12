@@ -98,7 +98,9 @@ class PaymentDataSourceImpl extends PaymentDataSource {
       );
 
       if (response.statusCode == 201 || response.statusCode == 200) {
-        final payload = Map<String, dynamic>.from(response.data['data'] ?? response.data);
+        final payload = Map<String, dynamic>.from(
+          response.data['data'] ?? response.data,
+        );
         debugPrint(
           '[DEBUG][payment][create] transactionId=${payload['id']?.toString() ?? ''} hasLink=${_extractPaymentLink(payload).isNotEmpty}',
         );
@@ -126,7 +128,9 @@ class PaymentDataSourceImpl extends PaymentDataSource {
       _logTransaction('read', id);
       final response = await _dio.get(ApiConstants.fetchPaymentTransaction(id));
       if (response.statusCode == 200) {
-        final payload = Map<String, dynamic>.from(response.data['data'] ?? response.data);
+        final payload = Map<String, dynamic>.from(
+          response.data['data'] ?? response.data,
+        );
         debugPrint(
           '[DEBUG][payment][read] transactionId=${id.toString()} status=${payload['status']?.toString() ?? ''}',
         );

@@ -12,6 +12,7 @@ import 'package:top_jobs/feature/services/data/models/service_request_model.dart
 import 'package:top_jobs/feature/services/data/models/service.dart';
 import 'package:top_jobs/feature/tasks/data/models/task_request_model.dart';
 import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
+import 'package:top_jobs/feature/vacancies/data/models/vacancy_create_model.dart';
 import 'package:top_jobs/models/ad_customer.dart';
 import 'package:top_jobs/models/feedback.dart';
 import 'package:top_jobs/models/file.dart';
@@ -21,6 +22,7 @@ import 'package:top_jobs/models/message_record.dart';
 import 'package:top_jobs/models/tag.dart';
 import 'package:top_jobs/models/third_party_ad.dart';
 import 'package:top_jobs/models/user.dart';
+import 'package:top_jobs/models/vacancy.dart';
 
 void main() {
   test('snake case mapper normalizes nested payloads', () {
@@ -39,10 +41,7 @@ void main() {
 
   test('snake case mapper normalizes multipart form fields', () {
     final normalized = SnakeCaseMapper.normalizeFormFields({
-      'uploadedImages': [
-        'image-1',
-        'image-2',
-      ],
+      'uploadedImages': ['image-1', 'image-2'],
       'verificationDoc': 'https://cdn.example.com/docs/verification.pdf',
     });
 
@@ -240,6 +239,50 @@ void main() {
       response.items.single.customer.id,
       '019e88b7-b706-7caa-bb84-dd2f0ebec903',
     );
+  });
+
+  test('vacancy work time is preserved in request and response contracts', () {
+    final request = VacancyRequest(
+      title: 'Xaydovchi',
+      workTime: '08:00 - 18:00',
+      city: 'Toshkent',
+      description: 'Tajriba',
+      address: null,
+      categories: const ['019e88b7-b706-7caa-bb84-dd2f0ebec904'],
+      skills: const ['haydovchilik'],
+      shortDescription: 'Qisqa',
+      whoCanRespond: const ['without full resume'],
+      employmentType: 'full employment',
+      jobModes: const ['office'],
+      images: const [],
+      phoneNumber: '901112233',
+    );
+
+    final payload = request.toJson();
+    expect(payload['work_time'], '08:00 - 18:00');
+    expect(payload['employment_type'], 'full employment');
+    expect(payload['category_ids'], ['019e88b7-b706-7caa-bb84-dd2f0ebec904']);
+
+    final vacancy = Vacancy.fromMap({
+      'id': 'vacancy-1',
+      'status': 'published',
+      'title': {'uz': 'Xaydovchi'},
+      'description': {'uz': 'Tajriba'},
+      'short_description': {'uz': 'Qisqa'},
+      'created_at': '2026-06-04T10:00:00+05:00',
+      'customer': {
+        'id': 'customer-1',
+        'full_name': 'Test User',
+        'phone_number': '998901112233',
+      },
+      'categories': [],
+      'images': [],
+      'city': 'Toshkent',
+      'work_time': '08:00 - 18:00',
+      'is_need_lift_up': false,
+    });
+
+    expect(vacancy.workTime, '08:00 - 18:00');
   });
 
   test('task list response normalizes minimal list payload', () {

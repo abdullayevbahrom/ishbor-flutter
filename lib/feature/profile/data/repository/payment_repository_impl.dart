@@ -24,10 +24,9 @@ class PaymentRepositoryImpl extends PaymentRepository {
     required int amount,
     String? provider,
   }) async {
-    return _mapFailure(await _dataSource.createTopUp(
-      amount: amount,
-      provider: provider,
-    ));
+    return _mapFailure(
+      await _dataSource.createTopUp(amount: amount, provider: provider),
+    );
   }
 
   @override
@@ -38,9 +37,8 @@ class PaymentRepositoryImpl extends PaymentRepository {
   }
 
   @override
-  Future<Either<app_failure.Failure, TransactionStatus>> checkTransactionStatus({
-    required Object transactionId,
-  }) async {
+  Future<Either<app_failure.Failure, TransactionStatus>>
+  checkTransactionStatus({required Object transactionId}) async {
     return _mapFailure(
       await _dataSource.checkTransactionStatus(transactionId: transactionId),
     );
@@ -52,11 +50,13 @@ class PaymentRepositoryImpl extends PaymentRepository {
     required Object contentId,
     required String top,
   }) async {
-    return _mapFailure(await _dataSource.payFromBalance(
-      content: content,
-      contentId: contentId,
-      top: top,
-    ));
+    return _mapFailure(
+      await _dataSource.payFromBalance(
+        content: content,
+        contentId: contentId,
+        top: top,
+      ),
+    );
   }
 
   @override
@@ -66,12 +66,14 @@ class PaymentRepositoryImpl extends PaymentRepository {
     required String top,
     required String provider,
   }) async {
-    return _mapFailure(await _dataSource.payByProvider(
-      content: content,
-      contentId: contentId,
-      top: top,
-      provider: provider,
-    ));
+    return _mapFailure(
+      await _dataSource.payByProvider(
+        content: content,
+        contentId: contentId,
+        top: top,
+        provider: provider,
+      ),
+    );
   }
 
   @override

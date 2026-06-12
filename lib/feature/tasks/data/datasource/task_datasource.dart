@@ -159,7 +159,8 @@ class TaskDataSourceImpl extends TaskDataSource {
       return null;
     }
 
-    final parsed = DateTime.tryParse(raw.replaceFirst(' ', 'T')) ??
+    final parsed =
+        DateTime.tryParse(raw.replaceFirst(' ', 'T')) ??
         (() {
           try {
             return DateFormat('yyyy/MM/dd HH:mm').parseStrict(raw);
@@ -313,7 +314,10 @@ class TaskDataSourceImpl extends TaskDataSource {
         _log('create', 'success status=${response.statusCode}');
         final created = TaskModel.fromJson(_unwrapMap(response.data));
         if (task.uploadedImages.isNotEmpty) {
-          await _uploadTaskImages(taskId: created.id, images: task.uploadedImages);
+          await _uploadTaskImages(
+            taskId: created.id,
+            images: task.uploadedImages,
+          );
           return await fetchTaskById(id: created.id);
         }
         return Right(created);

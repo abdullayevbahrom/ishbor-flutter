@@ -24,8 +24,7 @@ class WCitiesList extends StatefulWidget {
       useSafeArea: true,
       barrierDismissible: true,
       useRootNavigator: true,
-      builder:
-          (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
+      builder: (context) => paddingSymmetric(vertical: 180.h, horizontal: 20.w),
     );
   }
 

@@ -30,8 +30,7 @@ class WSalaryFilterDialog extends StatefulWidget {
       useSafeArea: true,
       barrierDismissible: false,
       useRootNavigator: false,
-      builder:
-          (context) => paddingSymmetric(vertical: 250.h, horizontal: 20.w),
+      builder: (context) => paddingSymmetric(vertical: 250.h, horizontal: 20.w),
     );
   }
 

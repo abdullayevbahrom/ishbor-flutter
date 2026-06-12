@@ -139,16 +139,17 @@ class WUserInfo extends StatelessWidget {
                     description:
                         (user.categories ?? []).isNotEmpty
                             ? user.categories
-                                ?.map(
-                                  (e) =>
-                                      e.translations[
-                                              locale == AppLocaleKeys.ru
+                                    ?.map(
+                                      (e) =>
+                                          e
+                                              .translations[locale ==
+                                                      AppLocaleKeys.ru
                                                   ? 0
                                                   : 1]
-                                          .name ??
-                                      '-',
-                                )
-                                .join(', ') ??
+                                              .name ??
+                                          '-',
+                                    )
+                                    .join(', ') ??
                                 '-'
                             : "-",
                     textColor: AppColors.cFF9914,

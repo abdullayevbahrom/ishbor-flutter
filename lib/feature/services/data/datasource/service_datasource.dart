@@ -262,7 +262,8 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
       final data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null) 'category_ids': service.categoryIds ?? [],
+        if (service.categoryIds != null)
+          'category_ids': service.categoryIds ?? [],
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -319,7 +320,8 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
       final data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null) 'category_ids': service.categoryIds ?? [],
+        if (service.categoryIds != null)
+          'category_ids': service.categoryIds ?? [],
         'description': service.description,
         'price': service.price,
         'city': service.city,

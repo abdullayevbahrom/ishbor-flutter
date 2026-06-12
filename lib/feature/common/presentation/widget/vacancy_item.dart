@@ -158,8 +158,8 @@ class VacancyItem extends StatelessWidget {
                           Text(
                             StringHelpers.capitalizeFirst(
                               vacancy.title
-                                  .resolve(localeCode)
-                                  ?.replaceAll("**", "") ??
+                                      .resolve(localeCode)
+                                      ?.replaceAll("**", "") ??
                                   '',
                             ),
                             maxLines: 2,

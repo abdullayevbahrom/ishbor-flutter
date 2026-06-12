@@ -262,5 +262,4 @@ Body:
     if (text.length <= max) return text;
     return '${text.substring(0, max)}...\n(TRUNCATED)';
   }
-
 }

@@ -22,9 +22,7 @@ void main() {
   late Directory tempDir;
 
   setUpAll(() async {
-    tempDir = await Directory.systemTemp.createTemp(
-      'feature-contract-test',
-    );
+    tempDir = await Directory.systemTemp.createTemp('feature-contract-test');
     Hive.init(tempDir.path);
     await Hive.openBox(AppLocaleKeys.appName);
   });
@@ -58,7 +56,9 @@ void main() {
         method: 'POST',
         path: '/api/v1/profile/update',
         statusCode: 200,
-        body: {'data': {'ok': true}},
+        body: {
+          'data': {'ok': true},
+        },
       ),
     ]);
 
@@ -68,33 +68,18 @@ void main() {
 
     await dio.post(
       '/api/v1/profile/update',
-      data: {
-        'fullName': 'John Doe',
-        'postalCode': '100000',
-      },
-      queryParameters: {
-        'pageSize': 2,
-        'includeArchived': false,
-      },
+      data: {'fullName': 'John Doe', 'postalCode': '100000'},
+      queryParameters: {'pageSize': 2, 'includeArchived': false},
     );
 
     expect(adapter.requests, hasLength(1));
     final request = adapter.requests.single;
 
-    expect(
-      request.data,
-      {
-        'full_name': 'John Doe',
-        'postal_code': '100000',
-      },
-    );
-    expect(
-      request.queryParameters,
-      {
-        'include_archived': false,
-        'page_size': 2,
-      },
-    );
+    expect(request.data, {'full_name': 'John Doe', 'postal_code': '100000'});
+    expect(request.queryParameters, {
+      'include_archived': false,
+      'page_size': 2,
+    });
     expect(request.headers['Authorization'], 'Bearer access-token');
     expect(request.headers['X-Device-Token'], 'device-token-123');
     expect(request.headers['X-Device-Type'], isNotEmpty);
@@ -102,161 +87,195 @@ void main() {
     expect(request.headers['X-Signature'], isA<String>());
 
     final timestamp = int.parse(request.headers['X-Timestamp'] as String);
-    final expectedSignature = Hmac(
-      sha256,
-      utf8.encode(''),
-    ).convert(
-      utf8.encode(
-        '/api/v1/profile/update|{"full_name":"John Doe","postal_code":"100000"}|$timestamp',
-      ),
-    ).toString();
+    final expectedSignature =
+        Hmac(sha256, utf8.encode(''))
+            .convert(
+              utf8.encode(
+                '/api/v1/profile/update|{"full_name":"John Doe","postal_code":"100000"}|$timestamp',
+              ),
+            )
+            .toString();
     expect(request.headers['X-Signature'], expectedSignature);
   });
 
-  test('dio interceptor refreshes expired tokens before protected requests', () async {
-    await StorageService.instance.putToken('stale-access');
-    await StorageService.instance.putRefreshToken('refresh-token');
-    await StorageService.instance.putExpireDate(
-      DateTime.now().subtract(const Duration(minutes: 5)),
-    );
-    await StorageService.instance.putDeviceToken('device-token-123');
-
-    final adapter = _ScriptedAdapter([
-      _ScriptedResponse(
-        method: 'POST',
-        path: '/api/v1/auth/refresh',
-        statusCode: 200,
-        body: {
-          'data': {
-            'access_token': 'fresh-access',
-            'refresh_token': 'fresh-refresh',
-            'expires_in': 120,
-          },
-        },
-      ),
-      _ScriptedResponse(
-        method: 'GET',
-        path: '/api/v1/me',
-        statusCode: 200,
-        body: {
-          'data': {
-            'id': 'me',
-          },
-        },
-      ),
-    ]);
-
-    final dio = Dio();
-    dio.httpClientAdapter = adapter;
-    dio.interceptors.add(DioInterceptors(StorageService.instance, dio));
-
-    final response = await dio.get('/api/v1/me', data: const <String, dynamic>{});
-
-    expect(response.data['data']['id'], 'me');
-    expect(adapter.requests, hasLength(2));
-    expect(adapter.requests.first.method, 'POST');
-    expect(adapter.requests.first.path, '/api/v1/auth/refresh');
-    expect(
-      adapter.requests.first.data,
-      isA<Map>().having((value) => value['refresh_token'], 'refresh_token', 'refresh-token'),
-    );
-    expect(adapter.requests.last.method, 'GET');
-    expect(adapter.requests.last.headers['Authorization'], 'Bearer fresh-access');
-    expect(await StorageService.instance.fetchToken(), 'fresh-access');
-    expect(await StorageService.instance.fetchRefreshToken(), 'fresh-refresh');
-    expect(await StorageService.instance.getExpireDate(), isNotNull);
-  });
-
-  test('dio interceptor persists response device token and reuses it', () async {
-    await StorageService.instance.putToken('access-token');
-    await StorageService.instance.putExpireDate(
-      DateTime.now().add(const Duration(hours: 1)),
-    );
-
-    final adapter = _ScriptedAdapter([
-      _ScriptedResponse(
-        method: 'POST',
-        path: '/api/v1/auth/request-code',
-        statusCode: 200,
-        headers: {
-          'X-Device-Token': ['response-device-token'],
-        },
-        body: {'data': {'ok': true}},
-      ),
-      _ScriptedResponse(
-        method: 'POST',
-        path: '/api/v1/auth/request-code',
-        statusCode: 200,
-        body: {'data': {'ok': true}},
-      ),
-    ]);
-
-    final dio = Dio();
-    dio.httpClientAdapter = adapter;
-    dio.interceptors.add(DioInterceptors(StorageService.instance, dio));
-
-    await dio.post('/api/v1/auth/request-code', data: const <String, dynamic>{});
-    await Future<void>.delayed(Duration.zero);
-
-    expect(await StorageService.instance.fetchDeviceToken(), 'response-device-token');
-
-    await dio.post('/api/v1/auth/request-code', data: const <String, dynamic>{});
-
-    expect(adapter.requests, hasLength(2));
-    expect(adapter.requests.last.headers['X-Device-Token'], 'response-device-token');
-  });
-
-  test('mercure client subscribes to realtime topic with stored headers', () async {
-    await StorageService.instance.putToken('socket-access');
-    await StorageService.instance.putDeviceToken('socket-device');
-    await StorageService.instance.putUserId('user-42');
-
-    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
-    final requestReceived = Completer<void>();
-    late HttpRequest capturedRequest;
-
-    server.listen((HttpRequest request) async {
-      if (!requestReceived.isCompleted) {
-        capturedRequest = request;
-        requestReceived.complete();
-      }
-
-      request.response.statusCode = HttpStatus.ok;
-      request.response.headers.contentType = ContentType(
-        'text',
-        'event-stream',
-        charset: 'utf-8',
+  test(
+    'dio interceptor refreshes expired tokens before protected requests',
+    () async {
+      await StorageService.instance.putToken('stale-access');
+      await StorageService.instance.putRefreshToken('refresh-token');
+      await StorageService.instance.putExpireDate(
+        DateTime.now().subtract(const Duration(minutes: 5)),
       );
-      request.response.write('event: user.status.online.v1\n');
-      request.response.write(
-        'data: {"user_id":"user-42","status":"online"}\n\n',
+      await StorageService.instance.putDeviceToken('device-token-123');
+
+      final adapter = _ScriptedAdapter([
+        _ScriptedResponse(
+          method: 'POST',
+          path: '/api/v1/auth/refresh',
+          statusCode: 200,
+          body: {
+            'data': {
+              'access_token': 'fresh-access',
+              'refresh_token': 'fresh-refresh',
+              'expires_in': 120,
+            },
+          },
+        ),
+        _ScriptedResponse(
+          method: 'GET',
+          path: '/api/v1/me',
+          statusCode: 200,
+          body: {
+            'data': {'id': 'me'},
+          },
+        ),
+      ]);
+
+      final dio = Dio();
+      dio.httpClientAdapter = adapter;
+      dio.interceptors.add(DioInterceptors(StorageService.instance, dio));
+
+      final response = await dio.get(
+        '/api/v1/me',
+        data: const <String, dynamic>{},
       );
-      await request.response.close();
-    });
 
-    final overrides = _RedirectingHttpOverrides(
-      Uri.parse('http://127.0.0.1:${server.port}'),
-    );
+      expect(response.data['data']['id'], 'me');
+      expect(adapter.requests, hasLength(2));
+      expect(adapter.requests.first.method, 'POST');
+      expect(adapter.requests.first.path, '/api/v1/auth/refresh');
+      expect(
+        adapter.requests.first.data,
+        isA<Map>().having(
+          (value) => value['refresh_token'],
+          'refresh_token',
+          'refresh-token',
+        ),
+      );
+      expect(adapter.requests.last.method, 'GET');
+      expect(
+        adapter.requests.last.headers['Authorization'],
+        'Bearer fresh-access',
+      );
+      expect(await StorageService.instance.fetchToken(), 'fresh-access');
+      expect(
+        await StorageService.instance.fetchRefreshToken(),
+        'fresh-refresh',
+      );
+      expect(await StorageService.instance.getExpireDate(), isNotNull);
+    },
+  );
 
-    try {
-      await HttpOverrides.runZoned(
-        () async {
+  test(
+    'dio interceptor persists response device token and reuses it',
+    () async {
+      await StorageService.instance.putToken('access-token');
+      await StorageService.instance.putExpireDate(
+        DateTime.now().add(const Duration(hours: 1)),
+      );
+
+      final adapter = _ScriptedAdapter([
+        _ScriptedResponse(
+          method: 'POST',
+          path: '/api/v1/auth/request-code',
+          statusCode: 200,
+          headers: {
+            'X-Device-Token': ['response-device-token'],
+          },
+          body: {
+            'data': {'ok': true},
+          },
+        ),
+        _ScriptedResponse(
+          method: 'POST',
+          path: '/api/v1/auth/request-code',
+          statusCode: 200,
+          body: {
+            'data': {'ok': true},
+          },
+        ),
+      ]);
+
+      final dio = Dio();
+      dio.httpClientAdapter = adapter;
+      dio.interceptors.add(DioInterceptors(StorageService.instance, dio));
+
+      await dio.post(
+        '/api/v1/auth/request-code',
+        data: const <String, dynamic>{},
+      );
+      await Future<void>.delayed(Duration.zero);
+
+      expect(
+        await StorageService.instance.fetchDeviceToken(),
+        'response-device-token',
+      );
+
+      await dio.post(
+        '/api/v1/auth/request-code',
+        data: const <String, dynamic>{},
+      );
+
+      expect(adapter.requests, hasLength(2));
+      expect(
+        adapter.requests.last.headers['X-Device-Token'],
+        'response-device-token',
+      );
+    },
+  );
+
+  test(
+    'mercure client subscribes to realtime topic with stored headers',
+    () async {
+      await StorageService.instance.putToken('socket-access');
+      await StorageService.instance.putDeviceToken('socket-device');
+      await StorageService.instance.putUserId('user-42');
+
+      final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      final requestReceived = Completer<void>();
+      late HttpRequest capturedRequest;
+
+      server.listen((HttpRequest request) async {
+        if (!requestReceived.isCompleted) {
+          capturedRequest = request;
+          requestReceived.complete();
+        }
+
+        request.response.statusCode = HttpStatus.ok;
+        request.response.headers.contentType = ContentType(
+          'text',
+          'event-stream',
+          charset: 'utf-8',
+        );
+        request.response.write('event: user.status.online.v1\n');
+        request.response.write(
+          'data: {"user_id":"user-42","status":"online"}\n\n',
+        );
+        await request.response.close();
+      });
+
+      final overrides = _RedirectingHttpOverrides(
+        Uri.parse('http://127.0.0.1:${server.port}'),
+      );
+
+      try {
+        await HttpOverrides.runZoned(() async {
           final channel = await MercureClient().initUserStatus();
           expect(channel, isNotNull);
 
           final firstMessage = await channel!.stream.first.timeout(
             const Duration(seconds: 5),
           );
-          final parsedMessage = jsonDecode(firstMessage) as Map<String, dynamic>;
+          final parsedMessage =
+              jsonDecode(firstMessage) as Map<String, dynamic>;
           expect(parsedMessage['user_id'], 'user-42');
           expect(parsedMessage['status'], 'online');
 
           await requestReceived.future.timeout(const Duration(seconds: 5));
           expect(capturedRequest.uri.path, '/.well-known/mercure');
-          expect(
-            capturedRequest.uri.queryParametersAll['topic'],
-            ['users/status/user-42'],
-          );
+          expect(capturedRequest.uri.queryParametersAll['topic'], [
+            'users/status/user-42',
+          ]);
           expect(
             capturedRequest.headers.value(HttpHeaders.authorizationHeader),
             'Bearer socket-access',
@@ -265,66 +284,69 @@ void main() {
             capturedRequest.headers.value(HttpHeaders.acceptHeader),
             'text/event-stream',
           );
-          expect(capturedRequest.headers.value('x-device-token'), 'socket-device');
+          expect(
+            capturedRequest.headers.value('x-device-token'),
+            'socket-device',
+          );
 
           await channel.close();
-        },
-        createHttpClient: overrides.createHttpClient,
-      );
-    } finally {
-      await overrides.dispose();
-      await server.close(force: true);
-    }
-  });
-
-  test('mercure client subscribes to status-check topic with stored headers', () async {
-    await StorageService.instance.putToken('socket-access');
-    await StorageService.instance.putDeviceToken('socket-device');
-    await StorageService.instance.putUserId('user-42');
-
-    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
-    final requestReceived = Completer<void>();
-    late HttpRequest capturedRequest;
-
-    server.listen((HttpRequest request) async {
-      if (!requestReceived.isCompleted) {
-        capturedRequest = request;
-        requestReceived.complete();
+        }, createHttpClient: overrides.createHttpClient);
+      } finally {
+        await overrides.dispose();
+        await server.close(force: true);
       }
+    },
+  );
 
-      request.response.statusCode = HttpStatus.ok;
-      request.response.headers.contentType = ContentType(
-        'text',
-        'event-stream',
-        charset: 'utf-8',
+  test(
+    'mercure client subscribes to status-check topic with stored headers',
+    () async {
+      await StorageService.instance.putToken('socket-access');
+      await StorageService.instance.putDeviceToken('socket-device');
+      await StorageService.instance.putUserId('user-42');
+
+      final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+      final requestReceived = Completer<void>();
+      late HttpRequest capturedRequest;
+
+      server.listen((HttpRequest request) async {
+        if (!requestReceived.isCompleted) {
+          capturedRequest = request;
+          requestReceived.complete();
+        }
+
+        request.response.statusCode = HttpStatus.ok;
+        request.response.headers.contentType = ContentType(
+          'text',
+          'event-stream',
+          charset: 'utf-8',
+        );
+        request.response.write('data: {"user_id":"user-42","online":true}\n\n');
+        await request.response.close();
+      });
+
+      final overrides = _RedirectingHttpOverrides(
+        Uri.parse('http://127.0.0.1:${server.port}'),
       );
-      request.response.write('data: {"user_id":"user-42","online":true}\n\n');
-      await request.response.close();
-    });
 
-    final overrides = _RedirectingHttpOverrides(
-      Uri.parse('http://127.0.0.1:${server.port}'),
-    );
-
-    try {
-      await HttpOverrides.runZoned(
-        () async {
+      try {
+        await HttpOverrides.runZoned(() async {
           final channel = await MercureClient.initStatusCheckSource('user-42');
           expect(channel, isNotNull);
 
           final firstMessage = await channel!.stream.first.timeout(
             const Duration(seconds: 5),
           );
-          final parsedMessage = jsonDecode(firstMessage) as Map<String, dynamic>;
+          final parsedMessage =
+              jsonDecode(firstMessage) as Map<String, dynamic>;
           expect(parsedMessage['user_id'], 'user-42');
           expect(parsedMessage['online'], isTrue);
 
           await requestReceived.future.timeout(const Duration(seconds: 5));
           expect(capturedRequest.uri.path, '/.well-known/mercure');
-          expect(
-            capturedRequest.uri.queryParametersAll['topic'],
-            ['users/status/check/user-42'],
-          );
+          expect(capturedRequest.uri.queryParametersAll['topic'], [
+            'users/status/check/user-42',
+          ]);
           expect(
             capturedRequest.headers.value(HttpHeaders.authorizationHeader),
             'Bearer socket-access',
@@ -333,53 +355,58 @@ void main() {
             capturedRequest.headers.value(HttpHeaders.acceptHeader),
             'text/event-stream',
           );
-          expect(capturedRequest.headers.value('x-device-token'), 'socket-device');
+          expect(
+            capturedRequest.headers.value('x-device-token'),
+            'socket-device',
+          );
 
           await channel.close();
-        },
-        createHttpClient: overrides.createHttpClient,
+        }, createHttpClient: overrides.createHttpClient);
+      } finally {
+        await overrides.dispose();
+        await server.close(force: true);
+      }
+    },
+  );
+
+  test(
+    'realtime datasource returns success and surfaces backend errors',
+    () async {
+      final dio = Dio();
+      final adapter = _ScriptedAdapter([
+        _ScriptedResponse(
+          method: 'POST',
+          path: ApiConstants.heartbeat,
+          statusCode: 204,
+        ),
+        _ScriptedResponse(
+          method: 'GET',
+          path: ApiConstants.userStatus('user-42'),
+          statusCode: 422,
+          body: {'message': 'User status unavailable'},
+        ),
+      ]);
+      dio.httpClientAdapter = adapter;
+
+      final dataSource = RealtimeDataSourceImpl(dio);
+
+      final heartbeatResult = await dataSource.heartbeat();
+      heartbeatResult.fold(
+        (_) => fail('Expected heartbeat() to succeed'),
+        (_) {},
       );
-    } finally {
-      await overrides.dispose();
-      await server.close(force: true);
-    }
-  });
 
-  test('realtime datasource returns success and surfaces backend errors', () async {
-    final dio = Dio();
-    final adapter = _ScriptedAdapter([
-      _ScriptedResponse(
-        method: 'POST',
-        path: ApiConstants.heartbeat,
-        statusCode: 204,
-      ),
-      _ScriptedResponse(
-        method: 'GET',
-        path: ApiConstants.userStatus('user-42'),
-        statusCode: 422,
-        body: {'message': 'User status unavailable'},
-      ),
-    ]);
-    dio.httpClientAdapter = adapter;
+      final statusResult = await dataSource.checkUserStatus('user-42');
+      statusResult.fold(
+        (failure) => expect(failure.message, 'User status unavailable'),
+        (_) => fail('Expected checkUserStatus() to fail'),
+      );
 
-    final dataSource = RealtimeDataSourceImpl(dio);
-
-    final heartbeatResult = await dataSource.heartbeat();
-    heartbeatResult.fold(
-      (_) => fail('Expected heartbeat() to succeed'),
-      (_) {},
-    );
-
-    final statusResult = await dataSource.checkUserStatus('user-42');
-    statusResult.fold(
-      (failure) => expect(failure.message, 'User status unavailable'),
-      (_) => fail('Expected checkUserStatus() to fail'),
-    );
-
-    expect(adapter.requests, hasLength(2));
-    expect(adapter.requests.first.path, ApiConstants.heartbeat);
-    expect(adapter.requests.last.path, ApiConstants.userStatus('user-42'));
-  });
+      expect(adapter.requests, hasLength(2));
+      expect(adapter.requests.first.path, ApiConstants.heartbeat);
+      expect(adapter.requests.last.path, ApiConstants.userStatus('user-42'));
+    },
+  );
 
   test('payment datasource parses happy path and provider failures', () async {
     final dio = Dio();
@@ -432,19 +459,12 @@ void main() {
 
     expect(adapter.requests, hasLength(2));
     expect(adapter.requests.first.path, ApiConstants.paymentTransactions);
-    expect(
-      adapter.requests.first.data,
-      {
-        'amount': 1000,
-        'provider': 'payme',
-      },
-    );
+    expect(adapter.requests.first.data, {'amount': 1000, 'provider': 'payme'});
     expect(
       adapter.requests.last.path,
       ApiConstants.payByProvider('vacancy', 42, '1000', 'payme'),
     );
   });
-
 }
 
 class _RecordedRequest {
@@ -481,7 +501,7 @@ class _ScriptedResponse {
 
 class _ScriptedAdapter implements HttpClientAdapter {
   _ScriptedAdapter(List<_ScriptedResponse> responses)
-      : _responses = Queue<_ScriptedResponse>.from(responses);
+    : _responses = Queue<_ScriptedResponse>.from(responses);
 
   final Queue<_ScriptedResponse> _responses;
   final List<_RecordedRequest> requests = <_RecordedRequest>[];
@@ -492,11 +512,11 @@ class _ScriptedAdapter implements HttpClientAdapter {
     Stream<Uint8List>? requestStream,
     Future<void>? cancelFuture,
   ) async {
-    final response = _responses.isNotEmpty
-        ? _responses.removeFirst()
-        : null;
+    final response = _responses.isNotEmpty ? _responses.removeFirst() : null;
     if (response == null) {
-      throw StateError('No scripted response for ${options.method} ${options.path}');
+      throw StateError(
+        'No scripted response for ${options.method} ${options.path}',
+      );
     }
 
     requests.add(

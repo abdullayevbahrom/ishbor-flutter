@@ -134,8 +134,15 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
         addressLine:
             state.location != null
                 ? StringHelpers.extractStreet(
-                  state.location?.response?.geoObjectCollection?.featureMember?[0]
-                          .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+                  state
+                          .location
+                          ?.response
+                          ?.geoObjectCollection
+                          ?.featureMember?[0]
+                          .geoObject
+                          ?.metaDataProperty
+                          ?.geocoderMetaData
+                          ?.text ??
                       '',
                 )
                 : null,
@@ -154,8 +161,15 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
         negotiable: state.isNegotiable,
         uploadedImages: state.images,
         city: StringHelpers.extractCity(
-          state.location?.response?.geoObjectCollection?.featureMember?[0]
-                  .geoObject?.metaDataProperty?.geocoderMetaData?.text ??
+          state
+                  .location
+                  ?.response
+                  ?.geoObjectCollection
+                  ?.featureMember?[0]
+                  .geoObject
+                  ?.metaDataProperty
+                  ?.geocoderMetaData
+                  ?.text ??
               '',
         ),
         exprTime: state.expireDate!,

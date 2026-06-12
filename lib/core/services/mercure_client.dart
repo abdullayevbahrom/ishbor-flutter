@@ -163,9 +163,8 @@ class MercureClient {
                 debugPrint(
                   '[WARN][mercure] stream error label=$label mode=${attempt.tag}: $error',
                 );
-                final failure = error is Object
-                    ? error
-                    : StateError(error.toString());
+                final failure =
+                    error is Object ? error : StateError(error.toString());
                 if (onError != null) {
                   final result = onError(failure);
                   if (result is Future<void>) {
@@ -185,7 +184,9 @@ class MercureClient {
                   '[DEBUG][mercure] stream closed label=$label mode=${attempt.tag}',
                 );
                 if (onError != null) {
-                  final result = onError(StateError('$label mercure stream closed'));
+                  final result = onError(
+                    StateError('$label mercure stream closed'),
+                  );
                   if (result is Future<void>) {
                     unawaited(result);
                   }
@@ -248,10 +249,7 @@ class MercureClient {
 
   static Uri _buildMercureUri(List<String> topics) {
     final base = Uri.parse(ApiConstants.mercureUrl);
-    final merged = <String, dynamic>{
-      ...base.queryParameters,
-      'topic': topics,
-    };
+    final merged = <String, dynamic>{...base.queryParameters, 'topic': topics};
     return base.replace(queryParameters: merged);
   }
 

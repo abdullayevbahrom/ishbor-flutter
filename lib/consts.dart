@@ -31,13 +31,13 @@ const String baseUrl = apiBaseUrl;
 String _deriveMercureUrl(String apiUrl) {
   try {
     final url = Uri.parse(apiUrl);
-    final mercureHost = url.host.startsWith('api.')
-        ? url.host.replaceFirst('api.', 'ws.')
-        : url.host;
-    return url.replace(
-      host: mercureHost,
-      path: '/.well-known/mercure',
-    ).toString();
+    final mercureHost =
+        url.host.startsWith('api.')
+            ? url.host.replaceFirst('api.', 'ws.')
+            : url.host;
+    return url
+        .replace(host: mercureHost, path: '/.well-known/mercure')
+        .toString();
   } catch (_) {
     return '$apiUrl/.well-known/mercure';
   }

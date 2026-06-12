@@ -247,9 +247,7 @@ class ServiceModel extends AdPricable {
     this.isNeedLiftUp,
     this.clickCount,
     double? price,
-  }) : super(
-         price: price,
-       );
+  }) : super(price: price);
 
   @override
   List<Object?> get props => [

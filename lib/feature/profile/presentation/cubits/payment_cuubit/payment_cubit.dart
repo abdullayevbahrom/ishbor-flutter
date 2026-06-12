@@ -96,7 +96,8 @@ class PaymentCubit extends Cubit<PaymentState> {
       if (status == null) {
         return;
       }
-      if (status.status == Status.completed || status.status == Status.cancelled) {
+      if (status.status == Status.completed ||
+          status.status == Status.cancelled) {
         timer.cancel();
       }
     });
@@ -105,7 +106,9 @@ class PaymentCubit extends Cubit<PaymentState> {
   Future<void> checkTransactionStatus(String transactionId) async {
     _activeTransactionId = transactionId;
     _pollTimer?.cancel();
-    debugPrint('[DEBUG][payment][poll] manual check transactionId=$transactionId');
+    debugPrint(
+      '[DEBUG][payment][poll] manual check transactionId=$transactionId',
+    );
     await _pollTransactionStatus(transactionId, showFeedback: true);
   }
 

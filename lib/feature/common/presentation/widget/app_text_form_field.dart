@@ -160,9 +160,7 @@ class _AppTextFormFieldState extends State<AppTextFormField> {
                     splashColor: AppColors.cEDEDED,
                     padding: EdgeInsets.zero,
                     icon: Icon(
-                      obscureText
-                          ? Icons.visibility
-                          : Icons.visibility_off,
+                      obscureText ? Icons.visibility : Icons.visibility_off,
                       color: AppColors.cFF9914,
                     ),
                   )

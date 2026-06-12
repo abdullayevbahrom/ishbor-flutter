@@ -57,8 +57,7 @@ sealed class ApiConstants {
   static String fetchListVacancyRequests(Object id) =>
       '$vacancies/${_id(id)}/vacancy-requests';
   static String updateVacancy(Object id) => '$vacancies/${_id(id)}/update';
-  static String uploadVacancyImage(Object id) =>
-      '$vacancies/${_id(id)}/images';
+  static String uploadVacancyImage(Object id) => '$vacancies/${_id(id)}/images';
   static String liftUpVacancyById(Object id) => '$vacancies/${_id(id)}/lift-up';
   static String changeVacancyStatusById(Object id) =>
       '$vacancies/${_id(id)}/change-status';

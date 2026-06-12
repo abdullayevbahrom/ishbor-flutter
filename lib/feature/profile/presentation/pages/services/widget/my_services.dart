@@ -94,7 +94,8 @@ class MyServicesBody extends StatelessWidget {
               child: ListView.builder(
                 shrinkWrap: true,
                 controller: scrollController,
-                itemCount: state.isLadingMore1 ? services.length + 1 : services.length,
+                itemCount:
+                    state.isLadingMore1 ? services.length + 1 : services.length,
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.only(top: 10.h),
                 physics: const AlwaysScrollableScrollPhysics(),

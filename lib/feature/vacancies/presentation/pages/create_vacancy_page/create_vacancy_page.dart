@@ -114,7 +114,9 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                   if (element.id == state.category) {
                     cubit.categoryController.text =
                         element
-                            .translations[context.locale.languageCode == 'ru' ? 0 : 1]
+                            .translations[context.locale.languageCode == 'ru'
+                                ? 0
+                                : 1]
                             .name ??
                         '';
                     cubit.categories = [element.id];

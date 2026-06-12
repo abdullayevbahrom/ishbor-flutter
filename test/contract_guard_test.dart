@@ -45,11 +45,14 @@ void main() {
   );
 
   test('router source keeps deep-link guard branches and payment query contract', () {
-    final routerSource = File('lib/core/router/app_routes.dart').readAsStringSync();
+    final routerSource =
+        File('lib/core/router/app_routes.dart').readAsStringSync();
 
     expect(
       routerSource,
-      contains(r'''if (url.contains("/main") && uri.queryParameters['token'] != null)'''),
+      contains(
+        r'''if (url.contains("/main") && uri.queryParameters['token'] != null)''',
+      ),
     );
     expect(
       routerSource,
@@ -58,7 +61,10 @@ void main() {
       ),
     );
     expect(routerSource, contains(r'''if (url.contains("/payment") &&'''));
-    expect(routerSource, contains(r'''uri.queryParameters['transaction_id']'''));
+    expect(
+      routerSource,
+      contains(r'''uri.queryParameters['transaction_id']'''),
+    );
     expect(
       routerSource,
       contains(
