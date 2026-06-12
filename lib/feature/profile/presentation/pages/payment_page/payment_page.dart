@@ -17,6 +17,7 @@ import 'package:top_jobs/feature/profile/data/model/payment_provider.dart';
 import 'package:top_jobs/feature/profile/presentation/cubits/payment_cuubit/payment_cubit.dart';
 import 'package:top_jobs/feature/profile/presentation/pages/payment_page/widgets/w_payment_amount.dart';
 import 'package:top_jobs/feature/profile/presentation/pages/payment_page/widgets/w_payment_type.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class PaymentPage extends StatefulWidget {
   const PaymentPage({super.key, this.transactionId});
@@ -81,6 +82,7 @@ class _WPaymentBodyState extends State<WPaymentBody> {
       builder: (context, state) {
         return WLayout(
           child: Scaffold(
+            key: E2EKeys.page('payment'),
             backgroundColor: AppColors.cFFFFFF,
             body: Form(
               key: _formKey,

@@ -27,6 +27,7 @@ import '../../../../common/presentation/widget/w_share_content_actions.dart';
 import '../../widgets/w_ads_author_connect.dart';
 import '../../widgets/w_ads_header_action.dart';
 import '../../widgets/w_ads_title_view.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class WVacancyViewPage extends StatefulWidget {
   const WVacancyViewPage({super.key, required this.vacancyId});
@@ -80,6 +81,7 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
           builder: (context, state) {
             return WLayout(
               child: Scaffold(
+                key: E2EKeys.page('vacancy-view'),
                 backgroundColor: AppColors.cFFFFFF,
                 body: Column(
                   children: [

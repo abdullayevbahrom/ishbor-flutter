@@ -29,6 +29,7 @@ import 'package:top_jobs/feature/services/presentation/pages/services_page/servi
 import 'package:top_jobs/feature/tasks/presentation/pages/tasks_page/tasks_page.dart';
 
 import '../../../../../core/services/fcm_service.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../auth/data/models/auth_success.dart';
 import '../../../../auth/presentation/cubit/auth_cubit/auth_cubit.dart';
 import '../../../../auth/presentation/pages/login_page/login_page.dart';
@@ -124,6 +125,7 @@ class _MainPageState extends State<MainPage>
                 return BlocBuilder<MessageCubit, MessageState>(
                   builder: (context, messageState) {
                     return Container(
+                      key: E2EKeys.page('main'),
                       color: AppColors.cFFFFFF,
                       child: SafeArea(
                         bottom: false,
@@ -163,10 +165,12 @@ class _MainPageState extends State<MainPage>
                                       ),
                                     ),
                                   WAnimatedNotificationMenuContainer(
+                                    key: E2EKeys.modal('main.notifications'),
                                     open: mainState.isNotificationMenuOpen,
                                   ),
                                   if (state.hasToken)
                                     WAnimatedNotificationFb(
+                                      key: E2EKeys.button('main.notifications'),
                                       onTapFb: () {
                                         WNotificationsList().show(context);
 
@@ -180,9 +184,11 @@ class _MainPageState extends State<MainPage>
                                       open: mainState.isNotificationMenuOpen,
                                     ),
                                   WAnimatedMenuContainer(
+                                    key: E2EKeys.modal('main.actions'),
                                     open: mainState.isOpen,
                                   ),
                                   WAnimatedAddFb(
+                                    key: E2EKeys.button('main.add'),
                                     onTapFb: () {
                                       if (state.hasToken) {
                                         context.read<MainCubit>().updateOpen(

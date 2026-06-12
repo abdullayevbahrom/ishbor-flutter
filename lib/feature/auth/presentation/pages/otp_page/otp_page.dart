@@ -17,6 +17,7 @@ import 'package:top_jobs/feature/common/presentation/widget/app_button.dart';
 
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/utils/app_utils.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../common/presentation/widget/w_check_box_list_tile.dart';
 import '../../widgets/w_pin_put.dart';
 
@@ -34,7 +35,10 @@ class OtpPage extends StatefulWidget {
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: SizedBox(height: isRegister ? 480.h : 600.h, child: this),
+            child: KeyedSubtree(
+              key: E2EKeys.modal('otp'),
+              child: SizedBox(height: isRegister ? 480.h : 600.h, child: this),
+            ),
           ),
       useSafeArea: true,
       isScrollControlled: true,
@@ -112,6 +116,7 @@ class _OtpPageState extends State<OtpPage> {
         return Form(
           key: _formKey,
           child: Container(
+            key: E2EKeys.page('otp'),
             width: 100.sw,
             decoration: BoxDecoration(
               color: AppColors.cFFFFFF,

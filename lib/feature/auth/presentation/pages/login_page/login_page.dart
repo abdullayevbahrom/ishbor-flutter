@@ -14,6 +14,7 @@ import '../../../../../core/helpers/app_launcher.dart';
 import '../../../../common/presentation/widget/app_button.dart';
 import '../../../../common/presentation/widget/app_phone_form_field.dart';
 import '../../cubit/auth_cubit/auth_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -29,7 +30,10 @@ class LoginPage extends StatelessWidget {
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: this, // Your LoginPage widget
+            child: KeyedSubtree(
+              key: E2EKeys.modal('login'),
+              child: this,
+            ), // Your LoginPage widget
           ),
       useSafeArea: true,
       isScrollControlled: true,
@@ -102,11 +106,13 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: 5.h),
                     AppPhoneNumberTextFormField(
                       phoneNumber: _phoneNumberController,
+                      fieldKey: E2EKeys.input('auth.login', 'phone'),
                     ),
                     SizedBox(height: 16.h),
                     SizedBox(
                       height: 50.h,
                       child: AppButton(
+                        buttonKey: 'auth.login.submit',
                         isLoading: state.verifyPhoneSt.isLoading(),
                         textStyle: AppTextStyles.size17Medium.copyWith(
                           color: AppColors.cFFFFFF,
@@ -142,6 +148,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(
                       height: 50.h,
                       child: AppButton(
+                        buttonKey: 'auth.login.telegram',
                         isLoading: state.verifyPhoneSt.isLoading(),
                         textStyle: AppTextStyles.size17Medium.copyWith(
                           color: AppColors.cFFFFFF,

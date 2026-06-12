@@ -8,6 +8,7 @@ import 'package:top_jobs/core/theme/app_colors.dart';
 import 'package:top_jobs/core/theme/app_svg.dart';
 import 'package:top_jobs/core/theme/app_png.dart';
 import 'package:top_jobs/core/utils/app_utils.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/user_cubit/user_cubit.dart';
 
 import '../../../../core/router/route_names.dart';
@@ -25,6 +26,7 @@ class AppHeader extends StatelessWidget {
     return BlocBuilder<NotificationCubit, NotificationState>(
       builder: (context, state) {
         return DecoratedBox(
+          key: E2EKeys.page('header'),
           decoration: BoxDecoration(color: AppColors.cFFFFFF),
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 3.h),
@@ -52,8 +54,9 @@ class AppHeader extends StatelessWidget {
                     ? Positioned(
                       top: 0,
                       bottom: 0,
-                      child: IconButton(
-                        onPressed: () {
+                    child: IconButton(
+                      key: E2EKeys.button('header.back'),
+                      onPressed: () {
                           if (context.canPop()) {
                             context.pop();
                           } else {
@@ -89,6 +92,7 @@ class AppHeader extends StatelessWidget {
                     child:
                         context.read<UserCubit>().state.status.isLoaded()
                             ? IconButton(
+                              key: E2EKeys.button('header.notifications'),
                               onPressed: () {
                                 WNotificationsList().show(context);
 

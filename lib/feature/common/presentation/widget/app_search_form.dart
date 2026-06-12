@@ -9,6 +9,7 @@ import 'package:top_jobs/core/theme/app_text_styles.dart';
 import '../../../../core/constants/locale_keys.g.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_svg.dart';
+import '../../../../core/utils/e2e_keys.dart';
 import '../../../../injection_container.dart';
 
 class AppSearchForm extends StatefulWidget {
@@ -53,6 +54,7 @@ class _AppSearchFormState extends State<AppSearchForm> {
             children: [
               Expanded(
                 child: TextFormField(
+                  key: E2EKeys.input('search', 'query'),
                   showCursor: false,
                   style: AppTextStyles.size15Medium,
                   keyboardType: TextInputType.none,
@@ -124,6 +126,7 @@ class _AppSearchFormState extends State<AppSearchForm> {
                   height: 32.r,
                   width: 32.r,
                   child: IconButton(
+                    key: E2EKeys.button('search.filter'),
                     onPressed: widget.onTapFilter,
                     padding: EdgeInsets.zero,
                     icon: SvgPicture.asset(AppSvg.icFilter, height: 32.r),
@@ -134,6 +137,7 @@ class _AppSearchFormState extends State<AppSearchForm> {
                 height: 32.r,
                 width: 32.r,
                 child: IconButton(
+                  key: E2EKeys.button('search.location'),
                   onPressed: widget.onTapLocation,
                   padding: EdgeInsets.zero,
                   icon: SvgPicture.asset(AppSvg.icLocation, height: 32.r),
@@ -179,6 +183,7 @@ class WSearchTextFormFieldQuery extends StatefulWidget {
               child: Padding(
                 padding: const EdgeInsets.only(top: 5), // distance from top
                 child: Material(
+                  key: E2EKeys.modal('search'),
                   borderRadius: BorderRadius.circular(18.r),
                   color: AppColors.cFFFFFF,
                   child: SizedBox(
@@ -230,6 +235,7 @@ class _WSearchTextFormFieldQueryState extends State<WSearchTextFormFieldQuery> {
             children: [
               Expanded(
                 child: TextFormField(
+                  key: E2EKeys.input('search', 'dialog-query'),
                   enabled: true,
                   autofocus: true,
                   style: AppTextStyles.size15Medium,
@@ -257,6 +263,7 @@ class _WSearchTextFormFieldQueryState extends State<WSearchTextFormFieldQuery> {
                     suffixIcon:
                         widget.enableCancel ?? true
                             ? IconButton(
+                              key: E2EKeys.button('search.cancel'),
                               onPressed: () {
                                 widget.onPressedCancel();
                                 context.pop();
@@ -303,6 +310,7 @@ class _WSearchTextFormFieldQueryState extends State<WSearchTextFormFieldQuery> {
                 isLabelVisible: widget.enableFilter,
                 backgroundColor: AppColors.cFF9914,
                 child: IconButton(
+                  key: E2EKeys.button('search.dialog-filter'),
                   onPressed: widget.onTapFilter,
                   padding: EdgeInsets.zero,
                   icon: SvgPicture.asset(AppSvg.icFilter, height: 32.r),

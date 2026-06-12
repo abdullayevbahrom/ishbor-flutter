@@ -11,6 +11,7 @@ import 'package:top_jobs/feature/common/presentation/widget/app_button.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_text_form_field.dart';
 
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class NamePage extends StatelessWidget {
   NamePage({super.key, required this.phoneNumber, required this.userType});
@@ -26,9 +27,12 @@ class NamePage extends StatelessWidget {
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: SizedBox(
-              height: 300.h,
-              child: this,
+            child: KeyedSubtree(
+              key: E2EKeys.modal('name'),
+              child: SizedBox(
+                height: 300.h,
+                child: this,
+              ),
             ), // Your LoginPage widget
           ),
       useSafeArea: true,
@@ -60,6 +64,7 @@ class NamePage extends StatelessWidget {
         return Form(
           key: _formKey,
           child: Container(
+            key: E2EKeys.page('name'),
             width: 100.sw,
             decoration: BoxDecoration(
               color: AppColors.cFFFFFF,
@@ -97,6 +102,7 @@ class NamePage extends StatelessWidget {
                 ),
                 SizedBox(height: 5.h),
                 AppTextFormField(
+                  fieldKey: E2EKeys.input('auth.register', 'full-name'),
                   keyBoardType: TextInputType.text,
                   hintText: LocaleKeys.fio.tr(),
                   controller: _userNameController,
@@ -111,6 +117,7 @@ class NamePage extends StatelessWidget {
                 SizedBox(
                   height: 50.h,
                   child: AppButton(
+                    buttonKey: 'auth.register.complete',
                     width: 100.sw,
                     textStyle: AppTextStyles.size17Medium.copyWith(
                       color: AppColors.cFFFFFF,

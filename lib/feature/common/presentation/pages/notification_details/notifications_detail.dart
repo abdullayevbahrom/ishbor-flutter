@@ -6,6 +6,7 @@ import 'package:top_jobs/feature/ads_view/presentation/pages/vacancy_view_page/v
 import 'package:top_jobs/feature/common/presentation/cubits/notification_details/notification_details_cubit.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_error_widget.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_loading_item.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../../messages/presentation/pages/chat/chat_page.dart';
@@ -39,7 +40,10 @@ class _NotificationsDetailState extends State<NotificationsDetail> {
               id: widget.params['id']?.toString() ?? '',
             ),
         builder: (context, state) {
-          return Scaffold(body: buildBody(state));
+          return Scaffold(
+            key: E2EKeys.page('notification-details'),
+            body: buildBody(state),
+          );
         },
       ),
     );

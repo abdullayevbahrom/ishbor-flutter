@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 import '../../../../../../core/theme/app_text_styles.dart';
 
@@ -13,18 +14,21 @@ class CreateActionForm extends StatelessWidget {
     required this.imageUrl,
     required this.title,
     required this.index,
+    this.buttonKey,
   });
 
   final VoidCallback onTap;
   final String imageUrl;
   final String title;
   final int index;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: AppColors.cTransparent,
       child: InkWell(
+        key: buttonKey == null ? null : E2EKeys.button(buttonKey!),
         onTap: onTap,
         borderRadius:
             index % 3 == 1

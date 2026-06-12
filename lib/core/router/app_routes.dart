@@ -394,6 +394,10 @@ class AppRoutes {
 }
 
 String _getInitialRoute() {
+  if (AppState.isActive) {
+    return Routes.main;
+  }
+
   if (initialLink != null && initialLink!.isNotEmpty) {
     final uri = Uri.parse(initialLink!);
     if (initialLink!.contains("/vacancy-view") &&

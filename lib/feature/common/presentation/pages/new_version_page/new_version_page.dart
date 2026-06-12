@@ -8,6 +8,7 @@ import 'package:top_jobs/core/helpers/app_launcher.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
 import 'package:top_jobs/core/theme/app_text_styles.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_button.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 class NewVersionPage extends StatelessWidget {
   const NewVersionPage({super.key, required this.storeLink});
@@ -17,6 +18,7 @@ class NewVersionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: E2EKeys.page('new-version'),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,

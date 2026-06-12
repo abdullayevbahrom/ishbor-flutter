@@ -14,6 +14,7 @@ import 'package:hive/hive.dart';
 import 'package:logger/web.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:toastification/toastification.dart';
+import 'package:top_jobs/app_state.dart';
 import 'package:top_jobs/core/constants/app_locale_keys.dart';
 import 'package:top_jobs/core/constants/easy_locale.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
@@ -37,6 +38,8 @@ import 'firebase_options.dart';
 late AppLinks _appLinks;
 String? initialLink;
 
+enum AppBootstrapMode { production, e2e }
+
 Future<void> _setupAppLinks() async {
   _appLinks = AppLinks();
 
@@ -48,28 +51,76 @@ Future<void> _setupAppLinks() async {
 }
 
 Future<void> main() async {
+  await bootstrapApplication();
+}
+
+Future<void> bootstrapApplication({
+  AppBootstrapMode mode = AppBootstrapMode.production,
+}) async {
   runZonedGuarded(
     () async {
+      final isE2E = mode == AppBootstrapMode.e2e;
       final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+      AppState.isActive = isE2E;
+
       if (kDebugMode) {
         HttpOverrides.global = MyHttpOverrides();
       }
-      FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+      if (!isE2E) {
+        FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+      }
+
       final dir = await getApplicationDocumentsDirectory();
       Hive.init(dir.path);
+
+      if (isE2E) {
+        log('[INFO][E2E][bootstrap] firebase=starting hive=starting localization=starting');
+      }
+
       await Future.wait([
         Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
         ScreenUtil.ensureScreenSize(),
         EasyLocalization.ensureInitialized(),
         Hive.openBox(AppLocaleKeys.appName),
       ]);
+
+      if (isE2E) {
+        log('[INFO][E2E][bootstrap] firebase=ok hive=ok localization=ok');
+      }
+
       di.init();
-      await FcmNotificationService.instance.initialize();
+
+      if (isE2E) {
+        try {
+          await FcmNotificationService.instance.initialize();
+          log('[INFO][E2E][bootstrap] fcm=ok');
+        } catch (error, stack) {
+          log(
+            '[ERROR][E2E][bootstrap] fcm=failed error=$error stack=$stack',
+          );
+        }
+      } else {
+        await FcmNotificationService.instance.initialize();
+      }
+
       await SystemChrome.setPreferredOrientations([
         DeviceOrientation.portraitUp,
       ]);
-      await _setupAppLinks();
-      FlutterNativeSplash.remove();
+
+      if (isE2E) {
+        try {
+          await _setupAppLinks();
+          log('[INFO][E2E][bootstrap] appLinks=ok');
+        } catch (error, stack) {
+          log(
+            '[ERROR][E2E][bootstrap] appLinks=failed error=$error stack=$stack',
+          );
+        }
+      } else {
+        await _setupAppLinks();
+        FlutterNativeSplash.remove();
+      }
 
       runApp(
         EasyLocalization(
@@ -80,7 +131,7 @@ Future<void> main() async {
           supportedLocales: EasyLocale.all,
           child: BlocProvider(
             create: (context) => sl<LocaleCubit>(),
-            child: const MyApp(),
+            child: MyApp(mode: mode),
           ),
         ),
       );
@@ -94,7 +145,9 @@ Future<void> main() async {
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp({super.key, this.mode = AppBootstrapMode.production});
+
+  final AppBootstrapMode mode;
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -108,6 +161,10 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.mode == AppBootstrapMode.e2e) {
+      AppState.isActive = true;
+    }
+
     return ScreenUtilInit(
       designSize: const Size(411, 1001),
       minTextAdapt: true,

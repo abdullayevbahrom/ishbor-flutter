@@ -15,6 +15,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 
 import '../../../../common/presentation/widget/app_header.dart';
 import '../../cubit/auth_cubit/auth_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class RestorePassword extends StatefulWidget {
   @override
@@ -45,6 +46,7 @@ class _RestorePasswordState extends State<RestorePassword> {
           key: _formKey,
           child: WLayout(
             child: Scaffold(
+              key: E2EKeys.page('restore-password'),
               backgroundColor: AppColors.cFFFFFF,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,6 +78,10 @@ class _RestorePasswordState extends State<RestorePassword> {
                             AppUtils.hSizedBox8,
                             AppPhoneNumberTextFormField(
                               phoneNumber: phoneNumberController,
+                              fieldKey: E2EKeys.input(
+                                'auth.restore',
+                                'phone',
+                              ),
                             ),
                             AppUtils.hSizedBox24,
                             Text(
@@ -86,6 +92,10 @@ class _RestorePasswordState extends State<RestorePassword> {
                             ),
                             AppUtils.hSizedBox8,
                             AppTextFormField(
+                              fieldKey: E2EKeys.input(
+                                'auth.restore',
+                                'new-password',
+                              ),
                               maxLines: 1,
                               minLines: 1,
                               fillColor: AppColors.cFFFFFF,
@@ -101,6 +111,7 @@ class _RestorePasswordState extends State<RestorePassword> {
                             SizedBox(
                               height: 55.h,
                               child: AppButton(
+                                buttonKey: 'auth.restore.submit',
                                 radius: 8.r,
                                 width: 100.sw,
                                 // isLoading: state.restoreSt.isLoading(),

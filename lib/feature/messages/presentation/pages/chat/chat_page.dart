@@ -20,6 +20,7 @@ import 'package:top_jobs/feature/messages/presentation/pages/chat/widget/chat_he
 import 'package:top_jobs/feature/messages/presentation/pages/chat/widget/chat_input_bar.dart';
 import 'package:top_jobs/feature/messages/presentation/pages/chat/widget/chat_loading.dart';
 import 'package:top_jobs/feature/messages/presentation/pages/chat/widget/message_bubble.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 import '../../../../../injection_container.dart';
 import '../../cubits/chat_cubit/chat_cubit.dart';
@@ -77,6 +78,7 @@ class _ChatPageState extends State<ChatPage> {
           builder: (context, state) {
             return WLayout(
               child: Scaffold(
+                key: E2EKeys.page('chat'),
                 backgroundColor: AppColors.cFBFBFD,
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

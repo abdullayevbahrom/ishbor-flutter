@@ -24,6 +24,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_refresh_indicator.
 import 'package:top_jobs/feature/common/presentation/widget/w_share_content_actions.dart';
 
 import '../../../../../core/router/route_names.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../../injection_container.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 
@@ -79,6 +80,7 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
               builder: (context, state) {
                 return WLayout(
                   child: Scaffold(
+                    key: E2EKeys.page('service-view'),
                     backgroundColor: AppColors.cFFFFFF,
                     body: Column(
                       mainAxisSize: MainAxisSize.min,

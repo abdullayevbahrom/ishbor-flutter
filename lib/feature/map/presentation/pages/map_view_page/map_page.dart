@@ -19,6 +19,7 @@ import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 import '../../../../../injection_container.dart';
 import '../../../../common/presentation/widget/w_similar_content_item.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class MapPage extends StatelessWidget {
   MapPage({super.key, required this.type});
@@ -65,6 +66,7 @@ class MapPage extends StatelessWidget {
       child: BlocBuilder<MapViewCubit, MapViewState>(
         builder: (context, state) {
           return Scaffold(
+            key: E2EKeys.page('map'),
             appBar: PreferredSize(
               preferredSize: Size.fromHeight(160.h),
               child: BlocProvider.value(

@@ -7,6 +7,7 @@ import 'package:top_jobs/feature/auth/presentation/pages/name_page/name_page.dar
 import '../../../../../export.dart';
 import '../../../../common/presentation/widget/app_button.dart';
 import '../../../../common/presentation/widget/w_radio_list_tile.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class UserTypePage extends StatelessWidget {
   UserTypePage({super.key, required this.phoneNumber});
@@ -21,9 +22,12 @@ class UserTypePage extends StatelessWidget {
             padding: EdgeInsets.only(
               bottom: MediaQuery.of(context).viewInsets.bottom,
             ),
-            child: SizedBox(
-              height: 350.h,
-              child: this,
+            child: KeyedSubtree(
+              key: E2EKeys.modal('user-type'),
+              child: SizedBox(
+                height: 350.h,
+                child: this,
+              ),
             ), // Your LoginPage widget
           ),
       useSafeArea: true,
@@ -48,6 +52,7 @@ class UserTypePage extends StatelessWidget {
         return Form(
           key: _formKey,
           child: Container(
+            key: E2EKeys.page('user-type'),
             width: 100.sw,
             decoration: BoxDecoration(
               color: AppColors.cFFFFFF,
@@ -115,6 +120,7 @@ class UserTypePage extends StatelessWidget {
                 SizedBox(
                   height: 50.h,
                   child: AppButton(
+                    buttonKey: 'auth.register.user-type.next',
                     width: 100.sw,
                     textStyle: AppTextStyles.size17Medium.copyWith(
                       color: AppColors.cFFFFFF,

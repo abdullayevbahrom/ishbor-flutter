@@ -12,8 +12,8 @@ Flutter API client local/staging/prod muhitlari `--dart-define` orqali boshqaril
 ```bash
 flutter run \
   --dart-define=APP_ENV=local \
-  --dart-define=API_BASE_URL=https://api.local.ishbor.uz \
-  --dart-define=MERCURE_PUBLIC_URL=http://ws.local.ishbor.uz/.well-known/mercure \
+  --dart-define=API_BASE_URL=http://api.ishbor.test:8080 \
+  --dart-define=MERCURE_PUBLIC_URL=http://ws.ishbor.test:8080/.well-known/mercure \
   --dart-define=API_SIGNATURE_SECRET=dev-secret
 ```
 
@@ -21,7 +21,7 @@ flutter run \
 
 | Muhit | `API_BASE_URL` | `MERCURE_PUBLIC_URL` | `API_SIGNATURE_SECRET` |
 |-------|----------------|----------------------|-------------------------|
-| local | `https://api.local.ishbor.uz` | `http://ws.local.ishbor.uz/.well-known/mercure` | local/dev secret |
+| local | `http://api.ishbor.test:8080` | `http://ws.ishbor.test:8080/.well-known/mercure` | local/dev secret |
 | staging | `https://api.staging.ishbor.uz` | `https://ws.staging.ishbor.uz/.well-known/mercure` | staging secret |
 | prod | `https://api.ishbor.uz` | `https://ws.ishbor.uz/.well-known/mercure` | production secret |
 

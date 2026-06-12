@@ -21,6 +21,7 @@ import 'package:top_jobs/feature/messages/presentation/pages/messages_page/widge
 
 import '../../../../../core/router/route_names.dart';
 import '../../../../main/presentation/cubit/main_cubit/main_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../cubits/message_cubit/message_cubit.dart';
 
 class MessagesPage extends StatefulWidget {
@@ -77,8 +78,9 @@ class _MessagesPageState extends State<MessagesPage> {
       child: BlocBuilder<MessageCubit, MessageState>(
         builder: (context, state) {
           return WLayout(
-            child: Scaffold(
-              backgroundColor: AppColors.cFFFFFF,
+          child: Scaffold(
+            key: E2EKeys.page('messages'),
+            backgroundColor: AppColors.cFFFFFF,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

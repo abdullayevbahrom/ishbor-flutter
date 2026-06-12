@@ -19,6 +19,7 @@ import 'package:top_jobs/feature/vacancies/data/models/vacancy_query_params.dart
 
 import '../../../../../core/router/route_names.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../../injection_container.dart';
 import '../../../../common/presentation/cubits/locale_cubit/locale_cubit.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
@@ -54,6 +55,7 @@ class _ServicesPageState extends State<ServicesPage> {
             builder: (context, state) {
               return WLayout(
                 child: Scaffold(
+                  key: E2EKeys.page('services'),
                   backgroundColor: AppColors.cF6F7FB,
 
                   body: Column(
@@ -187,12 +189,16 @@ class _ServicesPageState extends State<ServicesPage> {
                       return WLoadingLottie();
                     }
 
-                    final service = state.listService?.items[index];
+                    final service = state.listService!.items[index];
                     return ServiceItem(
+                      key: E2EKeys.card(
+                        'service',
+                        service.id.toString(),
+                      ),
                       onPressedFavorite: () {
                         serviceCubit.toggleServiceFavorite(index);
                       },
-                      service: service!,
+                      service: service,
                     );
                   },
                 ),

@@ -14,14 +14,17 @@ class AppPhoneNumberTextFormField extends StatelessWidget {
     super.key,
     required this.phoneNumber,
     this.enableValidator = true,
+    this.fieldKey,
   });
 
   final TextEditingController phoneNumber;
   final bool enableValidator;
+  final Key? fieldKey;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      key: fieldKey,
       enabled: true,
       controller: phoneNumber,
       style: AppTextStyles.size17Medium.copyWith(color: AppColors.c333333),

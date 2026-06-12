@@ -5,6 +5,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_loading.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/e2e_keys.dart';
 
 class AppButton extends StatelessWidget {
   const AppButton({
@@ -24,6 +25,7 @@ class AppButton extends StatelessWidget {
     this.shadow,
     this.leftIcon,
     this.rightIcon,
+    this.buttonKey,
   });
 
   final VoidCallback onPressed;
@@ -41,6 +43,7 @@ class AppButton extends StatelessWidget {
   final List<BoxShadow>? shadow;
   final Widget? leftIcon;
   final Widget? rightIcon;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +54,9 @@ class AppButton extends StatelessWidget {
           boxShadow: shadow,
           borderRadius: BorderRadius.circular(radius ?? 12.r),
         ),
-        child: FilledButton(
-          onPressed:
+          child: FilledButton(
+            key: buttonKey == null ? null : E2EKeys.button(buttonKey!),
+            onPressed:
               isLoading ?? false
                   ? null
                   : isAvailable ?? true

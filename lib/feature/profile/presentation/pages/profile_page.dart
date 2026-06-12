@@ -18,6 +18,7 @@ import 'package:top_jobs/feature/main/presentation/cubit/main_cubit/main_cubit.d
 import '../../../../core/constants/easy_locale.dart';
 import '../../../../core/router/route_names.dart';
 import '../../../../core/utils/app_utils.dart';
+import '../../../../core/utils/e2e_keys.dart';
 import '../../../auth/presentation/cubit/auth_cubit/auth_cubit.dart';
 import '../../../common/presentation/cubits/locale_cubit/locale_cubit.dart';
 import '../../../common/presentation/widget/app_cached_network_image.dart';
@@ -49,6 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 return BlocBuilder<UserCubit, UserState>(
                   builder: (context, state) {
                     return Scaffold(
+                      key: E2EKeys.page('profile'),
                       backgroundColor: AppColors.cFFFFFF,
                       body: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -238,6 +240,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                                 ),
                                                 AppUtils.hSizedBox16,
                                                 InkWell(
+                                                  key: E2EKeys.button(
+                                                    'profile.payment',
+                                                  ),
                                                   onTap: () {
                                                     context.push(
                                                       Routes.payment,
@@ -298,6 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
 
                                       ProfileItem(
+                                        key: E2EKeys.button('profile.info'),
                                         onTap: () {
                                           context.push(Routes.profileInfo);
                                           (context as Element).markNeedsBuild();
@@ -305,30 +311,41 @@ class _ProfilePageState extends State<ProfilePage> {
                                         title: LocaleKeys.myInfo.tr(),
                                       ),
                                       ProfileItem(
+                                        key: E2EKeys.button(
+                                          'profile.vacancies',
+                                        ),
                                         onTap: () {
                                           context.push(Routes.profileVacancies);
                                         },
                                         title: LocaleKeys.myVacancies.tr(),
                                       ),
                                       ProfileItem(
+                                        key: E2EKeys.button(
+                                          'profile.services',
+                                        ),
                                         onTap: () {
                                           context.push(Routes.profileServices);
                                         },
                                         title: LocaleKeys.myServices.tr(),
                                       ),
                                       ProfileItem(
+                                        key: E2EKeys.button('profile.tasks'),
                                         onTap: () {
                                           context.push(Routes.profileTasks);
                                         },
                                         title: LocaleKeys.myTasks.tr(),
                                       ),
                                       ProfileItem(
+                                        key: E2EKeys.button(
+                                          'profile.favorites',
+                                        ),
                                         onTap: () {
                                           context.push(Routes.myFavorites);
                                         },
                                         title: LocaleKeys.favorites.tr(),
                                       ),
                                       ProfileItem(
+                                        key: E2EKeys.button('profile.logout'),
                                         onTap: () {
                                           showCupertinoDialog(
                                             context: context,

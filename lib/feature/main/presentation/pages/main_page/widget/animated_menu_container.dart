@@ -44,6 +44,7 @@ class WAnimatedMenuContainer extends StatelessWidget {
               children: [
                 CreateActionForm(
                   index: 1,
+                  buttonKey: 'main.create.vacancy',
                   title: LocaleKeys.createVacancy.tr(),
                   imageUrl: AppSvg.icVacancy,
                   onTap: () {
@@ -54,6 +55,7 @@ class WAnimatedMenuContainer extends StatelessWidget {
                 ),
                 CreateActionForm(
                   index: 2,
+                  buttonKey: 'main.create.service',
                   title: LocaleKeys.createService.tr(),
                   imageUrl: AppSvg.icService,
                   onTap: () {
@@ -62,6 +64,7 @@ class WAnimatedMenuContainer extends StatelessWidget {
                 ),
                 CreateActionForm(
                   index: 3,
+                  buttonKey: 'main.create.task',
                   title: LocaleKeys.createTask.tr(),
                   imageUrl: AppSvg.icTask,
                   onTap: () {

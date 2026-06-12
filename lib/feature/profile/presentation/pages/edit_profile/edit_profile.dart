@@ -28,6 +28,7 @@ import 'package:path/path.dart' as p;
 import '../../../../../core/router/app_routes.dart';
 import '../../../../common/data/models/user_update_request.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
@@ -146,6 +147,7 @@ class _EditProfileState extends State<EditProfile> {
           key: _formKey,
           child: WLayout(
             child: Scaffold(
+              key: E2EKeys.page('edit-profile'),
               backgroundColor: AppColors.cFFFFFF,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

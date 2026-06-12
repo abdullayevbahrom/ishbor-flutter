@@ -22,6 +22,7 @@ import '../../../../../injection_container.dart';
 import '../../../../common/presentation/cubits/locale_cubit/locale_cubit.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
 import '../../../../common/presentation/widget/w_loading_item.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class VacancyList extends StatefulWidget {
   const VacancyList({super.key});
@@ -63,6 +64,7 @@ class _VacancyListState extends State<VacancyList> {
             bloc: vacancyCubit,
             builder: (context, state) {
               return Container(
+                key: E2EKeys.page('vacancies'),
                 color: AppColors.cFFFFFF,
                 child: SafeArea(
                   top: true,
@@ -190,6 +192,10 @@ class _VacancyListState extends State<VacancyList> {
                         context.push(Routes.vacancyView);
                       },
                       child: NewVacancyItem(
+                        key: E2EKeys.card(
+                          'vacancy',
+                          list![index].id?.toString() ?? index.toString(),
+                        ),
                         vacancy: list![index],
                         onPressedFavorite:
                             () => vacancyCubit.updateFavorite(index),

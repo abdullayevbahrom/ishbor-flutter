@@ -15,6 +15,7 @@ import 'package:top_jobs/core/services/mercure_client.dart';
 import 'package:top_jobs/core/services/storage_service.dart';
 import 'package:top_jobs/feature/common/data/datasource/realtime_datasource.dart';
 import 'package:top_jobs/feature/profile/data/datasource/payment_datasource.dart';
+import '../integration_test/e2e/test_data.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -223,6 +224,48 @@ void main() {
       );
     },
   );
+
+  test('dio interceptor emits e2e trace events for responses', () async {
+    await StorageService.instance.putToken('access-token');
+    await StorageService.instance.putExpireDate(
+      DateTime.now().add(const Duration(hours: 1)),
+    );
+    await StorageService.instance.putDeviceToken('device-token-123');
+
+    final traces = <DioE2ETrace>[];
+    DioInterceptors.e2eObserver = traces.add;
+
+    addTearDown(() {
+      DioInterceptors.e2eObserver = null;
+    });
+
+    final adapter = _ScriptedAdapter([
+      _ScriptedResponse(
+        method: 'GET',
+        path: '/api/v1/me',
+        statusCode: 200,
+        body: {
+          'data': {'id': 'me'},
+        },
+      ),
+    ]);
+
+    final dio = Dio();
+    dio.httpClientAdapter = adapter;
+    dio.interceptors.add(DioInterceptors(StorageService.instance, dio));
+
+    await dio.get('/api/v1/me');
+
+    expect(traces, isNotEmpty);
+    final trace = traces.singleWhere(
+      (item) => item.phase == 'response',
+      orElse: () => throw StateError('missing response trace'),
+    );
+    expect(trace.method, 'GET');
+    expect(trace.path, '/api/v1/me');
+    expect(trace.statusCode, 200);
+    expect(trace.durationMs, greaterThanOrEqualTo(0));
+  });
 
   test(
     'mercure client subscribes to realtime topic with stored headers',
@@ -464,6 +507,46 @@ void main() {
       adapter.requests.last.path,
       ApiConstants.payByProvider('vacancy', 42, '1000', 'payme'),
     );
+  });
+
+  test('e2e test data tags run ids and classifies cleanup failures', () async {
+    final testData = E2ETestData(runId: 'run-123');
+    final cleanupLog = <String>[];
+
+    final tagged = testData.tagPayload(
+      {'title': 'Demo'},
+      type: 'vacancy',
+      id: '123',
+    );
+
+    expect(tagged['e2e_run_id'], 'run-123');
+    expect(tagged['e2e_type'], 'vacancy');
+    expect(tagged['e2e_id'], '123');
+
+    testData.registerCreated(
+      type: 'vacancy',
+      id: '123',
+      impact: E2ECleanupImpact.warning,
+      cleanup: () async {
+        cleanupLog.add('vacancy');
+      },
+    );
+    testData.registerCreated(
+      type: 'message',
+      id: '456',
+      impact: E2ECleanupImpact.error,
+      cleanup: () async {
+        throw StateError('cleanup failed');
+      },
+    );
+
+    final summary = await testData.cleanup();
+
+    expect(cleanupLog, ['vacancy']);
+    expect(summary.cleaned, 1);
+    expect(summary.warningFailures, 0);
+    expect(summary.errorFailures, 1);
+    expect(summary.status, 'error');
   });
 }
 

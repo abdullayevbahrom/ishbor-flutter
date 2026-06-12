@@ -13,6 +13,26 @@ import '../constants/api_const.dart';
 import 'snake_case_mapper.dart';
 import '../services/storage_service.dart';
 
+typedef DioE2EObserver = void Function(DioE2ETrace trace);
+
+class DioE2ETrace {
+  const DioE2ETrace({
+    required this.phase,
+    required this.method,
+    required this.path,
+    required this.durationMs,
+    this.statusCode,
+    this.error,
+  });
+
+  final String phase;
+  final String method;
+  final String path;
+  final int durationMs;
+  final int? statusCode;
+  final Object? error;
+}
+
 class DioInterceptors extends Interceptor {
   DioInterceptors(this._storageService, this._dio);
 
@@ -20,6 +40,8 @@ class DioInterceptors extends Interceptor {
   final Dio _dio;
   final Random _random = Random();
   Future<void>? _refreshInFlight;
+
+  static DioE2EObserver? e2eObserver;
 
   static const int _maxNetworkRetryCount = 2;
   static const int _maxUnauthorizedRetryCount = 1;
@@ -31,6 +53,7 @@ class DioInterceptors extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     try {
+      options.extra['e2e_started_at_ms'] = DateTime.now().millisecondsSinceEpoch;
       await _prepareRequest(options);
       handler.next(options);
     } catch (error, stackTrace) {
@@ -53,6 +76,11 @@ class DioInterceptors extends Interceptor {
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
     _persistDeviceTokenFromResponse(response);
+    _emitE2ETrace(
+      response.requestOptions,
+      phase: 'response',
+      statusCode: response.statusCode,
+    );
     handler.next(response);
   }
 
@@ -103,6 +131,12 @@ class DioInterceptors extends Interceptor {
     }
 
     handler.next(err);
+    _emitE2ETrace(
+      requestOptions,
+      phase: 'error',
+      statusCode: err.response?.statusCode,
+      error: err.error,
+    );
   }
 
   Future<void> _prepareRequest(RequestOptions options) async {
@@ -172,11 +206,17 @@ class DioInterceptors extends Interceptor {
       options.queryParameters,
     );
 
+    if (options.data == null) {
+      return;
+    }
+
     if (options.data is FormData) {
       return;
     }
 
-    options.data = SnakeCaseMapper.normalizeBody(options.data);
+    if (options.data is Map) {
+      options.data = SnakeCaseMapper.normalizeBody(options.data as Map);
+    }
   }
 
   String _canonicalRequestBody(dynamic data) {
@@ -273,6 +313,35 @@ class DioInterceptors extends Interceptor {
     }
 
     unawaited(_storageService.putDeviceToken(deviceToken));
+  }
+
+  void _emitE2ETrace(
+    RequestOptions requestOptions, {
+    required String phase,
+    int? statusCode,
+    Object? error,
+  }) {
+    final observer = e2eObserver;
+    if (observer == null) {
+      return;
+    }
+
+    final startedAtMs = requestOptions.extra['e2e_started_at_ms'] as int?;
+    final durationMs =
+        startedAtMs == null
+            ? 0
+            : DateTime.now().millisecondsSinceEpoch - startedAtMs;
+
+    observer(
+      DioE2ETrace(
+        phase: phase,
+        method: requestOptions.method,
+        path: requestOptions.uri.path,
+        durationMs: durationMs,
+        statusCode: statusCode,
+        error: error,
+      ),
+    );
   }
 
   Future<String?> _fetchFirebaseDeviceToken() async {

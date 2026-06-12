@@ -11,6 +11,7 @@ import 'package:top_jobs/feature/profile/presentation/pages/favorites/widgets/w_
 import '../../../../../core/constants/locale_keys.g.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../../injection_container.dart';
 import '../../../../common/presentation/widget/app_tab_bar.dart';
 
@@ -56,6 +57,7 @@ class _FavoritesPageState extends State<FavoritesPage>
         builder: (context, state) {
           return WLayout(
             child: Scaffold(
+              key: E2EKeys.page('favorites'),
               body: Column(
                 children: [
                   AppHeader(isPopAvailable: true),

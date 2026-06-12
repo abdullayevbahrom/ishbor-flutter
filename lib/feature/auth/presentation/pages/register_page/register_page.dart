@@ -16,6 +16,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_check_box_list_til
 import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 
 import '../../cubit/auth_cubit/auth_cubit.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -49,6 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
           key: _registerKey,
           child: WLayout(
             child: Scaffold(
+              key: E2EKeys.page('register'),
               backgroundColor: AppColors.cFFFFFF,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,6 +95,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               AppUtils.hSizedBox8,
                               AppPhoneNumberTextFormField(
                                 phoneNumber: phoneController,
+                                fieldKey: E2EKeys.input('auth.register', 'phone'),
                               ),
                               AppUtils.hSizedBox16,
                               Text(
@@ -103,6 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               AppUtils.hSizedBox8,
                               AppTextFormField(
+                                fieldKey: E2EKeys.input('auth.register', 'name'),
                                 fillColor: AppColors.cFFFFFF,
                                 hintText: LocaleKeys.name.tr(),
                                 controller: nameController,
@@ -139,6 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               AppUtils.hSizedBox8,
                               AppTextFormField(
+                                fieldKey: E2EKeys.input('auth.register', 'password'),
                                 maxLines: 1,
                                 obscureTextAvailable: true,
                                 fillColor: AppColors.cFFFFFF,
@@ -160,6 +165,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               AppUtils.hSizedBox8,
                               AppTextFormField(
+                                fieldKey: E2EKeys.input(
+                                  'auth.register',
+                                  'repeat-password',
+                                ),
                                 maxLines: 1,
                                 obscureTextAvailable: true,
                                 fillColor: AppColors.cFFFFFF,
@@ -203,10 +212,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                               AppUtils.hSizedBox16,
-                              SizedBox(
-                                height: 50.h,
-                                child: AppButton(
-                                  onPressed: () {
+                                SizedBox(
+                                  height: 50.h,
+                                  child: AppButton(
+                                    buttonKey: 'auth.register.submit',
+                                    onPressed: () {
                                     if (isChecked) {
                                       if (_registerKey.currentState
                                               ?.validate() ??

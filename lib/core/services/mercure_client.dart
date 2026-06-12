@@ -17,6 +17,20 @@ class MercureClient {
     );
   }
 
+  static Future<MercureSubscription?> probeTopics({
+    required String label,
+    required List<String> topics,
+    FutureOr<void> Function(dynamic)? onMessages,
+    FutureOr<void> Function(Object error)? onError,
+  }) async {
+    return _connectWithFallback(
+      label: label,
+      topics: topics,
+      onMessages: onMessages,
+      onError: onError,
+    );
+  }
+
   Future<MercureSubscription?> initUserStatus({
     FutureOr<void> Function(dynamic)? onMessages,
     FutureOr<void> Function(Object error)? onError,
