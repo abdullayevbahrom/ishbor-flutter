@@ -182,7 +182,7 @@ class VacancyRequestDataSourceImpl extends VacancyRequestDataSource {
     required String status,
   }) async {
     try {
-      final response = await _dio.patch(
+      final response = await _dio.post(
         ApiConstants.changeVacancyRequestStatus(requestId),
         data: {'status': status},
       );

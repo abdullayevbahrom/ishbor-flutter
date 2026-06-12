@@ -4,7 +4,6 @@ sealed class ApiConstants {
   ApiConstants._();
 
   static String get baseUrl => apiBaseUrl;
-  static String get wsUrl => mercureEndpointUrl;
   static String get mercureUrl => mercureEndpointUrl;
   static const String apiPrefix = '/api/v1';
 
@@ -58,6 +57,8 @@ sealed class ApiConstants {
   static String fetchListVacancyRequests(Object id) =>
       '$vacancies/${_id(id)}/vacancy-requests';
   static String updateVacancy(Object id) => '$vacancies/${_id(id)}/update';
+  static String uploadVacancyImage(Object id) =>
+      '$vacancies/${_id(id)}/images';
   static String liftUpVacancyById(Object id) => '$vacancies/${_id(id)}/lift-up';
   static String changeVacancyStatusById(Object id) =>
       '$vacancies/${_id(id)}/change-status';

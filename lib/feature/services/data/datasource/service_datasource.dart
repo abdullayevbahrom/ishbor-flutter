@@ -1,4 +1,5 @@
-import 'dart:convert';
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -128,6 +129,59 @@ class ServiceDataSourceImpl extends ServiceDataSource {
     return source.toString();
   }
 
+  Map<String, dynamic>? _buildAddress({
+    required String? addressLine,
+    required double? latitude,
+    required double? longitude,
+  }) {
+    final cleanedAddressLine = addressLine?.trim();
+    if ((cleanedAddressLine ?? '').isEmpty &&
+        latitude == null &&
+        longitude == null) {
+      return null;
+    }
+
+    return {
+      if ((cleanedAddressLine ?? '').isNotEmpty)
+        'address_line': cleanedAddressLine,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+    };
+  }
+
+  Future<void> _uploadServiceImages({
+    required String serviceId,
+    required List<File> images,
+  }) async {
+    final data = FormData();
+    for (final image in images) {
+      final String fileName = image.path.split('/').last;
+      final String type = image.path.split('.').last;
+      data.files.add(
+        MapEntry<String, MultipartFile>(
+          ServiceCreateRequest.uploadedImagesField,
+          MultipartFile.fromBytes(
+            image.readAsBytesSync(),
+            filename: fileName,
+            contentType: DioMediaType("image", type),
+          ),
+        ),
+      );
+    }
+
+    final response = await _dio.post(
+      ApiConstants.uploadServiceImages(serviceId),
+      data: data,
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
+    }
+  }
+
   @override
   Future<Either<Failure, PaginatedServiceResponse>> fetchServices({
     required QueryParams queryParams,
@@ -200,10 +254,15 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         'create',
         '[FIX] POST ${ApiConstants.services} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} uploadedImages=${service.uploadedImages.length}',
       );
-      FormData data = FormData.fromMap({
+      final address = _buildAddress(
+        addressLine: service.addressLine,
+        latitude: service.latitude,
+        longitude: service.longitude,
+      );
+
+      final data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null)
-          'category_ids': jsonEncode(service.categoryIds ?? []),
+        if (service.categoryIds != null) 'category_ids': service.categoryIds ?? [],
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -211,26 +270,23 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         if (service.phoneNumber1 != null) 'phone_number1': service.phoneNumber1,
         if (service.phoneNumber2 != null) 'phone_number2': service.phoneNumber2,
         if (service.phoneNumber3 != null) 'phone_number3': service.phoneNumber3,
-        if (service.addressLine != null) 'address_line': service.addressLine,
-        if (service.latitude != null) 'latitude': service.latitude,
-        if (service.longitude != null) 'longitude': service.longitude,
+        if (address != null) 'address': address,
         'negotiable': service.negotiable,
       });
-
-      for (var image in service.uploadedImages) {
-        data.files.add(
-          MapEntry(
-            ServiceCreateRequest.uploadedImagesField,
-            await MultipartFile.fromFile(image.path),
-          ),
-        );
-      }
 
       final response = await _dio.post(ApiConstants.services, data: data);
 
       if (response.statusCode == 201 || response.statusCode == 200) {
         _log('create', 'success status=${response.statusCode}');
-        return Right(ServiceModel.fromMap(_unwrapMap(response.data)));
+        final created = ServiceModel.fromMap(_unwrapMap(response.data));
+        if (service.uploadedImages.isNotEmpty) {
+          await _uploadServiceImages(
+            serviceId: created.id,
+            images: service.uploadedImages,
+          );
+          return await fetchServiceById(id: created.id);
+        }
+        return Right(created);
       } else {
         _log(
           'create',
@@ -255,10 +311,15 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         'update',
         '[FIX] PATCH ${ApiConstants.updateService(service.serviceId!)} title=${service.title} city=${service.city} categories=${service.categoryIds ?? const []} uploadedImages=${service.uploadedImages.length}',
       );
-      FormData data = FormData.fromMap({
+      final address = _buildAddress(
+        addressLine: service.addressLine,
+        latitude: service.latitude,
+        longitude: service.longitude,
+      );
+
+      final data = FormData.fromMap({
         'title': service.title,
-        if (service.categoryIds != null)
-          'category_ids': jsonEncode(service.categoryIds ?? []),
+        if (service.categoryIds != null) 'category_ids': service.categoryIds ?? [],
         'description': service.description,
         'price': service.price,
         'city': service.city,
@@ -266,20 +327,9 @@ class ServiceDataSourceImpl extends ServiceDataSource {
         if (service.phoneNumber1 != null) 'phone_number1': service.phoneNumber1,
         if (service.phoneNumber2 != null) 'phone_number2': service.phoneNumber2,
         if (service.phoneNumber3 != null) 'phone_number3': service.phoneNumber3,
-        if (service.addressLine != null) 'address_line': service.addressLine,
-        if (service.latitude != null) 'latitude': service.latitude,
-        if (service.longitude != null) 'longitude': service.longitude,
+        if (address != null) 'address': address,
         'negotiable': service.negotiable,
       });
-
-      for (var image in service.uploadedImages) {
-        data.files.add(
-          MapEntry(
-            ServiceCreateRequest.uploadedImagesField,
-            await MultipartFile.fromFile(image.path),
-          ),
-        );
-      }
 
       final response = await _dio.patch(
         ApiConstants.updateService(service.serviceId!),
@@ -288,6 +338,13 @@ class ServiceDataSourceImpl extends ServiceDataSource {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         _log('update', 'success status=${response.statusCode}');
+        if (service.uploadedImages.isNotEmpty) {
+          await _uploadServiceImages(
+            serviceId: service.serviceId!.toString(),
+            images: service.uploadedImages,
+          );
+          return await fetchServiceById(id: service.serviceId!.toString());
+        }
         return Right(ServiceModel.fromMap(_unwrapMap(response.data)));
       } else {
         _log(

@@ -30,7 +30,7 @@ flutter run \
 ## Realtime / Mercure SSE
 
 Mercure subscriber avval `Authorization: Bearer <token>` va `X-Device-Token` headerlari bilan ulanadi.
-Topiclar query string orqali yuboriladi: chat uchun `chats/{dialogId}/messages`, user status uchun `users/status/{userId}`.
+Topiclar query string orqali yuboriladi: chat uchun `chats/{dialogId}/messages`, user status uchun `users/status/{userId}`, status check uchun `users/status/check/{userId}`.
 Stream yopilsa, user status oqimi HTTP `heartbeat` + `checkUserStatus` fallbackiga o'tadi.
 Ulanish urinishlari exponential backoff bilan qayta sinab ko‘riladi; token log qilinmaydi.
 

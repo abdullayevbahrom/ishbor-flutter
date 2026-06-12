@@ -53,6 +53,22 @@ class MercureClient {
     );
   }
 
+  static Future<MercureSubscription?> initStatusCheckSource(
+    String userId,
+  ) async {
+    if (userId.isEmpty) {
+      debugPrint(
+        '[WARN][mercure] status-check subscription skipped: no user id provided',
+      );
+      return null;
+    }
+
+    return _connectWithFallback(
+      label: 'status-check',
+      topics: ['users/status/check/$userId'],
+    );
+  }
+
   static Future<MercureSubscription?> _connectWithFallback({
     required String label,
     required List<String> topics,
@@ -319,5 +335,3 @@ class _MercureEventParser {
     return event;
   }
 }
-
-typedef WebsocketClient = MercureClient;

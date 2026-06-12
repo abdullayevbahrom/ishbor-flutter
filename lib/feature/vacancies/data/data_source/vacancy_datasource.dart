@@ -75,6 +75,39 @@ class VacancyDataSourceImpl extends VacancyDataSource {
 
   VacancyDataSourceImpl(Dio dio) : _dio = dio;
 
+  Future<void> _uploadVacancyImages({
+    required String vacancyId,
+    required List<File> images,
+  }) async {
+    final data = FormData();
+    for (final file in images) {
+      final String fileName = file.path.split('/').last;
+      final String type = file.path.split('.').last;
+      data.files.add(
+        MapEntry<String, MultipartFile>(
+          'uploadedImages',
+          MultipartFile.fromBytes(
+            file.readAsBytesSync(),
+            filename: fileName,
+            contentType: DioMediaType("image", type),
+          ),
+        ),
+      );
+    }
+
+    final response = await _dio.post(
+      ApiConstants.uploadVacancyImage(vacancyId),
+      data: data,
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
+    }
+  }
+
   @override
   Future<Either<Failure, VacancyResponse>> generateVacancy({
     required String text,
@@ -193,31 +226,20 @@ class VacancyDataSourceImpl extends VacancyDataSource {
       debugPrint(
         '[VACANCY][create] POST ${ApiConstants.vacancies} categories=${vacancy.categories} city=${vacancy.city}',
       );
-      final payload = Map<String, dynamic>.from(vacancy.toJson());
       final images = List<File>.from(vacancy.images);
-      final data = FormData.fromMap(payload);
-
-      if (images.isNotEmpty) {
-        for (File file in images) {
-          final String fileName = file.path.split('/').last;
-          final String type = file.path.split('.').last;
-          data.files.add(
-            MapEntry<String, MultipartFile>(
-              'uploadedImages',
-              MultipartFile.fromBytes(
-                file.readAsBytesSync(),
-                filename: fileName,
-                contentType: DioMediaType("image", type),
-              ),
-            ),
-          );
-        }
-      }
+      final data = FormData.fromMap({
+        ...vacancy.toJson(),
+      });
 
       final response = await _dio.post(ApiConstants.vacancies, data: data);
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint('[VACANCY][create] success status=${response.statusCode}');
-        return Right(Vacancy.fromMap(response.data));
+        final created = Vacancy.fromMap(response.data);
+        if (images.isNotEmpty) {
+          await _uploadVacancyImages(vacancyId: created.id, images: images);
+          return await fetchVacancyById(id: created.id);
+        }
+        return Right(created);
       } else {
         debugPrint(
           '[VACANCY][create][warn] status=${response.statusCode} payload=${response.data}',
@@ -400,6 +422,7 @@ class VacancyDataSourceImpl extends VacancyDataSource {
       debugPrint(
         '[VACANCY][update] PATCH ${ApiConstants.updateVacancy(vacancy.vacancyId!)} id=${vacancy.vacancyId}',
       );
+      final images = List<File>.from(vacancy.images);
       final data = FormData.fromMap(vacancy.toJson());
       final response = await _dio.patch(
         ApiConstants.updateVacancy(vacancy.vacancyId!),
@@ -408,6 +431,13 @@ class VacancyDataSourceImpl extends VacancyDataSource {
 
       if (response.statusCode == 200) {
         debugPrint('[VACANCY][update] success status=${response.statusCode}');
+        if (images.isNotEmpty) {
+          await _uploadVacancyImages(
+            vacancyId: vacancy.vacancyId!.toString(),
+            images: images,
+          );
+          return await fetchVacancyById(id: vacancy.vacancyId!.toString());
+        }
         return Right(Vacancy.fromMap(response.data));
       } else {
         debugPrint(

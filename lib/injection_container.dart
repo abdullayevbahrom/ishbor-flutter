@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:top_jobs/core/exceptions/exception_listener.dart';
 import 'package:top_jobs/core/helpers/debouncer.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
-import 'package:top_jobs/core/services/web_socket_client.dart';
+import 'package:top_jobs/core/services/mercure_client.dart';
 import 'package:top_jobs/feature/ads_form/data/datasource/vacancy_form_datasource.dart';
 import 'package:top_jobs/feature/ads_form/data/repository/vacancy_form_repository_impl.dart';
 import 'package:top_jobs/feature/ads_form/presentation/cubits/vacancy_form_cubit/vacancy_form_cubit.dart';

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -34,6 +35,39 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
   void _log429(String label, DioException error) {
     if (error.response?.statusCode == 429) {
       debugPrint('[WARN][ai][$label] rate limit hit status=429');
+    }
+  }
+
+  Future<void> _uploadVacancyImages({
+    required String vacancyId,
+    required List<File> images,
+  }) async {
+    final data = FormData();
+    for (final image in images) {
+      final String fileName = image.path.split('/').last;
+      final String type = image.path.split('.').last;
+      data.files.add(
+        MapEntry<String, MultipartFile>(
+          'uploadedImages',
+          MultipartFile.fromBytes(
+            image.readAsBytesSync(),
+            filename: fileName,
+            contentType: DioMediaType("image", type),
+          ),
+        ),
+      );
+    }
+
+    final response = await _dio.post(
+      ApiConstants.uploadVacancyImage(vacancyId),
+      data: data,
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
     }
   }
 
@@ -121,30 +155,20 @@ class VacancyFormDataSourceImpl extends VacancyFormDataSource {
       debugPrint(
         '[ADS-FORM][vacancy][create] POST ${ApiConstants.vacancies} categories=${vacancyParams.categories}',
       );
-      FormData data = FormData.fromMap(vacancyParams.toJson());
-
-      if (vacancyParams.uploadedImages.isNotEmpty) {
-        for (final image in vacancyParams.uploadedImages) {
-          final String fileName = image.path.split('/').last;
-          final String type = image.path.split('.').last;
-          data.files.add(
-            MapEntry<String, MultipartFile>(
-              'uploadedImages',
-              MultipartFile.fromBytes(
-                image.readAsBytesSync(),
-                filename: fileName,
-                contentType: DioMediaType("image", type),
-              ),
-            ),
-          );
-        }
-      }
+      final images = List<File>.from(vacancyParams.uploadedImages);
+      final data = FormData.fromMap(vacancyParams.toJson());
       final response = await _dio.post(ApiConstants.vacancies, data: data);
       if (response.statusCode == 200 || response.statusCode == 201) {
         debugPrint(
           '[ADS-FORM][vacancy][create] success status=${response.statusCode}',
         );
-        return Right(Vacancy.fromMap(response.data['data'] ?? response.data));
+        final created = Vacancy.fromMap(response.data['data'] ?? response.data);
+        if (images.isNotEmpty) {
+          await _uploadVacancyImages(vacancyId: created.id, images: images);
+          final loaded = await _dio.get(ApiConstants.fetchVacancy(created.id));
+          return Right(Vacancy.fromMap(loaded.data['data'] ?? loaded.data));
+        }
+        return Right(created);
       } else {
         debugPrint(
           '[ADS-FORM][vacancy][create][warn] status=${response.statusCode} payload=${response.data}',

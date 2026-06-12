@@ -4,8 +4,6 @@ const String apiBaseUrl = String.fromEnvironment(
   defaultValue: _defaultApiBaseUrl,
 );
 
-const String websocketUrl = String.fromEnvironment('WS_URL', defaultValue: '');
-
 const String mercureUrlOverride = String.fromEnvironment(
   'MERCURE_URL',
   defaultValue: '',
@@ -52,15 +50,10 @@ String get mercureUrl {
   if (mercureUrlOverride.isNotEmpty) {
     return mercureUrlOverride;
   }
-  if (websocketUrl.isNotEmpty) {
-    return websocketUrl;
-  }
   return _deriveMercureUrl(apiBaseUrl);
 }
 
 String get mercureEndpointUrl => mercureUrl;
-
-String get wsUrl => mercureUrl;
 
 const Map<String, String> paymentIcons = {
   'cash': 'assets/img/p_cash.jpg',

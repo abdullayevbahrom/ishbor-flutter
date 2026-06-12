@@ -11,7 +11,7 @@ import 'package:hive/hive.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/constants/app_locale_keys.dart';
 import 'package:top_jobs/core/network/dio_interceptor.dart';
-import 'package:top_jobs/core/services/web_socket_client.dart';
+import 'package:top_jobs/core/services/mercure_client.dart';
 import 'package:top_jobs/core/services/storage_service.dart';
 import 'package:top_jobs/feature/common/data/datasource/realtime_datasource.dart';
 import 'package:top_jobs/feature/profile/data/datasource/payment_datasource.dart';
@@ -256,6 +256,74 @@ void main() {
           expect(
             capturedRequest.uri.queryParametersAll['topic'],
             ['users/status/user-42'],
+          );
+          expect(
+            capturedRequest.headers.value(HttpHeaders.authorizationHeader),
+            'Bearer socket-access',
+          );
+          expect(
+            capturedRequest.headers.value(HttpHeaders.acceptHeader),
+            'text/event-stream',
+          );
+          expect(capturedRequest.headers.value('x-device-token'), 'socket-device');
+
+          await channel.close();
+        },
+        createHttpClient: overrides.createHttpClient,
+      );
+    } finally {
+      await overrides.dispose();
+      await server.close(force: true);
+    }
+  });
+
+  test('mercure client subscribes to status-check topic with stored headers', () async {
+    await StorageService.instance.putToken('socket-access');
+    await StorageService.instance.putDeviceToken('socket-device');
+    await StorageService.instance.putUserId('user-42');
+
+    final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
+    final requestReceived = Completer<void>();
+    late HttpRequest capturedRequest;
+
+    server.listen((HttpRequest request) async {
+      if (!requestReceived.isCompleted) {
+        capturedRequest = request;
+        requestReceived.complete();
+      }
+
+      request.response.statusCode = HttpStatus.ok;
+      request.response.headers.contentType = ContentType(
+        'text',
+        'event-stream',
+        charset: 'utf-8',
+      );
+      request.response.write('data: {"user_id":"user-42","online":true}\n\n');
+      await request.response.close();
+    });
+
+    final overrides = _RedirectingHttpOverrides(
+      Uri.parse('http://127.0.0.1:${server.port}'),
+    );
+
+    try {
+      await HttpOverrides.runZoned(
+        () async {
+          final channel = await MercureClient.initStatusCheckSource('user-42');
+          expect(channel, isNotNull);
+
+          final firstMessage = await channel!.stream.first.timeout(
+            const Duration(seconds: 5),
+          );
+          final parsedMessage = jsonDecode(firstMessage) as Map<String, dynamic>;
+          expect(parsedMessage['user_id'], 'user-42');
+          expect(parsedMessage['online'], isTrue);
+
+          await requestReceived.future.timeout(const Duration(seconds: 5));
+          expect(capturedRequest.uri.path, '/.well-known/mercure');
+          expect(
+            capturedRequest.uri.queryParametersAll['topic'],
+            ['users/status/check/user-42'],
           );
           expect(
             capturedRequest.headers.value(HttpHeaders.authorizationHeader),

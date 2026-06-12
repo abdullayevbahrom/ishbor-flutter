@@ -161,7 +161,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
         exprTime: state.expireDate!,
         startTime:
             state.isStartDateNow
-                ? DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now())
+                ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())
                 : state.startDate!,
       ),
     );
@@ -225,7 +225,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
         exprTime: state.expireDate!,
         startTime:
             state.isStartDateNow
-                ? DateFormat('yyyy/MM/dd HH:mm').format(DateTime.now())
+                ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.now())
                 : state.startDate!,
       ),
     );

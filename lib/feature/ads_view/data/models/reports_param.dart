@@ -13,13 +13,28 @@ class ReportsParam {
     required this.body,
   });
 
+  String get receiverType {
+    if (vacancyId != null) {
+      return 'vacancy';
+    }
+    if (serviceId != null) {
+      return 'service';
+    }
+    if (taskId != null) {
+      return 'task';
+    }
+    return 'user';
+  }
+
+  String get receiverId {
+    return (vacancyId ?? serviceId ?? taskId ?? userId)?.toString() ?? '';
+  }
+
   Map<String, dynamic> toJson() {
     return {
-      if (userId != null) "user": userId,
-      if (vacancyId != null) "vacancy": vacancyId,
-      if (serviceId != null) "service": serviceId,
-      if (taskId != null) "task": taskId,
-      "body": body,
+      'receiver_type': receiverType,
+      'receiver_id': receiverId,
+      'body': body,
     };
   }
 }

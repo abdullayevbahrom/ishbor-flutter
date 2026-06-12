@@ -1,9 +1,9 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:intl/intl.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/exceptions/failure.dart';
 import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
@@ -133,6 +133,81 @@ class TaskDataSourceImpl extends TaskDataSource {
     return source.toString();
   }
 
+  Map<String, dynamic>? _buildAddress({
+    required String? addressLine,
+    required double? latitude,
+    required double? longitude,
+  }) {
+    final cleanedAddressLine = addressLine?.trim();
+    if ((cleanedAddressLine ?? '').isEmpty &&
+        latitude == null &&
+        longitude == null) {
+      return null;
+    }
+
+    return {
+      if ((cleanedAddressLine ?? '').isNotEmpty)
+        'address_line': cleanedAddressLine,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+    };
+  }
+
+  String? _normalizeDateTime(String? value) {
+    final raw = value?.trim();
+    if (raw == null || raw.isEmpty) {
+      return null;
+    }
+
+    final parsed = DateTime.tryParse(raw.replaceFirst(' ', 'T')) ??
+        (() {
+          try {
+            return DateFormat('yyyy/MM/dd HH:mm').parseStrict(raw);
+          } catch (_) {
+            return null;
+          }
+        })();
+
+    if (parsed == null) {
+      return raw;
+    }
+
+    return DateFormat('yyyy-MM-dd HH:mm').format(parsed);
+  }
+
+  Future<void> _uploadTaskImages({
+    required String taskId,
+    required List<File> images,
+  }) async {
+    final data = FormData();
+    for (final file in images) {
+      final String fileName = file.path.split('/').last;
+      final String type = file.path.split('.').last;
+      data.files.add(
+        MapEntry<String, MultipartFile>(
+          TaskRequestModel.uploadedImagesField,
+          MultipartFile.fromBytes(
+            file.readAsBytesSync(),
+            filename: fileName,
+            contentType: DioMediaType("image", type),
+          ),
+        ),
+      );
+    }
+
+    final response = await _dio.post(
+      ApiConstants.uploadTaskImages(taskId),
+      data: data,
+    );
+    if (response.statusCode != 200 && response.statusCode != 201) {
+      throw DioException(
+        requestOptions: response.requestOptions,
+        response: response,
+        type: DioExceptionType.badResponse,
+      );
+    }
+  }
+
   @override
   Future<Either<Failure, PaginatedTaskListResponse>> fetchSimilarTasks({
     required CommonQueryParams queryParams,
@@ -207,53 +282,41 @@ class TaskDataSourceImpl extends TaskDataSource {
         'create',
         '[FIX] POST ${ApiConstants.tasks} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} uploadedImages=${task.uploadedImages.length}',
       );
-      FormData data = FormData.fromMap({
-        'title': task.title,
-        "phone_number": task.phoneNumber,
-        if ((task.phoneNumber1 ?? '').isNotEmpty)
-          "phone_number1": task.phoneNumber1,
-        if ((task.phoneNumber2 ?? '').isNotEmpty)
-          "phone_number2": task.phoneNumber2,
-        if ((task.phoneNumber3 ?? '').isNotEmpty)
-          "phone_number3": task.phoneNumber3,
+      final address = _buildAddress(
+        addressLine: task.addressLine,
+        latitude: task.latitude,
+        longitude: task.longitude,
+      );
 
-        if (task.categoryIds != null)
-          'category_ids': jsonEncode(task.categoryIds ?? []),
+      final data = FormData.fromMap({
+        'title': task.title,
+        'phone_number': task.phoneNumber,
+        if ((task.phoneNumber1 ?? '').isNotEmpty)
+          'phone_number1': task.phoneNumber1,
+        if ((task.phoneNumber2 ?? '').isNotEmpty)
+          'phone_number2': task.phoneNumber2,
+        if ((task.phoneNumber3 ?? '').isNotEmpty)
+          'phone_number3': task.phoneNumber3,
+        if (task.categoryIds != null) 'category_ids': task.categoryIds ?? [],
         'description': task.description,
         'price': task.price,
-        "payment_methods": jsonEncode([task.paymentMethod]),
-        "starts_at": task.startTime,
-        "expires_at": task.exprTime,
-        "city": task.city,
-        'addresses': jsonEncode([
-          {
-            if (task.addressLine != null) 'address_line': task.addressLine,
-            if (task.latitude != null) 'latitude': task.latitude,
-            if (task.longitude != null) 'longitude': task.longitude,
-          },
-        ]),
+        'payment_methods': [task.paymentMethod],
+        'starts_at': _normalizeDateTime(task.startTime),
+        'expires_at': _normalizeDateTime(task.exprTime),
+        'city': task.city,
+        if (address != null) 'address': address,
+        if (address != null) 'addresses': [address],
         'negotiable': task.negotiable,
       });
-      if (task.uploadedImages.isNotEmpty) {
-        for (File file in task.uploadedImages) {
-          final String fileName = file.path.split("/").last;
-          final String type = file.path.split(".").last;
-          data.files.add(
-            MapEntry<String, MultipartFile>(
-              TaskRequestModel.uploadedImagesField,
-              MultipartFile.fromBytes(
-                file.readAsBytesSync(),
-                filename: fileName,
-                contentType: DioMediaType("image", type),
-              ),
-            ),
-          );
-        }
-      }
       final response = await _dio.post(ApiConstants.tasks, data: data);
       if (response.statusCode == 200 || response.statusCode == 201) {
         _log('create', 'success status=${response.statusCode}');
-        return Right(TaskModel.fromJson(_unwrapMap(response.data)));
+        final created = TaskModel.fromJson(_unwrapMap(response.data));
+        if (task.uploadedImages.isNotEmpty) {
+          await _uploadTaskImages(taskId: created.id, images: task.uploadedImages);
+          return await fetchTaskById(id: created.id);
+        }
+        return Right(created);
       } else {
         _log(
           'create',
@@ -399,24 +462,24 @@ class TaskDataSourceImpl extends TaskDataSource {
         'update',
         '[FIX] PATCH ${ApiConstants.updateTask(task.taskId!)} title=${task.title} city=${task.city} categories=${task.categoryIds ?? const []} uploadedImages=${task.uploadedImages.length}',
       );
-      Map<String, dynamic> data = ({
+      final address = _buildAddress(
+        addressLine: task.addressLine,
+        latitude: task.latitude,
+        longitude: task.longitude,
+      );
+
+      final data = FormData.fromMap({
         'title': task.title,
-        if (task.categoryIds != null)
-          'category_ids': jsonEncode(task.categoryIds ?? []),
+        if (task.categoryIds != null) 'category_ids': task.categoryIds ?? [],
         'description': task.description,
         'price': task.price,
-        "payment_methods": jsonEncode([task.paymentMethod]),
-        "starts_at": task.startTime,
-        "expires_at": task.exprTime,
-        "city": task.city,
-        'addresses': jsonEncode([
-          {
-            if (task.addressLine != null) 'address_line': task.addressLine,
-            if (task.latitude != null) 'latitude': task.latitude,
-            if (task.longitude != null) 'longitude': task.longitude,
-          },
-        ]),
-        if (task.negotiable) 'negotiable': task.negotiable,
+        'payment_methods': [task.paymentMethod],
+        'starts_at': _normalizeDateTime(task.startTime),
+        'expires_at': _normalizeDateTime(task.exprTime),
+        'city': task.city,
+        if (address != null) 'address': address,
+        if (address != null) 'addresses': [address],
+        'negotiable': task.negotiable,
       });
 
       final response = await _dio.patch(
@@ -425,6 +488,13 @@ class TaskDataSourceImpl extends TaskDataSource {
       );
       if (response.statusCode == 200) {
         _log('update', 'success status=${response.statusCode}');
+        if (task.uploadedImages.isNotEmpty) {
+          await _uploadTaskImages(
+            taskId: task.taskId!.toString(),
+            images: task.uploadedImages,
+          );
+          return await fetchTaskById(id: task.taskId!.toString());
+        }
         return Right(TaskModel.fromJson(_unwrapMap(response.data)));
       } else {
         _log(

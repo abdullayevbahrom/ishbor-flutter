@@ -11,7 +11,7 @@ import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.d
 
 import '../../../../../core/network/api_http.dart';
 import '../../../../../core/services/storage_service.dart';
-import '../../../../../core/services/web_socket_client.dart';
+import '../../../../../core/services/mercure_client.dart';
 import '../../../../../feature/common/domain/repository/realtime_repository.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/user.dart';
@@ -22,10 +22,12 @@ part 'user_cubit.freezed.dart';
 
 class UserCubit extends Cubit<UserState> {
   final UserRepository _userRepository;
-  final WebsocketClient _webSocketClient;
+  final MercureClient _mercureClient;
   bool _realtimeFallbackHandled = false;
+  MercureSubscription? _statusSubscription;
+  MercureSubscription? _statusCheckSubscription;
 
-  UserCubit(this._userRepository, this._webSocketClient)
+  UserCubit(this._userRepository, this._mercureClient)
     : super(const UserState());
 
   Future<void> checkUser() async {
@@ -51,19 +53,41 @@ class UserCubit extends Cubit<UserState> {
 
   Future<void> initUserStatus() async {
     _realtimeFallbackHandled = false;
-    final channel = await _webSocketClient.initUserStatus(
-      onMessages: (_) {},
+    await _statusSubscription?.close();
+    await _statusCheckSubscription?.close();
+
+    final userId = state.user?.id;
+    if (userId == null || userId.isEmpty) {
+      await _syncRealtimeFallback('no user id for mercure');
+      return;
+    }
+
+    final statusFuture = _mercureClient.initUserStatus(
+      onMessages: (event) => _handleMercureStatus(event),
       onError: (error) async {
         await _syncRealtimeFallback('mercure error: $error');
       },
     );
+    final statusCheckFuture = MercureClient.initStatusCheckSource(userId);
 
-    if (channel == null) {
+    _statusSubscription = await statusFuture;
+    _statusCheckSubscription = await statusCheckFuture;
+
+    if (_statusSubscription == null && _statusCheckSubscription == null) {
       await _syncRealtimeFallback('mercure connect failed');
       return;
     }
 
     debugPrint('[DEBUG][realtime] user status mercure connected');
+  }
+
+  void _handleMercureStatus(dynamic event) {
+    if (event == null) {
+      return;
+    }
+
+    final payload = event is String ? event : event.toString();
+    debugPrint('[DEBUG][realtime] mercure status event received: $payload');
   }
 
   Future<void> _syncRealtimeFallback(String reason) async {
@@ -248,5 +272,12 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(verificationDocSt: RequestStatus.loaded));
 
     await Future.wait(futures);
+  }
+
+  @override
+  Future<void> close() async {
+    await _statusSubscription?.close();
+    await _statusCheckSubscription?.close();
+    return super.close();
   }
 }

@@ -278,7 +278,7 @@ class TaskRequestDataSourceImpl extends TaskRequestDataSource {
     required String status,
   }) async {
     try {
-      final response = await _dio.patch(
+      final response = await _dio.post(
         ApiConstants.changeTaskRequestStatus(requestId),
         data: {'status': status},
       );

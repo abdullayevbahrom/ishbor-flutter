@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/constants/time_delay_cons.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
-import 'package:top_jobs/core/services/web_socket_client.dart';
+import 'package:top_jobs/core/services/mercure_client.dart';
 import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 import 'package:top_jobs/feature/messages/domain/repository/messages_repository.dart';
 import 'package:top_jobs/models/message_record.dart';
@@ -185,7 +185,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<void> initChat(String messageId) async {
-    _channel = await WebsocketClient.initChat(messageId);
+    _channel = await MercureClient.initChat(messageId);
     if (_channel == null) {
       debugPrint(
         '[WARN][messages] chat mercure unavailable; using HTTP records for messageId=${messageId.toString()}',
@@ -223,7 +223,7 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
-  Future<void> sendWebSocketMessage(Map<String, dynamic> messageData) async {
+  Future<void> sendMercureMessage(Map<String, dynamic> messageData) async {
     debugPrint(
       '[DEBUG][messages] realtime send message bodyLength=${messageData['body']?.toString().length ?? 0}',
     );
@@ -335,8 +335,10 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   @override
-  Future<void> close() {
-    _channel?.close();
+  Future<void> close() async {
+    await _channel?.close();
+    messageController.dispose();
+    scrollController.dispose();
     return super.close();
   }
 
@@ -391,4 +393,5 @@ class ChatCubit extends Cubit<ChatState> {
       body: body,
     );
   }
+
 }
