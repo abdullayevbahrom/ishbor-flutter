@@ -29,10 +29,7 @@ class NamePage extends StatelessWidget {
             ),
             child: KeyedSubtree(
               key: E2EKeys.modal('name'),
-              child: SizedBox(
-                height: 300.h,
-                child: this,
-              ),
+              child: SizedBox(height: 300.h, child: this),
             ), // Your LoginPage widget
           ),
       useSafeArea: true,

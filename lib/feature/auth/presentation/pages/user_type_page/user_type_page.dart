@@ -24,10 +24,7 @@ class UserTypePage extends StatelessWidget {
             ),
             child: KeyedSubtree(
               key: E2EKeys.modal('user-type'),
-              child: SizedBox(
-                height: 350.h,
-                child: this,
-              ),
+              child: SizedBox(height: 350.h, child: this),
             ), // Your LoginPage widget
           ),
       useSafeArea: true,

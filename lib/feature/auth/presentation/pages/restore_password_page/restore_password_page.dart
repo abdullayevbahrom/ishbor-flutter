@@ -78,10 +78,7 @@ class _RestorePasswordState extends State<RestorePassword> {
                             AppUtils.hSizedBox8,
                             AppPhoneNumberTextFormField(
                               phoneNumber: phoneNumberController,
-                              fieldKey: E2EKeys.input(
-                                'auth.restore',
-                                'phone',
-                              ),
+                              fieldKey: E2EKeys.input('auth.restore', 'phone'),
                             ),
                             AppUtils.hSizedBox24,
                             Text(

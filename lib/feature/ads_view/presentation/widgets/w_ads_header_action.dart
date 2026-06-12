@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/user_cubit/user_cubit.dart';
 
 import '../../../../../core/theme/app_svg.dart';
@@ -33,8 +34,8 @@ class WAdsHeaderAction extends StatelessWidget {
         // ),
         if (userLogged)
           IconButton(
+            key: E2EKeys.button('ads.favorite'),
             padding: EdgeInsets.zero,
-
             onPressed: onPressedFavorite,
             icon: SvgPicture.asset(
               isFavorite ? AppSvg.icHeartFilled : AppSvg.icHeart,

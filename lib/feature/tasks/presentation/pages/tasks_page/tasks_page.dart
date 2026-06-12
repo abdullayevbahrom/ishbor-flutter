@@ -188,10 +188,7 @@ class _TasksPageState extends State<TasksPage> {
                     }
                     final task = state.listTask!.items[index];
                     return TaskItem(
-                      key: E2EKeys.card(
-                        'task',
-                        task.id.toString(),
-                      ),
+                      key: E2EKeys.card('task', task.id.toString()),
                       onPressedFavorite: () {
                         taskCubit.toggleTaskFavorite(index);
                       },

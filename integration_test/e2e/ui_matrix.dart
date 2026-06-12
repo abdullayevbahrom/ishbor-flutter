@@ -1,10 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 final class E2EMatrixSurface {
-  const E2EMatrixSurface({
-    required this.route,
-    required this.cases,
-  });
+  const E2EMatrixSurface({required this.route, required this.cases});
 
   final String route;
   final int cases;

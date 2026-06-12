@@ -25,10 +25,10 @@ final class E2EMockLocation {
   final String address;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'latitude': latitude,
-        'longitude': longitude,
-        'address': address,
-      };
+    'latitude': latitude,
+    'longitude': longitude,
+    'address': address,
+  };
 }
 
 final class E2EDeviceSetup {
@@ -49,14 +49,15 @@ final class E2EDeviceSetup {
             : 'integration_test/fixtures';
 
     return E2EDeviceSetup(
-      packageName: env['E2E_ANDROID_PACKAGE']?.trim().isNotEmpty == true
-          ? env['E2E_ANDROID_PACKAGE']!.trim()
-          : 'uz.ishbor.app.com',
+      packageName:
+          env['E2E_ANDROID_PACKAGE']?.trim().isNotEmpty == true
+              ? env['E2E_ANDROID_PACKAGE']!.trim()
+              : 'uz.ishbor.app.com',
       fixtureRoot: fixtureRoot,
-      downloadDirectory: env['E2E_DEVICE_DOWNLOAD_DIR']?.trim().isNotEmpty ==
-              true
-          ? env['E2E_DEVICE_DOWNLOAD_DIR']!.trim()
-          : '/sdcard/Download/ishbor-e2e',
+      downloadDirectory:
+          env['E2E_DEVICE_DOWNLOAD_DIR']?.trim().isNotEmpty == true
+              ? env['E2E_DEVICE_DOWNLOAD_DIR']!.trim()
+              : '/sdcard/Download/ishbor-e2e',
       permissions: const <String>[
         'android.permission.ACCESS_COARSE_LOCATION',
         'android.permission.ACCESS_FINE_LOCATION',
@@ -111,13 +112,13 @@ final class E2EDeviceSetup {
   }
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'package_name': packageName,
-        'fixture_root': fixtureRoot,
-        'download_directory': downloadDirectory,
-        'permissions': permissions,
-        'fixtures': fixtures.map((fixture) => fixture.toJson()).toList(),
-        'mock_location': mockLocation.toJson(),
-      };
+    'package_name': packageName,
+    'fixture_root': fixtureRoot,
+    'download_directory': downloadDirectory,
+    'permissions': permissions,
+    'fixtures': fixtures.map((fixture) => fixture.toJson()).toList(),
+    'mock_location': mockLocation.toJson(),
+  };
 }
 
 final class E2EFixtureAsset {
@@ -134,9 +135,9 @@ final class E2EFixtureAsset {
   final String description;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'source': source,
-        'destination': destination,
-        'mime_type': mimeType,
-        'description': description,
-      };
+    'source': source,
+    'destination': destination,
+    'mime_type': mimeType,
+    'description': description,
+  };
 }

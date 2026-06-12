@@ -75,7 +75,9 @@ Future<void> bootstrapApplication({
       Hive.init(dir.path);
 
       if (isE2E) {
-        log('[INFO][E2E][bootstrap] firebase=starting hive=starting localization=starting');
+        log(
+          '[INFO][E2E][bootstrap] firebase=starting hive=starting localization=starting',
+        );
       }
 
       await Future.wait([
@@ -96,9 +98,7 @@ Future<void> bootstrapApplication({
           await FcmNotificationService.instance.initialize();
           log('[INFO][E2E][bootstrap] fcm=ok');
         } catch (error, stack) {
-          log(
-            '[ERROR][E2E][bootstrap] fcm=failed error=$error stack=$stack',
-          );
+          log('[ERROR][E2E][bootstrap] fcm=failed error=$error stack=$stack');
         }
       } else {
         await FcmNotificationService.instance.initialize();

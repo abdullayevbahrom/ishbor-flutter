@@ -53,7 +53,8 @@ class DioInterceptors extends Interceptor {
     RequestInterceptorHandler handler,
   ) async {
     try {
-      options.extra['e2e_started_at_ms'] = DateTime.now().millisecondsSinceEpoch;
+      options.extra['e2e_started_at_ms'] =
+          DateTime.now().millisecondsSinceEpoch;
       await _prepareRequest(options);
       handler.next(options);
     } catch (error, stackTrace) {

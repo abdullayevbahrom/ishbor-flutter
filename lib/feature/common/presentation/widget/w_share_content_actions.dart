@@ -36,18 +36,21 @@ class WShareAdsLink extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               WShareButton(
+                buttonKey: 'share.telegram',
                 onPressed: () async {
                   await AppLauncher().shareLinkWithTelegram(link);
                 },
                 svgIcon: AppSvg.icTg,
               ),
               WShareButton(
+                buttonKey: 'share.facebook',
                 onPressed: () async {
                   await AppLauncher().shareLinkWithFacebook(link);
                 },
                 svgIcon: AppSvg.icFaceBook,
               ),
               WShareButton(
+                buttonKey: 'share.clipboard',
                 onPressed: () async {
                   await Clipboard.setData(ClipboardData(text: link));
                   showInfoToast(LocaleKeys.savedToClipboard.tr());
@@ -67,14 +70,17 @@ class WShareButton extends StatelessWidget {
     super.key,
     required this.svgIcon,
     required this.onPressed,
+    this.buttonKey,
   });
 
   final String svgIcon;
   final VoidCallback onPressed;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: buttonKey == null ? null : Key('button.$buttonKey'),
       onTap: onPressed,
       borderRadius: BorderRadius.circular(10.r),
       child: Ink(

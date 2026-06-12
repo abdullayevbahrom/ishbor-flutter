@@ -54,9 +54,9 @@ class AppButton extends StatelessWidget {
           boxShadow: shadow,
           borderRadius: BorderRadius.circular(radius ?? 12.r),
         ),
-          child: FilledButton(
-            key: buttonKey == null ? null : E2EKeys.button(buttonKey!),
-            onPressed:
+        child: FilledButton(
+          key: buttonKey == null ? null : E2EKeys.button(buttonKey!),
+          onPressed:
               isLoading ?? false
                   ? null
                   : isAvailable ?? true

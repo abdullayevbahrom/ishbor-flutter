@@ -78,9 +78,9 @@ class _MessagesPageState extends State<MessagesPage> {
       child: BlocBuilder<MessageCubit, MessageState>(
         builder: (context, state) {
           return WLayout(
-          child: Scaffold(
-            key: E2EKeys.page('messages'),
-            backgroundColor: AppColors.cFFFFFF,
+            child: Scaffold(
+              key: E2EKeys.page('messages'),
+              backgroundColor: AppColors.cFFFFFF,
               body: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

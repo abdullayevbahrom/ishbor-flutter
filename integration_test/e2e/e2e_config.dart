@@ -24,9 +24,10 @@ final class E2EConfig {
       accessToken: env['E2E_ACCESS_TOKEN'] ?? '',
       cleanup: _parseBool(env['E2E_CLEANUP'], fallback: true),
       allowProd: _parseBool(env['E2E_ALLOW_PROD'], fallback: false),
-      runId: env['E2E_RUN_ID']?.trim().isNotEmpty == true
-          ? env['E2E_RUN_ID']!.trim()
-          : _defaultRunId(),
+      runId:
+          env['E2E_RUN_ID']?.trim().isNotEmpty == true
+              ? env['E2E_RUN_ID']!.trim()
+              : _defaultRunId(),
     );
   }
 

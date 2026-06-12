@@ -95,7 +95,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               AppUtils.hSizedBox8,
                               AppPhoneNumberTextFormField(
                                 phoneNumber: phoneController,
-                                fieldKey: E2EKeys.input('auth.register', 'phone'),
+                                fieldKey: E2EKeys.input(
+                                  'auth.register',
+                                  'phone',
+                                ),
                               ),
                               AppUtils.hSizedBox16,
                               Text(
@@ -106,7 +109,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               AppUtils.hSizedBox8,
                               AppTextFormField(
-                                fieldKey: E2EKeys.input('auth.register', 'name'),
+                                fieldKey: E2EKeys.input(
+                                  'auth.register',
+                                  'name',
+                                ),
                                 fillColor: AppColors.cFFFFFF,
                                 hintText: LocaleKeys.name.tr(),
                                 controller: nameController,
@@ -143,7 +149,10 @@ class _RegisterPageState extends State<RegisterPage> {
                               ),
                               AppUtils.hSizedBox8,
                               AppTextFormField(
-                                fieldKey: E2EKeys.input('auth.register', 'password'),
+                                fieldKey: E2EKeys.input(
+                                  'auth.register',
+                                  'password',
+                                ),
                                 maxLines: 1,
                                 obscureTextAvailable: true,
                                 fillColor: AppColors.cFFFFFF,
@@ -212,11 +221,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                               AppUtils.hSizedBox16,
-                                SizedBox(
-                                  height: 50.h,
-                                  child: AppButton(
-                                    buttonKey: 'auth.register.submit',
-                                    onPressed: () {
+                              SizedBox(
+                                height: 50.h,
+                                child: AppButton(
+                                  buttonKey: 'auth.register.submit',
+                                  onPressed: () {
                                     if (isChecked) {
                                       if (_registerKey.currentState
                                               ?.validate() ??

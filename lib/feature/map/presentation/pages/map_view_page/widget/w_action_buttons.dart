@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 import '../../../../../../core/theme/app_colors.dart';
 
@@ -29,6 +30,7 @@ class WActionButtons extends StatelessWidget {
         children: [
           enableCurrentLoc
               ? MaterialButton(
+                key: E2EKeys.button('map.current-location'),
                 onPressed: onTapCurrentLoc,
                 height: 30.r,
                 padding: EdgeInsets.zero,
@@ -49,6 +51,7 @@ class WActionButtons extends StatelessWidget {
               ),
           SizedBox(height: 10.h),
           MaterialButton(
+            key: E2EKeys.button('map.zoom-in'),
             onPressed: onTapAddBtn,
             height: 50.r,
             padding: EdgeInsets.zero,
@@ -64,6 +67,7 @@ class WActionButtons extends StatelessWidget {
             child: Icon(CupertinoIcons.add, size: 20.r).paddingAll(12.r),
           ),
           MaterialButton(
+            key: E2EKeys.button('map.zoom-out'),
             onPressed: onTapMinusBtn,
             height: 50.r,
             padding: EdgeInsets.zero,

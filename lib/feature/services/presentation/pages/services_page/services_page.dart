@@ -191,10 +191,7 @@ class _ServicesPageState extends State<ServicesPage> {
 
                     final service = state.listService!.items[index];
                     return ServiceItem(
-                      key: E2EKeys.card(
-                        'service',
-                        service.id.toString(),
-                      ),
+                      key: E2EKeys.card('service', service.id.toString()),
                       onPressedFavorite: () {
                         serviceCubit.toggleServiceFavorite(index);
                       },

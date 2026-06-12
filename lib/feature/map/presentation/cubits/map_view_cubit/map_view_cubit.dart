@@ -505,4 +505,89 @@ class MapViewCubit extends Cubit<MapViewState> {
       placeMarkMapObjects = [];
     }
   }
+
+  void debugSelectFirstMarkerForE2E() {
+    debugPrint(
+      '[FIX][E2E][map] select-marker type=${state.type} vacancies=${state.listVacancy.length} services=${state.listService.length} tasks=${state.listTask.length}',
+    );
+    if (state.type == 'vacancy' && state.listVacancy.isNotEmpty) {
+      _selectVacancyForE2E(state.listVacancy.first);
+      return;
+    }
+
+    if (state.type == 'service' && state.listService.isNotEmpty) {
+      _selectServiceForE2E(state.listService.first);
+      return;
+    }
+
+    if (state.type == 'task' && state.listTask.isNotEmpty) {
+      _selectTaskForE2E(state.listTask.first);
+    }
+  }
+
+  void _selectVacancyForE2E(Vacancy vacancy) {
+    final point = Point(
+      latitude: vacancy.address?.latitude ?? state.userPoint.latitude,
+      longitude: vacancy.address?.longitude ?? state.userPoint.longitude,
+    );
+    mapController?.moveCamera(
+      animation: MapAnimation(type: MapAnimationType.smooth, duration: 1),
+      CameraUpdate.newCameraPosition(CameraPosition(target: point)),
+    );
+    emit(
+      state.copyWith(
+        selectedMapObjects: MapObjectId(
+          'placeMark${vacancy.address?.longitude}${vacancy.address?.latitude}',
+        ),
+        selectedVacancies: [vacancy],
+        selectedServices: [],
+        selectedTasks: [],
+      ),
+    );
+    addVacancyMarkers();
+  }
+
+  void _selectServiceForE2E(ServiceModel service) {
+    final point = Point(
+      latitude: service.address?.latitude ?? state.userPoint.latitude,
+      longitude: service.address?.longitude ?? state.userPoint.longitude,
+    );
+    mapController?.moveCamera(
+      animation: MapAnimation(type: MapAnimationType.smooth, duration: 1),
+      CameraUpdate.newCameraPosition(CameraPosition(target: point)),
+    );
+    emit(
+      state.copyWith(
+        selectedMapObjects: MapObjectId(
+          'placeMark${service.address?.longitude}${service.address?.latitude}',
+        ),
+        selectedVacancies: [],
+        selectedServices: [service],
+        selectedTasks: [],
+      ),
+    );
+    addServiceMarkers();
+  }
+
+  void _selectTaskForE2E(TaskModel task) {
+    final point = Point(
+      latitude: task.addresses.first.latitude ?? state.userPoint.latitude,
+      longitude: task.addresses.first.longitude ?? state.userPoint.longitude,
+    );
+    mapController?.moveCamera(
+      animation: MapAnimation(type: MapAnimationType.smooth, duration: 1),
+      CameraUpdate.newCameraPosition(CameraPosition(target: point)),
+    );
+    emit(
+      state.copyWith(
+        selectedMapObjects: MapObjectId(
+          'placeMark${task.addresses.first.longitude}${task.addresses.first.latitude}',
+        ),
+        selectedVacancies: [],
+        selectedServices: [],
+        selectedTasks: [task],
+      ),
+    );
+    addTaskMarkers();
+  }
 }

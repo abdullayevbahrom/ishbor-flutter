@@ -54,9 +54,9 @@ class AppHeader extends StatelessWidget {
                     ? Positioned(
                       top: 0,
                       bottom: 0,
-                    child: IconButton(
-                      key: E2EKeys.button('header.back'),
-                      onPressed: () {
+                      child: IconButton(
+                        key: E2EKeys.button('header.back'),
+                        onPressed: () {
                           if (context.canPop()) {
                             context.pop();
                           } else {

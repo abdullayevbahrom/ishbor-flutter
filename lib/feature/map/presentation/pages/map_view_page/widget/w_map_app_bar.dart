@@ -6,7 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
+import 'package:top_jobs/core/router/route_names.dart';
 import 'package:top_jobs/core/theme/app_svg.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/feature/common/data/models/category.dart';
 import 'package:top_jobs/feature/common/presentation/pages/w_modal_bottom_sheet_container.dart';
 
@@ -76,33 +78,121 @@ class _WMapAppBarState extends State<WMapAppBar> {
               ),
             ),
             bottom: PreferredSize(
-              preferredSize: Size.fromHeight(80.h),
-              child: AppTextFormField(
-                maxLines: 1,
-                minLines: 1,
-                keyBoardType: TextInputType.none,
-                hintText: LocaleKeys.selectCategory.tr(),
-                fillColor: AppColors.cFFFFFF,
-                controller: _controller,
-                suffixIcon: Icon(
-                  Icons.keyboard_arrow_right,
-                  color: AppColors.cFF9914,
-                  size: 29.r,
-                ),
-                onTap: () async {
-                  final response = await WCommonCategoriesList(
-                    savedCategories: state.categories,
-                  ).show(context);
+              preferredSize: Size.fromHeight(128.h),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  AppTextFormField(
+                    maxLines: 1,
+                    minLines: 1,
+                    keyBoardType: TextInputType.none,
+                    hintText: LocaleKeys.selectCategory.tr(),
+                    fillColor: AppColors.cFFFFFF,
+                    controller: _controller,
+                    suffixIcon: Icon(
+                      Icons.keyboard_arrow_right,
+                      color: AppColors.cFF9914,
+                      size: 29.r,
+                    ),
+                    onTap: () async {
+                      final response = await WCommonCategoriesList(
+                        savedCategories: state.categories,
+                      ).show(context);
 
-                  if (response != null) {
-                    context.read<MapViewCubit>().addCategories(response);
-                  }
-                },
-              ).paddingOnly(bottom: 25.h),
+                      if (response != null) {
+                        context.read<MapViewCubit>().addCategories(response);
+                      }
+                    },
+                  ).paddingOnly(bottom: 12.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: _MapTypeButton(
+                          key: E2EKeys.button('map.type.vacancy'),
+                          selected: widget.type == 'vacancy',
+                          label: LocaleKeys.nearbyVacancies.tr(),
+                          onTap: () {
+                            if (widget.type != 'vacancy') {
+                              context.go(Routes.map, extra: 'vacancy');
+                            }
+                          },
+                        ),
+                      ),
+                      8.horizontalSpace,
+                      Expanded(
+                        child: _MapTypeButton(
+                          key: E2EKeys.button('map.type.service'),
+                          selected: widget.type == 'service',
+                          label: LocaleKeys.nearbyService.tr(),
+                          onTap: () {
+                            if (widget.type != 'service') {
+                              context.go(Routes.map, extra: 'service');
+                            }
+                          },
+                        ),
+                      ),
+                      8.horizontalSpace,
+                      Expanded(
+                        child: _MapTypeButton(
+                          key: E2EKeys.button('map.type.task'),
+                          selected: widget.type == 'task',
+                          label: LocaleKeys.nearbyTasks.tr(),
+                          onTap: () {
+                            if (widget.type != 'task') {
+                              context.go(Routes.map, extra: 'task');
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ).paddingOnly(bottom: 16.h),
             ),
           ).paddingSymmetric(horizontal: 20.w),
         );
       },
+    );
+  }
+}
+
+class _MapTypeButton extends StatelessWidget {
+  const _MapTypeButton({
+    super.key,
+    required this.selected,
+    required this.label,
+    required this.onTap,
+  });
+
+  final bool selected;
+  final String label;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: onTap,
+      style: OutlinedButton.styleFrom(
+        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
+        backgroundColor: selected ? AppColors.cFF9914 : AppColors.cFFFFFF,
+        side: BorderSide(color: selected ? AppColors.cFF9914 : AppColors.cCCCCCC),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
+      ),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: Text(
+          label,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+            color: selected ? AppColors.cFFFFFF : AppColors.c2E3A59,
+            fontSize: 12.sp,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
     );
   }
 }

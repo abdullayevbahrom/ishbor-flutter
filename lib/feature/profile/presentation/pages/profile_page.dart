@@ -320,9 +320,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         title: LocaleKeys.myVacancies.tr(),
                                       ),
                                       ProfileItem(
-                                        key: E2EKeys.button(
-                                          'profile.services',
-                                        ),
+                                        key: E2EKeys.button('profile.services'),
                                         onTap: () {
                                           context.push(Routes.profileServices);
                                         },

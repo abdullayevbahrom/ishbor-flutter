@@ -3,9 +3,7 @@ import 'package:top_jobs/core/services/storage_service.dart';
 import '../mercure_probe.dart';
 
 final class RealtimeFlow {
-  const RealtimeFlow({
-    this.probe = const MercureProbe(),
-  });
+  const RealtimeFlow({this.probe = const MercureProbe()});
 
   final MercureProbe probe;
 
@@ -23,10 +21,7 @@ final class RealtimeFlow {
       ),
     );
     results.add(
-      await probe.probe(
-        label: 'status',
-        topics: ['users/status/$userId'],
-      ),
+      await probe.probe(label: 'status', topics: ['users/status/$userId']),
     );
     results.add(
       await probe.probe(

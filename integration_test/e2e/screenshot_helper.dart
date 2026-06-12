@@ -26,13 +26,13 @@ final class ScreenshotArtifact {
   final List<Map<String, dynamic>> apiCalls;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'order': order,
-        'route': route,
-        'state': state,
-        'file': file,
-        'timestamp': timestamp,
-        'api_calls': apiCalls,
-      };
+    'order': order,
+    'route': route,
+    'state': state,
+    'file': file,
+    'timestamp': timestamp,
+    'api_calls': apiCalls,
+  };
 }
 
 final class E2EScreenshotHelper {
@@ -46,9 +46,8 @@ final class E2EScreenshotHelper {
   final E2EConfig config;
   final List<Map<String, dynamic>> apiCalls;
 
-  Directory get outputDir => Directory(
-    p.join('var', 'screnshots', config.runId),
-  );
+  Directory get outputDir =>
+      Directory(p.join('var', 'screnshots', config.runId));
 
   File get manifestFile => File(p.join(outputDir.path, 'manifest.json'));
 
@@ -66,17 +65,21 @@ final class E2EScreenshotHelper {
     required String route,
     required String state,
     required int order,
+    bool settle = true,
   }) async {
-    await tester.pumpAndSettle();
+    if (settle) {
+      await tester.pumpAndSettle();
+    }
     final safeRoute = _slug(route);
     final safeState = _slug(state);
     final orderPrefix = order.toString().padLeft(2, '0');
-    final screenshotNameBuffer = StringBuffer(orderPrefix)
-      ..write('_')
-      ..write(safeRoute)
-      ..write('_')
-      ..write(safeState)
-      ..write('.png');
+    final screenshotNameBuffer =
+        StringBuffer(orderPrefix)
+          ..write('_')
+          ..write(safeRoute)
+          ..write('_')
+          ..write(safeState)
+          ..write('.png');
     final screenshotName = screenshotNameBuffer.toString();
     final screenshotPath = p.join(outputDir.path, screenshotName);
 
@@ -147,8 +150,9 @@ final class E2EScreenshotHelper {
 
   Future<void> _appendArtifact(ScreenshotArtifact artifact) async {
     final data = await _readManifest();
-    final screenshots = (data['screenshots'] as List<dynamic>? ?? <dynamic>[])
-      ..add(artifact.toJson());
+    final screenshots =
+        (data['screenshots'] as List<dynamic>? ?? <dynamic>[])
+          ..add(artifact.toJson());
     data['screenshots'] = screenshots;
     data['api_calls'] = List<Map<String, dynamic>>.from(apiCalls);
     data['updated_at'] = DateTime.now().toUtc().toIso8601String();

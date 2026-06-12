@@ -7,6 +7,7 @@ import 'package:top_jobs/feature/common/presentation/widget/vacancy_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_layout.dart';
 import 'package:top_jobs/feature/services/data/models/service.dart';
 import 'package:top_jobs/models/vacancy.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 class WExpandedViewPage extends StatelessWidget {
   const WExpandedViewPage({super.key, required this.list});
@@ -17,6 +18,7 @@ class WExpandedViewPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WLayout(
       child: Scaffold(
+        key: E2EKeys.page('expanded-view'),
         body: Column(
           children: [
             AppHeader(isPopAvailable: true),
