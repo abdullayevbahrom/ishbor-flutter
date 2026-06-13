@@ -76,11 +76,24 @@ final class _BrowseTargets {
   final String taskLastId;
 }
 
+final class _CleanupAction {
+  const _CleanupAction({
+    required this.label,
+    required this.id,
+    required this.action,
+  });
+
+  final String label;
+  final String id;
+  final Future<void> Function() action;
+}
+
 void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   final config = E2EConfig.fromEnvironment();
   final deviceSetup = E2EDeviceSetup.fromEnvironment();
   final apiCalls = <Map<String, dynamic>>[];
+  final cleanupActions = <_CleanupAction>[];
   final helper = E2EScreenshotHelper(
     binding: binding,
     config: config,
@@ -130,7 +143,12 @@ void main() {
     ImagePickerHelper.debugPickImageOverride = null;
     ImagePickerHelper.debugPickDocOverride = null;
     ChatCubit.debugPickFileOverride = null;
-    await helper.finalize(status: 'passed');
+    final cleanupStatus = await _runCleanupActions(
+      cleanupActions,
+      enabled: config.cleanup,
+      runId: config.runId,
+    );
+    await helper.finalize(status: cleanupStatus);
   });
 
   testWidgets('bootstrap manifest and screenshot plumbing', (tester) async {
@@ -960,6 +978,28 @@ void main() {
     );
 
     final createdVacancy = await _findCreatedVacancyByTitle(createdTitle);
+    _registerCleanupAction(
+      cleanupActions,
+      label: 'vacancy',
+      id: createdVacancy.id.toString(),
+      action: () async {
+        final result = await sl<VacancyRepository>().deleteVacancyById(
+          vacancyId: createdVacancy.id,
+        );
+        await result.fold(
+          (failure) async {
+            debugPrint(
+              'WARN [E2E][cleanup] type=vacancy id=${createdVacancy.id} status=failed error=${failure.message}',
+            );
+          },
+          (_) async {
+            debugPrint(
+              'INFO [E2E][cleanup] type=vacancy id=${createdVacancy.id} status=ok',
+            );
+          },
+        );
+      },
+    );
     debugPrint(
       'INFO [E2E][vacancy] action=create id=${createdVacancy.id} fields=title,category,description,salary,phones,images,location',
     );
@@ -1011,6 +1051,11 @@ void main() {
 
     await sl<VacancyRepository>().deleteVacancyById(
       vacancyId: createdVacancy.id,
+    );
+    _completeCleanupAction(
+      cleanupActions,
+      label: 'vacancy',
+      id: createdVacancy.id.toString(),
     );
   });
 
@@ -1161,6 +1206,28 @@ void main() {
     );
 
     final createdService = await _findCreatedServiceByTitle(createdTitle);
+    _registerCleanupAction(
+      cleanupActions,
+      label: 'service',
+      id: createdService.id.toString(),
+      action: () async {
+        final result = await sl<ServiceRepository>().deleteServiceById(
+          serviceId: createdService.id,
+        );
+        await result.fold(
+          (failure) async {
+            debugPrint(
+              'WARN [E2E][cleanup] type=service id=${createdService.id} status=failed error=${failure.message}',
+            );
+          },
+          (_) async {
+            debugPrint(
+              'INFO [E2E][cleanup] type=service id=${createdService.id} status=ok',
+            );
+          },
+        );
+      },
+    );
     debugPrint(
       'INFO [E2E][service] action=create id=${createdService.id} fields=title,category,description,price,negotiable,address,phones,images',
     );
@@ -1212,6 +1279,11 @@ void main() {
 
     await sl<ServiceRepository>().deleteServiceById(
       serviceId: createdService.id,
+    );
+    _completeCleanupAction(
+      cleanupActions,
+      label: 'service',
+      id: createdService.id.toString(),
     );
   });
 
@@ -1339,6 +1411,28 @@ void main() {
     );
 
     final createdTask = await _findCreatedTaskByTitle(createdTitle);
+    _registerCleanupAction(
+      cleanupActions,
+      label: 'task',
+      id: createdTask.id.toString(),
+      action: () async {
+        final result = await sl<TaskRepository>().deleteTaskById(
+          taskId: createdTask.id,
+        );
+        await result.fold(
+          (failure) async {
+            debugPrint(
+              'WARN [E2E][cleanup] type=task id=${createdTask.id} status=failed error=${failure.message}',
+            );
+          },
+          (_) async {
+            debugPrint(
+              'INFO [E2E][cleanup] type=task id=${createdTask.id} status=ok',
+            );
+          },
+        );
+      },
+    );
     debugPrint(
       'INFO [E2E][task] action=create id=${createdTask.id} requestId=- fields=title,category,description,price,payment_method,date_time,address,remote,secure_deal,images',
     );
@@ -1443,6 +1537,11 @@ void main() {
     );
 
     await sl<TaskRepository>().deleteTaskById(taskId: createdTask.id);
+    _completeCleanupAction(
+      cleanupActions,
+      label: 'task',
+      id: createdTask.id.toString(),
+    );
   });
 
   testWidgets('phase 5 task 18 profile favorites payment notifications flows', (
@@ -2637,6 +2736,57 @@ Future<void> _captureNegativeState({
     state: state,
     order: order,
   );
+}
+
+void _registerCleanupAction(
+  List<_CleanupAction> cleanupActions, {
+  required String label,
+  required String id,
+  required Future<void> Function() action,
+}) {
+  cleanupActions.add(_CleanupAction(label: label, id: id, action: action));
+  debugPrint('INFO [E2E][cleanup] registered type=$label id=$id');
+}
+
+void _completeCleanupAction(
+  List<_CleanupAction> cleanupActions, {
+  required String label,
+  required String id,
+}) {
+  cleanupActions.removeWhere(
+    (action) => action.label == label && action.id == id,
+  );
+}
+
+Future<String> _runCleanupActions(
+  List<_CleanupAction> cleanupActions, {
+  required bool enabled,
+  required String runId,
+}) async {
+  if (!enabled) {
+    debugPrint('INFO [E2E][cleanup] runId=$runId status=skipped');
+    return 'skipped';
+  }
+
+  var executed = 0;
+  var errors = 0;
+
+  for (final action in cleanupActions.reversed.toList(growable: false)) {
+    try {
+      executed++;
+      await action.action();
+    } catch (error) {
+      errors++;
+      debugPrint(
+        'ERROR [E2E][cleanup] type=${action.label} id=${action.id} status=failed error=$error',
+      );
+    }
+  }
+
+  debugPrint(
+    'INFO [E2E][cleanup] runId=$runId cleaned=$executed warnings=0 errors=$errors',
+  );
+  return errors == 0 ? 'cleaned' : 'cleanup-with-errors';
 }
 
 Future<String> _createPaymentTransactionId() async {

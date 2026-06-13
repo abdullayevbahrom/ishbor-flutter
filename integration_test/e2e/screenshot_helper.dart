@@ -55,6 +55,9 @@ final class E2EScreenshotHelper {
   Future<void> prepare() async {
     await outputDir.create(recursive: true);
     if (defaultTargetPlatform == TargetPlatform.android) {
+      debugPrint(
+        'INFO [E2E][surface] convertFlutterSurfaceToImage enabled for PlatformView coverage',
+      );
       await binding.convertFlutterSurfaceToImage();
     }
     binding.reportData = _reportData();
