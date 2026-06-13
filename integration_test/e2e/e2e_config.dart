@@ -5,6 +5,7 @@ final class E2EConfig {
     required this.apiBaseUrl,
     required this.mercurePublicUrl,
     required this.apiSignatureSecret,
+    required this.appVersion,
     required this.testPhone,
     required this.testOtp,
     required this.accessToken,
@@ -19,6 +20,10 @@ final class E2EConfig {
       apiBaseUrl: env['E2E_API_BASE_URL'] ?? '',
       mercurePublicUrl: env['E2E_MERCURE_PUBLIC_URL'] ?? '',
       apiSignatureSecret: env['E2E_API_SIGNATURE_SECRET'] ?? '',
+      appVersion:
+          env['E2E_APP_VERSION']?.trim().isNotEmpty == true
+              ? env['E2E_APP_VERSION']!.trim()
+              : 'unknown',
       testPhone: env['E2E_TEST_PHONE'] ?? '',
       testOtp: env['E2E_TEST_OTP'] ?? '',
       accessToken: env['E2E_ACCESS_TOKEN'] ?? '',
@@ -34,6 +39,7 @@ final class E2EConfig {
   final String apiBaseUrl;
   final String mercurePublicUrl;
   final String apiSignatureSecret;
+  final String appVersion;
   final String testPhone;
   final String testOtp;
   final String accessToken;
@@ -67,7 +73,7 @@ final class E2EConfig {
   }
 
   String describeForLog() {
-    return 'env=e2e baseUrl=$apiBaseUrl mercure=$mercurePublicUrl authMode=$authMode cleanup=$cleanup runId=$runId';
+    return 'env=e2e baseUrl=$apiBaseUrl mercure=$mercurePublicUrl version=$appVersion authMode=$authMode cleanup=$cleanup runId=$runId';
   }
 
   static bool _parseBool(String? value, {required bool fallback}) {

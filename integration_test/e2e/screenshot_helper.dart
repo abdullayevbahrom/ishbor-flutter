@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path/path.dart' as p;
 
+import 'artifact_reporter.dart';
 import 'e2e_config.dart';
 
 final class ScreenshotArtifact {
@@ -135,6 +136,16 @@ final class E2EScreenshotHelper {
       flush: true,
     );
     binding.reportData = _reportData(status: status);
+
+    await E2EArtifactReporter.generate(
+      outputDir: outputDir,
+      manifestFile: manifestFile,
+      runId: config.runId,
+      apiBaseUrl: config.apiBaseUrl,
+      appVersion: config.appVersion,
+      device: defaultTargetPlatform.name,
+      enforceCoverage: true,
+    );
   }
 
   Map<String, dynamic> _reportData({String status = 'running'}) {
@@ -142,6 +153,7 @@ final class E2EScreenshotHelper {
       'run_id': config.runId,
       'api_base_url': config.apiBaseUrl,
       'mercure_public_url': config.mercurePublicUrl,
+      'app_version': config.appVersion,
       'device': defaultTargetPlatform.name,
       'status': status,
       'api_calls': List<Map<String, dynamic>>.from(apiCalls),
@@ -169,6 +181,7 @@ final class E2EScreenshotHelper {
         'run_id': config.runId,
         'api_base_url': config.apiBaseUrl,
         'mercure_public_url': config.mercurePublicUrl,
+        'app_version': config.appVersion,
         'device': defaultTargetPlatform.name,
         'status': 'running',
         'screenshots': <dynamic>[],
@@ -187,6 +200,7 @@ final class E2EScreenshotHelper {
       'run_id': config.runId,
       'api_base_url': config.apiBaseUrl,
       'mercure_public_url': config.mercurePublicUrl,
+      'app_version': config.appVersion,
       'device': defaultTargetPlatform.name,
       'status': 'running',
       'screenshots': <dynamic>[],
@@ -200,6 +214,7 @@ final class E2EScreenshotHelper {
       'run_id': config.runId,
       'api_base_url': config.apiBaseUrl,
       'mercure_public_url': config.mercurePublicUrl,
+      'app_version': config.appVersion,
       'device': defaultTargetPlatform.name,
       'status': 'running',
       'screenshots': artifacts.map((artifact) => artifact.toJson()).toList(),

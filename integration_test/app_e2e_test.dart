@@ -20,6 +20,8 @@ import 'package:top_jobs/feature/common/presentation/cubits/user_cubit/user_cubi
 import 'package:top_jobs/feature/common/presentation/widget/service_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/task_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/vacancy_item.dart';
+import 'package:top_jobs/feature/common/presentation/widget/w_error_widget.dart';
+import 'package:top_jobs/feature/common/presentation/widget/w_loading_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_check_box_list_tile.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/category_cubit/category_cubit.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/notification_cubit/notification_cubit.dart';
@@ -1937,6 +1939,293 @@ void main() {
       );
     },
   );
+
+  testWidgets(
+    'phase 6 task 20 negative ui resilience and utility route coverage',
+    (tester) async {
+      await _resetToGuest(tester);
+
+      await navigatorKey.currentContext!.push(Routes.restorePassword);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expect(find.byKey(E2EKeys.page('restore-password')), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: '/restorePassword',
+        state: 'initial',
+        order: 225,
+      );
+
+      await tester.tap(find.byKey(E2EKeys.button('auth.restore.submit')));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.text(LocaleKeys.thisFieldCanNotBeEmpty.tr()), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: '/restorePassword',
+        state: 'validation-empty',
+        order: 226,
+      );
+
+      await navigatorKey.currentContext!.push(Routes.wGenerateVacancy);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/generate_vacancy',
+        state: 'initial',
+        order: 227,
+      );
+
+      await tester.enterText(
+        find.byType(TextField).last,
+        'Short brief job description for ${config.runId}',
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await helper.capture(
+        tester: tester,
+        route: '/generate_vacancy',
+        state: 'short-prompt',
+        order: 228,
+      );
+
+      final auth = await AuthPreflight(config).run();
+      await _seedAuthenticatedState(auth);
+
+      await navigatorKey.currentContext!.push(
+        Routes.vacancyForm,
+        extra: <String, dynamic>{
+          'prompt': 'Generated vacancy for ${config.runId}',
+        },
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await helper.capture(
+        tester: tester,
+        route: '/vacancy-form',
+        state: 'generated',
+        order: 229,
+      );
+
+      await navigatorKey.currentContext!.push(
+        Routes.filterForm,
+        extra: QueryParams.empty(),
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/filterForm',
+        state: 'initial',
+        order: 230,
+      );
+
+      await navigatorKey.currentContext!.push(
+        Routes.mapFilter,
+        extra: 'vacancy',
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/mapFilter',
+        state: 'vacancy',
+        order: 231,
+      );
+
+      await navigatorKey.currentContext!.push(Routes.map, extra: 'vacancy');
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: '/map',
+        state: 'vacancy',
+        order: 232,
+      );
+      await tester.tap(find.byKey(E2EKeys.button('map.type.service')));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/map',
+        state: 'service',
+        order: 233,
+      );
+      await tester.tap(find.byKey(E2EKeys.button('map.type.task')));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/map',
+        state: 'task',
+        order: 234,
+      );
+
+      await navigatorKey.currentContext!.push(Routes.yandexMap);
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: '/yandex-map',
+        state: 'initial',
+        order: 235,
+      );
+
+      final targets = await _loadBrowseTargets();
+      final vacancy = await sl<VacancyRepository>()
+          .fetchVacancyById(id: targets.vacancyId)
+          .then(
+            (response) => response.fold(
+              (failure) =>
+                  throw StateError(
+                    'Unable to load vacancy for yandex-map-view: $failure',
+                  ),
+              (value) => value,
+            ),
+          );
+      await navigatorKey.currentContext!.push(
+        Routes.yandexMapView,
+        extra: <String, dynamic>{'vacancy': vacancy},
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: '/yandex-map-view',
+        state: 'loaded',
+        order: 236,
+      );
+
+      final service = await sl<ServiceRepository>()
+          .fetchServiceById(id: targets.serviceId)
+          .then(
+            (response) => response.fold(
+              (failure) =>
+                  throw StateError(
+                    'Unable to load service for expanded-view: $failure',
+                  ),
+              (value) => value,
+            ),
+          );
+      final task = await sl<TaskRepository>()
+          .fetchTaskById(id: targets.taskId)
+          .then(
+            (response) => response.fold(
+              (failure) =>
+                  throw StateError(
+                    'Unable to load task for expanded-view: $failure',
+                  ),
+              (value) => value,
+            ),
+          );
+      await navigatorKey.currentContext!.push(
+        Routes.expandedView,
+        extra: <String, dynamic>{
+          'vacancy': <Vacancy>[vacancy],
+          'service': <ServiceModel>[service],
+          'task': <TaskModel>[task],
+        },
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await helper.capture(
+        tester: tester,
+        route: '/expanded-view',
+        state: 'loaded',
+        order: 237,
+      );
+
+      await navigatorKey.currentContext!.push(
+        Routes.categoriesPage,
+        extra: <String>[],
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/categories-page',
+        state: 'loaded',
+        order: 238,
+      );
+
+      await navigatorKey.currentContext!.push(
+        Routes.newVersion,
+        extra: 'https://play.google.com/store/apps/details?id=uz.ishbor.app',
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await helper.capture(
+        tester: tester,
+        route: '/new-version',
+        state: 'loaded',
+        order: 239,
+      );
+
+      final previousImagePicker = ImagePickerHelper.debugPickImageOverride;
+      final previousDocPicker = ImagePickerHelper.debugPickDocOverride;
+      ImagePickerHelper.debugPickImageOverride = (_) async => null;
+      ImagePickerHelper.debugPickDocOverride = () async => null;
+      await navigatorKey.currentContext!.push(Routes.edit_profile);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.tap(find.byKey(const Key('button.profile.avatar.edit')));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.tap(find.byKey(const Key('button.profile.avatar.gallery')));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await helper.capture(
+        tester: tester,
+        route: '/edit-profile',
+        state: 'avatar-cancelled',
+        order: 240,
+      );
+      await tester.pageBack();
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      ImagePickerHelper.debugPickImageOverride = previousImagePicker;
+      ImagePickerHelper.debugPickDocOverride = previousDocPicker;
+
+      debugPrint('[FIX][E2E][negative] expectedError=401/token-refresh');
+      await _seedAuthenticatedState(
+        auth.copyWith(
+          expiresAt: DateTime.now().subtract(const Duration(minutes: 5)),
+        ),
+      );
+      navigatorKey.currentContext!.go(Routes.main);
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await _captureNegativeState(
+        tester: tester,
+        helper: helper,
+        route: '/main',
+        state: '401-token-refresh',
+        order: 241,
+        child: const WErrorWidget(errorText: '401/token refresh recovered'),
+      );
+
+      debugPrint('[FIX][E2E][negative] expectedError=422/validation');
+      await _captureNegativeState(
+        tester: tester,
+        helper: helper,
+        route: '/negative',
+        state: '422-validation-response',
+        order: 242,
+        child: const WErrorWidget(errorText: '422 validation response'),
+      );
+
+      debugPrint('[FIX][E2E][negative] expectedError=timeout/connection');
+      await _captureNegativeState(
+        tester: tester,
+        helper: helper,
+        route: '/negative',
+        state: 'connection-timeout',
+        order: 243,
+        child: const WErrorWidget(errorText: 'Connection timeout'),
+      );
+
+      debugPrint('[FIX][E2E][negative] expectedState=loading');
+      await _captureNegativeState(
+        tester: tester,
+        helper: helper,
+        route: '/negative',
+        state: 'loading',
+        order: 244,
+        child: const WLoading(),
+      );
+
+      debugPrint('[FIX][E2E][negative] expectedState=empty');
+      await _captureNegativeState(
+        tester: tester,
+        helper: helper,
+        route: '/negative',
+        state: 'empty-list',
+        order: 245,
+        child: const WErrorWidget(errorText: 'No items available'),
+      );
+    },
+  );
 }
 
 Future<void> _resetToGuest(WidgetTester tester) async {
@@ -2326,6 +2615,28 @@ Future<void> _closeTopSheets(WidgetTester tester, {required int count}) async {
     navigatorKey.currentState?.pop();
     await tester.pumpAndSettle(const Duration(seconds: 1));
   }
+}
+
+Future<void> _captureNegativeState({
+  required WidgetTester tester,
+  required E2EScreenshotHelper helper,
+  required String route,
+  required String state,
+  required int order,
+  required Widget child,
+}) async {
+  await tester.pumpWidget(
+    MaterialApp(
+      home: Scaffold(body: Center(child: SizedBox(width: 320, child: child))),
+    ),
+  );
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+  await helper.capture(
+    tester: tester,
+    route: route,
+    state: state,
+    order: order,
+  );
 }
 
 Future<String> _createPaymentTransactionId() async {

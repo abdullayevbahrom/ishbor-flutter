@@ -60,6 +60,22 @@ Local tekshiruvlar uchun root `Makefile` targetlaridan foydalaning:
 - `make flutter-check`
 - `make flutter-doctor`
 
+Docker UI E2E runner:
+
+- `make flutter-e2e-ui`
+- `make flutter-e2e-ui DEVICE=adb`
+- `make flutter-e2e-ui API_BASE_URL=http://api.ishbor.test:8080`
+- `make flutter-e2e-ui MERCURE_PUBLIC_URL=http://ws.ishbor.test:8080/.well-known/mercure`
+
+Required env:
+
+- `E2E_API_BASE_URL`
+- `E2E_MERCURE_PUBLIC_URL`
+- `E2E_API_SIGNATURE_SECRET`
+- `E2E_ACCESS_TOKEN` or `E2E_TEST_PHONE` + `E2E_TEST_OTP`
+- `E2E_APP_VERSION`
+- `E2E_RUN_ID`
+
 Verbose logging faqat kerakli muhitda yoqiladi; secret, token va signature matnlari loglarga to'liq chiqarilmaydi.
 
 # Getting Started
