@@ -21,6 +21,8 @@ class VacancyEmployeeType extends StatelessWidget {
     required this.endTimeController,
     required this.onTapEndTime,
     this.employmentTypeKey,
+    this.startTimeKey,
+    this.endTimeKey,
   });
 
   final int? set;
@@ -30,6 +32,8 @@ class VacancyEmployeeType extends StatelessWidget {
   final VoidCallback onTapStartTime;
   final VoidCallback onTapEndTime;
   final Key? employmentTypeKey;
+  final Key? startTimeKey;
+  final Key? endTimeKey;
   final List<String> employeeTypes = [
     LocaleKeys.fullTime.tr(),
     LocaleKeys.halfTime.tr(),
@@ -75,6 +79,7 @@ class VacancyEmployeeType extends StatelessWidget {
 
                       itemBuilder: (context, index) {
                         return WRadioListTile(
+                          tileKey: Key('vacancy.employment.$index'),
                           value: set == index,
                           title: employeeTypes[index],
                           onTap: () {
@@ -110,29 +115,37 @@ class VacancyEmployeeType extends StatelessWidget {
                 spacing: 10.w,
                 children: [
                   Expanded(
-                    child: AppTextFormField(
-                      fillColor: AppColors.cFBFBFD,
-                      hintText: LocaleKeys.from.tr(),
-                      controller: startTimeController,
-                      onTap: onTapStartTime,
-                      //suffixIcon: Icon(Icons.watch_later,color: AppColors.cBDC0C6,),
-                      keyBoardType: TextInputType.none,
-                      // validator: (value) {
-                      //   return ValidatorHelpers.validateField(value: value!);
-                      // },
+                    child: KeyedSubtree(
+                      key: const Key('vacancy.create.start-time'),
+                      child: AppTextFormField(
+                        fieldKey: startTimeKey,
+                        fillColor: AppColors.cFBFBFD,
+                        hintText: LocaleKeys.from.tr(),
+                        controller: startTimeController,
+                        onTap: onTapStartTime,
+                        //suffixIcon: Icon(Icons.watch_later,color: AppColors.cBDC0C6,),
+                        keyBoardType: TextInputType.none,
+                        // validator: (value) {
+                        //   return ValidatorHelpers.validateField(value: value!);
+                        // },
+                      ),
                     ),
                   ),
                   Expanded(
-                    child: AppTextFormField(
-                      fillColor: AppColors.cFBFBFD,
-                      hintText: LocaleKeys.to.tr(),
-                      controller: endTimeController,
-                      onTap: onTapEndTime,
-                      //suffixIcon: Icon(Icons.watch_later,color: AppColors.cBDC0C6,),
-                      keyBoardType: TextInputType.none,
-                      // validator: (value) {
-                      //   return ValidatorHelpers.validateField(value: value!);
-                      // },
+                    child: KeyedSubtree(
+                      key: const Key('vacancy.create.end-time'),
+                      child: AppTextFormField(
+                        fieldKey: endTimeKey,
+                        fillColor: AppColors.cFBFBFD,
+                        hintText: LocaleKeys.to.tr(),
+                        controller: endTimeController,
+                        onTap: onTapEndTime,
+                        //suffixIcon: Icon(Icons.watch_later,color: AppColors.cBDC0C6,),
+                        keyBoardType: TextInputType.none,
+                        // validator: (value) {
+                        //   return ValidatorHelpers.validateField(value: value!);
+                        // },
+                      ),
                     ),
                   ),
                 ],

@@ -23,6 +23,10 @@ class VacancySuggestedSalary extends StatelessWidget {
     this.salaryMinKey,
     this.salaryMaxKey,
     this.skillsKey,
+    this.negotiableKey,
+    this.salaryMinSelectorKey,
+    this.salaryMaxSelectorKey,
+    this.skillsSelectorKey,
   });
 
   final TextEditingController maxSalaryController;
@@ -36,6 +40,10 @@ class VacancySuggestedSalary extends StatelessWidget {
   final Key? salaryMinKey;
   final Key? salaryMaxKey;
   final Key? skillsKey;
+  final String? negotiableKey;
+  final Key? salaryMinSelectorKey;
+  final Key? salaryMaxSelectorKey;
+  final Key? skillsSelectorKey;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +63,7 @@ class VacancySuggestedSalary extends StatelessWidget {
           WCheckedBoxListTile(
             value: salaryInInterview,
             title: LocaleKeys.negotiableBasedOnConversation.tr(),
+            tileKey: negotiableKey == null ? null : Key(negotiableKey!),
             onTap: onTapSalary,
           ),
           AppUtils.hSizedBox8,
@@ -64,61 +73,74 @@ class VacancySuggestedSalary extends StatelessWidget {
               : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AppTextFormField(
-                    fieldKey: salaryMinKey,
-                    maxLines: 1,
-                    minLines: 1,
-                    fillColor: AppColors.cFFFFFF,
-                    hintText: LocaleKeys.from.tr(),
-                    controller: minSalaryController,
-                    keyBoardType: TextInputType.number,
-                    onChanged: (value) {
-                      minSalaryController.text = Formatters.moneyFormat(value);
-                      onPressedSuffixIcon();
-                    },
-                    formatters: [FilteringTextInputFormatter.digitsOnly],
-                    suffixIcon: SalarySuffixIcon(
-                      onPressed: onPressedSuffixIcon,
-                      currencyValue: currencyValue,
+                  KeyedSubtree(
+                    key: salaryMinSelectorKey,
+                    child: AppTextFormField(
+                      fieldKey: salaryMinKey,
+                      maxLines: 1,
+                      minLines: 1,
+                      fillColor: AppColors.cFFFFFF,
+                      hintText: LocaleKeys.from.tr(),
+                      controller: minSalaryController,
+                      keyBoardType: TextInputType.number,
+                      onChanged: (value) {
+                        minSalaryController.text = Formatters.moneyFormat(
+                          value,
+                        );
+                        onPressedSuffixIcon();
+                      },
+                      formatters: [FilteringTextInputFormatter.digitsOnly],
+                      suffixIcon: SalarySuffixIcon(
+                        onPressed: onPressedSuffixIcon,
+                        currencyValue: currencyValue,
+                      ),
+                      validator: (value) {
+                        return ValidatorHelpers.validateField(value: value!);
+                      },
                     ),
-                    validator: (value) {
-                      return ValidatorHelpers.validateField(value: value!);
-                    },
                   ),
                   AppUtils.hSizedBox4,
-                  AppTextFormField(
-                    fieldKey: salaryMaxKey,
-                    maxLines: 1,
-                    minLines: 1,
-                    fillColor: AppColors.cFFFFFF,
-                    hintText: LocaleKeys.to.tr(),
-                    controller: maxSalaryController,
-                    keyBoardType: TextInputType.number,
-                    formatters: [FilteringTextInputFormatter.digitsOnly],
-                    suffixIcon: SalarySuffixIcon(
-                      onPressed: onPressedSuffixIcon,
-                      currencyValue: currencyValue,
+                  KeyedSubtree(
+                    key: salaryMaxSelectorKey,
+                    child: AppTextFormField(
+                      fieldKey: salaryMaxKey,
+                      maxLines: 1,
+                      minLines: 1,
+                      fillColor: AppColors.cFFFFFF,
+                      hintText: LocaleKeys.to.tr(),
+                      controller: maxSalaryController,
+                      keyBoardType: TextInputType.number,
+                      formatters: [FilteringTextInputFormatter.digitsOnly],
+                      suffixIcon: SalarySuffixIcon(
+                        onPressed: onPressedSuffixIcon,
+                        currencyValue: currencyValue,
+                      ),
+                      onChanged: (value) {
+                        maxSalaryController.text = Formatters.moneyFormat(
+                          value,
+                        );
+                        onPressedSuffixIcon();
+                      },
+                      validator: (value) {
+                        return ValidatorHelpers.validateField(value: value!);
+                      },
                     ),
-                    onChanged: (value) {
-                      maxSalaryController.text = Formatters.moneyFormat(value);
-                      onPressedSuffixIcon();
-                    },
-                    validator: (value) {
-                      return ValidatorHelpers.validateField(value: value!);
-                    },
                   ),
                 ],
               ),
 
           AppUtils.hSizedBox16,
-          WTitleWithTextForm(
-            fieldKey: skillsKey,
-            minLines: 3,
-            maxLines: 10,
-            textEditingController: keySkillsController,
-            keyBoardType: TextInputType.text,
-            title: LocaleKeys.keySkills.tr(),
-            hintText: LocaleKeys.enterSkills.tr(),
+          KeyedSubtree(
+            key: skillsSelectorKey,
+            child: WTitleWithTextForm(
+              fieldKey: skillsKey,
+              minLines: 3,
+              maxLines: 10,
+              textEditingController: keySkillsController,
+              keyBoardType: TextInputType.text,
+              title: LocaleKeys.keySkills.tr(),
+              hintText: LocaleKeys.enterSkills.tr(),
+            ),
           ),
           AppUtils.hSizedBox8,
           Text(

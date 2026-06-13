@@ -104,6 +104,15 @@ class CreateTaskCubit extends Cubit<CreateTaskState> {
     }
   }
 
+  void removeImage(int index) {
+    final images = List<File>.from(state.images);
+    if (index < 0 || index >= images.length) {
+      return;
+    }
+    images.removeAt(index);
+    emit(state.copyWith(images: images));
+  }
+
   Future<void> createTask() async {
     emit(state.copyWith(status: RequestStatus.loading));
 

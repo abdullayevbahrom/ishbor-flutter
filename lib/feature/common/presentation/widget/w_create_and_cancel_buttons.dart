@@ -15,12 +15,14 @@ class WCreateAndCancelButtons extends StatelessWidget {
     required this.onTapCancel,
     required this.title,
     required this.isLoading,
+    this.buttonKey,
   });
 
   final VoidCallback onTapCreate;
   final VoidCallback onTapCancel;
   final String title;
   final bool isLoading;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class WCreateAndCancelButtons extends StatelessWidget {
           onPressed: onTapCreate,
           text: title,
           color: AppColors.cFF9914,
+          buttonKey: buttonKey,
           textStyle: AppTextStyles.size18Bold.copyWith(
             color: AppColors.cFFFFFF,
           ),

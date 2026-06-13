@@ -6,7 +6,14 @@ import 'package:image_picker/image_picker.dart';
 class ImagePickerHelper {
   final ImagePicker _picker = ImagePicker();
 
+  static Future<List<File>> Function()? debugPickMultiImageOverride;
+  static Future<File?> Function(ImageSource source)? debugPickImageOverride;
+
   Future<File?> pickImage(ImageSource source) async {
+    final debugOverride = debugPickImageOverride;
+    if (debugOverride != null) {
+      return debugOverride(source);
+    }
     final XFile? pickedFile = await _picker.pickImage(source: source);
     if (pickedFile != null) {
       return File(pickedFile.path);
@@ -15,6 +22,10 @@ class ImagePickerHelper {
   }
 
   Future<List<File>> pickMultiImage() async {
+    final debugOverride = debugPickMultiImageOverride;
+    if (debugOverride != null) {
+      return debugOverride();
+    }
     List<File> files = [];
     final List<XFile> pickedImages = await _picker.pickMultiImage(
       limit: 4,

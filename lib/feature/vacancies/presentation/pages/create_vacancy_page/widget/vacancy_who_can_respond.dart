@@ -19,6 +19,8 @@ class VacancyWhoCanRespond extends StatelessWidget {
     required this.onTapApplication,
     required this.onTapTemporary,
     required this.companyDescriptionController,
+    this.applicationKey,
+    this.temporaryKey,
   });
 
   final bool isApplicationAvailable;
@@ -26,6 +28,8 @@ class VacancyWhoCanRespond extends StatelessWidget {
   final VoidCallback onTapApplication;
   final VoidCallback onTapTemporary;
   final TextEditingController companyDescriptionController;
+  final String? applicationKey;
+  final String? temporaryKey;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,7 @@ class VacancyWhoCanRespond extends StatelessWidget {
           WCheckedBoxListTile(
             value: isApplicationAvailable,
             title: LocaleKeys.applicantWithoutACompleteResume.tr(),
+            tileKey: applicationKey == null ? null : Key(applicationKey!),
             onTap: onTapApplication,
           ),
           AppUtils.hSizedBox32,
@@ -68,6 +73,7 @@ class VacancyWhoCanRespond extends StatelessWidget {
                 child: WCheckedBoxListTile(
                   value: isTemporaryAvailable,
                   title: LocaleKeys.temporaryEmploymentIsPossible.tr(),
+                  tileKey: temporaryKey == null ? null : Key(temporaryKey!),
                   onTap: onTapTemporary,
                 ),
               ),

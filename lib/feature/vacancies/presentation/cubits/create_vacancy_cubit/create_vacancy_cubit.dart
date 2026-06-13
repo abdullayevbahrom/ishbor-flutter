@@ -86,6 +86,15 @@ class CreateVacancyCubit extends Cubit<CreateVacancyState> {
     }
   }
 
+  void removeImage(int index) {
+    final images = List<File>.from(state.images);
+    if (index < 0 || index >= images.length) {
+      return;
+    }
+    images.removeAt(index);
+    emit(state.copyWith(images: images));
+  }
+
   void updateOperatingMode(int index) {
     final oldSet = Set.from(state.operatingMode);
     if (oldSet.contains(index)) {

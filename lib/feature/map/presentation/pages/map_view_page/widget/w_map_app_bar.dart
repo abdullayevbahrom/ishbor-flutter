@@ -175,7 +175,9 @@ class _MapTypeButton extends StatelessWidget {
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 8.w),
         backgroundColor: selected ? AppColors.cFF9914 : AppColors.cFFFFFF,
-        side: BorderSide(color: selected ? AppColors.cFF9914 : AppColors.cCCCCCC),
+        side: BorderSide(
+          color: selected ? AppColors.cFF9914 : AppColors.cCCCCCC,
+        ),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),

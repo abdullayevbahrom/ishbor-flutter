@@ -20,6 +20,8 @@ class GenerateVacancy extends StatefulWidget {
     required this.onTapButton,
     required this.isAvailable,
     required this.isLoading,
+    this.promptKey,
+    this.buttonKey,
   });
 
   final TextEditingController controller;
@@ -27,6 +29,8 @@ class GenerateVacancy extends StatefulWidget {
   final VoidCallback onTapButton;
   final bool isAvailable;
   final bool isLoading;
+  final Key? promptKey;
+  final String? buttonKey;
 
   @override
   State<GenerateVacancy> createState() => _GenerateVacancyState();
@@ -96,6 +100,7 @@ class _GenerateVacancyState extends State<GenerateVacancy> {
                   child: Column(
                     children: [
                       TextField(
+                        key: widget.promptKey,
                         enabled: true,
                         style: AppTextStyles.size17Medium,
                         onChanged: (value) {
@@ -174,6 +179,7 @@ class _GenerateVacancyState extends State<GenerateVacancy> {
           onPressed: widget.onTapButton,
           isAvailable: widget.isAvailable,
           isLoading: widget.isLoading,
+          buttonKey: widget.buttonKey,
           leftIcon: SvgPicture.asset(
             AppSvg.icMagic2,
             height: 20.r,

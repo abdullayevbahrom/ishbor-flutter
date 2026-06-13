@@ -26,6 +26,8 @@ class WBasicInfoForm extends StatefulWidget {
     required this.onChanged,
     this.titleKey,
     this.categoryKey,
+    this.titleSelectorKey,
+    this.categorySelectorKey,
   });
 
   final String? title;
@@ -36,6 +38,8 @@ class WBasicInfoForm extends StatefulWidget {
   final Function({String? value, String? valueStr}) onChanged;
   final Key? titleKey;
   final Key? categoryKey;
+  final Key? titleSelectorKey;
+  final Key? categorySelectorKey;
 
   @override
   State<WBasicInfoForm> createState() => _WBasicInfoFormState();
@@ -79,18 +83,21 @@ class _WBasicInfoFormState extends State<WBasicInfoForm> {
                     ),
                   ),
                   AppUtils.hSizedBox16,
-                  WTitleWithTextForm(
-                    fieldKey: widget.titleKey,
-                    validator: (value) {
-                      return ValidatorHelpers.validateField(
-                        value: value!,
-                        message: LocaleKeys.serviceName.tr(),
-                      );
-                    },
-                    keyBoardType: TextInputType.text,
-                    textEditingController: widget.serviceController,
-                    title: LocaleKeys.serviceName.tr(),
-                    hintText: LocaleKeys.enterName.tr(),
+                  KeyedSubtree(
+                    key: widget.titleSelectorKey,
+                    child: WTitleWithTextForm(
+                      fieldKey: widget.titleKey,
+                      validator: (value) {
+                        return ValidatorHelpers.validateField(
+                          value: value!,
+                          message: LocaleKeys.serviceName.tr(),
+                        );
+                      },
+                      keyBoardType: TextInputType.text,
+                      textEditingController: widget.serviceController,
+                      title: LocaleKeys.serviceName.tr(),
+                      hintText: LocaleKeys.enterName.tr(),
+                    ),
                   ),
                   AppUtils.hSizedBox24,
                   Text(
@@ -100,88 +107,101 @@ class _WBasicInfoFormState extends State<WBasicInfoForm> {
                     ),
                   ),
                   AppUtils.hSizedBox8,
-                  AppTextFormField(
-                    fieldKey: widget.categoryKey,
-                    hintText: LocaleKeys.selectCategory.tr(),
-                    controller: widget.categoriesController,
-                    fillColor: AppColors.cFBFBFD,
-                    keyBoardType: TextInputType.none,
-                    suffixIcon: Icon(
-                      Icons.keyboard_arrow_right_rounded,
-                      color: AppColors.cBDC0C6,
-                      size: 25.sp,
-                    ),
-                    onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return FadeInUp(
-                            child: BlocBuilder<CategoryCubit, CategoryState>(
-                              builder: (context, state) {
-                                return Material(
-                                  borderRadius: BorderRadius.circular(20.r),
-                                  color: AppColors.cFFFFFF,
-                                  child: ListView.builder(
-                                    shrinkWrap: true,
-                                    scrollDirection: Axis.vertical,
-                                    controller:
-                                        context
-                                            .read<CategoryCubit>()
-                                            .scrollController,
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: 16.h,
-                                    ),
-                                    itemBuilder: (context, index) {
-                                      return state.isLoadingMore &&
-                                              index ==
-                                                  state.categories?.items.length
-                                          ? Center(
-                                            child:
-                                                CircularProgressIndicator.adaptive(),
-                                          )
-                                          : InkWell(
-                                            onTap: () {
-                                              context.pop();
-                                              widget.onChanged(
-                                                value:
+                  KeyedSubtree(
+                    key: widget.categorySelectorKey,
+                    child: AppTextFormField(
+                      fieldKey: widget.categoryKey,
+                      hintText: LocaleKeys.selectCategory.tr(),
+                      controller: widget.categoriesController,
+                      fillColor: AppColors.cFBFBFD,
+                      keyBoardType: TextInputType.none,
+                      suffixIcon: Icon(
+                        Icons.keyboard_arrow_right_rounded,
+                        color: AppColors.cBDC0C6,
+                        size: 25.sp,
+                      ),
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return FadeInUp(
+                              child: BlocBuilder<CategoryCubit, CategoryState>(
+                                builder: (context, state) {
+                                  return Material(
+                                    borderRadius: BorderRadius.circular(20.r),
+                                    color: AppColors.cFFFFFF,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      scrollDirection: Axis.vertical,
+                                      controller:
+                                          context
+                                              .read<CategoryCubit>()
+                                              .scrollController,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16.h,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return state.isLoadingMore &&
+                                                index ==
                                                     state
                                                         .categories
-                                                        ?.items[index]
-                                                        .id,
-                                                valueStr:
-                                                    '${state.categories?.items[index].translations[context.locale.languageCode == 'ru' ? 0 : 1].name}',
-                                              );
-                                            },
-                                            child: Text(
-                                              '${state.categories?.items[index].translations[context.locale.languageCode == 'ru' ? 0 : 1].name}',
-                                              style: AppTextStyles.size17Medium,
-                                            ).paddingSymmetric(
-                                              horizontal: 16.w,
-                                              vertical: 8.h,
-                                            ),
-                                          );
-                                    },
-                                    itemCount:
-                                        !state.isLoadingMore
-                                            ? state.categories?.items.length ??
-                                                0
-                                            : state.categories?.items.length ??
-                                                0 + 1,
-                                  ),
-                                );
-                              },
-                            ).paddingSymmetric(
-                              horizontal: 20.w,
-                              vertical: 220.h,
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    onChanged: (value) {},
-                    validator: (value) {
-                      return ValidatorHelpers.validateField(value: value!);
-                    },
+                                                        ?.items
+                                                        .length
+                                            ? Center(
+                                              child:
+                                                  CircularProgressIndicator.adaptive(),
+                                            )
+                                            : InkWell(
+                                              onTap: () {
+                                                context.pop();
+                                                widget.onChanged(
+                                                  value:
+                                                      state
+                                                          .categories
+                                                          ?.items[index]
+                                                          .id,
+                                                  valueStr:
+                                                      '${state.categories?.items[index].translations[context.locale.languageCode == 'ru' ? 0 : 1].name}',
+                                                );
+                                              },
+                                              child: Text(
+                                                '${state.categories?.items[index].translations[context.locale.languageCode == 'ru' ? 0 : 1].name}',
+                                                style:
+                                                    AppTextStyles.size17Medium,
+                                              ).paddingSymmetric(
+                                                horizontal: 16.w,
+                                                vertical: 8.h,
+                                              ),
+                                            );
+                                      },
+                                      itemCount:
+                                          !state.isLoadingMore
+                                              ? state
+                                                      .categories
+                                                      ?.items
+                                                      .length ??
+                                                  0
+                                              : state
+                                                      .categories
+                                                      ?.items
+                                                      .length ??
+                                                  0 + 1,
+                                    ),
+                                  );
+                                },
+                              ).paddingSymmetric(
+                                horizontal: 20.w,
+                                vertical: 220.h,
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      onChanged: (value) {},
+                      validator: (value) {
+                        return ValidatorHelpers.validateField(value: value!);
+                      },
+                    ),
                   ),
                   // WDropDownMenu(
                   //   onChanged: onChanged,

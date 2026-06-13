@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_jobs/core/helpers/image_picker.dart';
 import 'package:top_jobs/core/network/dio_interceptor.dart';
 import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
@@ -19,14 +21,23 @@ import 'package:top_jobs/feature/common/presentation/widget/service_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/task_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/vacancy_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_check_box_list_tile.dart';
+import 'package:top_jobs/feature/common/presentation/cubits/category_cubit/category_cubit.dart';
 import 'package:top_jobs/feature/main/presentation/cubit/main_cubit/main_cubit.dart';
 import 'package:top_jobs/feature/map/presentation/cubits/map_view_cubit/map_view_cubit.dart';
+import 'package:top_jobs/feature/ads_view/data/models/task_request_params.dart';
+import 'package:top_jobs/feature/ads_view/presentation/cubits/task_view_cubit/task_view_cubit.dart';
+import 'package:top_jobs/feature/services/data/models/service.dart';
 import 'package:top_jobs/feature/profile/data/model/payment_provider.dart';
 import 'package:top_jobs/feature/profile/domain/repository/payment_repository.dart';
+import 'package:top_jobs/feature/common/data/models/common_query_params.dart';
 import 'package:top_jobs/feature/services/domain/repository/service_repository.dart';
+import 'package:top_jobs/feature/tasks/data/models/task_model.dart';
 import 'package:top_jobs/feature/tasks/domain/repository/task_repository.dart';
+import 'package:top_jobs/feature/tasks/presentation/cubits/create_task_cubit/create_task_cubit.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_query_params.dart';
 import 'package:top_jobs/feature/vacancies/domain/repository/vacancy_repository.dart';
+import 'package:top_jobs/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart';
+import 'package:top_jobs/models/vacancy.dart';
 import 'package:top_jobs/injection_container.dart';
 import 'package:top_jobs/main.dart' as app;
 
@@ -82,11 +93,21 @@ void main() {
     debugPrint('INFO [E2E][device] ${deviceSetup.describeForLog()}');
     await app.bootstrapApplication(mode: app.AppBootstrapMode.e2e);
     await helper.prepare();
+    ImagePickerHelper.debugPickMultiImageOverride = () async {
+      final path = '${deviceSetup.downloadDirectory}/sample_image.png';
+      return <File>[File(path)];
+    };
+    ImagePickerHelper.debugPickImageOverride = (source) async {
+      final path = '${deviceSetup.downloadDirectory}/sample_image.png';
+      return File(path);
+    };
     await Future<void>.delayed(const Duration(seconds: 2));
   });
 
   tearDownAll(() async {
     DioInterceptors.e2eObserver = null;
+    ImagePickerHelper.debugPickMultiImageOverride = null;
+    ImagePickerHelper.debugPickImageOverride = null;
     await helper.finalize(status: 'passed');
   });
 
@@ -741,6 +762,666 @@ void main() {
       await _closeTopSheets(tester, count: 1);
     },
   );
+
+  testWidgets('phase 4 task 15 vacancy create edit flow', (tester) async {
+    await _resetToGuest(tester);
+    final auth = await AuthPreflight(config).run();
+    await _seedAuthenticatedState(auth);
+
+    final createdTitle = 'Vacancy ${config.runId}';
+    final updatedTitle = 'Vacancy ${config.runId} updated';
+    final prompt = 'Create a vacancy for ${config.runId} with logistics focus';
+
+    navigatorKey.currentContext!.push(Routes.createVacancy);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-vacancy')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'generator',
+      order: 46,
+    );
+
+    await tester.enterText(
+      find.byKey(E2EKeys.input('vacancy.generate', 'prompt')),
+      prompt,
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'prompt-filled',
+      order: 47,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.generate.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 5));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'form-ready',
+      order: 48,
+    );
+
+    debugPrint('[FIX][E2E][vacancy] forcing generate failure branch');
+    final vacancyCubit =
+        navigatorKey.currentContext!.read<CreateVacancyCubit>();
+    vacancyCubit.descriptionController.text = List.filled(901, 'x').join();
+    await vacancyCubit.generateVacancyBody();
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'generate-error',
+      order: 148,
+    );
+
+    debugPrint('[FIX][E2E][vacancy] capturing validation errors');
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'validation-errors',
+      order: 149,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'title'),
+      createdTitle,
+    );
+    await _selectFirstCategory(tester: tester, formPrefix: 'vacancy.create');
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'description'),
+      'E2E vacancy description for ${config.runId}.',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'salary-min'),
+      '5000000',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'salary-max'),
+      '9000000',
+    );
+    await tester.tap(find.byKey(const Key('vacancy.salary.negotiable')));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(find.byKey(const Key('vacancy.respond.application')));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(find.byKey(const Key('vacancy.respond.temporary')));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await _enterTextInField(
+      tester,
+      const Key('vacancy.create.start-time'),
+      '09:00',
+    );
+    await _enterTextInField(
+      tester,
+      const Key('vacancy.create.end-time'),
+      '18:00',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'skills'),
+      'Flutter, Dart, Logistics',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'section-filled',
+      order: 49,
+    );
+
+    await _selectLocation(
+      tester: tester,
+      helper: helper,
+      route: 'vacancy-create',
+      state: 'location-map',
+      order: 50,
+      triggerKey: const Key('vacancy.location.select'),
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'location-selected',
+      order: 51,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'image-added',
+      order: 52,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'image-removed',
+      order: 53,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'phone-1'),
+      '901234567',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.create.phone.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'phone-2'),
+      '907654321',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-create',
+      state: 'ready-to-submit',
+      order: 54,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-view',
+      state: 'created',
+      order: 55,
+    );
+
+    final createdVacancy = await _findCreatedVacancyByTitle(createdTitle);
+    debugPrint(
+      'INFO [E2E][vacancy] action=create id=${createdVacancy.id} fields=title,category,description,salary,phones,images,location',
+    );
+
+    navigatorKey.currentContext!.push(
+      Routes.createVacancy,
+      extra: createdVacancy,
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-vacancy')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-edit',
+      state: 'loaded',
+      order: 56,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'title'),
+      updatedTitle,
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('vacancy.create', 'description'),
+      'Updated vacancy description for ${config.runId}.',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-edit',
+      state: 'image-removed',
+      order: 57,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('vacancy.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'vacancy-view',
+      state: 'edited',
+      order: 58,
+    );
+    debugPrint(
+      'INFO [E2E][vacancy] action=edit id=${createdVacancy.id} fields=title,description,images',
+    );
+
+    await sl<VacancyRepository>().deleteVacancyById(
+      vacancyId: createdVacancy.id,
+    );
+  });
+
+  testWidgets('phase 4 task 16 service create edit flow', (tester) async {
+    await _resetToGuest(tester);
+    final auth = await AuthPreflight(config).run();
+    await _seedAuthenticatedState(auth);
+
+    final createdTitle = 'Service ${config.runId}';
+    final updatedTitle = 'Service ${config.runId} updated';
+
+    navigatorKey.currentContext!.push(Routes.createService);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-service')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'form-open',
+      order: 59,
+    );
+
+    debugPrint('[FIX][E2E][service] capturing validation errors');
+    await tester.tap(find.byKey(E2EKeys.button('service.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'validation-errors',
+      order: 150,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'title'),
+      createdTitle,
+    );
+    await _selectFirstCategory(tester: tester, formPrefix: 'service.create');
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'description'),
+      'E2E service description for ${config.runId}.',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'salary'),
+      '0',
+    );
+    debugPrint('[FIX][E2E][service] capturing bad price validation branch');
+    await tester.tap(find.byKey(E2EKeys.button('service.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'bad-price-validation-errors',
+      order: 151,
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'salary'),
+      '2500000',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'phone-0'),
+      '123',
+    );
+    debugPrint('[FIX][E2E][service] capturing phone validation branch');
+    await tester.tap(find.byKey(E2EKeys.button('service.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'phone-validation-errors',
+      order: 152,
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'phone-0'),
+      '901111222',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'section-filled',
+      order: 60,
+    );
+
+    await _selectLocation(
+      tester: tester,
+      helper: helper,
+      route: 'service-create',
+      state: 'location-map',
+      order: 61,
+      triggerKey: const Key('service.location.select'),
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'location-selected',
+      order: 62,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('service.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'image-added',
+      order: 63,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'image-removed',
+      order: 64,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('service.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'phone-1'),
+      '901111222',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('service.create.phone.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'phone-2'),
+      '902222333',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'service-create',
+      state: 'ready-to-submit',
+      order: 65,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('service.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'service-view',
+      state: 'created',
+      order: 66,
+    );
+
+    final createdService = await _findCreatedServiceByTitle(createdTitle);
+    debugPrint(
+      'INFO [E2E][service] action=create id=${createdService.id} fields=title,category,description,price,negotiable,address,phones,images',
+    );
+
+    navigatorKey.currentContext!.push(
+      Routes.createService,
+      extra: createdService,
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-service')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'service-edit',
+      state: 'loaded',
+      order: 67,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'title'),
+      updatedTitle,
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('service.create', 'description'),
+      'Updated service description for ${config.runId}.',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('service.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'service-edit',
+      state: 'image-removed',
+      order: 68,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('service.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'service-view',
+      state: 'edited',
+      order: 69,
+    );
+    debugPrint(
+      'INFO [E2E][service] action=edit id=${createdService.id} fields=title,description,price,images',
+    );
+
+    await sl<ServiceRepository>().deleteServiceById(
+      serviceId: createdService.id,
+    );
+  });
+
+  testWidgets('phase 4 task 17 task create edit request flow', (tester) async {
+    await _resetToGuest(tester);
+    final auth = await AuthPreflight(config).run();
+    await _seedAuthenticatedState(auth);
+
+    final createdTitle = 'Task ${config.runId}';
+    final updatedTitle = 'Task ${config.runId} updated';
+
+    navigatorKey.currentContext!.push(Routes.createTask);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-task')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'form-open',
+      order: 70,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'title'),
+      createdTitle,
+    );
+    await _selectFirstCategory(tester: tester, formPrefix: 'task.create');
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'description'),
+      'E2E task description for ${config.runId}.',
+    );
+    final taskCubit = navigatorKey.currentContext!.read<CreateTaskCubit>();
+    taskCubit.updateStartDate();
+    taskCubit.updateDate(
+      startDate: '2026/06/14 09:00',
+      endDate: '2026/06/15 18:00',
+    );
+    await _enterTextInField(
+      tester,
+      const Key('task.create.start-time'),
+      '2026/06/14',
+    );
+    await _enterTextInField(
+      tester,
+      const Key('task.create.end-time'),
+      '2026/06/15',
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'salary'),
+      '3500000',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('task.payment.0')));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await tester.tap(find.byKey(E2EKeys.button('task.remote')));
+    await tester.pumpAndSettle(const Duration(milliseconds: 500));
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'section-filled',
+      order: 71,
+    );
+
+    await _selectLocation(
+      tester: tester,
+      helper: helper,
+      route: 'task-create',
+      state: 'location-map',
+      order: 72,
+      triggerKey: const Key('task.location.select'),
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'location-selected',
+      order: 73,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('task.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'image-added',
+      order: 74,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'image-removed',
+      order: 75,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('task.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'phone-1'),
+      '903333444',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('task.create.phone.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'phone-2'),
+      '904444555',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'task-create',
+      state: 'ready-to-submit',
+      order: 76,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('task.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'task-view',
+      state: 'created',
+      order: 77,
+    );
+
+    final createdTask = await _findCreatedTaskByTitle(createdTitle);
+    debugPrint(
+      'INFO [E2E][task] action=create id=${createdTask.id} requestId=- fields=title,category,description,price,payment_method,date_time,address,remote,secure_deal,images',
+    );
+
+    navigatorKey.currentContext!.push(Routes.createTask, extra: createdTask);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('create-task')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'task-edit',
+      state: 'loaded',
+      order: 78,
+    );
+
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'title'),
+      updatedTitle,
+    );
+    await _enterTextInField(
+      tester,
+      E2EKeys.input('task.create', 'description'),
+      'Updated task description for ${config.runId}.',
+    );
+    await tester.tap(find.byKey(E2EKeys.button('task.image.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.tap(find.byKey(E2EKeys.button('image.remove.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'task-edit',
+      state: 'image-removed',
+      order: 79,
+    );
+    await tester.tap(find.byKey(E2EKeys.button('task.submit')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'task-view',
+      state: 'edited',
+      order: 80,
+    );
+    debugPrint(
+      'INFO [E2E][task] action=edit id=${createdTask.id} requestId=- fields=title,description,price,images',
+    );
+
+    debugPrint('[FIX][E2E][task][role] switch=guest');
+    await _resetToGuest(tester);
+    navigatorKey.currentContext!.go('/task-view?id=${createdTask.id}');
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+    expect(find.byKey(E2EKeys.page('task-view')), findsOneWidget);
+    await tester.tap(find.text(LocaleKeys.applyRequest.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'task-view',
+      state: 'apply-modal-open',
+      order: 170,
+    );
+    await tester.tap(find.text(LocaleKeys.send.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'task-view',
+      state: 'apply-validation-errors',
+      order: 171,
+    );
+    await tester.pageBack();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    debugPrint('[FIX][E2E][task][role] switch=authenticated');
+    await _seedAuthenticatedState(auth);
+
+    debugPrint('[FIX][E2E][task] applying request and verifying cancel branch');
+    navigatorKey.currentContext!.read<TaskViewCubit>().applyRequestTask(
+      TaskRequestParams(
+        taskId: createdTask.id,
+        message: 'IshBor E2E request ${config.runId}',
+        price: '350000',
+      ),
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    navigatorKey.currentContext!.push(
+      Routes.task_performers,
+      extra: createdTask,
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+    await tester.tap(find.text(LocaleKeys.choosePerformer.tr()).first);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    await helper.capture(
+      tester: tester,
+      route: 'task-performers',
+      state: 'request-accepted',
+      order: 181,
+    );
+    await tester.tap(find.text(LocaleKeys.cancel.tr()).first);
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    await helper.capture(
+      tester: tester,
+      route: 'task-performers',
+      state: 'request-cancelled',
+      order: 182,
+    );
+
+    await sl<TaskRepository>().deleteTaskById(taskId: createdTask.id);
+  });
 }
 
 Future<void> _resetToGuest(WidgetTester tester) async {
@@ -1145,6 +1826,143 @@ Future<String> _createPaymentTransactionId() async {
       }
 
       throw StateError('Payment transaction response missing transaction id.');
+    },
+  );
+}
+
+Future<void> _enterTextInField(
+  WidgetTester tester,
+  Key key,
+  String text,
+) async {
+  final field = find.descendant(
+    of: find.byKey(key),
+    matching: find.byType(EditableText),
+  );
+  expect(field, findsOneWidget);
+  await tester.tap(field);
+  await tester.pumpAndSettle(const Duration(milliseconds: 200));
+  await tester.enterText(field, text);
+  await tester.pumpAndSettle(const Duration(milliseconds: 300));
+}
+
+Future<void> _selectFirstCategory({
+  required WidgetTester tester,
+  required String formPrefix,
+}) async {
+  final categoryKey = E2EKeys.input(formPrefix, 'category');
+  final field = find.descendant(
+    of: find.byKey(categoryKey),
+    matching: find.byType(EditableText),
+  );
+  expect(field, findsOneWidget);
+  await tester.tap(field);
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+
+  final categoryCubit = navigatorKey.currentContext!.read<CategoryCubit>();
+  final categories = categoryCubit.state.categories?.items ?? [];
+  if (categories.isEmpty) {
+    throw StateError('No categories available for E2E selection.');
+  }
+
+  final localeCode = navigatorKey.currentContext!.locale.languageCode;
+  final firstCategory = categories.first;
+  final translationIndex = localeCode == 'ru' ? 0 : 1;
+  final categoryName =
+      firstCategory.translations.length > translationIndex
+          ? firstCategory.translations[translationIndex].name
+          : firstCategory.translations.first.name;
+
+  if (categoryName == null || categoryName.trim().isEmpty) {
+    throw StateError('Category name is empty for E2E selection.');
+  }
+
+  await tester.tap(find.text(categoryName).last);
+  await tester.pumpAndSettle(const Duration(seconds: 1));
+}
+
+Future<void> _selectLocation({
+  required WidgetTester tester,
+  required E2EScreenshotHelper helper,
+  required String route,
+  required String state,
+  required int order,
+  required Key triggerKey,
+}) async {
+  await tester.tap(find.byKey(triggerKey));
+  await tester.pumpAndSettle(const Duration(seconds: 3));
+  await helper.capture(
+    tester: tester,
+    route: route,
+    state: state,
+    order: order,
+  );
+
+  expect(find.byKey(E2EKeys.button('map.select')), findsOneWidget);
+  await tester.tap(find.byKey(E2EKeys.button('map.select')));
+  await tester.pumpAndSettle(const Duration(seconds: 3));
+}
+
+Future<Vacancy> _findCreatedVacancyByTitle(String title) async {
+  final result = await sl<VacancyRepository>().fetchUserVacancies(
+    queryParams: CommonQueryParams(pageSize: 50, pageNumber: 1),
+  );
+
+  return result.fold(
+    (failure) => throw StateError('Vacancy fetch failed: ${failure.message}'),
+    (response) {
+      for (final vacancy in response.items) {
+        final resolved =
+            vacancy.title.resolve('uz') ??
+            vacancy.title.resolve('ru') ??
+            vacancy.title.resolve('en') ??
+            '';
+        if (resolved.contains(title) || vacancy.id.contains(title)) {
+          return vacancy;
+        }
+      }
+      throw StateError('Created vacancy not found by title: $title');
+    },
+  );
+}
+
+Future<ServiceModel> _findCreatedServiceByTitle(String title) async {
+  final result = await sl<ServiceRepository>().fetchMyServices(
+    queryParams: CommonQueryParams(pageSize: 50, pageNumber: 1),
+  );
+
+  return result.fold(
+    (failure) => throw StateError('Service fetch failed: ${failure.message}'),
+    (response) {
+      for (final service in response.items) {
+        final resolved =
+            service.title.resolve('uz') ??
+            service.title.resolve('ru') ??
+            service.title.resolve('en') ??
+            '';
+        if (resolved.contains(title) || service.id.contains(title)) {
+          return service;
+        }
+      }
+      throw StateError('Created service not found by title: $title');
+    },
+  );
+}
+
+Future<TaskModel> _findCreatedTaskByTitle(String title) async {
+  final result = await sl<TaskRepository>().fetchMyTasks(
+    queryParams: CommonQueryParams(pageSize: 50, pageNumber: 1),
+  );
+
+  return result.fold(
+    (failure) => throw StateError('Task fetch failed: ${failure.message}'),
+    (response) {
+      for (final task in response.items) {
+        if (task.title.contains(title) || task.id.contains(title)) {
+          return task;
+        }
+      }
+      throw StateError('Created task not found by title: $title');
     },
   );
 }

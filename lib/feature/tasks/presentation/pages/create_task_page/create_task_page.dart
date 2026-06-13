@@ -12,6 +12,7 @@ import 'package:top_jobs/core/helpers/scrollcontroller_helpers.dart';
 import 'package:top_jobs/core/helpers/validators.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
 import 'package:top_jobs/core/theme/app_text_styles.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/core/utils/app_utils.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_header.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_text_form_field.dart';
@@ -100,6 +101,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
             key: taskKey,
             child: WLayout(
               child: Scaffold(
+                key: E2EKeys.page('create-task'),
                 backgroundColor: AppColors.cFFFFFF,
                 body: Column(
                   children: [
@@ -116,6 +118,14 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               WBasicInfoForm(
                                 titleKey: _titleFieldKey,
                                 categoryKey: _categoryFieldKey,
+                                titleSelectorKey: E2EKeys.input(
+                                  'task.create',
+                                  'title',
+                                ),
+                                categorySelectorKey: E2EKeys.input(
+                                  'task.create',
+                                  'category',
+                                ),
                                 serviceController: cubit.taskNameController,
                                 categoriesController: cubit.categoryController,
                                 onTapCategories: () {},
@@ -132,6 +142,11 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               SuggestedSalary(
                                 salaryKey: _salaryFieldKey,
                                 locationKey: _locFieldKey,
+                                salarySelectorKey: E2EKeys.input(
+                                  'task.create',
+                                  'salary',
+                                ),
+                                selectLocationKey: 'task.location.select',
                                 cityKey: _cityFieldKey,
                                 maxSalaryController: cubit.maxSalaryController,
                                 minSalaryController: cubit.minSalaryController,
@@ -162,7 +177,10 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               AppUtils.hSizedBox24,
                               WTitleWithTextForm(
                                 bgColor: AppColors.cFFFFFF,
-                                fieldKey: _descFieldKey,
+                                fieldKey: E2EKeys.input(
+                                  'task.create',
+                                  'description',
+                                ),
                                 keyBoardType: TextInputType.text,
                                 maxLines: 10,
                                 minLines: 6,
@@ -216,17 +234,61 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                     ),
                                     AppUtils.hSizedBox8,
                                     if (!state.isStartDateNow)
-                                      AppTextFormField(
-                                        fieldKey: _startTimeFieldKey,
-                                        fillColor: AppColors.cFFFFFF,
-                                        hintText: LocaleKeys.enterDate.tr(),
-                                        controller: cubit.startDateController,
+                                      KeyedSubtree(
+                                        key: const Key(
+                                          'task.create.start-time',
+                                        ),
+                                        child: AppTextFormField(
+                                          fieldKey: _startTimeFieldKey,
+                                          fillColor: AppColors.cFFFFFF,
+                                          hintText: LocaleKeys.enterDate.tr(),
+                                          controller: cubit.startDateController,
+                                          keyBoardType: TextInputType.none,
+                                          validator: (value) {
+                                            return ValidatorHelpers.validateField(
+                                              value: value!,
+                                            );
+                                          },
+                                          onTap: () {
+                                            DatePicker.showDatePicker(
+                                              context,
+                                              locale:
+                                                  context.locale.languageCode ==
+                                                          "ru"
+                                                      ? LocaleType.ru
+                                                      : LocaleType.en,
+                                              currentTime: DateTime.now(),
+
+                                              minTime: DateTime.now(),
+                                              maxTime: DateTime(2030),
+                                              onConfirm: (time) {
+                                                cubit.updateDate(
+                                                  startDate: DateFormat(
+                                                    'yyyy/MM/dd HH:mm',
+                                                  ).format(time),
+                                                );
+                                                cubit
+                                                    .startDateController
+                                                    .text = DateFormat(
+                                                  'yyyy/MM/dd',
+                                                ).format(time);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+
+                                    AppUtils.hSizedBox16,
+                                    KeyedSubtree(
+                                      key: const Key('task.create.end-time'),
+                                      child: WTitleWithTextForm(
+                                        fieldKey: _endTimeFieldKey,
                                         keyBoardType: TextInputType.none,
-                                        validator: (value) {
-                                          return ValidatorHelpers.validateField(
-                                            value: value!,
-                                          );
-                                        },
+                                        textEditingController:
+                                            cubit.endDateController,
+                                        formatters: [],
+                                        title: LocaleKeys.endDate.tr(),
+                                        hintText: LocaleKeys.enterDate.tr(),
                                         onTap: () {
                                           DatePicker.showDatePicker(
                                             context,
@@ -235,71 +297,35 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                                         "ru"
                                                     ? LocaleType.ru
                                                     : LocaleType.en,
-                                            currentTime: DateTime.now(),
+                                            currentTime: DateTime.now().add(
+                                              Duration(days: 1),
+                                            ),
 
-                                            minTime: DateTime.now(),
+                                            minTime:
+                                                DateTime.now()
+                                                  ..add(Duration(days: 1)),
                                             maxTime: DateTime(2030),
                                             onConfirm: (time) {
                                               cubit.updateDate(
-                                                startDate: DateFormat(
+                                                endDate: DateFormat(
                                                   'yyyy/MM/dd HH:mm',
                                                 ).format(time),
                                               );
                                               cubit
-                                                  .startDateController
+                                                  .endDateController
                                                   .text = DateFormat(
                                                 'yyyy/MM/dd',
                                               ).format(time);
                                             },
                                           );
                                         },
+                                        validator: (value) {
+                                          return ValidatorHelpers.validateField(
+                                            value: value!,
+                                            message: LocaleKeys.endDate.tr(),
+                                          );
+                                        },
                                       ),
-
-                                    AppUtils.hSizedBox16,
-                                    WTitleWithTextForm(
-                                      fieldKey: _endTimeFieldKey,
-                                      keyBoardType: TextInputType.none,
-                                      textEditingController:
-                                          cubit.endDateController,
-                                      formatters: [],
-                                      title: LocaleKeys.endDate.tr(),
-                                      hintText: LocaleKeys.enterDate.tr(),
-                                      onTap: () {
-                                        DatePicker.showDatePicker(
-                                          context,
-                                          locale:
-                                              context.locale.languageCode ==
-                                                      "ru"
-                                                  ? LocaleType.ru
-                                                  : LocaleType.en,
-                                          currentTime: DateTime.now().add(
-                                            Duration(days: 1),
-                                          ),
-
-                                          minTime:
-                                              DateTime.now()
-                                                ..add(Duration(days: 1)),
-                                          maxTime: DateTime(2030),
-                                          onConfirm: (time) {
-                                            cubit.updateDate(
-                                              endDate: DateFormat(
-                                                'yyyy/MM/dd HH:mm',
-                                              ).format(time),
-                                            );
-                                            cubit
-                                                .endDateController
-                                                .text = DateFormat(
-                                              'yyyy/MM/dd',
-                                            ).format(time);
-                                          },
-                                        );
-                                      },
-                                      validator: (value) {
-                                        return ValidatorHelpers.validateField(
-                                          value: value!,
-                                          message: LocaleKeys.endDate.tr(),
-                                        );
-                                      },
                                     ),
                                   ],
                                 ).paddingAll(16.r),
@@ -308,6 +334,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                               WCheckedBoxListTile(
                                 value: state.isRemote,
                                 title: LocaleKeys.youCanWorkRemote.tr(),
+                                tileKey: E2EKeys.button('task.remote'),
                                 onTap: () {
                                   cubit.updateRemoteWork();
                                 },
@@ -344,6 +371,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                                 paymentMethods.length,
                                                 (index) {
                                                   return WRadioListTile(
+                                                    tileKey: E2EKeys.button(
+                                                      'task.payment.$index',
+                                                    ),
                                                     title:
                                                         paymentMethods[index],
                                                     onTap: () {
@@ -392,6 +422,9 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   cubit.pickImages();
                                 },
                                 images: state.images,
+                                onTapRemove: cubit.removeImage,
+                                imageFormKey: E2EKeys.page('task-images'),
+                                addButtonKey: 'task.image.add',
                               ),
                               24.verticalSpace,
                               WInquiryPhoneNumbers(
@@ -403,6 +436,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                     cubit.phoneNumberController2,
                                 phoneNumberController3:
                                     cubit.phoneNumberController3,
+                                formKeyPrefix: 'task.create',
                               ),
                               24.verticalSpace,
                               BlocBuilder<UserCubit, UserState>(
@@ -410,6 +444,7 @@ class _CreateTaskPageState extends State<CreateTaskPage> {
                                   return Align(
                                     alignment: Alignment.center,
                                     child: WCreateAndCancelButtons(
+                                      buttonKey: 'task.submit',
                                       onTapCreate: () {
                                         if (taskKey.currentState?.validate() ??
                                             false) {

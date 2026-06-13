@@ -9,6 +9,7 @@ import 'package:yandex_geocoder/yandex_geocoder.dart';
 import '../../../../../../core/helpers/string_helpers.dart';
 import '../../../../../../core/theme/app_png.dart';
 import '../../../../../../core/theme/app_svg.dart';
+import '../../../../../../core/utils/e2e_keys.dart';
 import '../../../../../common/presentation/widget/w_decorated_box.dart';
 import '../../../cubits/create_vacancy_cubit/create_vacancy_cubit.dart';
 
@@ -20,6 +21,7 @@ class VacancyPlace extends StatelessWidget {
     required this.cityController,
     this.cityKey,
     this.locKey,
+    this.selectLocationKey,
   });
 
   final TextEditingController vacancyLocationController;
@@ -27,6 +29,7 @@ class VacancyPlace extends StatelessWidget {
   final Function(GeocodeResponse address) onLocationSelected;
   final Key? cityKey;
   final Key? locKey;
+  final String? selectLocationKey;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +68,10 @@ class VacancyPlace extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InkWell(
+                          key:
+                              selectLocationKey == null
+                                  ? null
+                                  : E2EKeys.button(selectLocationKey!),
                           onTap: () async {
                             GeocodeResponse? response = await context.push(
                               Routes.yandexMap,

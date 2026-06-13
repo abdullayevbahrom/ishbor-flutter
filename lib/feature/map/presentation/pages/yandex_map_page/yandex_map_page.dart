@@ -212,6 +212,7 @@ class YandexMapPage extends StatelessWidget {
                                                 );
                                               }
                                               : () {},
+                                      buttonKey: 'map.select',
                                       isLoading: state.status.isLoading(),
                                       radius: 20.r,
                                       shadow: [

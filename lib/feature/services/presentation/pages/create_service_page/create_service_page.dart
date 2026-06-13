@@ -9,6 +9,7 @@ import 'package:top_jobs/core/helpers/key_helpers.dart';
 import 'package:top_jobs/core/helpers/scrollcontroller_helpers.dart';
 import 'package:top_jobs/core/helpers/validators.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/core/utils/app_utils.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_header.dart';
 import 'package:top_jobs/feature/common/presentation/widget/footer.dart';
@@ -69,6 +70,7 @@ class _CreateServicePageState extends State<CreateServicePage> {
             key: serviceKey,
             child: WLayout(
               child: Scaffold(
+                key: E2EKeys.page('create-service'),
                 backgroundColor: AppColors.cFFFFFF,
                 body: Column(
                   children: [
@@ -87,6 +89,14 @@ class _CreateServicePageState extends State<CreateServicePage> {
                               WBasicInfoForm(
                                 titleKey: _titleFieldKey,
                                 categoryKey: _categoryFieldKey,
+                                titleSelectorKey: E2EKeys.input(
+                                  'service.create',
+                                  'title',
+                                ),
+                                categorySelectorKey: E2EKeys.input(
+                                  'service.create',
+                                  'category',
+                                ),
                                 serviceController: cubit.serviceNameController,
                                 categoriesController: cubit.categoryController,
                                 onTapCategories: () {},
@@ -103,6 +113,11 @@ class _CreateServicePageState extends State<CreateServicePage> {
                               SuggestedSalary(
                                 cityKey: _cityFieldKey,
                                 locationKey: _locationFieldKey,
+                                salarySelectorKey: E2EKeys.input(
+                                  'service.create',
+                                  'salary',
+                                ),
+                                selectLocationKey: 'service.location.select',
                                 salaryKey: _salaryFieldKey,
                                 minSalaryController: cubit.minSalaryController,
                                 maxSalaryController: cubit.maxSalaryController,
@@ -132,7 +147,10 @@ class _CreateServicePageState extends State<CreateServicePage> {
                               AppUtils.hSizedBox40,
                               WTitleWithTextForm(
                                 bgColor: AppColors.cFFFFFF,
-                                fieldKey: _descFieldKey,
+                                fieldKey: E2EKeys.input(
+                                  'service.create',
+                                  'description',
+                                ),
                                 keyBoardType: TextInputType.text,
                                 textEditingController:
                                     cubit.serviceDescriptionController,
@@ -159,6 +177,9 @@ class _CreateServicePageState extends State<CreateServicePage> {
                               AppUtils.hSizedBox24,
                               WImagePicker(
                                 images: state.images,
+                                onTapRemove: cubit.removeImage,
+                                imageFormKey: E2EKeys.page('service-images'),
+                                addButtonKey: 'service.image.add',
                                 onPressed: () {
                                   cubit.pickImages();
                                 },
@@ -173,11 +194,13 @@ class _CreateServicePageState extends State<CreateServicePage> {
                                     cubit.phoneNumberController2,
                                 phoneNumberController3:
                                     cubit.phoneNumberController3,
+                                formKeyPrefix: 'service.create',
                               ),
                               24.verticalSpace,
                               BlocBuilder<UserCubit, UserState>(
                                 builder: (context, userState) {
                                   return WCreateAndCancelButtons(
+                                    buttonKey: 'service.submit',
                                     title: LocaleKeys.createService.tr(),
                                     onTapCancel: () {},
                                     onTapCreate: () {

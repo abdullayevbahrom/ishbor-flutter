@@ -31,6 +31,7 @@ import 'package:top_jobs/feature/vacancies/presentation/pages/create_vacancy_pag
 import 'package:top_jobs/feature/vacancies/presentation/pages/create_vacancy_page/widget/vacancy_who_can_respond.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/e2e_keys.dart';
 import '../../../../../injection_container.dart';
 import '../../../../../models/vacancy.dart';
 import '../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
@@ -137,6 +138,7 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
             child: WLayout(
               bottom: false,
               child: Scaffold(
+                key: E2EKeys.page('create-vacancy'),
                 backgroundColor: AppColors.cFFFFFF,
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,6 +177,11 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                     controller: cubit.descriptionController,
                                     isLoading: state.status.isLoading(),
                                     isAvailable: state.buttonEnable,
+                                    promptKey: E2EKeys.input(
+                                      'vacancy.generate',
+                                      'prompt',
+                                    ),
+                                    buttonKey: 'vacancy.generate.submit',
                                     onTapButton: () {
                                       FocusScope.of(context).unfocus();
                                       cubit.generateVacancy();
@@ -192,6 +199,15 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                               WBasicInfoForm(
                                                 categoryKey: _categoryFieldKey,
                                                 titleKey: _titleFieldKey,
+                                                titleSelectorKey: E2EKeys.input(
+                                                  'vacancy.create',
+                                                  'title',
+                                                ),
+                                                categorySelectorKey:
+                                                    E2EKeys.input(
+                                                      'vacancy.create',
+                                                      'category',
+                                                    ),
                                                 basicTitle:
                                                     LocaleKeys.mainInformation
                                                         .tr(),
@@ -215,7 +231,10 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                 radius: 16.r,
                                                 child: WTitleWithTextForm(
                                                   bgColor: AppColors.cFFFFFF,
-                                                  fieldKey: _descFieldKey,
+                                                  fieldKey: E2EKeys.input(
+                                                    'vacancy.create',
+                                                    'description',
+                                                  ),
                                                   keyBoardType:
                                                       TextInputType.text,
                                                   textEditingController:
@@ -259,6 +278,8 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                 child: VacancyPlace(
                                                   cityKey: _cityFieldKey,
                                                   locKey: _locationFieldKey,
+                                                  selectLocationKey:
+                                                      'vacancy.location.select',
                                                   vacancyLocationController:
                                                       cubit.locationController,
                                                   cityController:
@@ -279,6 +300,23 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                 salaryMinKey:
                                                     _minSalaryFieldKey,
                                                 skillsKey: _skillsFieldKey,
+                                                salaryMinSelectorKey:
+                                                    E2EKeys.input(
+                                                      'vacancy.create',
+                                                      'salary-min',
+                                                    ),
+                                                salaryMaxSelectorKey:
+                                                    E2EKeys.input(
+                                                      'vacancy.create',
+                                                      'salary-max',
+                                                    ),
+                                                skillsSelectorKey:
+                                                    E2EKeys.input(
+                                                      'vacancy.create',
+                                                      'skills',
+                                                    ),
+                                                negotiableKey:
+                                                    'vacancy.salary.negotiable',
                                                 maxSalaryController:
                                                     cubit.maxSalaryController,
                                                 minSalaryController:
@@ -309,6 +347,10 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                     state.withOutResume,
                                                 isTemporaryAvailable:
                                                     state.temporaryEmployee,
+                                                applicationKey:
+                                                    'vacancy.respond.application',
+                                                temporaryKey:
+                                                    'vacancy.respond.temporary',
                                                 onTapApplication: () {
                                                   cubit.changeWithOutResume();
                                                 },
@@ -320,6 +362,12 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                               VacancyEmployeeType(
                                                 employmentTypeKey:
                                                     _employmentTypeFieldKey,
+                                                startTimeKey: const Key(
+                                                  'vacancy.create.start-time',
+                                                ),
+                                                endTimeKey: const Key(
+                                                  'vacancy.create.end-time',
+                                                ),
                                                 set: state.employmentType,
                                                 onTap: (index) {
                                                   cubit.updateEmploymentType(
@@ -383,6 +431,12 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                   cubit.pickImage();
                                                 },
                                                 images: state.images,
+                                                onTapRemove: cubit.removeImage,
+                                                imageFormKey: E2EKeys.page(
+                                                  'vacancy-images',
+                                                ),
+                                                addButtonKey:
+                                                    'vacancy.image.add',
                                               ),
                                               24.verticalSpace,
                                               WInquiryPhoneNumbers(
@@ -397,11 +451,13 @@ class _CreateVacancyPageState extends State<CreateVacancyPage> {
                                                 phoneNumberController3:
                                                     cubit
                                                         .phoneNumberController3,
+                                                formKeyPrefix: 'vacancy.create',
                                               ),
                                               AppUtils.hSizedBox40,
                                               BlocBuilder<UserCubit, UserState>(
                                                 builder: (context, userState) {
                                                   return WCreateAndCancelButtons(
+                                                    buttonKey: 'vacancy.submit',
                                                     isLoading:
                                                         state.createVacSt
                                                             .isLoading(),

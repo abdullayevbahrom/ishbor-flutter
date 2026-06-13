@@ -11,15 +11,18 @@ class WRadioListTile extends StatelessWidget {
     required this.title,
     required this.value,
     required this.onTap,
+    this.tileKey,
   });
 
   final String title;
   final bool value;
   final VoidCallback onTap;
+  final Key? tileKey;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      key: tileKey,
       onTap: onTap,
       horizontalTitleGap: 4.w,
       contentPadding: EdgeInsets.zero,

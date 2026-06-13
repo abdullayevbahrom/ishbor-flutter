@@ -8,6 +8,7 @@ class WCheckedBoxListTile extends StatelessWidget {
   final String title;
   final VoidCallback onTap;
   final TextStyle? textStyle;
+  final Key? tileKey;
 
   const WCheckedBoxListTile({
     super.key,
@@ -15,11 +16,13 @@ class WCheckedBoxListTile extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.textStyle,
+    this.tileKey,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: tileKey,
       onTap: onTap,
       child: Row(
         mainAxisSize: MainAxisSize.min,

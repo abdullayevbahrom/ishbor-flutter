@@ -8,6 +8,7 @@ import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import '../../../../../../core/constants/locale_keys.g.dart';
 import '../../../../../../core/helpers/formatters.dart';
 import '../../../../../../core/router/app_routes.dart';
+import '../../../../../../core/utils/e2e_keys.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
 import '../../../../../common/presentation/cubits/user_cubit/user_cubit.dart';
@@ -22,12 +23,14 @@ class WInquiryPhoneNumbers extends StatefulWidget {
     required this.phoneNumberController1,
     required this.phoneNumberController2,
     required this.phoneNumberController3,
+    this.formKeyPrefix,
   });
 
   final TextEditingController phoneNumberController;
   final TextEditingController phoneNumberController1;
   final TextEditingController phoneNumberController2;
   final TextEditingController phoneNumberController3;
+  final String? formKeyPrefix;
 
   @override
   State<WInquiryPhoneNumbers> createState() => _WInquiryPhoneNumbersState();
@@ -84,6 +87,10 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
               Flexible(
                 child: AppPhoneNumberTextFormField(
                   phoneNumber: widget.phoneNumberController,
+                  fieldKey:
+                      widget.formKeyPrefix == null
+                          ? null
+                          : E2EKeys.input(widget.formKeyPrefix!, 'phone-0'),
                 ),
               ),
 
@@ -99,6 +106,10 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
                     phoneNumber: widget.phoneNumberController1,
                     enableValidator:
                         widget.phoneNumberController1.text.trim().isNotEmpty,
+                    fieldKey:
+                        widget.formKeyPrefix == null
+                            ? null
+                            : E2EKeys.input(widget.formKeyPrefix!, 'phone-1'),
                   ),
                 ),
                 if (currentIndex == 2) addPhoneNumber(),
@@ -113,6 +124,10 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
                     phoneNumber: widget.phoneNumberController2,
                     enableValidator:
                         widget.phoneNumberController2.text.trim().isNotEmpty,
+                    fieldKey:
+                        widget.formKeyPrefix == null
+                            ? null
+                            : E2EKeys.input(widget.formKeyPrefix!, 'phone-2'),
                   ),
                 ),
                 if (currentIndex == 3) addPhoneNumber(),
@@ -127,6 +142,10 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
                     phoneNumber: widget.phoneNumberController3,
                     enableValidator:
                         widget.phoneNumberController3.text.trim().isNotEmpty,
+                    fieldKey:
+                        widget.formKeyPrefix == null
+                            ? null
+                            : E2EKeys.input(widget.formKeyPrefix!, 'phone-3'),
                   ),
                 ),
                 if (currentIndex == 4) addPhoneNumber(),
@@ -143,6 +162,10 @@ class _WInquiryPhoneNumbersState extends State<WInquiryPhoneNumbers> {
       width: 50.h,
       child: AppButton(
         horizontalPadding: 0,
+        buttonKey:
+            widget.formKeyPrefix == null
+                ? null
+                : '${widget.formKeyPrefix}.phone.add',
         onPressed: () {
           setState(() {
             currentIndex++;

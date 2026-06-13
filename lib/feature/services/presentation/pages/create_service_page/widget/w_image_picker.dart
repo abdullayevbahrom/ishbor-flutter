@@ -4,6 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 import 'package:top_jobs/core/extentions/padding_extentions.dart';
 import 'package:top_jobs/core/theme/app_svg.dart';
 
@@ -18,14 +19,21 @@ class WImagePicker extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.images,
+    this.onTapRemove,
+    this.imageFormKey,
+    this.addButtonKey,
   });
 
   final VoidCallback onPressed;
   final List<File> images;
+  final void Function(int index)? onTapRemove;
+  final Key? imageFormKey;
+  final String? addButtonKey;
 
   @override
   Widget build(BuildContext context) {
     return WDecoratedBox(
+      key: imageFormKey,
       radius: 16.r,
       bgColor: AppColors.cFBFBFD,
       child: Column(
@@ -50,6 +58,8 @@ class WImagePicker extends StatelessWidget {
             child: SizedBox(
               height: 45.h,
               child: MaterialButton(
+                key:
+                    addButtonKey == null ? null : E2EKeys.button(addButtonKey!),
                 color: AppColors.c15CF74,
                 onPressed: onPressed,
                 height: 45.h,
@@ -92,10 +102,35 @@ class WImagePicker extends StatelessWidget {
                           color: AppColors.cE0E5EB.withValues(alpha: .3),
                           borderRadius: BorderRadius.circular(8.r),
                         ),
-                        child:
-                            images.isNotEmpty
-                                ? Image.file(images[index], fit: BoxFit.cover)
-                                : AppUtils.kSizedBoxShrink,
+                        child: Stack(
+                          children: [
+                            if (images.isNotEmpty)
+                              Positioned.fill(
+                                child: Image.file(
+                                  images[index],
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            else
+                              AppUtils.kSizedBoxShrink,
+                            if (images.isNotEmpty && onTapRemove != null)
+                              Positioned(
+                                right: 0,
+                                top: 0,
+                                child: IconButton(
+                                  key: E2EKeys.button('image.remove.$index'),
+                                  padding: EdgeInsets.zero,
+                                  constraints: const BoxConstraints(),
+                                  icon: Icon(
+                                    Icons.cancel,
+                                    color: AppColors.cFFFFFF,
+                                    size: 20.r,
+                                  ),
+                                  onPressed: () => onTapRemove!(index),
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
                     ),
                     // Positioned(

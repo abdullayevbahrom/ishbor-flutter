@@ -17,6 +17,7 @@ import '../../../../../../core/helpers/validators.dart';
 import '../../../../../../core/router/route_names.dart';
 import '../../../../../../core/theme/app_colors.dart';
 import '../../../../../../core/theme/app_text_styles.dart';
+import '../../../../../../core/utils/e2e_keys.dart';
 import '../../../../../../core/utils/app_utils.dart';
 import '../../../../../common/presentation/widget/app_text_form_field.dart';
 import '../../../../../common/presentation/widget/w_check_box_list_tile.dart';
@@ -39,6 +40,8 @@ class SuggestedSalary extends StatelessWidget {
     this.cityKey,
     this.locationKey,
     this.location,
+    this.selectLocationKey,
+    this.salarySelectorKey,
   });
 
   final TextEditingController maxSalaryController;
@@ -54,6 +57,8 @@ class SuggestedSalary extends StatelessWidget {
   final Key? salaryKey;
   final Key? cityKey;
   final Key? locationKey;
+  final String? selectLocationKey;
+  final Key? salarySelectorKey;
   final GeocodeResponse? location;
 
   @override
@@ -77,24 +82,32 @@ class SuggestedSalary extends StatelessWidget {
           ),
           if (!checkBoxValue) AppUtils.hSizedBox8,
           if (!checkBoxValue)
-            AppTextFormField(
-              fieldKey: salaryKey,
-              keyBoardType: TextInputType.number,
-              fillColor: AppColors.cFBFBFD,
-              hintText: LocaleKeys.suggestedSalary.tr(),
-              controller: minSalaryController,
-              formatters: [FilteringTextInputFormatter.digitsOnly],
-              suffixIcon: SalarySuffixIcon(
-                onPressed: onTapCurrency,
-                currencyValue: currencyValue,
+            KeyedSubtree(
+              key: salarySelectorKey,
+              child: AppTextFormField(
+                fieldKey: salaryKey,
+                keyBoardType: TextInputType.number,
+                fillColor: AppColors.cFBFBFD,
+                hintText: LocaleKeys.suggestedSalary.tr(),
+                controller: minSalaryController,
+                formatters: [FilteringTextInputFormatter.digitsOnly],
+                suffixIcon: SalarySuffixIcon(
+                  onPressed: onTapCurrency,
+                  currencyValue: currencyValue,
+                ),
+                onChanged: (value) {
+                  minSalaryController.text = Formatters.moneyFormat(value);
+                  onChangedCurrency(value);
+                },
+                validator: (value) {
+                  final rawValue = value?.replaceAll(' ', '') ?? '';
+                  final parsedValue = int.tryParse(rawValue);
+                  if (parsedValue == null || parsedValue <= 0) {
+                    return LocaleKeys.priceIsRequired.tr();
+                  }
+                  return ValidatorHelpers.validateField(value: value!);
+                },
               ),
-              onChanged: (value) {
-                minSalaryController.text = Formatters.moneyFormat(value);
-                onChangedCurrency(value);
-              },
-              validator: (value) {
-                return ValidatorHelpers.validateField(value: value!);
-              },
             ),
           AppUtils.hSizedBox8,
           WCheckedBoxListTile(
@@ -123,6 +136,10 @@ class SuggestedSalary extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
+                      key:
+                          selectLocationKey == null
+                              ? null
+                              : E2EKeys.button(selectLocationKey!),
                       onTap: () async {
                         GeocodeResponse? response = await context.push(
                           Routes.yandexMap,
