@@ -99,6 +99,7 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
                       children: [
                         Expanded(
                           child: WReviewMood(
+                            key: const Key('button.review.positive'),
                             svg: AppIcons.icLike,
                             text: LocaleKeys.positive.tr(),
                             onPressed: () {
@@ -111,6 +112,7 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
                         ),
                         Expanded(
                           child: WReviewMood(
+                            key: const Key('button.review.negative'),
                             svg: AppIcons.icDislike,
                             text: LocaleKeys.negative.tr(),
                             isActive: isActive == 2,
@@ -134,6 +136,7 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
                       ),
                     ).paddingOnly(bottom: 2.h),
                     AppTextFormField(
+                      fieldKey: const Key('input.review.message'),
                       minLines: 5,
                       maxLines: 10,
                       maxLength: 120,
@@ -153,6 +156,7 @@ class _WReviewModalButtonState extends State<WReviewModalButton> {
                     ),
                     SizedBox(height: 16.h),
                     AppButton(
+                      buttonKey: 'review.submit',
                       onPressed: () {
                         if (_keyForm.currentState!.validate()) {
                           widget.feedbackCubit.addFeedBack(

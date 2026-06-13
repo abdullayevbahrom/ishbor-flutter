@@ -58,6 +58,7 @@ class _WUserInfoState extends State<WUserInfo> {
       children: [
         WDecoratedTitle(title: LocaleKeys.name.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.name'),
           fillColor: AppColors.cFFFFFF,
           hintText: LocaleKeys.enterName.tr(),
           controller: widget.nameController,
@@ -69,6 +70,7 @@ class _WUserInfoState extends State<WUserInfo> {
         22.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.surname.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.surname'),
           fillColor: AppColors.cFFFFFF,
           hintText: LocaleKeys.enterSurname.tr(),
           controller: widget.surnameController,
@@ -80,6 +82,7 @@ class _WUserInfoState extends State<WUserInfo> {
         22.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.email.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.email'),
           fillColor: AppColors.cFFFFFF,
           hintText: LocaleKeys.enterEmail.tr(),
           controller: widget.emailController,
@@ -88,6 +91,7 @@ class _WUserInfoState extends State<WUserInfo> {
         22.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.birthDate.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.birthdate'),
           fillColor: AppColors.cFFFFFF,
           hintText: "yyyy/oo/kk",
           controller: widget.birthdayController,
@@ -102,6 +106,7 @@ class _WUserInfoState extends State<WUserInfo> {
         22.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.gender.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.gender'),
           fillColor: AppColors.cFFFFFF,
           hintText: LocaleKeys.chooseGender.tr(),
           controller: widget.genderController,
@@ -118,6 +123,7 @@ class _WUserInfoState extends State<WUserInfo> {
         22.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.category.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.category'),
           minLines: 1,
           maxLines: 10,
           fillColor: AppColors.cFFFFFF,
@@ -139,6 +145,7 @@ class _WUserInfoState extends State<WUserInfo> {
         24.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.aboutMe.tr()),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.about'),
           minLines: 7,
           maxLines: 10,
           currentLength: _currentLength,
@@ -157,6 +164,7 @@ class _WUserInfoState extends State<WUserInfo> {
         24.verticalSpace,
         WDecoratedTitle(title: LocaleKeys.city.tr(), isBold: true),
         AppTextFormField(
+          fieldKey: const Key('input.profile.edit.city'),
           hintText: LocaleKeys.enterCity.tr(),
           controller: widget.cityController,
           keyBoardType: TextInputType.none,

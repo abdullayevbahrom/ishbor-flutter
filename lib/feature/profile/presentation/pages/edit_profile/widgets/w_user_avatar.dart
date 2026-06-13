@@ -63,6 +63,7 @@ class WUserAvatar extends StatelessWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: InkWell(
+                key: const Key('button.profile.avatar.edit'),
                 borderRadius: BorderRadius.circular(50.r),
                 onTap: () {
                   WAvatarPicker(
@@ -149,12 +150,14 @@ class WAvatarPicker extends StatelessWidget {
             10.verticalSpace,
 
             WListTile(
+              tileKey: const Key('button.profile.avatar.gallery'),
               onTap: onTapGallery,
               title: LocaleKeys.pickFromGallery.tr(),
               svgUrl: AppSvg.icGallery,
             ),
             Divider(color: AppColors.cE0E5EB, height: 1.h),
             WListTile(
+              tileKey: const Key('button.profile.avatar.camera'),
               onTap: onTapCamera,
               title: LocaleKeys.pickFromCamera.tr(),
               svgUrl: AppSvg.icCamera,
@@ -172,17 +175,20 @@ class WListTile extends StatelessWidget {
     required this.onTap,
     required this.svgUrl,
     required this.title,
+    this.tileKey,
   });
 
   final VoidCallback onTap;
   final String svgUrl;
   final String title;
+  final Key? tileKey;
 
   @override
   Widget build(BuildContext context) {
     return Material(
       color: AppColors.cFFFFFF,
       child: ListTile(
+        key: tileKey,
         enabled: true,
         onTap: onTap,
         splashColor: AppColors.c2E3A59.newWithOpacity(.1),

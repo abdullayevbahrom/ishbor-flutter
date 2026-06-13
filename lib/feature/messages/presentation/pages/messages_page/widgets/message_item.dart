@@ -11,10 +11,16 @@ import 'package:top_jobs/feature/common/presentation/widget/w_default_user_avata
 import 'package:top_jobs/models/message.dart';
 
 class WMessageItem extends StatelessWidget {
-  const WMessageItem({super.key, required this.message, required this.onTap});
+  const WMessageItem({
+    super.key,
+    required this.message,
+    required this.onTap,
+    this.fieldKey,
+  });
 
   final Message? message;
   final VoidCallback onTap;
+  final Key? fieldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +28,7 @@ class WMessageItem extends StatelessWidget {
     final user =
         me?.id != message?.senderId ? message?.sender : message?.receiver;
     return InkWell(
+      key: fieldKey,
       onTap: onTap,
       child: Ink(
         decoration: BoxDecoration(color: AppColors.cFFFFFF),

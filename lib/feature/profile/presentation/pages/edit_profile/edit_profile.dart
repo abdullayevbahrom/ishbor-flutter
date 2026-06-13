@@ -281,6 +281,8 @@ class _EditProfileState extends State<EditProfile> {
                                     SizedBox(
                                       height: 50.h,
                                       child: AppButton(
+                                        buttonKey:
+                                            'profile.verification-doc.add',
                                         width: 100.sw,
                                         onPressed: () async {
                                           final doc =
@@ -302,6 +304,9 @@ class _EditProfileState extends State<EditProfile> {
                                     Stack(
                                       children: [
                                         InkWell(
+                                          key: const Key(
+                                            'button.profile.verification-doc.preview',
+                                          ),
                                           onTap: () async {
                                             await OpenFile.open(
                                               _verifyDoc!.path,
@@ -374,6 +379,9 @@ class _EditProfileState extends State<EditProfile> {
                                         Align(
                                           alignment: Alignment.topRight,
                                           child: InkWell(
+                                            key: const Key(
+                                              'button.profile.verification-doc.remove',
+                                            ),
                                             onTap: () {
                                               setState(() {
                                                 _verifyDoc = null;
@@ -405,6 +413,7 @@ class _EditProfileState extends State<EditProfile> {
                                   28.verticalSpace,
                                   WActionButtons(
                                     isLoading: isLoading,
+                                    buttonKey: 'profile.save',
                                     onPressed: () {
                                       if (_formKey.currentState?.validate() ??
                                           false) {
@@ -506,6 +515,7 @@ class WImagesPreView extends StatelessWidget {
               Align(
                 alignment: Alignment.topRight,
                 child: InkWell(
+                  key: Key('button.profile.portfolio.remove.$index'),
                   onTap: () {
                     removeImage(index);
                   },
@@ -542,6 +552,7 @@ class WPortfolioItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: const Key('button.profile.portfolio.add'),
       onTap: () {
         WAvatarPicker(
           onTapGallery: onTapGallery,
@@ -568,10 +579,12 @@ class WActionButtons extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.isLoading,
+    this.buttonKey,
   });
 
   final VoidCallback onPressed;
   final bool isLoading;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
@@ -597,6 +610,7 @@ class WActionButtons extends StatelessWidget {
           child: SizedBox(
             height: 50.h,
             child: AppButton(
+              buttonKey: buttonKey,
               onPressed: onPressed,
               isLoading: isLoading,
               text: LocaleKeys.save.tr(),

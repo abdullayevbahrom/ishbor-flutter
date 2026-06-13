@@ -115,6 +115,7 @@ class _WAdsReportState extends State<WAdsReport> {
                   ),
                   5.verticalSpace,
                   AppTextFormField(
+                    fieldKey: const Key('input.task.report'),
                     hintText: "",
                     controller: _controller,
                     minLines: 6,
@@ -134,6 +135,7 @@ class _WAdsReportState extends State<WAdsReport> {
                   SizedBox(
                     height: 50.h,
                     child: AppButton(
+                      buttonKey: 'task.report.send',
                       onPressed: () {
                         context.read<AskQuestionCubit>().reportAd(
                           ReportsParam(

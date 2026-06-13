@@ -8,6 +8,7 @@ class ImagePickerHelper {
 
   static Future<List<File>> Function()? debugPickMultiImageOverride;
   static Future<File?> Function(ImageSource source)? debugPickImageOverride;
+  static Future<File?> Function()? debugPickDocOverride;
 
   Future<File?> pickImage(ImageSource source) async {
     final debugOverride = debugPickImageOverride;
@@ -59,6 +60,10 @@ class ImagePickerHelper {
   }
 
   Future<File?> pickDoc() async {
+    final debugOverride = debugPickDocOverride;
+    if (debugOverride != null) {
+      return debugOverride();
+    }
     FilePickerResult? result = await FilePicker.platform.pickFiles();
     if (result != null) {
       File file = File(result.files.single.path!);

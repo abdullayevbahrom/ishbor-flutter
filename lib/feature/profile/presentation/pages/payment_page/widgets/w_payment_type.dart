@@ -58,6 +58,7 @@ class WPaymentTypes extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 return WPaymentTypeItem(
+                  buttonKey: 'payment.provider.$index',
                   onPressed: () {
                     if (index == 0 || index == 1) {
                       onPressedPaymentType(index);
@@ -92,15 +93,18 @@ class WPaymentTypeItem extends StatelessWidget {
     required this.svgIcon,
     required this.isActive,
     required this.onPressed,
+    this.buttonKey,
   });
 
   final String svgIcon;
   final bool isActive;
   final VoidCallback onPressed;
+  final String? buttonKey;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: buttonKey == null ? null : Key('button.$buttonKey'),
       onTap: onPressed,
       borderRadius: BorderRadius.circular(16.r),
       child: Ink(

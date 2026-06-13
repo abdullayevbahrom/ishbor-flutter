@@ -141,6 +141,10 @@ class _MessagesPageState extends State<MessagesPage> {
                                             final message =
                                                 state.messages?.items[index];
                                             return WMessageItem(
+                                              fieldKey: E2EKeys.card(
+                                                'message',
+                                                message?.id ?? index.toString(),
+                                              ),
                                               message: message!,
                                               onTap: () {
                                                 context

@@ -22,10 +22,16 @@ import 'package:top_jobs/feature/common/presentation/widget/task_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/vacancy_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_check_box_list_tile.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/category_cubit/category_cubit.dart';
+import 'package:top_jobs/feature/common/presentation/cubits/notification_cubit/notification_cubit.dart';
+import 'package:top_jobs/feature/main/presentation/pages/main_page/widget/notifications_dialog_widget.dart';
 import 'package:top_jobs/feature/main/presentation/cubit/main_cubit/main_cubit.dart';
 import 'package:top_jobs/feature/map/presentation/cubits/map_view_cubit/map_view_cubit.dart';
 import 'package:top_jobs/feature/ads_view/data/models/task_request_params.dart';
 import 'package:top_jobs/feature/ads_view/presentation/cubits/task_view_cubit/task_view_cubit.dart';
+import 'package:top_jobs/feature/messages/domain/repository/messages_repository.dart';
+import 'package:top_jobs/feature/messages/presentation/cubits/chat_cubit/chat_cubit.dart';
+import 'package:top_jobs/feature/messages/presentation/pages/messages_page/widgets/message_item.dart';
+import 'package:top_jobs/feature/others_profile/presentation/pages/others_profile_page/others_profile_page.dart';
 import 'package:top_jobs/feature/services/data/models/service.dart';
 import 'package:top_jobs/feature/profile/data/model/payment_provider.dart';
 import 'package:top_jobs/feature/profile/domain/repository/payment_repository.dart';
@@ -37,6 +43,8 @@ import 'package:top_jobs/feature/tasks/presentation/cubits/create_task_cubit/cre
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_query_params.dart';
 import 'package:top_jobs/feature/vacancies/domain/repository/vacancy_repository.dart';
 import 'package:top_jobs/feature/vacancies/presentation/cubits/create_vacancy_cubit/create_vacancy_cubit.dart';
+import 'package:top_jobs/feature/common/presentation/widget/w_radio_list_tile.dart';
+import 'package:top_jobs/models/message.dart';
 import 'package:top_jobs/models/vacancy.dart';
 import 'package:top_jobs/injection_container.dart';
 import 'package:top_jobs/main.dart' as app;
@@ -101,6 +109,16 @@ void main() {
       final path = '${deviceSetup.downloadDirectory}/sample_image.png';
       return File(path);
     };
+    ImagePickerHelper.debugPickDocOverride = () async {
+      final path = '${deviceSetup.downloadDirectory}/sample_image.png';
+      return File(path);
+    };
+    ChatCubit.debugPickFileOverride = (messageId) async {
+      debugPrint(
+        '[FIX][E2E][messages] attachment override messageId=$messageId path=${deviceSetup.downloadDirectory}/sample_image.png',
+      );
+      return '${deviceSetup.downloadDirectory}/sample_image.png';
+    };
     await Future<void>.delayed(const Duration(seconds: 2));
   });
 
@@ -108,6 +126,8 @@ void main() {
     DioInterceptors.e2eObserver = null;
     ImagePickerHelper.debugPickMultiImageOverride = null;
     ImagePickerHelper.debugPickImageOverride = null;
+    ImagePickerHelper.debugPickDocOverride = null;
+    ChatCubit.debugPickFileOverride = null;
     await helper.finalize(status: 'passed');
   });
 
@@ -1422,6 +1442,501 @@ void main() {
 
     await sl<TaskRepository>().deleteTaskById(taskId: createdTask.id);
   });
+
+  testWidgets('phase 5 task 18 profile favorites payment notifications flows', (
+    tester,
+  ) async {
+    await _resetToGuest(tester);
+    final auth = await AuthPreflight(config).run();
+    await _seedAuthenticatedState(auth);
+
+    navigatorKey.currentContext!.go(Routes.main);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await _selectMainTab(tester, 4);
+    expect(find.byKey(E2EKeys.page('profile')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'profile',
+      state: 'main',
+      order: 183,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('profile.info')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    expect(find.byKey(E2EKeys.page('profile-info')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'profile-info',
+      state: 'loaded',
+      order: 184,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('profile.edit')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    expect(find.byKey(E2EKeys.page('edit-profile')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'initial',
+      order: 185,
+    );
+
+    await tester.tap(find.byKey(const Key('button.profile.avatar.edit')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'avatar-sheet',
+      order: 186,
+    );
+    await tester.tap(find.byKey(const Key('button.profile.avatar.gallery')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'avatar-selected',
+      order: 187,
+    );
+
+    await tester.tap(find.byKey(const Key('button.profile.portfolio.add')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.tap(find.byKey(const Key('button.profile.avatar.gallery')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'portfolio-added',
+      order: 188,
+    );
+    await tester.tap(
+      find.byKey(const Key('button.profile.portfolio.remove.0')),
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'portfolio-removed',
+      order: 189,
+    );
+
+    await tester.tap(
+      find.byKey(const Key('button.profile.verification-doc.add')),
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'verification-doc-added',
+      order: 190,
+    );
+    await tester.tap(
+      find.byKey(const Key('button.profile.verification-doc.remove')),
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'verification-doc-removed',
+      order: 191,
+    );
+
+    await tester.tap(find.byKey(const Key('input.profile.edit.birthdate')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'birthdate-sheet',
+      order: 192,
+    );
+    await tester.pageBack();
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+
+    await tester.tap(find.byKey(const Key('input.profile.edit.gender')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.tap(find.text(LocaleKeys.Male.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'gender-selected',
+      order: 193,
+    );
+
+    await tester.tap(find.byKey(const Key('input.profile.edit.category')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    final categoryTiles = find.byType(WCheckedBoxListTile);
+    if (categoryTiles.evaluate().isNotEmpty) {
+      await tester.tap(categoryTiles.first);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+    }
+    await tester.tap(find.text(LocaleKeys.save.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'category-selected',
+      order: 194,
+    );
+
+    await tester.tap(find.byKey(const Key('input.profile.edit.city')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    final cityTiles = find.byType(WRadioListTile);
+    if (cityTiles.evaluate().isNotEmpty) {
+      await tester.tap(cityTiles.first);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+    }
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'city-selected',
+      order: 195,
+    );
+
+    await _enterTextInField(
+      tester,
+      const Key('input.profile.edit.about'),
+      'IshBor E2E profile note ${config.runId}',
+    );
+    await helper.capture(
+      tester: tester,
+      route: 'profile-edit',
+      state: 'form-filled',
+      order: 196,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('profile.save')));
+    await tester.pumpAndSettle(const Duration(seconds: 6));
+    await helper.capture(
+      tester: tester,
+      route: 'profile-info',
+      state: 'saved',
+      order: 197,
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    expect(find.byKey(E2EKeys.page('profile')), findsOneWidget);
+
+    await tester.tap(find.byKey(E2EKeys.button('profile.favorites')));
+    await tester.pumpAndSettle(const Duration(seconds: 3));
+    expect(find.byKey(E2EKeys.page('favorites')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'favorites',
+      state: 'vacancies',
+      order: 198,
+    );
+    await tester.tap(find.text(LocaleKeys.services.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'favorites',
+      state: 'services',
+      order: 199,
+    );
+    await tester.tap(find.text(LocaleKeys.tasks.tr()).last);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await helper.capture(
+      tester: tester,
+      route: 'favorites',
+      state: 'tasks',
+      order: 200,
+    );
+
+    await tester.pageBack();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    expect(find.byKey(E2EKeys.page('profile')), findsOneWidget);
+
+    await tester.tap(find.byKey(E2EKeys.button('profile.payment')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    expect(find.byKey(E2EKeys.page('payment')), findsOneWidget);
+    await helper.capture(
+      tester: tester,
+      route: 'payment',
+      state: 'form-open',
+      order: 201,
+    );
+
+    await tester.tap(find.byKey(E2EKeys.button('payment.provider.0')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _enterTextInField(tester, const Key('input.payment.amount'), '20000');
+    await helper.capture(
+      tester: tester,
+      route: 'payment',
+      state: 'filled',
+      order: 202,
+    );
+
+    final paymentTransactionId = await _createPaymentTransactionId();
+    navigatorKey.currentContext!.go(
+      '/payment?transaction_id=$paymentTransactionId',
+    );
+    await tester.pumpAndSettle(const Duration(seconds: 4));
+    await helper.capture(
+      tester: tester,
+      route: 'payment',
+      state: 'callback',
+      order: 203,
+    );
+
+    navigatorKey.currentContext!.go(Routes.main);
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await tester.tap(find.byKey(E2EKeys.button('main.notifications')));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await helper.capture(
+      tester: tester,
+      route: 'notifications',
+      state: 'menu-open',
+      order: 204,
+    );
+
+    final notificationCubit =
+        navigatorKey.currentContext!.read<NotificationCubit>();
+    final notifications = notificationCubit.state.listNotification?.items ?? [];
+    if (notifications.isNotEmpty) {
+      await tester.tap(find.byType(NotificationItem).first);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await helper.capture(
+        tester: tester,
+        route: 'notifications',
+        state: 'opened-first',
+        order: 205,
+      );
+
+      final first = notifications.first;
+      final notificationType =
+          first.operation.contains('service')
+              ? 'service'
+              : first.operation.contains('task')
+              ? 'task'
+              : first.operation.contains('message')
+              ? 'message'
+              : 'vacancy';
+      navigatorKey.currentContext!.go(
+        Routes.notificationDetails,
+        extra: <String, dynamic>{
+          'type': notificationType,
+          'id': first.operationId.toString(),
+        },
+      );
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      expect(find.byKey(E2EKeys.page('notification-details')), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'notification-details',
+        state: 'loaded',
+        order: 206,
+      );
+    }
+  });
+
+  testWidgets(
+    'phase 5 task 19 messages chat others profile feedback report flows',
+    (tester) async {
+      await _resetToGuest(tester);
+      final auth = await AuthPreflight(config).run();
+      await _seedAuthenticatedState(auth);
+
+      final targets = await _loadBrowseTargets();
+
+      navigatorKey.currentContext!.go('/task-view?id=${targets.taskId}');
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.byKey(E2EKeys.page('task-view')), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'task-detail',
+        state: 'profile-crosscheck',
+        order: 207,
+      );
+
+      await tester.tap(find.text(LocaleKeys.authorAllAds.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.byType(OthersProfilePage), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile',
+        state: 'loaded',
+        order: 208,
+      );
+
+      await tester.tap(find.text(LocaleKeys.write.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-message',
+        state: 'open',
+        order: 209,
+      );
+      await tester.tap(find.text(LocaleKeys.send.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.text(LocaleKeys.thisFieldCanNotBeEmpty.tr()), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-message',
+        state: 'validation-empty',
+        order: 210,
+      );
+
+      final questionBody = 'IshBor ask ${config.runId}';
+      await _enterTextInField(
+        tester,
+        const Key('input.other-profile.message'),
+        questionBody,
+      );
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-message',
+        state: 'filled',
+        order: 211,
+      );
+      await tester.tap(find.byKey(E2EKeys.button('message.send')));
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile',
+        state: 'message-sent',
+        order: 212,
+      );
+
+      await tester.tap(find.text(LocaleKeys.writeReview.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-review',
+        state: 'open',
+        order: 213,
+      );
+      await tester.tap(find.byKey(const Key('button.review.positive')));
+      await tester.pumpAndSettle(const Duration(milliseconds: 500));
+      await tester.tap(find.byKey(E2EKeys.button('review.submit')));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.text(LocaleKeys.thisFieldCanNotBeEmpty.tr()), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-review',
+        state: 'validation-empty',
+        order: 214,
+      );
+      final reviewBody = 'IshBor review ${config.runId}';
+      await _enterTextInField(
+        tester,
+        const Key('input.review.message'),
+        reviewBody,
+      );
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile-review',
+        state: 'filled',
+        order: 215,
+      );
+      await tester.tap(find.byKey(E2EKeys.button('review.submit')));
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: 'others-profile',
+        state: 'review-sent',
+        order: 216,
+      );
+
+      await tester.pageBack();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      expect(find.byKey(E2EKeys.page('task-view')), findsOneWidget);
+
+      await tester.tap(find.text(LocaleKeys.complain.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await helper.capture(
+        tester: tester,
+        route: 'task-report',
+        state: 'open',
+        order: 217,
+      );
+      await tester.tap(find.text(LocaleKeys.send.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 1));
+      expect(find.text(LocaleKeys.thisFieldCanNotBeEmpty.tr()), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'task-report',
+        state: 'validation-empty',
+        order: 218,
+      );
+      final reportBody = 'IshBor report ${config.runId}';
+      await _enterTextInField(
+        tester,
+        const Key('input.task.report'),
+        reportBody,
+      );
+      await helper.capture(
+        tester: tester,
+        route: 'task-report',
+        state: 'filled',
+        order: 219,
+      );
+      await tester.tap(find.text(LocaleKeys.send.tr()).last);
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: 'task-detail',
+        state: 'report-sent',
+        order: 220,
+      );
+
+      await tester.pageBack();
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      navigatorKey.currentContext!.go(Routes.messages);
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      expect(find.byKey(E2EKeys.page('messages')), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'messages',
+        state: 'list-loaded',
+        order: 221,
+      );
+
+      final messageThread = await _findMessageThreadByBody(questionBody);
+      final messageCardFinder = find.byKey(
+        E2EKeys.card('message', messageThread.id),
+      );
+      if (messageCardFinder.evaluate().isNotEmpty) {
+        await tester.tap(messageCardFinder);
+        await tester.pumpAndSettle(const Duration(seconds: 3));
+      } else {
+        await tester.tap(find.byType(WMessageItem).first);
+        await tester.pumpAndSettle(const Duration(seconds: 3));
+      }
+      expect(find.byKey(E2EKeys.page('chat')), findsOneWidget);
+      await helper.capture(
+        tester: tester,
+        route: 'chat',
+        state: 'loaded',
+        order: 222,
+      );
+
+      await tester.tap(find.byKey(const Key('button.chat.attach')));
+      await tester.pumpAndSettle(const Duration(seconds: 3));
+      await helper.capture(
+        tester: tester,
+        route: 'chat',
+        state: 'attachment-uploaded',
+        order: 223,
+      );
+
+      final chatBody = 'IshBor chat ${config.runId}';
+      await _enterTextInField(
+        tester,
+        const Key('input.chat.message'),
+        chatBody,
+      );
+      await tester.tap(find.byKey(const Key('button.chat.send')));
+      await tester.pumpAndSettle(const Duration(seconds: 4));
+      await helper.capture(
+        tester: tester,
+        route: 'chat',
+        state: 'message-sent',
+        order: 224,
+      );
+    },
+  );
 }
 
 Future<void> _resetToGuest(WidgetTester tester) async {
@@ -1429,6 +1944,27 @@ Future<void> _resetToGuest(WidgetTester tester) async {
   await navigatorKey.currentContext!.read<UserCubit>().checkUser();
   navigatorKey.currentContext!.go(Routes.main);
   await tester.pumpAndSettle(const Duration(seconds: 2));
+}
+
+Future<Message> _findMessageThreadByBody(String body) async {
+  final result = await sl<MessagesRepository>().fetchMessages(
+    queryParams: CommonQueryParams(pageSize: 50, pageNumber: 1),
+  );
+
+  return result.fold(
+    (failure) =>
+        throw StateError('Message list fetch failed: ${failure.message}'),
+    (response) {
+      for (final message in response.items) {
+        final lastBody = message.lastRecord?.body ?? '';
+        if (lastBody.contains(body)) {
+          return message;
+        }
+      }
+
+      throw StateError('Created message thread not found by body: $body');
+    },
+  );
 }
 
 Future<void> _seedAuthenticatedState(AuthPreflightResult auth) async {

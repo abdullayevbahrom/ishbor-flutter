@@ -78,6 +78,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
                                     ),
                                   ).paddingSymmetric(horizontal: 16.w),
                                   AppButton(
+                                    buttonKey: 'profile.edit',
                                     onPressed: () {
                                       context.push(Routes.edit_profile);
                                     },

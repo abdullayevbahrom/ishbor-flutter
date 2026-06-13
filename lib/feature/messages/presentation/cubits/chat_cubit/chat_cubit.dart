@@ -27,6 +27,8 @@ class ChatCubit extends Cubit<ChatState> {
   MercureSubscription? _channel;
   String? _messageId;
 
+  static Future<String?> Function(String messageId)? debugPickFileOverride;
+
   Map<String, GlobalKey> messageKey = {};
 
   final TextEditingController messageController = TextEditingController();
@@ -285,6 +287,23 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> pickFile(String messageId) async {
     try {
+      final debugOverride = debugPickFileOverride;
+      if (debugOverride != null) {
+        final path = await debugOverride(messageId);
+        if (path == null || path.isEmpty) {
+          debugPrint(
+            '[WARN][messages] attachment validation failed: user cancelled file selection messageId=${messageId.toString()}',
+          );
+          return;
+        }
+        final response = await _messagesRepository.uploadFile(
+          messageId: messageId,
+          path: path,
+        );
+        response.fold((l) {}, (r) {});
+        return;
+      }
+
       final result = await FilePicker.platform.pickFiles();
       if (result == null || result.files.single.path == null) {
         debugPrint(

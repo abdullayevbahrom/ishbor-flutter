@@ -23,6 +23,7 @@ class ChatInputBar extends StatelessWidget {
             spacing: 8.w,
             children: [
               InkWell(
+                key: const Key('button.chat.attach'),
                 onTap: () {
                   context.read<ChatCubit>().pickFile(state.message!.id);
                 },
@@ -36,6 +37,7 @@ class ChatInputBar extends StatelessWidget {
 
               Expanded(
                 child: TextFormField(
+                  key: const Key('input.chat.message'),
                   controller: context.read<ChatCubit>().messageController,
                   decoration: InputDecoration(
                     filled: true,
@@ -65,6 +67,7 @@ class ChatInputBar extends StatelessWidget {
                 ),
               ),
               InkWell(
+                key: const Key('button.chat.send'),
                 onTap: () {
                   if (context
                       .read<ChatCubit>()

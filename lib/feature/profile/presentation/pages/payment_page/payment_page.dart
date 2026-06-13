@@ -162,6 +162,7 @@ class _WPaymentBodyState extends State<WPaymentBody> {
                                 AppTextFormField(
                                   maxLines: 1,
                                   minLines: 1,
+                                  fieldKey: const Key('input.payment.amount'),
                                   hintText: LocaleKeys.enterAmount.tr(),
                                   controller: _amountController,
                                   keyBoardType: TextInputType.number,
@@ -192,6 +193,7 @@ class _WPaymentBodyState extends State<WPaymentBody> {
                           SizedBox(
                             height: 50.h,
                             child: AppButton(
+                              buttonKey: 'payment.submit',
                               width: 100.sw,
                               isLoading: state.status.isLoading(),
                               onPressed: () {

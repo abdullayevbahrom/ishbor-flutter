@@ -134,6 +134,7 @@ class _WSendMessageUserState extends State<WSendMessageUser> {
                   ),
                   3.verticalSpace,
                   AppTextFormField(
+                    fieldKey: const Key('input.other-profile.message'),
                     hintText: "",
                     controller: _controller,
                     currentLength: currentLength,
@@ -157,6 +158,7 @@ class _WSendMessageUserState extends State<WSendMessageUser> {
                   SizedBox(
                     height: 50.h,
                     child: AppButton(
+                      buttonKey: 'message.send',
                       onPressed: () {
                         if (_formKey.currentState?.validate() ?? false) {
                           final adType =
