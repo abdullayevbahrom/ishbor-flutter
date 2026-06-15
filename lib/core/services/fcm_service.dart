@@ -181,6 +181,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:go_router/go_router.dart';
 import 'package:logger/logger.dart';
+import 'package:top_jobs/consts.dart';
+import 'package:top_jobs/app_state.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
 import 'package:top_jobs/core/router/route_names.dart';
 import 'package:top_jobs/core/services/storage_service.dart';
@@ -214,6 +216,18 @@ class FcmNotificationService {
 
     _logger.d('[DEBUG][fcm] initialize');
 
+    if (AppState.isActive) {
+      final token = e2eDeviceToken.trim();
+      if (token.isNotEmpty) {
+        await _syncDeviceToken(token, source: 'e2e');
+        _logger.i('[INFO][fcm] E2E mode device token seeded');
+      } else {
+        _logger.w('[WARN][fcm] E2E mode without seeded device token');
+      }
+      _isInitialized = true;
+      return;
+    }
+
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
     /// Request permission
@@ -244,6 +258,10 @@ class FcmNotificationService {
   }
 
   Future<void> _getAndStoreDeviceToken() async {
+    if (AppState.isActive && e2eDeviceToken.trim().isNotEmpty) {
+      await _syncDeviceToken(e2eDeviceToken.trim(), source: 'e2e');
+      return;
+    }
     final token = await _messaging.getToken();
     if (token != null && token.isNotEmpty) {
       _logger.i('[DEBUG][fcm] token captured');

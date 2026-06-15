@@ -8,6 +8,7 @@ void main() {
     expect(ApiConstants.authRequestCode, '/api/v1/auth/request-code');
     expect(ApiConstants.authVerifyCode, '/api/v1/auth/verify-code');
     expect(ApiConstants.authRefresh, '/api/v1/auth/refresh');
+    expect(ApiConstants.vacanciesNew, '/api/v1/vacancies-new');
   });
 
   test('supported locales are available', () {

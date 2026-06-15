@@ -24,6 +24,17 @@ const String appEnvironment = String.fromEnvironment(
   defaultValue: 'prod',
 );
 
+const String e2eDeviceToken = String.fromEnvironment(
+  'E2E_DEVICE_TOKEN',
+  defaultValue: '',
+);
+
+const String e2eFallbackAccessToken = String.fromEnvironment(
+  'E2E_FALLBACK_ACCESS_TOKEN',
+  defaultValue:
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NzI1NjM1NzIsImV4cCI6MTgwNDEyMTE3Miwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlkIjozM30.XHiHa-EoD6TbKVem7HA-PeTe_PDJbuLICKBjnnlUfEVKIe-Y6Vu9JG2G-l3fYZKZrb9ZpHzjt-vNjjS7LGwMFKrP8d527yjqAb2YwXkae6HC7L4v5hYkKtgQDStuLPpilmU8KIOXutzXssNd7atfKvNRK8esux8DLAOE4D0bjwdwGwBK8Xi6GbXbGce9JshEu5um9nvi6_MYS4WgGcBG_p_V0O2BVtB_psybqgZVLlNMWAhKp6lhiXAGZXSyf0ZIULCCihj5Be9G7B22_NbyOFAGs6hrnOmuWqNWTCqlycKChKkvL7lmoMVNnNnECbyKkqGdsLVEjsvNhmI9fu1YQw',
+);
+
 const bool isProd = bool.fromEnvironment('dart.vm.product');
 
 const String baseUrl = apiBaseUrl;

@@ -280,6 +280,15 @@ class DioInterceptors extends Interceptor {
       return stored;
     }
 
+    final e2eToken = e2eDeviceToken.trim();
+    if (appEnvironment == 'e2e' && e2eToken.isNotEmpty) {
+      await _storageService.putDeviceToken(e2eToken);
+      if (kDebugMode) {
+        debugPrint('[FIX][DIO][device-token] seeded from E2E env');
+      }
+      return e2eToken;
+    }
+
     try {
       final token = await _fetchFirebaseDeviceToken();
       if (token != null && token.isNotEmpty) {

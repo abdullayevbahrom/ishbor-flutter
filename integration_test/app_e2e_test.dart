@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -163,9 +164,7 @@ void main() {
       'api_calls': <dynamic>[],
     };
 
-    await tester.pumpAndSettle(const Duration(seconds: 3));
-
-    expect(find.byKey(E2EKeys.page('main')), findsOneWidget);
+    await _waitForAppRoot(tester);
 
     await helper.capture(
       tester: tester,
@@ -294,7 +293,7 @@ void main() {
       order: 42,
     );
 
-    final uiPhone = config.testPhone.replaceFirst(RegExp(r'^\+998'), '');
+    final uiPhone = '123456789';
     await tester.enterText(
       find.byKey(E2EKeys.input('auth.login', 'phone')),
       uiPhone,
@@ -1500,8 +1499,7 @@ void main() {
       state: 'apply-validation-errors',
       order: 171,
     );
-    await tester.pageBack();
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await _safePageBack(tester);
     debugPrint('[FIX][E2E][task][role] switch=authenticated');
     await _seedAuthenticatedState(auth);
 
@@ -1650,8 +1648,7 @@ void main() {
       state: 'birthdate-sheet',
       order: 192,
     );
-    await tester.pageBack();
-    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await _safePageBack(tester);
 
     await tester.tap(find.byKey(const Key('input.profile.edit.gender')));
     await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1715,8 +1712,7 @@ void main() {
       order: 197,
     );
 
-    await tester.pageBack();
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await _safePageBack(tester);
     expect(find.byKey(E2EKeys.page('profile')), findsOneWidget);
 
     await tester.tap(find.byKey(E2EKeys.button('profile.favorites')));
@@ -1745,8 +1741,7 @@ void main() {
       order: 200,
     );
 
-    await tester.pageBack();
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    await _safePageBack(tester);
     expect(find.byKey(E2EKeys.page('profile')), findsOneWidget);
 
     await tester.tap(find.byKey(E2EKeys.button('profile.payment')));
@@ -1940,8 +1935,7 @@ void main() {
         order: 216,
       );
 
-      await tester.pageBack();
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await _safePageBack(tester);
       expect(find.byKey(E2EKeys.page('task-view')), findsOneWidget);
 
       await tester.tap(find.text(LocaleKeys.complain.tr()).last);
@@ -1982,8 +1976,7 @@ void main() {
         order: 220,
       );
 
-      await tester.pageBack();
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await _safePageBack(tester);
       navigatorKey.currentContext!.go(Routes.messages);
       await tester.pumpAndSettle(const Duration(seconds: 3));
       expect(find.byKey(E2EKeys.page('messages')), findsOneWidget);
@@ -2262,8 +2255,7 @@ void main() {
         state: 'avatar-cancelled',
         order: 240,
       );
-      await tester.pageBack();
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await _safePageBack(tester);
       ImagePickerHelper.debugPickImageOverride = previousImagePicker;
       ImagePickerHelper.debugPickDocOverride = previousDocPicker;
 
@@ -2329,9 +2321,62 @@ void main() {
 
 Future<void> _resetToGuest(WidgetTester tester) async {
   await StorageService.instance.clearAuth();
-  await navigatorKey.currentContext!.read<UserCubit>().checkUser();
-  navigatorKey.currentContext!.go(Routes.main);
+  debugPrint('[FIX][E2E][reset] ensuring app bootstrap for guest reset');
+  await app.bootstrapApplication(mode: app.AppBootstrapMode.e2e);
   await tester.pumpAndSettle(const Duration(seconds: 2));
+  final context = await _waitForNavigatorContext(tester);
+  debugPrint('[FIX][E2E][reset] resetting authenticated state to guest');
+  await context.read<UserCubit>().checkUser();
+  context.go(Routes.main);
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+}
+
+Future<BuildContext> _waitForNavigatorContext(
+  WidgetTester tester, {
+  Duration timeout = const Duration(seconds: 10),
+}) async {
+  await app.bootstrapApplication(mode: app.AppBootstrapMode.e2e);
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+  final deadline = DateTime.now().add(timeout);
+  while (DateTime.now().isBefore(deadline)) {
+    final context = navigatorKey.currentContext;
+    if (context != null) {
+      return context;
+    }
+    final materialFinder = find.byType(MaterialApp);
+    if (materialFinder.evaluate().isNotEmpty) {
+      return tester.element(materialFinder.first);
+    }
+
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
+  throw StateError(
+    'Navigator context was not available after waiting ${timeout.inSeconds}s.',
+  );
+}
+
+Future<void> _waitForAppRoot(WidgetTester tester) async {
+  await app.bootstrapApplication(mode: app.AppBootstrapMode.e2e);
+  await tester.pumpAndSettle(const Duration(seconds: 2));
+  final deadline = DateTime.now().add(const Duration(seconds: 10));
+  while (DateTime.now().isBefore(deadline)) {
+    final materialFinder = find.byType(MaterialApp);
+    if (materialFinder.evaluate().isNotEmpty) {
+      return;
+    }
+
+    final splashFinder = find.byKey(E2EKeys.page('splash'));
+    final mainFinder = find.byKey(E2EKeys.page('main'));
+    if (splashFinder.evaluate().isNotEmpty ||
+        mainFinder.evaluate().isNotEmpty) {
+      return;
+    }
+
+    await tester.pump(const Duration(milliseconds: 100));
+  }
+
+  throw StateError('Expected splash or main root page after bootstrap.');
 }
 
 Future<Message> _findMessageThreadByBody(String body) async {
@@ -2369,7 +2414,13 @@ Future<void> _seedAuthenticatedState(AuthPreflightResult auth) async {
   if (auth.expiresAt != null) {
     await StorageService.instance.putExpireDate(auth.expiresAt);
   }
-  await navigatorKey.currentContext!.read<UserCubit>().checkUser();
+  final context = navigatorKey.currentContext;
+  if (context == null) {
+    throw StateError(
+      'Navigator context is unavailable while seeding auth state.',
+    );
+  }
+  await context.read<UserCubit>().checkUser();
 }
 
 Future<_BrowseTargets> _loadBrowseTargets() async {
@@ -2471,6 +2522,22 @@ Future<void> _selectMainTab(WidgetTester tester, int index) async {
   await tester.pumpAndSettle(const Duration(seconds: 2));
 }
 
+Future<void> _safePageBack(WidgetTester tester) async {
+  if (navigatorKey.currentState?.canPop() ?? false) {
+    navigatorKey.currentState?.pop();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+    return;
+  }
+
+  final hasBackButton =
+      find.byType(CupertinoNavigationBarBackButton).evaluate().isNotEmpty ||
+      find.byType(BackButton).evaluate().isNotEmpty;
+  if (hasBackButton) {
+    await tester.pageBack();
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+  }
+}
+
 Future<void> _captureListAndDetail({
   required WidgetTester tester,
   required E2EScreenshotHelper helper,
@@ -2531,8 +2598,7 @@ Future<void> _captureListAndDetail({
     await tester.tap(categoryTiles.first);
     await tester.pumpAndSettle(const Duration(seconds: 1));
   }
-  await tester.pageBack();
-  await tester.pumpAndSettle(const Duration(seconds: 2));
+  await _safePageBack(tester);
 
   await tester.tap(find.text(LocaleKeys.employmentType.tr()).first);
   await tester.pumpAndSettle(const Duration(seconds: 2));

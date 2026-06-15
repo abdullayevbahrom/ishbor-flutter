@@ -66,6 +66,25 @@ Docker UI E2E runner:
 - `make flutter-e2e-ui DEVICE=adb`
 - `make flutter-e2e-ui API_BASE_URL=http://api.ishbor.test:8080`
 - `make flutter-e2e-ui MERCURE_PUBLIC_URL=http://ws.ishbor.test:8080/.well-known/mercure`
+- `make flutter-e2e-ui E2E_ADB_SERVER_SOCKET=tcp:host.docker.internal:5037`
+- `make flutter-e2e-ui E2E_CACHE_PREFIX=ishbor-flutter-e2e`
+- `make flutter-e2e-ui E2E_DEVICE_SCREENSHOTS_ROOT=/sdcard/Download/ishbor-e2e/screenshots`
+
+Hot reload device runner:
+
+- `make flutter-hot-reload`
+- `make flutter-hot-reload FLUTTER_DEVICE_ID=<device-id>`
+- `make flutter-hot-reload FLUTTER_TARGET=lib/main.dart`
+
+Bu target Docker ichida `flutter run --debug` ni ishga tushiradi, `adb reverse` bilan local API/Mercure domenga ulanadi va `pub-cache`, `.dart_tool`, Gradle hamda Android SDK cache’larini volume’da ushlab turadi. App loglari terminalga live oqadi.
+
+ADB ulanish variantlari:
+
+- Hostdagi real qurilma uchun `E2E_ADB_SERVER_SOCKET=tcp:host.docker.internal:5037`
+- Docker-Android yoki Waydroid uchun `E2E_ADB_SERVER_SOCKET=tcp:<emulator-host>:5037` va kerak bo‘lsa `E2E_EMULATOR_SERIAL=<host>:5555`
+- `DEVICE=adb` rejimida runner avtomatik `adb reverse tcp:8080 tcp:8080` qiladi; shu sabab app ichida `API_BASE_URL` va `MERCURE_PUBLIC_URL` localhost orqali ishlaydi, ammo `E2E_API_BASE_URL` va `E2E_MERCURE_PUBLIC_URL` artifact/report uchun saqlanadi.
+- Runner `E2E_CACHE_PREFIX` asosida Docker volume’larda `pub-cache`, Flutter build output, Gradle va Android SDK cache’larini saqlaydi.
+- Runner artefaktlarni device’dagi `E2E_DEVICE_SCREENSHOTS_ROOT` ga yozadi va keyin hostdagi `E2E_HOST_SCREENSHOTS_ROOT` ga ko‘chiradi.
 
 Required env:
 
@@ -75,6 +94,10 @@ Required env:
 - `E2E_ACCESS_TOKEN` or `E2E_TEST_PHONE` + `E2E_TEST_OTP`
 - `E2E_APP_VERSION`
 - `E2E_RUN_ID`
+- `E2E_ADB_SERVER_SOCKET` when the runner must attach to a non-local adb server
+- `E2E_CACHE_PREFIX` for persistent Docker cache volume names used by Flutter/Android tooling, including build output and SDK caches
+- `E2E_DEVICE_SCREENSHOTS_ROOT` for the device-side artifact root
+- `E2E_HOST_SCREENSHOTS_ROOT` for the host-side pulled artifact root
 
 Verbose logging faqat kerakli muhitda yoqiladi; secret, token va signature matnlari loglarga to'liq chiqarilmaydi.
 

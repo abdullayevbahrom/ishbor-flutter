@@ -5,6 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
+import 'package:top_jobs/app_state.dart';
+import 'package:top_jobs/consts.dart';
 import 'package:top_jobs/feature/common/data/models/user_update_request.dart';
 import 'package:top_jobs/feature/common/domain/repository/user_repository.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_toasttifications.dart';
@@ -33,6 +35,11 @@ class UserCubit extends Cubit<UserState> {
   Future<void> checkUser() async {
     final token = await sl<StorageService>().fetchToken();
     final expireDate = await sl<StorageService>().getExpireDate();
+
+    if (AppState.isActive && token == e2eFallbackAccessToken) {
+      emit(state.copyWith(user: null, hasToken: true, status: RequestStatus.loaded));
+      return;
+    }
 
     if (token != null && expireDate != null) {
       final difference = expireDate.difference(

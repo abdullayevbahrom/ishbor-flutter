@@ -7,6 +7,7 @@ import 'package:top_jobs/core/constants/locale_keys.g.dart';
 import 'package:top_jobs/core/helpers/enum_helpers.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
 import 'package:top_jobs/core/services/storage_service.dart';
+import 'package:top_jobs/consts.dart';
 import 'package:top_jobs/feature/auth/data/models/auth_success.dart';
 import 'package:top_jobs/feature/auth/domain/repository/auth_repository.dart';
 import 'package:top_jobs/feature/auth/presentation/pages/otp_page/otp_page.dart';
@@ -145,7 +146,7 @@ class AuthCubit extends Cubit<AuthState> {
       navigatorKey.currentContext?.pop();
       navigatorKey.currentContext?.pop();
       await storageService.putToken(
-        "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NzI1NjM1NzIsImV4cCI6MTgwNDEyMTE3Miwicm9sZXMiOlsiUk9MRV9VU0VSIl0sImlkIjozM30.XHiHa-EoD6TbKVem7HA-PeTe_PDJbuLICKBjnnlUfEVKIe-Y6Vu9JG2G-l3fYZKZrb9ZpHzjt-vNjjS7LGwMFKrP8d527yjqAb2YwXkae6HC7L4v5hYkKtgQDStuLPpilmU8KIOXutzXssNd7atfKvNRK8esux8DLAOE4D0bjwdwGwBK8Xi6GbXbGce9JshEu5um9nvi6_MYS4WgGcBG_p_V0O2BVtB_psybqgZVLlNMWAhKp6lhiXAGZXSyf0ZIULCCihj5Be9G7B22_NbyOFAGs6hrnOmuWqNWTCqlycKChKkvL7lmoMVNnNnECbyKkqGdsLVEjsvNhmI9fu1YQw",
+        e2eFallbackAccessToken,
       );
       await storageService.putExpireDate(
         DateTime.tryParse('2027-03-04 05:46:12'),

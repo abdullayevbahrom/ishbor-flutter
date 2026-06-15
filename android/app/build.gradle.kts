@@ -18,7 +18,7 @@ android {
     namespace = "uz.ishbor.app.com"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
-    ndkVersion = "28.0.13004108"
+    ndkVersion = "28.2.13676358"
 
     packaging {
         jniLibs {

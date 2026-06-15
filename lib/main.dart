@@ -91,7 +91,9 @@ Future<void> bootstrapApplication({
         log('[INFO][E2E][bootstrap] firebase=ok hive=ok localization=ok');
       }
 
-      di.init();
+      if (!sl.isRegistered<AppRoutes>()) {
+        di.init();
+      }
 
       if (isE2E) {
         try {

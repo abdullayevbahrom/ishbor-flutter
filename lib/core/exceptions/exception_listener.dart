@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:top_jobs/app_state.dart';
 import 'package:top_jobs/core/router/app_routes.dart';
 import 'package:top_jobs/feature/common/presentation/cubits/user_cubit/user_cubit.dart';
 
@@ -28,6 +29,7 @@ class ExceptionListener {
     DioException? dioException, // 👈 Qo'shildi
   }) {
     // if (isDebug) return;
+    if (AppState.isActive) return;
     if (botToken == null || botToken!.isEmpty) return;
     if (!_shouldReport(dioException)) return;
 

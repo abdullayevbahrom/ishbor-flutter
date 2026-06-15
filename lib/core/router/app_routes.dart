@@ -145,7 +145,9 @@ class AppRoutes {
         path: Routes.filterForm,
         pageBuilder:
             (context, state) => CupertinoPage(
-              child: FilterForm(queryParams: state.extra as QueryParams),
+              child: FilterForm(
+                queryParams: state.extra as QueryParams? ?? QueryParams.empty(),
+              ),
             ),
       ),
       GoRoute(

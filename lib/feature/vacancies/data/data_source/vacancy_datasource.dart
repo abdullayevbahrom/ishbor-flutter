@@ -645,8 +645,11 @@ class VacancyDataSourceImpl extends VacancyDataSource {
   Future<Either<Failure, PaginationResponse<NewVacancyModel>>>
   fetchNewVacancies({required QueryParams queryParams}) async {
     try {
+      debugPrint(
+        '[FIX][VACANCY][new-list] GET ${ApiConstants.vacanciesNew} query=${queryParams.toMap()}',
+      );
       final response = await _dio.get(
-        'vacancies-new',
+        ApiConstants.vacanciesNew,
         queryParameters: queryParams.toMap(),
       );
 

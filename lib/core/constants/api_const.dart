@@ -42,6 +42,7 @@ sealed class ApiConstants {
 
   /// === Vacancies ===
   static String get vacancies => _route('vacancies');
+  static String get vacanciesNew => _route('vacancies-new');
   static String get vacanciesGeo => '$vacancies/geo';
   static String get myVacancies => _route('me/vacancies/customer');
   static String get myVacancyApplies => _route('me/vacancies/performer');

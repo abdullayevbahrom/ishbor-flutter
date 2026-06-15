@@ -46,14 +46,22 @@ final class E2EScreenshotHelper {
   final IntegrationTestWidgetsFlutterBinding binding;
   final E2EConfig config;
   final List<Map<String, dynamic>> apiCalls;
+  Directory? _resolvedOutputDir;
 
-  Directory get outputDir =>
-      Directory(p.join('var', 'screnshots', config.runId));
+  Directory get outputDir {
+    if (_resolvedOutputDir != null) {
+      return _resolvedOutputDir!;
+    }
+    final root = config.screenshotsRoot;
+    final normalizedRoot =
+        p.basename(root) == config.runId ? p.dirname(root) : root;
+    return Directory(p.join(normalizedRoot, config.runId));
+  }
 
   File get manifestFile => File(p.join(outputDir.path, 'manifest.json'));
 
   Future<void> prepare() async {
-    await outputDir.create(recursive: true);
+    _resolvedOutputDir = await _resolveOutputDir();
     if (defaultTargetPlatform == TargetPlatform.android) {
       debugPrint(
         'INFO [E2E][surface] convertFlutterSurfaceToImage enabled for PlatformView coverage',
@@ -227,6 +235,44 @@ final class E2EScreenshotHelper {
     await manifestFile.writeAsString(
       const JsonEncoder.withIndent('  ').convert(payload),
       flush: true,
+    );
+  }
+
+  Future<Directory> _resolveOutputDir() async {
+    final candidates = <Directory>[
+      if (defaultTargetPlatform != TargetPlatform.android)
+        Directory(
+          p.join(
+            config.appDir,
+            'var',
+            'screnshots',
+            config.runId,
+          ),
+        ),
+      Directory(p.join(config.screenshotsRoot, config.runId)),
+      outputDir,
+    ];
+
+    for (final candidate in candidates) {
+      try {
+        await candidate.create(recursive: true);
+        return candidate;
+      } on FileSystemException catch (error) {
+        if (await candidate.exists()) {
+          debugPrint(
+            '[WARN][E2E][shot] outputDir already present path=${candidate.path} createError=$error',
+          );
+          return candidate;
+        }
+        debugPrint(
+          '[WARN][E2E][shot] outputDir unavailable path=${candidate.path} createError=$error',
+        );
+      }
+    }
+
+    throw FileSystemException(
+      'Unable to resolve a writable screenshot directory',
+      outputDir.path,
     );
   }
 

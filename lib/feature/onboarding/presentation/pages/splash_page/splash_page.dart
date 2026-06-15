@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:circle_splash/circle_splash.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -5,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:top_jobs/core/theme/app_colors.dart';
 import 'package:top_jobs/core/theme/app_png.dart';
+import 'package:top_jobs/core/utils/e2e_keys.dart';
 
 import '../../../../../app_state.dart';
 import '../../../../../core/router/route_names.dart';
@@ -22,6 +24,14 @@ class _SplashPageState extends State<SplashPage> {
   bool hasNewVersion = false;
 
   Future<void> navigateNextPage() async {
+    if (kDebugMode) {
+      await Future.delayed(const Duration(milliseconds: 2500));
+      if (!mounted) return;
+      debugPrint('[INFO][DEV] Version check bypassed to keep Hot Reload active.');
+      context.go(Routes.main, extra: widget.payload); // To'g'ri bosh sahifaga o'tib ketadi
+      return; // Pastdagi Google Play tekshiruv mantiqini butunlay to'xtatadi
+    }
+
     final newVersion = NewVersionPlus(
       androidId: "uz.ishbor.app.com",
       iOSId: "com.ishbor.app.uz",
@@ -72,6 +82,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: E2EKeys.page('splash'),
       body: CircleSplashScreen(
         config: CircleSplashConfig(
           animationType: CircleSplashAnimationType.bottomRight,
