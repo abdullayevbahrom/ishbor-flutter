@@ -278,7 +278,7 @@ class _WTaskViewPageState extends State<WTaskViewPage> {
                 context.push(Routes.othersProfile, extra: task?.customer);
               }
             },
-            name: task?.customer.fullName ?? '',
+            name: task?.customer.displayName ?? '',
             city: task?.customer.city ?? 'Tashkent',
             countLike: "${task?.customer.likesCount ?? 0}",
             countDislike: "${task?.customer.dislikesCount ?? 0}",

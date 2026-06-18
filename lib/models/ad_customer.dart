@@ -28,12 +28,11 @@ class AdCustomer extends Equatable {
   factory AdCustomer.fromJson(dynamic source) {
     final raw =
         source is String ? <String, dynamic>{'id': source} : unwrapData(source);
-    final fullName = _fullName(raw);
     return AdCustomer(
       raw: raw,
       id: stringValue(raw['id']),
-      fullName: fullName,
-      phoneNumber: stringValue(raw['phone_number'] ?? raw['phoneNumber']),
+      fullName: _fullName(raw),
+      phoneNumber: _phoneNumber(raw),
       city: stringValue(raw['city']),
       locale: stringValue(raw['locale']),
       avatar: _asAppImage(raw['avatar']),
@@ -55,6 +54,12 @@ class AdCustomer extends Equatable {
   int get likesCount => _intFromRaw('likes_count');
   int get dislikesCount => _intFromRaw('dislikes_count');
   bool? get documentVerified => _boolFromRaw('document_verified');
+  String get displayName =>
+      (fullName ?? '').trim().isNotEmpty
+          ? fullName!.trim()
+          : (phoneNumber ?? '').trim().isNotEmpty
+          ? phoneNumber!.trim()
+          : 'Noma\'lum';
 
   int _intFromRaw(String key) {
     final value = raw[key];
@@ -80,22 +85,54 @@ class AdCustomer extends Equatable {
 }
 
 String? _fullName(Map<String, dynamic> raw) {
+  final nestedCustomer = raw['customer'];
+  if (nestedCustomer is Map) {
+    final nested = Map<String, dynamic>.fromEntries(
+      nestedCustomer.entries.map(
+        (entry) => MapEntry(entry.key.toString(), entry.value),
+      ),
+    );
+    final nestedName = _fullName(nested);
+    if (nestedName != null && nestedName.trim().isNotEmpty) {
+      return nestedName.trim();
+    }
+  }
+
   final direct =
       stringValue(raw['full_name'] ?? raw['fullName'] ?? raw['name'])?.trim();
   if (direct != null && direct.isNotEmpty) {
     return direct;
   }
 
+  final middleName =
+      stringValue(raw['middle_name'] ?? raw['middleName'])?.trim() ?? '';
   final firstName =
       stringValue(raw['first_name'] ?? raw['firstName'])?.trim() ?? '';
   final lastName =
       stringValue(raw['last_name'] ?? raw['lastName'])?.trim() ?? '';
-  final combined = '$firstName $lastName'.trim();
+  final combined = '$firstName $middleName $lastName'.trim();
   if (combined.isNotEmpty) {
     return combined;
   }
 
   return null;
+}
+
+String? _phoneNumber(Map<String, dynamic> raw) {
+  final nestedCustomer = raw['customer'];
+  if (nestedCustomer is Map) {
+    final nested = Map<String, dynamic>.fromEntries(
+      nestedCustomer.entries.map(
+        (entry) => MapEntry(entry.key.toString(), entry.value),
+      ),
+    );
+    final nestedPhone = _phoneNumber(nested);
+    if (nestedPhone != null && nestedPhone.trim().isNotEmpty) {
+      return nestedPhone.trim();
+    }
+  }
+
+  return stringValue(raw['phone_number'] ?? raw['phoneNumber'])?.trim();
 }
 
 AppImage? _asAppImage(dynamic value) {

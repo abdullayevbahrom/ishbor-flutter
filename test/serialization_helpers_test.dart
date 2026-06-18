@@ -123,6 +123,7 @@ void main() {
     expect(image.urls['original'], 'https://cdn.example.com/image.png');
     expect(customer.id, '123');
     expect(customer.fullName, 'Jane Doe');
+    expect(customer.phoneNumber, '+998901112233');
     expect(
       customer.avatar?.urls['original'],
       'https://cdn.example.com/avatar.png',
@@ -130,15 +131,43 @@ void main() {
     expect(customer.title?.resolve('uz'), 'Sarlavha');
   });
 
-  test('ad customer falls back to first and last names when full name is missing', () {
+  test(
+    'ad customer falls back to first, middle and last names when full name is missing',
+    () {
+      final customer = AdCustomer.fromJson({
+        'id': 321,
+        'first_name': 'Ali',
+        'middle_name': 'Akmalovich',
+        'last_name': 'Valiyev',
+        'phone_number': '+998901122334',
+      });
+
+      expect(customer.fullName, 'Ali Akmalovich Valiyev');
+    },
+  );
+
+  test('ad customer falls back to phone number when name fields are missing', () {
     final customer = AdCustomer.fromJson({
-      'id': 321,
-      'first_name': 'Ali',
-      'last_name': 'Valiyev',
-      'phone_number': '+998901122334',
+      'id': 322,
+      'phone_number': '+998901122335',
     });
 
-    expect(customer.fullName, 'Ali Valiyev');
+    expect(customer.fullName, isNull);
+    expect(customer.displayName, '+998901122335');
+  });
+
+  test('ad customer reads nested customer full name from show payloads', () {
+    final customer = AdCustomer.fromJson({
+      'customer': {
+        'id': 'customer-1',
+        'full_name': 'Nested User',
+        'phone_number': '+998901122335',
+      },
+    });
+
+    expect(customer.fullName, 'Nested User');
+    expect(customer.phoneNumber, '+998901122335');
+    expect(customer.displayName, 'Nested User');
   });
 
   test('cities list normalizes minimal payload and retains coordinates', () {

@@ -174,7 +174,7 @@ class _WServiceViewPageState extends State<WServiceViewPage> {
                     );
                   }
                 },
-                name: service?.customer.fullName ?? '',
+                name: service?.customer.displayName ?? '',
                 city: service?.customer.city ?? 'Tashkent',
                 countLike: "${service?.customer.likesCount ?? 0}",
                 countDislike: "${service?.customer.dislikesCount ?? 0}",

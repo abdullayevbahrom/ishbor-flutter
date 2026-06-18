@@ -75,7 +75,7 @@ class WAdsAuthorPreView extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              name,
+                              name.trim().isNotEmpty ? name : 'Noma\'lum',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.size22Medium.copyWith(

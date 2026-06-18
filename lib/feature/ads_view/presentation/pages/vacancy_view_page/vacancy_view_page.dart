@@ -187,7 +187,7 @@ class _WVacancyViewPageState extends State<WVacancyViewPage> {
                     context.push(Routes.profileInfo);
                   }
                 },
-                name: vacancy?.customer.fullName ?? '',
+                name: vacancy?.customer.displayName ?? '',
                 city: vacancy?.customer.city ?? '',
                 countLike: "${vacancy?.customer.likesCount ?? 0}",
                 countDislike: "${vacancy?.customer.dislikesCount ?? 0}",

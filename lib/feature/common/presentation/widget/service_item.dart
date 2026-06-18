@@ -74,7 +74,7 @@ class ServiceItem extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              service.customer.fullName ?? '',
+                              service.customer.displayName,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.size13Regular.copyWith(
                                 color: AppColors.c2E3A59,
