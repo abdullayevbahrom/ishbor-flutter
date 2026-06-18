@@ -26,7 +26,18 @@ class AppLauncher {
   }
 
   Future<void> launchTelegram(String telegramUser) async {
-    final Uri uri = Uri.parse('https://t.me/$telegramUser');
+    String url = telegramUser.trim();
+    if (url.startsWith('@')) {
+      url = url.substring(1);
+    }
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      if (url.startsWith('t.me/')) {
+        url = 'https://$url';
+      } else {
+        url = 'https://t.me/$url';
+      }
+    }
+    final Uri uri = Uri.parse(url);
 
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri, mode: LaunchMode.externalApplication);
