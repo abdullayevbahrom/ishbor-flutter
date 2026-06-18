@@ -132,7 +132,7 @@ class FavoritesDataSourceImpl extends FavoritesDataSource {
       final response = await _dio.get(ApiConstants.vacancyFavorite);
       if (response.statusCode == 200) {
         return Right(
-          (response.data as List).map((e) {
+          _unwrapList(response.data).map((e) {
             return Vacancy.fromMap(e);
           }).toList(),
         );

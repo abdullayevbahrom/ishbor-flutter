@@ -8,6 +8,7 @@ import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hive/hive.dart';
+import 'package:top_jobs/consts.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/constants/app_locale_keys.dart';
 import 'package:top_jobs/core/network/dio_interceptor.dart';
@@ -89,7 +90,7 @@ void main() {
 
     final timestamp = int.parse(request.headers['X-Timestamp'] as String);
     final expectedSignature =
-        Hmac(sha256, utf8.encode(''))
+        Hmac(sha256, utf8.encode(apiSignatureSecret))
             .convert(
               utf8.encode(
                 '/api/v1/profile/update|{"full_name":"John Doe","postal_code":"100000"}|$timestamp',

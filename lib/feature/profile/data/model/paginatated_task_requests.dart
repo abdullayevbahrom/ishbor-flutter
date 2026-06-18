@@ -1,3 +1,4 @@
+import 'package:top_jobs/models/api_model_utils.dart';
 import 'package:top_jobs/models/task_request.dart';
 
 class PaginatedTaskResponse {
@@ -15,12 +16,12 @@ class PaginatedTaskResponse {
 
   factory PaginatedTaskResponse.fromJson(Map<String, dynamic> json) =>
       PaginatedTaskResponse(
-        currentPageNumber: json["current_page_number"],
-        numItemsPerPage: json["num_items_per_page"],
+        currentPageNumber: intValue(json["page"] ?? json["current_page_number"] ?? json["currentPageNumber"]) ?? 1,
+        numItemsPerPage: intValue(json["size"] ?? json["num_items_per_page"] ?? json["numItemsPerPage"]) ?? 20,
         items: List<TaskRequest>.from(
-          json["items"].map((x) => TaskRequest.fromMap(x)),
+          (json["items"] as List? ?? []).map((x) => TaskRequest.fromMap(x)),
         ),
-        totalCount: json["total_count"],
+        totalCount: intValue(json["total"] ?? json["total_count"] ?? json["totalCount"]) ?? 0,
       );
 
   PaginatedTaskResponse copyWith({
