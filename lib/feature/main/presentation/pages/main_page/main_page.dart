@@ -90,10 +90,8 @@ class _MainPageState extends State<MainPage>
     if (widget.payload?.containsKey("token") ?? false) {
       final expiresAtRaw = widget.payload?['expires_at'];
       final expiresAt =
-          expiresAtRaw is String ? DateTime.tryParse(expiresAtRaw) : null;
-      if (expiresAt == null) {
-        return;
-      }
+          (expiresAtRaw is String ? DateTime.tryParse(expiresAtRaw) : null) ??
+          DateTime.now().add(const Duration(days: 30));
       if (context.canPop()) {
         context.pop();
       }

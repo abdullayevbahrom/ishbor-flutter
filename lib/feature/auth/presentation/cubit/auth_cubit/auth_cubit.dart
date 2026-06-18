@@ -86,7 +86,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> logInWithTelegram(AuthSuccess authSuccess) async {
     final token = await storageService.fetchToken();
-    if (token == null) {
+    if (token != authSuccess.token) {
       await storageService.putToken(authSuccess.token);
       await storageService.putRefreshToken(authSuccess.refreshToken);
       await storageService.putExpireDate(authSuccess.expiresAt);

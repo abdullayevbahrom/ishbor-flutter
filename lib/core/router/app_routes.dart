@@ -58,7 +58,15 @@ String? _tryParseId(GoRouterState state) {
 
 DateTime? _tryParseExpiresAt(Uri uri) {
   final rawValue = uri.queryParameters['expires_at'];
-  return rawValue == null ? null : DateTime.tryParse(rawValue);
+  if (rawValue == null) {
+    return DateTime.now().add(const Duration(days: 30));
+  }
+  final parsed = DateTime.tryParse(rawValue);
+  if (parsed != null) {
+    return parsed;
+  }
+  final formattedValue = rawValue.replaceAll(' ', 'T');
+  return DateTime.tryParse(formattedValue) ?? DateTime.now().add(const Duration(days: 30));
 }
 
 class AppRoutes {
@@ -365,11 +373,8 @@ class AppRoutes {
         }
       }
       if (url.contains("/main") && uri.queryParameters['token'] != null) {
+        final expiresAt = _tryParseExpiresAt(uri);
         if (AppState.isActive) {
-          final expiresAt = _tryParseExpiresAt(uri);
-          if (expiresAt == null) {
-            return "/main";
-          }
           if (navigatorKey.currentContext?.canPop() ?? false) {
             navigatorKey.currentContext?.pop();
           }
