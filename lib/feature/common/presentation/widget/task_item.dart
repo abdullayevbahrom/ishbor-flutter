@@ -73,7 +73,7 @@ class TaskItem extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              "${task.customer.fullName}",
+                              task.customer.fullName ?? '',
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.size13Regular.copyWith(
                                 color: AppColors.c2E3A59,

@@ -28,10 +28,11 @@ class AdCustomer extends Equatable {
   factory AdCustomer.fromJson(dynamic source) {
     final raw =
         source is String ? <String, dynamic>{'id': source} : unwrapData(source);
+    final fullName = _fullName(raw);
     return AdCustomer(
       raw: raw,
       id: stringValue(raw['id']),
-      fullName: stringValue(raw['full_name'] ?? raw['fullName']),
+      fullName: fullName,
       phoneNumber: stringValue(raw['phone_number'] ?? raw['phoneNumber']),
       city: stringValue(raw['city']),
       locale: stringValue(raw['locale']),
@@ -76,6 +77,25 @@ class AdCustomer extends Equatable {
     }
     return null;
   }
+}
+
+String? _fullName(Map<String, dynamic> raw) {
+  final direct =
+      stringValue(raw['full_name'] ?? raw['fullName'] ?? raw['name'])?.trim();
+  if (direct != null && direct.isNotEmpty) {
+    return direct;
+  }
+
+  final firstName =
+      stringValue(raw['first_name'] ?? raw['firstName'])?.trim() ?? '';
+  final lastName =
+      stringValue(raw['last_name'] ?? raw['lastName'])?.trim() ?? '';
+  final combined = '$firstName $lastName'.trim();
+  if (combined.isNotEmpty) {
+    return combined;
+  }
+
+  return null;
 }
 
 AppImage? _asAppImage(dynamic value) {

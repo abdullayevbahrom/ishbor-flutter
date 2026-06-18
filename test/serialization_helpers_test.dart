@@ -130,6 +130,17 @@ void main() {
     expect(customer.title?.resolve('uz'), 'Sarlavha');
   });
 
+  test('ad customer falls back to first and last names when full name is missing', () {
+    final customer = AdCustomer.fromJson({
+      'id': 321,
+      'first_name': 'Ali',
+      'last_name': 'Valiyev',
+      'phone_number': '+998901122334',
+    });
+
+    expect(customer.fullName, 'Ali Valiyev');
+  });
+
   test('cities list normalizes minimal payload and retains coordinates', () {
     final response = CitiesList.fromMap({
       'data': {
@@ -218,6 +229,7 @@ void main() {
             'created_at': '2026-06-04T10:00:00+05:00',
             'customer': {
               'id': '019e88b7-b706-7caa-bb84-dd2f0ebec903',
+              'full_name': 'Test User',
               'phone_number': '998901112233',
             },
             'categories': [],
@@ -239,6 +251,7 @@ void main() {
       response.items.single.customer.id,
       '019e88b7-b706-7caa-bb84-dd2f0ebec903',
     );
+    expect(response.items.single.customer.fullName, 'Test User');
   });
 
   test('vacancy work time is preserved in request and response contracts', () {
@@ -297,6 +310,7 @@ void main() {
             'short_description': {'uz': 'Qisqa', 'ru': 'Qisqa'},
             'customer': {
               'id': '019e88b7-b706-7caa-bb84-dd2f0ebec905',
+              'full_name': 'Test User',
               'phone_number': '998901112244',
             },
             'lifted_up_at': '2026-06-04T10:00:00+05:00',
@@ -321,6 +335,7 @@ void main() {
       response.items.single.customer.id,
       '019e88b7-b706-7caa-bb84-dd2f0ebec905',
     );
+    expect(response.items.single.customer.fullName, 'Test User');
   });
 
   test('file and user normalize verification doc string payloads', () {
