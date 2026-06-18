@@ -1,22 +1,17 @@
-const String _defaultApiBaseUrl = 'https://api.ishbor.uz';
+const String _defaultApiBaseUrl = 'https://test.api.ishbor.uz';
 const String apiBaseUrl = String.fromEnvironment(
   'API_BASE_URL',
   defaultValue: _defaultApiBaseUrl,
 );
 
-const String mercureUrlOverride = String.fromEnvironment(
-  'MERCURE_URL',
-  defaultValue: '',
-);
-
 const String mercurePublicUrl = String.fromEnvironment(
   'MERCURE_PUBLIC_URL',
-  defaultValue: '',
+  defaultValue: 'https://test.api.ishbor.uz/.well-known/mercure',
 );
 
 const String apiSignatureSecret = String.fromEnvironment(
   'API_SIGNATURE_SECRET',
-  defaultValue: '',
+  defaultValue: 'supersecretapisecret',
 );
 
 const String appEnvironment = String.fromEnvironment(
@@ -39,29 +34,8 @@ const bool isProd = bool.fromEnvironment('dart.vm.product');
 
 const String baseUrl = apiBaseUrl;
 
-String _deriveMercureUrl(String apiUrl) {
-  try {
-    final url = Uri.parse(apiUrl);
-    final mercureHost =
-        url.host.startsWith('api.')
-            ? url.host.replaceFirst('api.', 'ws.')
-            : url.host;
-    return url
-        .replace(host: mercureHost, path: '/.well-known/mercure')
-        .toString();
-  } catch (_) {
-    return '$apiUrl/.well-known/mercure';
-  }
-}
-
 String get mercureUrl {
-  if (mercurePublicUrl.isNotEmpty) {
-    return mercurePublicUrl;
-  }
-  if (mercureUrlOverride.isNotEmpty) {
-    return mercureUrlOverride;
-  }
-  return _deriveMercureUrl(apiBaseUrl);
+  return mercurePublicUrl;
 }
 
 String get mercureEndpointUrl => mercureUrl;

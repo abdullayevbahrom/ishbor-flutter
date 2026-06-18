@@ -12,7 +12,7 @@ part of 'ask_question_cubit.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$AskQuestionState {
+mixin _$AskQuestionState implements DiagnosticableTreeMixin {
 
  RequestStatus get status; RequestStatus get reportSt; String? get errorText;
 /// Create a copy of AskQuestionState
@@ -22,6 +22,12 @@ mixin _$AskQuestionState {
 $AskQuestionStateCopyWith<AskQuestionState> get copyWith => _$AskQuestionStateCopyWithImpl<AskQuestionState>(this as AskQuestionState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AskQuestionState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('reportSt', reportSt))..add(DiagnosticsProperty('errorText', errorText));
+}
 
 @override
 bool operator ==(Object other) {
@@ -33,7 +39,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,reportSt,errorText);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AskQuestionState(status: $status, reportSt: $reportSt, errorText: $errorText)';
 }
 
@@ -207,7 +213,7 @@ return $default(_that.status,_that.reportSt,_that.errorText);case _:
 /// @nodoc
 
 
-class _AskQuestionState implements AskQuestionState {
+class _AskQuestionState with DiagnosticableTreeMixin implements AskQuestionState {
   const _AskQuestionState({this.status = RequestStatus.initial, this.reportSt = RequestStatus.initial, this.errorText = null});
   
 
@@ -222,6 +228,12 @@ class _AskQuestionState implements AskQuestionState {
 _$AskQuestionStateCopyWith<_AskQuestionState> get copyWith => __$AskQuestionStateCopyWithImpl<_AskQuestionState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'AskQuestionState'))
+    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('reportSt', reportSt))..add(DiagnosticsProperty('errorText', errorText));
+}
 
 @override
 bool operator ==(Object other) {
@@ -233,7 +245,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,status,reportSt,errorText);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'AskQuestionState(status: $status, reportSt: $reportSt, errorText: $errorText)';
 }
 

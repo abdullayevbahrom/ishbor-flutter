@@ -12,7 +12,7 @@ import 'package:top_jobs/core/utils/app_utils.dart';
 import 'package:top_jobs/feature/common/presentation/pages/w_error_page/w_error_page.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_button.dart';
 import 'package:top_jobs/feature/common/presentation/widget/app_search_form.dart';
-import 'package:top_jobs/feature/common/presentation/widget/new_vacancy_item.dart';
+import 'package:top_jobs/feature/common/presentation/widget/vacancy_item.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_error_widget.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_loading.dart';
 import 'package:top_jobs/feature/common/presentation/widget/w_refresh_indicator.dart';
@@ -144,7 +144,7 @@ class _VacancyListState extends State<VacancyList> {
     }
 
     if (state.status.isLoaded()) {
-      final list = state.newVacancies?.items;
+      final list = state.listVacancy?.items;
       if ((list ?? []).isEmpty) {
         return Column(
           spacing: 20.h,
@@ -191,7 +191,7 @@ class _VacancyListState extends State<VacancyList> {
                       onTap: () {
                         context.push(Routes.vacancyView);
                       },
-                      child: NewVacancyItem(
+                      child: VacancyItem(
                         key: E2EKeys.card(
                           'vacancy',
                           list![index].id?.toString() ?? index.toString(),

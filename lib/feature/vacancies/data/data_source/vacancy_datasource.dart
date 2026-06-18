@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/feature/common/data/models/pagination_model.dart';
-import 'package:top_jobs/feature/vacancies/data/models/new_vacancy_model.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_create_model.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_query_params.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_response.dart';
@@ -24,9 +23,6 @@ abstract class VacancyDataSource {
   Future<Either<Failure, VacancyPaginationResponse>> fetchVacancies({
     required QueryParams queryParams,
   });
-
-  Future<Either<Failure, PaginationResponse<NewVacancyModel>>>
-  fetchNewVacancies({required QueryParams queryParams});
 
   Future<Either<Failure, VacancyPaginationResponse>> fetchSimilarVacancies({
     required CommonQueryParams queryParams,
@@ -632,32 +628,6 @@ class VacancyDataSourceImpl extends VacancyDataSource {
           return Left(Failure(message: response.data));
         }
       }
-    } on DioException catch (e) {
-      final failure = DioFailure.fromDioError(e);
-      return Left(Failure(message: failure.message));
-    } on Exception catch (e) {
-      debugPrint(e.toString());
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Either<Failure, PaginationResponse<NewVacancyModel>>>
-  fetchNewVacancies({required QueryParams queryParams}) async {
-    try {
-      debugPrint(
-        '[FIX][VACANCY][new-list] GET ${ApiConstants.vacanciesNew} query=${queryParams.toMap()}',
-      );
-      final response = await _dio.get(
-        ApiConstants.vacanciesNew,
-        queryParameters: queryParams.toMap(),
-      );
-
-      final result = PaginationResponse<NewVacancyModel>.fromJson(
-        response.data,
-        (json) => NewVacancyModel.fromJson(json),
-      );
-      return Right(result);
     } on DioException catch (e) {
       final failure = DioFailure.fromDioError(e);
       return Left(Failure(message: failure.message));

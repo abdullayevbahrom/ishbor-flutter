@@ -4,7 +4,6 @@ import 'package:top_jobs/core/network/api_http.dart';
 import 'package:top_jobs/feature/common/data/models/map_filter_query.dart';
 import 'package:top_jobs/feature/common/data/models/pagination_model.dart';
 import 'package:top_jobs/feature/vacancies/data/data_source/vacancy_datasource.dart';
-import 'package:top_jobs/feature/vacancies/data/models/new_vacancy_model.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_create_model.dart';
 
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_response.dart';
@@ -231,22 +230,6 @@ class VacancyRepositoryImpl extends VacancyRepository {
       vacancyId: vacancyId,
     );
     return response.fold(
-      (l) {
-        return Left(Failure(message: l.message));
-      },
-      (r) {
-        return Right(r);
-      },
-    );
-  }
-
-  @override
-  Future<Either<Failure, PaginationResponse<NewVacancyModel>>>
-  fetchNewVacancies({required QueryParams queryParams}) async {
-    final result = await _vacancyDataSource.fetchNewVacancies(
-      queryParams: queryParams,
-    );
-    return result.fold(
       (l) {
         return Left(Failure(message: l.message));
       },

@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:top_jobs/feature/common/data/models/pagination_model.dart';
-import 'package:top_jobs/feature/vacancies/data/models/new_vacancy_model.dart';
 import 'package:top_jobs/feature/vacancies/data/models/vacancy_create_model.dart';
 import 'package:top_jobs/models/vacancy.dart';
 
@@ -54,7 +53,4 @@ abstract class VacancyRepository {
   Future<Either<Failure, VacancyPaginationResponse>> fetchAppliedVacancies({
     required CommonQueryParams queryParams,
   });
-
-  Future<Either<Failure, PaginationResponse<NewVacancyModel>>>
-  fetchNewVacancies({required QueryParams queryParams});
 }

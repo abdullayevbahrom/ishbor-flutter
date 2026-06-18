@@ -1,14 +1,3 @@
-/// Common pagination wrapper that you can reuse everywhere.
-/// Works with KnpPaginator-like responses (items + meta fields).
-///
-/// Usage:
-/// final res = PaginationResponse<NewVacancyModel>.fromJson(
-///   json,
-///   (e) => NewVacancyModel.fromJson(e),
-/// );
-///
-/// final items = res.items; // List<NewVacancyModel>?
-
 class PaginationResponse<T> {
   final int? currentPageNumber;
   final int? numItemsPerPage;

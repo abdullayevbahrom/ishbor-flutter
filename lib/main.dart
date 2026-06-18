@@ -73,6 +73,7 @@ Future<void> bootstrapApplication({
 
       final dir = await getApplicationDocumentsDirectory();
       Hive.init(dir.path);
+      Bloc.observer = AppBlocObserver();
 
       if (isE2E) {
         log(
@@ -218,5 +219,14 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
     }
     return client;
+  }
+}
+
+class AppBlocObserver extends BlocObserver {
+  @override
+  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
+    super.onError(bloc, error, stackTrace);
+    // 🎯 E2E va Dev muhitida qaysi Bloc'da qanaqa xato bo'lganini aniq ko'rsatadi
+    log('[ERROR][BLOC] name=${bloc.runtimeType} error=$error stack=$stackTrace');
   }
 }

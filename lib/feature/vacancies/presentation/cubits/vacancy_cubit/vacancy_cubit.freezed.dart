@@ -14,8 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VacancyState {
 
- RequestStatus get status; RequestStatus get similarVacSt; String? get errorText;//@Default(null) VacancyPaginationResponse? listVacancy,
- VacancyPaginationResponse? get listSimilarVacancy; PaginationResponse<NewVacancyModel>? get newVacancies; bool get isLoadingMore;
+ RequestStatus get status; RequestStatus get similarVacSt; String? get errorText; VacancyPaginationResponse? get listVacancy; VacancyPaginationResponse? get listSimilarVacancy; bool get isLoadingMore;
 /// Create a copy of VacancyState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -26,16 +25,16 @@ $VacancyStateCopyWith<VacancyState> get copyWith => _$VacancyStateCopyWithImpl<V
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacSt, similarVacSt) || other.similarVacSt == similarVacSt)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.newVacancies, newVacancies) || other.newVacancies == newVacancies)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VacancyState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacSt, similarVacSt) || other.similarVacSt == similarVacSt)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.listVacancy, listVacancy) || other.listVacancy == listVacancy)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacSt,errorText,listSimilarVacancy,newVacancies,isLoadingMore);
+int get hashCode => Object.hash(runtimeType,status,similarVacSt,errorText,listVacancy,listSimilarVacancy,isLoadingMore);
 
 @override
 String toString() {
-  return 'VacancyState(status: $status, similarVacSt: $similarVacSt, errorText: $errorText, listSimilarVacancy: $listSimilarVacancy, newVacancies: $newVacancies, isLoadingMore: $isLoadingMore)';
+  return 'VacancyState(status: $status, similarVacSt: $similarVacSt, errorText: $errorText, listVacancy: $listVacancy, listSimilarVacancy: $listSimilarVacancy, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -46,7 +45,7 @@ abstract mixin class $VacancyStateCopyWith<$Res>  {
   factory $VacancyStateCopyWith(VacancyState value, $Res Function(VacancyState) _then) = _$VacancyStateCopyWithImpl;
 @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacSt, String? errorText, VacancyPaginationResponse? listSimilarVacancy, PaginationResponse<NewVacancyModel>? newVacancies, bool isLoadingMore
+ RequestStatus status, RequestStatus similarVacSt, String? errorText, VacancyPaginationResponse? listVacancy, VacancyPaginationResponse? listSimilarVacancy, bool isLoadingMore
 });
 
 
@@ -63,14 +62,14 @@ class _$VacancyStateCopyWithImpl<$Res>
 
 /// Create a copy of VacancyState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? similarVacSt = null,Object? errorText = freezed,Object? listSimilarVacancy = freezed,Object? newVacancies = freezed,Object? isLoadingMore = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? similarVacSt = null,Object? errorText = freezed,Object? listVacancy = freezed,Object? listSimilarVacancy = freezed,Object? isLoadingMore = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as RequestStatus,similarVacSt: null == similarVacSt ? _self.similarVacSt : similarVacSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,errorText: freezed == errorText ? _self.errorText : errorText // ignore: cast_nullable_to_non_nullable
-as String?,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
-as VacancyPaginationResponse?,newVacancies: freezed == newVacancies ? _self.newVacancies : newVacancies // ignore: cast_nullable_to_non_nullable
-as PaginationResponse<NewVacancyModel>?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as String?,listVacancy: freezed == listVacancy ? _self.listVacancy : listVacancy // ignore: cast_nullable_to_non_nullable
+as VacancyPaginationResponse?,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
+as VacancyPaginationResponse?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -156,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listSimilarVacancy,  PaginationResponse<NewVacancyModel>? newVacancies,  bool isLoadingMore)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listVacancy,  VacancyPaginationResponse? listSimilarVacancy,  bool isLoadingMore)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VacancyState() when $default != null:
-return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimilarVacancy,_that.newVacancies,_that.isLoadingMore);case _:
+return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listVacancy,_that.listSimilarVacancy,_that.isLoadingMore);case _:
   return orElse();
 
 }
@@ -177,10 +176,10 @@ return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimila
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listSimilarVacancy,  PaginationResponse<NewVacancyModel>? newVacancies,  bool isLoadingMore)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listVacancy,  VacancyPaginationResponse? listSimilarVacancy,  bool isLoadingMore)  $default,) {final _that = this;
 switch (_that) {
 case _VacancyState():
-return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimilarVacancy,_that.newVacancies,_that.isLoadingMore);case _:
+return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listVacancy,_that.listSimilarVacancy,_that.isLoadingMore);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -197,10 +196,10 @@ return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimila
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listSimilarVacancy,  PaginationResponse<NewVacancyModel>? newVacancies,  bool isLoadingMore)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( RequestStatus status,  RequestStatus similarVacSt,  String? errorText,  VacancyPaginationResponse? listVacancy,  VacancyPaginationResponse? listSimilarVacancy,  bool isLoadingMore)?  $default,) {final _that = this;
 switch (_that) {
 case _VacancyState() when $default != null:
-return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimilarVacancy,_that.newVacancies,_that.isLoadingMore);case _:
+return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listVacancy,_that.listSimilarVacancy,_that.isLoadingMore);case _:
   return null;
 
 }
@@ -212,15 +211,14 @@ return $default(_that.status,_that.similarVacSt,_that.errorText,_that.listSimila
 
 
 class _VacancyState implements VacancyState {
-  const _VacancyState({this.status = RequestStatus.initial, this.similarVacSt = RequestStatus.initial, this.errorText = null, this.listSimilarVacancy = null, this.newVacancies = null, this.isLoadingMore = false});
+  const _VacancyState({this.status = RequestStatus.initial, this.similarVacSt = RequestStatus.initial, this.errorText = null, this.listVacancy = null, this.listSimilarVacancy = null, this.isLoadingMore = false});
   
 
 @override@JsonKey() final  RequestStatus status;
 @override@JsonKey() final  RequestStatus similarVacSt;
 @override@JsonKey() final  String? errorText;
-//@Default(null) VacancyPaginationResponse? listVacancy,
+@override@JsonKey() final  VacancyPaginationResponse? listVacancy;
 @override@JsonKey() final  VacancyPaginationResponse? listSimilarVacancy;
-@override@JsonKey() final  PaginationResponse<NewVacancyModel>? newVacancies;
 @override@JsonKey() final  bool isLoadingMore;
 
 /// Create a copy of VacancyState
@@ -233,16 +231,16 @@ _$VacancyStateCopyWith<_VacancyState> get copyWith => __$VacancyStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacSt, similarVacSt) || other.similarVacSt == similarVacSt)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.newVacancies, newVacancies) || other.newVacancies == newVacancies)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VacancyState&&(identical(other.status, status) || other.status == status)&&(identical(other.similarVacSt, similarVacSt) || other.similarVacSt == similarVacSt)&&(identical(other.errorText, errorText) || other.errorText == errorText)&&(identical(other.listVacancy, listVacancy) || other.listVacancy == listVacancy)&&(identical(other.listSimilarVacancy, listSimilarVacancy) || other.listSimilarVacancy == listSimilarVacancy)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,similarVacSt,errorText,listSimilarVacancy,newVacancies,isLoadingMore);
+int get hashCode => Object.hash(runtimeType,status,similarVacSt,errorText,listVacancy,listSimilarVacancy,isLoadingMore);
 
 @override
 String toString() {
-  return 'VacancyState(status: $status, similarVacSt: $similarVacSt, errorText: $errorText, listSimilarVacancy: $listSimilarVacancy, newVacancies: $newVacancies, isLoadingMore: $isLoadingMore)';
+  return 'VacancyState(status: $status, similarVacSt: $similarVacSt, errorText: $errorText, listVacancy: $listVacancy, listSimilarVacancy: $listSimilarVacancy, isLoadingMore: $isLoadingMore)';
 }
 
 
@@ -253,7 +251,7 @@ abstract mixin class _$VacancyStateCopyWith<$Res> implements $VacancyStateCopyWi
   factory _$VacancyStateCopyWith(_VacancyState value, $Res Function(_VacancyState) _then) = __$VacancyStateCopyWithImpl;
 @override @useResult
 $Res call({
- RequestStatus status, RequestStatus similarVacSt, String? errorText, VacancyPaginationResponse? listSimilarVacancy, PaginationResponse<NewVacancyModel>? newVacancies, bool isLoadingMore
+ RequestStatus status, RequestStatus similarVacSt, String? errorText, VacancyPaginationResponse? listVacancy, VacancyPaginationResponse? listSimilarVacancy, bool isLoadingMore
 });
 
 
@@ -270,14 +268,14 @@ class __$VacancyStateCopyWithImpl<$Res>
 
 /// Create a copy of VacancyState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? similarVacSt = null,Object? errorText = freezed,Object? listSimilarVacancy = freezed,Object? newVacancies = freezed,Object? isLoadingMore = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? similarVacSt = null,Object? errorText = freezed,Object? listVacancy = freezed,Object? listSimilarVacancy = freezed,Object? isLoadingMore = null,}) {
   return _then(_VacancyState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as RequestStatus,similarVacSt: null == similarVacSt ? _self.similarVacSt : similarVacSt // ignore: cast_nullable_to_non_nullable
 as RequestStatus,errorText: freezed == errorText ? _self.errorText : errorText // ignore: cast_nullable_to_non_nullable
-as String?,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
-as VacancyPaginationResponse?,newVacancies: freezed == newVacancies ? _self.newVacancies : newVacancies // ignore: cast_nullable_to_non_nullable
-as PaginationResponse<NewVacancyModel>?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as String?,listVacancy: freezed == listVacancy ? _self.listVacancy : listVacancy // ignore: cast_nullable_to_non_nullable
+as VacancyPaginationResponse?,listSimilarVacancy: freezed == listSimilarVacancy ? _self.listSimilarVacancy : listSimilarVacancy // ignore: cast_nullable_to_non_nullable
+as VacancyPaginationResponse?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
