@@ -9,7 +9,8 @@ class AppLauncher {
       if (await canLaunchUrl(uri)) {
         await launchUrl(uri, mode: LaunchMode.externalApplication);
       } else {
-        throw 'Could not launch $url';
+        // Fallback: try launching directly (bypasses canLaunchUrl package visibility check)
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
       }
     } catch (e) {
       debugPrint('Error launching URL: $e');
@@ -39,9 +40,15 @@ class AppLauncher {
     }
     final Uri uri = Uri.parse(url);
 
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        // Fallback: try launching directly (bypasses canLaunchUrl package visibility check)
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      }
+    } catch (e) {
+      debugPrint('Error launching Telegram: $e');
       throw 'Could not launch $uri';
     }
   }
