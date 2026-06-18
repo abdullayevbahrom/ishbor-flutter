@@ -33,7 +33,7 @@ class WUserInfo extends StatelessWidget {
       children: [
         AppUtils.hSizedBox24,
         Text(LocaleKeys.personalData.tr(), style: AppTextStyles.size28Bold),
-        Text(user.fullName ?? '', style: AppTextStyles.size28Bold),
+        Text(user.displayName, style: AppTextStyles.size28Bold),
         AppUtils.hSizedBox24,
         WDecoratedBox(
           radius: 18.r,
@@ -63,7 +63,7 @@ class WUserInfo extends StatelessWidget {
                           children: [
                             Flexible(
                               child: Text(
-                                user.fullName ?? '',
+                                user.displayName,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.size17Medium,

@@ -41,7 +41,7 @@ class User extends Equatable {
   final String? aboutMe;
   final File? verificationDoc;
 
-  User({
+  const User({
     required this.id,
     required this.phoneNumber,
     this.contentLimit,
@@ -114,6 +114,29 @@ class User extends Equatable {
     contentCount,
     contentLimit,
   ];
+
+  String get displayName {
+    final fullNameValue = fullName?.trim() ?? '';
+    if (fullNameValue.isNotEmpty) {
+      return fullNameValue;
+    }
+
+    final parts = <String>[
+      if ((firstName ?? '').trim().isNotEmpty) firstName!.trim(),
+      if ((middleName ?? '').trim().isNotEmpty) middleName!.trim(),
+      if ((lastName ?? '').trim().isNotEmpty) lastName!.trim(),
+    ];
+    if (parts.isNotEmpty) {
+      return parts.join(' ');
+    }
+
+    final phoneValue = phoneNumber?.trim() ?? '';
+    if (phoneValue.isNotEmpty) {
+      return phoneValue;
+    }
+
+    return 'Noma\'lum';
+  }
 
   static User fromMap(dynamic source) {
     final data = unwrapData(source);

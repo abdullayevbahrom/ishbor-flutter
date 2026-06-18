@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:top_jobs/models/image.dart';
 import 'package:top_jobs/models/localized_text.dart';
@@ -85,13 +87,8 @@ class AdCustomer extends Equatable {
 }
 
 String? _fullName(Map<String, dynamic> raw) {
-  final nestedCustomer = raw['customer'];
-  if (nestedCustomer is Map) {
-    final nested = Map<String, dynamic>.fromEntries(
-      nestedCustomer.entries.map(
-        (entry) => MapEntry(entry.key.toString(), entry.value),
-      ),
-    );
+  final nested = _nestedCustomerMap(raw['customer']);
+  if (nested != null) {
     final nestedName = _fullName(nested);
     if (nestedName != null && nestedName.trim().isNotEmpty) {
       return nestedName.trim();
@@ -119,13 +116,8 @@ String? _fullName(Map<String, dynamic> raw) {
 }
 
 String? _phoneNumber(Map<String, dynamic> raw) {
-  final nestedCustomer = raw['customer'];
-  if (nestedCustomer is Map) {
-    final nested = Map<String, dynamic>.fromEntries(
-      nestedCustomer.entries.map(
-        (entry) => MapEntry(entry.key.toString(), entry.value),
-      ),
-    );
+  final nested = _nestedCustomerMap(raw['customer']);
+  if (nested != null) {
     final nestedPhone = _phoneNumber(nested);
     if (nestedPhone != null && nestedPhone.trim().isNotEmpty) {
       return nestedPhone.trim();
@@ -133,6 +125,32 @@ String? _phoneNumber(Map<String, dynamic> raw) {
   }
 
   return stringValue(raw['phone_number'] ?? raw['phoneNumber'])?.trim();
+}
+
+Map<String, dynamic>? _nestedCustomerMap(dynamic value) {
+  if (value is Map) {
+    return Map<String, dynamic>.fromEntries(
+      value.entries.map(
+        (entry) => MapEntry(entry.key.toString(), entry.value),
+      ),
+    );
+  }
+
+  if (value is String && value.trim().isNotEmpty) {
+    try {
+      final decoded = jsonDecode(value.trim());
+      if (decoded is Map) {
+        return Map<String, dynamic>.fromEntries(
+          decoded.entries.map(
+            (entry) => MapEntry(entry.key.toString(), entry.value),
+          ),
+        );
+      }
+    } catch (_) {
+    }
+  }
+
+  return null;
 }
 
 AppImage? _asAppImage(dynamic value) {

@@ -53,7 +53,7 @@ class ChatHeader extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Text(
-                              sender?.fullName ?? '',
+                              sender?.displayName ?? '',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.size17Medium,

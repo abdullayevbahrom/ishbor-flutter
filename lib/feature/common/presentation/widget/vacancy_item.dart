@@ -211,7 +211,6 @@ class VacancyItem extends StatelessWidget {
                       children: [
                         PopupMenuButton(
                           color: AppColors.cFFFFFF,
-                          child: SvgPicture.asset(AppSvg.icFilterGrey),
                           offset: Offset(-25, 30),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12.r),
@@ -220,25 +219,25 @@ class VacancyItem extends StatelessWidget {
                             return [
                               PopupMenuItem(
                                 value: 'edit',
-                                child: Text(LocaleKeys.edit.tr()),
                                 onTap: () {
                                   context.push(
                                     Routes.createVacancy,
                                     extra: vacancy,
                                   );
                                 },
+                                child: Text(LocaleKeys.edit.tr()),
                               ),
                               if (enableLiftUp ?? false)
                                 PopupMenuItem(
                                   value: 'lift_ip',
-                                  child: Text(LocaleKeys.liftUp.tr()),
                                   onTap: onTapLiftUp,
+                                  child: Text(LocaleKeys.liftUp.tr()),
                                 ),
                               if (vacancy.status != "deactivated")
                                 PopupMenuItem(
                                   value: 'deactivated',
-                                  child: Text(LocaleKeys.deactivate.tr()),
                                   onTap: onTapDeactivate,
+                                  child: Text(LocaleKeys.deactivate.tr()),
                                 ),
                               if (vacancy.status == "deactivated")
                                 PopupMenuItem(
@@ -256,6 +255,7 @@ class VacancyItem extends StatelessWidget {
                               ),
                             ];
                           },
+                          child: SvgPicture.asset(AppSvg.icFilterGrey),
                         ),
                         /*
                         WCountSeeCountClick(

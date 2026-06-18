@@ -56,7 +56,7 @@ class _ProfileOwnerStatisticsState extends State<ProfileOwnerStatistics> {
                     spacing: 4.h,
                     children: [
                       Text(
-                        user?.fullName ?? "",
+                        user?.displayName ?? "",
                         style: AppTextStyles.size17Medium,
                       ),
                       Text(

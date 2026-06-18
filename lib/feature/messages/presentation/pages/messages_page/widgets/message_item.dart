@@ -53,7 +53,7 @@ class WMessageItem extends StatelessWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          user?.fullName ?? '',
+                          user?.displayName ?? '',
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTextStyles.size17Medium,

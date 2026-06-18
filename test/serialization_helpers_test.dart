@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:top_jobs/core/constants/api_const.dart';
 import 'package:top_jobs/core/network/api_response.dart';
@@ -168,6 +170,22 @@ void main() {
     expect(customer.fullName, 'Nested User');
     expect(customer.phoneNumber, '+998901122335');
     expect(customer.displayName, 'Nested User');
+  });
+
+  test('ad customer reads nested customer json string payloads', () {
+    final customer = AdCustomer.fromJson({
+      'customer': jsonEncode({
+        'id': 'customer-2',
+        'first_name': 'Ali',
+        'middle_name': 'Akmalovich',
+        'last_name': 'Valiyev',
+        'phone_number': '+998901122336',
+      }),
+    });
+
+    expect(customer.fullName, 'Ali Akmalovich Valiyev');
+    expect(customer.phoneNumber, '+998901122336');
+    expect(customer.displayName, 'Ali Akmalovich Valiyev');
   });
 
   test('cities list normalizes minimal payload and retains coordinates', () {

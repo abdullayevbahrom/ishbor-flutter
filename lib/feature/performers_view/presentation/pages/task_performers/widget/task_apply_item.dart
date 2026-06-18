@@ -49,7 +49,7 @@ class TaskApplyItem extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              taskRequest.performer.fullName ?? '',
+                              taskRequest.performer.displayName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: AppTextStyles.size17Medium.copyWith(
