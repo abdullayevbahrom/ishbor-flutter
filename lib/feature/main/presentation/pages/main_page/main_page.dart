@@ -87,19 +87,26 @@ class _MainPageState extends State<MainPage>
       context.push("/task-view?id=${widget.payload?['taskId']}");
     }
 
-    if (widget.payload?.containsKey("token") ?? false) {
+    final token = widget.payload?['access_token'] ?? widget.payload?['token'];
+    if (token != null) {
       final expiresAtRaw = widget.payload?['expires_at'];
-      final expiresAt =
-          (expiresAtRaw is String ? DateTime.tryParse(expiresAtRaw) : null) ??
-          DateTime.now().add(const Duration(days: 30));
+      final expiresInRaw = widget.payload?['expires_in'];
+      final expiresIn = expiresInRaw != null ? int.tryParse(expiresInRaw.toString()) : null;
+
+      var expiresAt = expiresAtRaw is String ? DateTime.tryParse(expiresAtRaw) : null;
+      if (expiresAt == null && expiresIn != null) {
+        expiresAt = DateTime.now().add(Duration(seconds: expiresIn));
+      }
+      expiresAt ??= DateTime.now().add(const Duration(days: 30));
+
       if (context.canPop()) {
         context.pop();
       }
       context.read<AuthCubit>().logInWithTelegram(
         AuthSuccess(
-          accessToken: widget.payload?['token'],
+          accessToken: token,
           refreshToken: widget.payload?['refresh_token'],
-          expiresIn: null,
+          expiresIn: expiresIn,
           expiresAt: expiresAt,
         ),
       );

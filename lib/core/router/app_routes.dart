@@ -58,15 +58,27 @@ String? _tryParseId(GoRouterState state) {
 
 DateTime? _tryParseExpiresAt(Uri uri) {
   final rawValue = uri.queryParameters['expires_at'];
-  if (rawValue == null) {
-    return DateTime.now().add(const Duration(days: 30));
+  if (rawValue != null) {
+    final parsed = DateTime.tryParse(rawValue);
+    if (parsed != null) {
+      return parsed;
+    }
+    final formattedValue = rawValue.replaceAll(' ', 'T');
+    final parsed2 = DateTime.tryParse(formattedValue);
+    if (parsed2 != null) {
+      return parsed2;
+    }
   }
-  final parsed = DateTime.tryParse(rawValue);
-  if (parsed != null) {
-    return parsed;
+
+  final expiresInRaw = uri.queryParameters['expires_in'];
+  if (expiresInRaw != null) {
+    final seconds = int.tryParse(expiresInRaw);
+    if (seconds != null) {
+      return DateTime.now().add(Duration(seconds: seconds));
+    }
   }
-  final formattedValue = rawValue.replaceAll(' ', 'T');
-  return DateTime.tryParse(formattedValue) ?? DateTime.now().add(const Duration(days: 30));
+
+  return DateTime.now().add(const Duration(days: 30));
 }
 
 class AppRoutes {
@@ -391,6 +403,37 @@ class AppRoutes {
           return "/splash/${jsonEncode({'token': uri.queryParameters['token'], 'expires_at': uri.queryParameters['expires_at']})}";
         }
       }
+      if (url.contains("/main") && uri.queryParameters['access_token'] != null) {
+        final expiresAt = _tryParseExpiresAt(uri);
+        final expiresInStr = uri.queryParameters['expires_in'];
+        final expiresIn = expiresInStr != null ? int.tryParse(expiresInStr) : null;
+        if (AppState.isActive) {
+          if (navigatorKey.currentContext?.canPop() ?? false) {
+            navigatorKey.currentContext?.pop();
+          }
+          navigatorKey.currentContext?.read<AuthCubit>().logInWithTelegram(
+            AuthSuccess(
+              accessToken: uri.queryParameters['access_token'],
+              refreshToken: uri.queryParameters['refresh_token'],
+              expiresIn: expiresIn,
+              expiresAt: expiresAt,
+            ),
+          );
+          return "/main/${jsonEncode({
+            'access_token': uri.queryParameters['access_token'],
+            'refresh_token': uri.queryParameters['refresh_token'],
+            'expires_in': uri.queryParameters['expires_in'],
+            'expires_at': expiresAt?.toIso8601String(),
+          })}";
+        } else {
+          return "/splash/${jsonEncode({
+            'access_token': uri.queryParameters['access_token'],
+            'refresh_token': uri.queryParameters['refresh_token'],
+            'expires_in': uri.queryParameters['expires_in'],
+            'expires_at': expiresAt?.toIso8601String(),
+          })}";
+        }
+      }
       if (url.contains("/payment") &&
           uri.queryParameters['transaction_id'] != null) {
         return "/payment?transaction_id=${uri.queryParameters['transaction_id']}";
@@ -426,6 +469,17 @@ String _getInitialRoute() {
         uri.queryParameters['token'] != null &&
         _tryParseExpiresAt(uri) != null) {
       return "/splash/${jsonEncode({'token': uri.queryParameters['token'], 'expires_at': uri.queryParameters['expires_at']})}";
+    }
+
+    if (initialLink!.contains("/main") &&
+        uri.queryParameters['access_token'] != null) {
+      final expiresAt = _tryParseExpiresAt(uri);
+      return "/splash/${jsonEncode({
+        'access_token': uri.queryParameters['access_token'],
+        'refresh_token': uri.queryParameters['refresh_token'],
+        'expires_in': uri.queryParameters['expires_in'],
+        'expires_at': expiresAt?.toIso8601String(),
+      })}";
     }
   }
 
