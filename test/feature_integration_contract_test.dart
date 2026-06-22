@@ -223,6 +223,10 @@ void main() {
         adapter.requests.last.headers['X-Device-Token'],
         'response-device-token',
       );
+      expect(
+        adapter.requests.last.headers[HttpHeaders.acceptEncodingHeader],
+        'gzip',
+      );
     },
   );
 

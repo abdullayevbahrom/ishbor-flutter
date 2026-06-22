@@ -149,6 +149,7 @@ class DioInterceptors extends Interceptor {
 
     final headers = Map<String, dynamic>.from(options.headers);
     headers['Accept'] ??= 'application/json';
+    headers[HttpHeaders.acceptEncodingHeader] ??= 'gzip';
     headers['X-Device-Type'] ??= Platform.isAndroid ? 'android' : 'ios';
 
     final deviceToken = await _ensureDeviceToken();
